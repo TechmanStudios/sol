@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+
+# Virtual environment
+.venv/
+
+# IDE / Editor
+.vscode/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Large media (keep source, skip generated)
+*.mp4
+*.gif
+*.zip
+
+# Temporary / scratch files
+_*.txt
+_*.py
+
+# Generated frames
+sol3d_frames/
+
+# Bulk data directories (multi-GB, keep local only)
+# Raw test results — findings are captured in proof packets
+solData/testResults/
+# Diagnostic dumps
+sol_diagnostics/
+# Overnight RSI run outputs (large JSON/CSV per run)
+data/overnight_rsi/
+# Cogload replications
+solData/testResults/cogload_replications/
+
+# PDFs (binary, track separately if needed)
+*.pdf
+
+# Backup archives
+backUps/

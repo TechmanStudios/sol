@@ -1,0 +1,162 @@
+{
+  "masterName": "master_map_v2",
+  "notes": "Master sweep v2 (planned): sequential sweep classes for core manifold axes (damping, pressureC, injectAmount, dt, measurement window, flux class) plus a small set of modeled dashboard knobs (belief bias, psi, phase, semantic decay). Defaults target a 1-2 hour coarse map suitable for ridge/band discovery; refine later with follow-up plans.",
+  "defaults": {
+    "basins": [64, 79, 82, 90],
+    "replicates": 3,
+    "engine": {
+      "strictStepParams": true
+    },
+    "scenario": {
+      "type": "inject_then_watch",
+      "injectAmount": 120,
+      "preSteps": 2,
+      "preDt": 0.12
+    },
+    "measurement": {
+      "durationMs": 20000,
+      "everyMs": 250,
+      "dt": 0.12,
+      "includeBackgroundEdges": false
+    },
+    "timing": {
+      "timingMode": "sleep",
+      "spinWaitMs": 0.0
+    }
+  },
+  "sweeps": [
+    {
+      "sweepName": "core_damping",
+      "notes": "Primary stability/friction axis (alpha). Hold pressureC fixed.",
+      "grid": {
+        "pressureC": [20],
+        "damping": [1, 2, 4, 8, 9, 12, 16, 24]
+      }
+    },
+    {
+      "sweepName": "core_pressureC",
+      "notes": "Primary pressure-law gain axis. Hold damping fixed.",
+      "grid": {
+        "pressureC": [5, 10, 15, 20, 30, 40],
+        "damping": [8]
+      }
+    },
+    {
+      "sweepName": "core_injectAmount",
+      "notes": "Source term sweep (rho injection magnitude).",
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "injectAmount": [0, 30, 60, 120, 180]
+      }
+    },
+    {
+      "sweepName": "core_dt",
+      "notes": "Integrator step size sensitivity (numerical stability / dynamics sensitivity).",
+      "basins": [64, 90],
+      "replicates": 2,
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "dt": [0.06, 0.12, 0.18]
+      }
+    },
+    {
+      "sweepName": "core_duration",
+      "notes": "Observation window sweep (short vs longer).",
+      "basins": [64, 90],
+      "replicates": 1,
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "durationMs": [10000, 20000, 60000]
+      }
+    },
+    {
+      "sweepName": "core_flux_class",
+      "notes": "Flux measurement class: include vs exclude background edges.",
+      "basins": [64, 90],
+      "replicates": 1,
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "includeBackgroundEdges": [false, true]
+      }
+    },
+    {
+      "sweepName": "modeled_beliefBias",
+      "notes": "Dashboard belief slider semantics (v3_7_2): sets globalBias=bias and conductanceGamma=bias*beliefGammaMax.",
+      "basins": [64, 90],
+      "replicates": 1,
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "beliefBias": [-1, -0.5, 0, 0.5, 1]
+      }
+    },
+    {
+      "sweepName": "modeled_psi",
+      "notes": "Psi evolution knobs from SOLPhysics: psiDiffusion / psiRelaxBase (dotted-path physics overrides supported).",
+      "replicates": 1,
+      "basins": [64, 90],
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "physics": [
+          { "psiDiffusion": 0.3, "psiRelaxBase": 0.08 },
+          { "psiDiffusion": 0.6, "psiRelaxBase": 0.12 },
+          { "psiDiffusion": 0.9, "psiRelaxBase": 0.18 }
+        ]
+      }
+    },
+    {
+      "sweepName": "modeled_phase",
+      "notes": "Phase gating knobs (phaseCfg.*). Keep small; intended for regime sensitivity scans.",
+      "replicates": 1,
+      "basins": [64, 90],
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "physics": [
+          { "phaseCfg.omega": 0.08, "phaseCfg.surfaceTension": 1.2, "phaseCfg.deepViscosity": 0.8 },
+          { "phaseCfg.omega": 0.15, "phaseCfg.surfaceTension": 1.2, "phaseCfg.deepViscosity": 0.8 },
+          { "phaseCfg.omega": 0.25, "phaseCfg.surfaceTension": 1.2, "phaseCfg.deepViscosity": 0.8 }
+        ]
+      }
+    },
+    {
+      "sweepName": "modeled_semanticDecay",
+      "notes": "Semantic mass decay knob (semanticCfg.decayRate) impacts long-run basin stability.",
+      "replicates": 1,
+      "basins": [64, 90],
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "physics": [
+          { "semanticCfg.decayRate": 0.0 },
+          { "semanticCfg.decayRate": 0.05 },
+          { "semanticCfg.decayRate": 0.12 }
+        ]
+      }
+    },
+    {
+      "sweepName": "ridge_scan_pressC_x_damping",
+      "notes": "2D ridge/band scan: pressureC x damping. This is the main coarse map used to find transition bands.",
+      "replicates": 3,
+      "grid": {
+        "pressureC": [8, 12, 16, 20, 24, 28, 32],
+        "damping": [2, 3, 4, 6, 8, 12, 16]
+      }
+    },
+    {
+      "sweepName": "ridge_scan_injectAmount_x_damping",
+      "notes": "2D ridge/band scan: injectAmount x damping. Helps separate source-driven vs stability-driven regime changes.",
+      "replicates": 3,
+      "grid": {
+        "pressureC": [20],
+        "injectAmount": [0, 20, 40, 60, 90, 120],
+        "damping": [2, 3, 4, 6, 8, 12, 16]
+      }
+    }
+  ]
+}

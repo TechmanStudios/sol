@@ -1,0 +1,600 @@
+// Phase 3.11 — 16BN5 (Parity truth table above/below metastability)
+// Goal: Repeat the parity truth table at two multB points that should be OUTSIDE the
+// metastability razor band, to recover clean digital behavior for the odd-prime write.
+//
+// Points:
+//   - multB = 0.9700 (above boundary; expect odd-prime biases toward 114)
+//   - multB = 0.9660 (below boundary; expect odd-prime fails / biases toward 136)
+// Directions: BOTH (up + down)
+// Modes (prime parity):
+//   M0: 0 primes
+//   M1: 1 prime
+//   M2: 2 primes
+// Reps/cell: 120
+//
+// Per cell protocol:
+//   1) baseline restore (SOLBaseline.restore or internal snapshot fallback)
+//   2) modeSelect once (wantId=82; dream blocks)
+//   3) directional precondition once (up uses preLow, down uses preHigh)
+//   4) PRIME: run N primes (0,1,2), each is one segment + relax with betweenRepTicks=80
+//   5) HOLD: repsPerCell trials, each is one segment + relax with betweenRepTicks=81
+//
+// Exports:
+//   - MASTER_summary.csv
+//   - MASTER_busTrace.csv
+//   - phaseParity_truthTable.csv
+//
+// UI-neutral: NO camera/graph motion calls. Only direct node rho injection.
+
+(async () => {
+  "use strict";
+
+  const CFG = {
+    expId: "sol_phase311_16bn5_parityTruthTable_marginPoints_v1",
+
+    segmentTicks: 121,
+    betweenRepTicks_hold: 81,
+    betweenRepTicks_toggle: 80,
+
+    dt: 0.12,
+    pressCBase: null,
+    dampUsed: 20,
+    markerTick: 8,
+
+    multB_points: [0.9700, 0.9660],
+    primeCounts: [0, 1, 2],
+    repsPerCell: 120,
+    dirMode: "both",
+
+    preLow_multB: 0.90,
+    preLow_ticks: 320,
+    preHigh_multB: 1.08,
+    preHigh_ticks: 320,
+
+    wantId: 82,
+    injectorIds: [90, 82],
+    dreamBlocks: 15,
+    dreamBlockSteps: 2,
+    injectAmount: 120,
+    finalWriteMult: 1,
+
+    baseAmpB: 4.0,
+    baseAmpD: 5.75,
+    gain: 22,
+    multD: 1.0,
+
+    injectTick136: 0,
+    injectTick114: 1,
+    handshakeTick: 2,
+    nudgeMult: 0.20,
+
+    captureStreak: 5,
+    captureStartTick: 5,
+
+    includeBackgroundEdges: false,
+    abortOnNonFinite: true
+  };
+
+  // ---------- Utilities ----------
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const p2 = (n) => String(n).padStart(2, "0");
+  const p3 = (n) => String(n).padStart(3, "0");
+  const isoTag = (d = new Date()) =>
+    `${d.getUTCFullYear()}-${p2(d.getUTCMonth() + 1)}-${p2(d.getUTCDate())}` +
+    `T${p2(d.getUTCHours())}-${p2(d.getUTCMinutes())}-${p2(d.getUTCSeconds())}-${p3(d.getUTCMilliseconds())}Z`;
+
+  const csvCell = (v) => {
+    if (v === null || v === undefined) return "";
+    const s = String(v);
+    return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  const csvRow = (cols) => cols.map(csvCell).join(",") + "\n";
+
+  const downloadText = (filename, text) => {
+    const blob = new Blob([text], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => { try { URL.revokeObjectURL(url); } catch (e) {} }, 250);
+  };
+
+  const getApp = () => window.SOLDashboard || window.solDashboard || window.App || window.app || null;
+
+  const waitForPhysics = async (timeoutMs = 15000, pollMs = 50) => {
+    const t0 = performance.now();
+    while (performance.now() - t0 < timeoutMs) {
+      const app = getApp();
+      const phy =
+        (window.solver && window.solver.nodes && window.solver.edges) ? window.solver :
+        (app && app.state && app.state.physics) ? app.state.physics :
+        (app && app.state && app.state.physics && app.state.physics.network) ? app.state.physics.network :
+        null;
+      if (phy?.nodes?.length && phy?.edges?.length && typeof phy.step === "function") return phy;
+      await sleep(pollMs);
+    }
+    throw new Error("[16BN5] timed out waiting for physics.");
+  };
+
+  const freezeLiveLoop = () => {
+    const app = getApp();
+    if (!app?.config) throw new Error("[16BN5] App not ready.");
+    if (freezeLiveLoop._prevDtCap === undefined) freezeLiveLoop._prevDtCap = app.config.dtCap;
+    app.config.dtCap = 0;
+  };
+
+  const unfreezeLiveLoop = () => {
+    const app = getApp();
+    if (!app?.config) return;
+    if (freezeLiveLoop._prevDtCap !== undefined) {
+      app.config.dtCap = freezeLiveLoop._prevDtCap;
+      freezeLiveLoop._prevDtCap = undefined;
+    }
+  };
+
+  const readUiPressC = () => {
+    const app = getApp();
+    const pressC = (app?.dom?.pressureSlider)
+      ? (parseFloat(String(app.dom.pressureSlider.value)) * (app.config.pressureSliderScale || 1))
+      : null;
+    return Number.isFinite(pressC) ? pressC : null;
+  };
+
+  const nodeById = (phy, id) => {
+    const want = String(id);
+    for (const n of (phy.nodes || [])) if (n?.id != null && String(n.id) === want) return n;
+    return null;
+  };
+
+  const injectRho = (phy, id, amt) => {
+    const n = nodeById(phy, id);
+    if (!n) throw new Error(`[16BN5] node not found: ${id}`);
+    const a = Math.max(0, Number(amt) || 0);
+    n.rho += a;
+    try {
+      if (n.isConstellation && typeof phy.reinforceSemanticStar === "function") {
+        phy.reinforceSemanticStar(n, (a / 50.0));
+      }
+    } catch (e) {}
+  };
+
+  const buildEdgeIndex = (phy) => {
+    const map = new Map();
+    const edges = phy.edges || [];
+    for (let i = 0; i < edges.length; i++) {
+      const e = edges[i];
+      if (!e) continue;
+      map.set(`${e.from}->${e.to}`, i);
+    }
+    return map;
+  };
+
+  const edgeFlux = (phy, idx) => {
+    if (idx == null) return 0;
+    const e = (phy.edges || [])[idx];
+    const f = (e && typeof e.flux === "number" && Number.isFinite(e.flux)) ? e.flux : 0;
+    return f;
+  };
+
+  const top2Edges = (phy, includeBackgroundEdges) => {
+    const edges = phy.edges || [];
+    let best1 = { af: -1, from: "", to: "", flux: 0 };
+    let best2 = { af: -1, from: "", to: "", flux: 0 };
+    for (let i = 0; i < edges.length; i++) {
+      const e = edges[i];
+      if (!e) continue;
+      if (!includeBackgroundEdges && e.background) continue;
+      const f = (typeof e.flux === "number" && Number.isFinite(e.flux)) ? e.flux : 0;
+      const af = Math.abs(f);
+      if (af > best1.af) { best2 = best1; best1 = { af, from: e.from, to: e.to, flux: f }; }
+      else if (af > best2.af) { best2 = { af, from: e.from, to: e.to, flux: f }; }
+    }
+    return { best1, best2 };
+  };
+
+  const isFiniteNums = (nums) => nums.every((v) => typeof v === "number" && Number.isFinite(v));
+
+  const entropyFromCounts = (countsMap) => {
+    let total = 0;
+    for (const v of countsMap.values()) total += v;
+    if (total <= 0) return 0;
+    let H = 0;
+    for (const v of countsMap.values()) {
+      const p = v / total;
+      if (p > 0) H -= p * (Math.log(p) / Math.log(2));
+    }
+    return H;
+  };
+
+  const captureTick = (domSeq, who, streak, startTick) => {
+    let run = 0;
+    for (let i = Math.max(0, startTick | 0); i < domSeq.length; i++) {
+      if (domSeq[i] === who) { run++; if (run >= streak) return i - streak + 1; }
+      else run = 0;
+    }
+    return "";
+  };
+
+  const recomputeDerived = async (dt) => {
+    try { if (window.SOLRuntime?.recomputeDerived) return await window.SOLRuntime.recomputeDerived({ dt }); }
+    catch (e) {}
+    return { capLawHash: "" };
+  };
+
+  // ---------- Baseline restore (snapshot fallback) ----------
+  const makeInternalSnapshot = (phy) => {
+    const nodes = (phy.nodes || []).map((n) => [String(n.id), {
+      rho: n.rho, p: n.p, psi: n.psi, psi_bias: n.psi_bias,
+      semanticMass: n.semanticMass, semanticMass0: n.semanticMass0,
+      b_q: n.b_q, b_charge: n.b_charge, b_state: n.b_state,
+      x: n.x, y: n.y, vx: n.vx, vy: n.vy, fx: n.fx, fy: n.fy
+    }]);
+    const edges = (phy.edges || []).map((e, i) => [i, { flux: e?.flux }]);
+    return { nodes, edges, t: (phy._t ?? 0), globalBias: (("globalBias" in phy) ? phy.globalBias : undefined) };
+  };
+
+  const restoreInternalSnapshot = (phy, snap) => {
+    const nMap = new Map(snap.nodes);
+    for (const n of (phy.nodes || [])) {
+      const s = nMap.get(String(n.id));
+      if (!s) continue;
+      for (const k in s) { try { n[k] = s[k]; } catch (e) {} }
+    }
+    const eMap = new Map(snap.edges);
+    for (let i = 0; i < (phy.edges || []).length; i++) {
+      const s = eMap.get(i);
+      if (!s) continue;
+      try { phy.edges[i].flux = s.flux; } catch (e) {}
+    }
+    try { if ("_t" in phy) phy._t = snap.t || 0; } catch (e) {}
+    try { if ("globalBias" in phy && snap.globalBias !== undefined) phy.globalBias = snap.globalBias; } catch (e) {}
+  };
+
+  const ensureBaselineIfAvailable = async () => {
+    if (!window.SOLBaseline?.ensure) return;
+    try { await window.SOLBaseline.ensure({ force: false, exportJson: false }); }
+    catch (e) { console.warn("[16BN5] SOLBaseline.ensure failed (continuing):", e); }
+  };
+
+  const baselineRestore = async (phy, ctx) => {
+    if (window.SOLBaseline?.restore) { await window.SOLBaseline.restore(); return "SOLBaseline.restore"; }
+    if (!ctx._snap) ctx._snap = makeInternalSnapshot(phy);
+    restoreInternalSnapshot(phy, ctx._snap);
+    return "internal_snapshot_restored";
+  };
+
+  // ---------- Mode select + precondition ----------
+  const modeSelectOnce = async (phy, cfg, pressC) => {
+    let idx = 0;
+    for (let b = 0; b < Math.max(0, cfg.dreamBlocks - 1); b++) {
+      const injId = cfg.injectorIds[idx % cfg.injectorIds.length];
+      idx++;
+      injectRho(phy, injId, cfg.injectAmount);
+      for (let s = 0; s < cfg.dreamBlockSteps; s++) phy.step(cfg.dt, pressC, cfg.dampUsed);
+    }
+    injectRho(phy, cfg.wantId, cfg.injectAmount * (cfg.finalWriteMult || 1));
+    try { if (typeof phy.computePressure === "function") phy.computePressure(pressC); } catch (e) {}
+  };
+
+  const runPreconditionOnce = async (phy, cfg, pressC, dirTag, baseB, ampD) => {
+    const multBUsed = (dirTag === "up") ? cfg.preLow_multB : cfg.preHigh_multB;
+    const ticks = (dirTag === "up") ? cfg.preLow_ticks : cfg.preHigh_ticks;
+    const ampB0 = baseB * multBUsed;
+    const ampB_nudge = ampB0 * cfg.nudgeMult;
+
+    for (let t = 0; t < ticks; t++) {
+      if (t === cfg.injectTick136) injectRho(phy, 136, ampD);
+      if (t === cfg.injectTick114) injectRho(phy, 114, ampB0);
+      if (t === cfg.handshakeTick && ampB_nudge > 0) injectRho(phy, 114, ampB_nudge);
+      phy.step(cfg.dt, pressC, cfg.dampUsed);
+    }
+  };
+
+  const relax = async (phy, cfg, pressC, nTicks) => {
+    for (let k = 0; k < nTicks; k++) phy.step(cfg.dt, pressC, cfg.dampUsed);
+  };
+
+  // ---------- PRIME reps ----------
+  const runPrimeToggleRep = async (phy, cfg, pressC, multBUsed, baseB, ampD) => {
+    const ampB0 = baseB * multBUsed;
+    const ampB_nudge = ampB0 * cfg.nudgeMult;
+    for (let tick = 0; tick < cfg.segmentTicks; tick++) {
+      if (tick === cfg.injectTick136) injectRho(phy, 136, ampD);
+      if (tick === cfg.injectTick114) injectRho(phy, 114, ampB0);
+      if (tick === cfg.handshakeTick && ampB_nudge > 0) injectRho(phy, 114, ampB_nudge);
+      phy.step(cfg.dt, pressC, cfg.dampUsed);
+    }
+    await relax(phy, cfg, pressC, cfg.betweenRepTicks_toggle);
+  };
+
+  // ---------- Recorded trial ----------
+  const runOneTrial = async (
+    phy, cfg, pressC, dirTag, cellId, modeLabel, primeCount, rep, multBUsed,
+    baseB, ampD, edgeIdx, baselineModeUsed, summaryLines, traceLines, runTag
+  ) => {
+    const cap = await recomputeDerived(cfg.dt);
+
+    const ampB0 = baseB * multBUsed;
+    const ratioBD = ampB0 / ampD;
+    const ampB_nudge = ampB0 * cfg.nudgeMult;
+
+    let peakAbs114 = 0, peakAbs136 = 0;
+    let t8_abs114 = "", t8_abs136 = "";
+
+    const laneCounts = new Map();
+    const busDomCounts = new Map([["114", 0], ["136", 0], ["tie", 0]]);
+    const busDomSeq = [];
+    let prevMax1 = "", max1_switchCount = 0;
+    let prevBusDom = "", bus_switchCount = 0;
+
+    let aborted = false;
+
+    for (let tick = 0; tick < cfg.segmentTicks; tick++) {
+      if (tick === cfg.injectTick136) injectRho(phy, 136, ampD);
+      if (tick === cfg.injectTick114) injectRho(phy, 114, ampB0);
+      if (tick === cfg.handshakeTick && ampB_nudge > 0) injectRho(phy, 114, ampB_nudge);
+
+      phy.step(cfg.dt, pressC, cfg.dampUsed);
+
+      const top2 = top2Edges(phy, cfg.includeBackgroundEdges);
+      const max1Pair = `${top2.best1.from}->${top2.best1.to}`;
+      laneCounts.set(max1Pair, (laneCounts.get(max1Pair) || 0) + 1);
+      if (prevMax1 && max1Pair !== prevMax1) max1_switchCount++;
+      prevMax1 = max1Pair;
+
+      const f114_89 = edgeFlux(phy, edgeIdx.i114_89);
+      const f114_79 = edgeFlux(phy, edgeIdx.i114_79);
+      const f136_89 = edgeFlux(phy, edgeIdx.i136_89);
+      const f136_79 = edgeFlux(phy, edgeIdx.i136_79);
+
+      const abs114 = Math.max(Math.abs(f114_89), Math.abs(f114_79));
+      const abs136 = Math.max(Math.abs(f136_89), Math.abs(f136_79));
+
+      if (cfg.abortOnNonFinite) {
+        const ok = isFiniteNums([top2.best1.af, top2.best2.af, f114_89, f114_79, f136_89, f136_79, abs114, abs136]);
+        if (!ok) { aborted = true; break; }
+      }
+
+      if (abs114 > peakAbs114) peakAbs114 = abs114;
+      if (abs136 > peakAbs136) peakAbs136 = abs136;
+
+      if (tick === cfg.markerTick) { t8_abs114 = abs114; t8_abs136 = abs136; }
+
+      const busDom = (abs114 > abs136) ? "114" : (abs136 > abs114) ? "136" : "tie";
+      busDomSeq.push(busDom);
+      busDomCounts.set(busDom, (busDomCounts.get(busDom) || 0) + 1);
+      if (prevBusDom && busDom !== prevBusDom) bus_switchCount++;
+      prevBusDom = busDom;
+
+      traceLines.push(csvRow([
+        cfg.expId, runTag, dirTag, cellId, modeLabel, primeCount, rep, multBUsed, tick,
+        top2.best1.from, top2.best1.to, top2.best1.af,
+        top2.best2.from, top2.best2.to, top2.best2.af,
+        f114_89, f114_79, f136_89, f136_79,
+        abs114, abs136, busDom,
+        cfg.betweenRepTicks_hold
+      ]));
+    }
+
+    const winner_peakBus = (peakAbs114 > peakAbs136) ? 114 : (peakAbs136 > peakAbs114) ? 136 : 0;
+    const winner_t8 = (t8_abs114 === "" || t8_abs136 === "") ? 0 : (t8_abs114 > t8_abs136) ? 114 : (t8_abs136 > t8_abs114) ? 136 : 0;
+
+    let laneEdge = "", laneEdge_count = -1;
+    for (const [k, v] of laneCounts.entries()) if (v > laneEdge_count) { laneEdge = k; laneEdge_count = v; }
+    const laneEntropy = entropyFromCounts(laneCounts);
+
+    const ticksTotal = busDomSeq.length || 1;
+    const fracBus114 = (busDomCounts.get("114") || 0) / ticksTotal;
+    const fracBus136 = (busDomCounts.get("136") || 0) / ticksTotal;
+    const busEntropy = entropyFromCounts(busDomCounts);
+
+    const cap114 = captureTick(busDomSeq, "114", cfg.captureStreak, cfg.captureStartTick);
+    const cap136 = captureTick(busDomSeq, "136", cfg.captureStreak, cfg.captureStartTick);
+
+    summaryLines.push(csvRow([
+      cfg.expId, runTag, dirTag, cellId, modeLabel, primeCount, rep, multBUsed,
+      pressC, cfg.dampUsed, (cap.capLawHash ?? ""),
+      ampB0, ampD, ratioBD,
+      peakAbs114, peakAbs136, winner_peakBus,
+      t8_abs114, t8_abs136, winner_t8,
+      laneEdge, laneEdge_count, laneEntropy, max1_switchCount,
+      fracBus114, fracBus136, busEntropy, bus_switchCount,
+      cap114, cap136,
+      baselineModeUsed,
+      cfg.betweenRepTicks_hold,
+      aborted ? 1 : 0
+    ]));
+
+    return { aborted, winner_t8, winner_peakBus, t8_abs114, t8_abs136, cap114, cap136 };
+  };
+
+  const medianNum = (arr) => {
+    const xs = arr.filter(v => Number.isFinite(v)).slice().sort((a,b)=>a-b);
+    if (!xs.length) return "";
+    const mid = Math.floor(xs.length / 2);
+    return (xs.length % 2) ? xs[mid] : (xs[mid-1] + xs[mid]) / 2;
+  };
+
+  const modeLabelOf = (primeCount) =>
+    (primeCount === 0) ? "M0_noPrime" :
+    (primeCount === 1) ? "M1_togglePrime" :
+    (primeCount === 2) ? "M2_doublePrime" : `M${primeCount}_prime`;
+
+  // ---------- Runner ----------
+  const Runner = {
+    async run(userCfg = {}) {
+      const cfg = { ...CFG, ...userCfg };
+
+      const phy = await waitForPhysics();
+      freezeLiveLoop();
+      await ensureBaselineIfAvailable();
+
+      const uiPressC = readUiPressC();
+      const invPressC = window.SOLRuntime?.getInvariants?.()?.pressC;
+      const pressCUsed = (cfg.pressCBase != null) ? cfg.pressCBase : (invPressC ?? uiPressC ?? 2.0);
+
+      const baseB = cfg.baseAmpB * cfg.gain;
+      const baseD = cfg.baseAmpD * cfg.gain;
+      const ampD = (baseD * cfg.multD);
+
+      const startTag = isoTag(new Date());
+      const runTag = `${cfg.expId}_${startTag}`;
+      const ctx = { _snap: null };
+
+      const edgeIndex = buildEdgeIndex(phy);
+      const edgeIdx = {
+        i114_89: edgeIndex.get("114->89"),
+        i114_79: edgeIndex.get("114->79"),
+        i136_89: edgeIndex.get("136->89"),
+        i136_79: edgeIndex.get("136->79")
+      };
+
+      const summaryHeader = [
+        "schema","runTag","dir","cellId","modeLabel","primeCount","rep","multBUsed",
+        "pressCUsed","dampUsed","capLawHash",
+        "ampB0","ampD","ratioBD",
+        "peakAbs114_bus","peakAbs136_bus","winner_peakBus",
+        "t8_abs114_bus","t8_abs136_bus","winner_t8",
+        "laneEdge","laneEdge_count","laneEntropy_bits","max1_switchCount",
+        "fracTicks_busDom114","fracTicks_busDom136","busDomEntropy_bits","busDom_switchCount",
+        "captureTick_114","captureTick_136",
+        "baselineModeUsed",
+        "betweenRepTicks_hold",
+        "aborted"
+      ];
+
+      const traceHeader = [
+        "schema","runTag","dir","cellId","modeLabel","primeCount","rep","multBUsed","tick",
+        "max1_from","max1_to","max1_absFlux",
+        "max2_from","max2_to","max2_absFlux",
+        "flux_114_89","flux_114_79","flux_136_89","flux_136_79",
+        "abs114_bus","abs136_bus","busDom",
+        "betweenRepTicks_hold"
+      ];
+
+      const truthHeader = [
+        "schema","runTag","dir","multB","modeLabel","primeCount",
+        "n","n114_t8","n136_t8","nTie_t8","p114_t8","p136_t8",
+        "n114_peak","n136_peak","nTie_peak","p114_peak","p136_peak",
+        "median_t8_abs114","median_t8_abs136",
+        "median_captureTick_114","median_captureTick_136"
+      ];
+
+      const summaryLines = [csvRow(summaryHeader)];
+      const traceLines = [csvRow(traceHeader)];
+      const truthLines = [csvRow(truthHeader)];
+
+      const dirs =
+        (cfg.dirMode === "both") ? ["up", "down"] :
+        (cfg.dirMode === "up") ? ["up"] : ["down"];
+
+      console.log(`\n[${cfg.expId}] START @ ${startTag}`);
+      console.log(`[${cfg.expId}] points=${cfg.multB_points.join(", ")} | primes=${cfg.primeCounts.join(", ")} | repsPerCell=${cfg.repsPerCell} | dirs=${dirs.join(",")}`);
+
+      for (const dirTag of dirs) {
+        for (const multB of cfg.multB_points) {
+          const multBUsed = Math.round(multB * 10000) / 10000;
+
+          for (const primeCount of cfg.primeCounts) {
+            const modeLabel = modeLabelOf(primeCount);
+            const cellId = `${dirTag}_B${multBUsed.toFixed(4)}_${modeLabel}`;
+
+            // Per cell init
+            const baselineModeUsed = await baselineRestore(phy, ctx);
+            await modeSelectOnce(phy, cfg, pressCUsed);
+            await runPreconditionOnce(phy, cfg, pressCUsed, dirTag, baseB, ampD);
+
+            // Prime N times
+            for (let k = 0; k < primeCount; k++) {
+              await runPrimeToggleRep(phy, cfg, pressCUsed, multBUsed, baseB, ampD);
+            }
+
+            // HOLD trials
+            const winners_t8 = [];
+            const winners_peak = [];
+            const t8_abs114_list = [];
+            const t8_abs136_list = [];
+            const cap114_list = [];
+            const cap136_list = [];
+
+            let abortedAny = false;
+
+            for (let rep = 1; rep <= cfg.repsPerCell; rep++) {
+              const r = await runOneTrial(
+                phy, cfg, pressCUsed, dirTag, cellId, modeLabel, primeCount, rep, multBUsed,
+                baseB, ampD, edgeIdx, baselineModeUsed,
+                summaryLines, traceLines, runTag
+              );
+              if (r.aborted) { abortedAny = true; break; }
+
+              winners_t8.push(r.winner_t8);
+              winners_peak.push(r.winner_peakBus);
+              t8_abs114_list.push((r.t8_abs114 === "" ? NaN : Number(r.t8_abs114)));
+              t8_abs136_list.push((r.t8_abs136 === "" ? NaN : Number(r.t8_abs136)));
+              cap114_list.push((r.cap114 === "" ? NaN : Number(r.cap114)));
+              cap136_list.push((r.cap136 === "" ? NaN : Number(r.cap136)));
+
+              await relax(phy, cfg, pressCUsed, cfg.betweenRepTicks_hold);
+            }
+
+            if (abortedAny) console.warn(`[${cfg.expId}] ABORTED in cell ${cellId}`);
+
+            const n = winners_t8.length || 1;
+            const n114_t8 = winners_t8.filter(w => w === 114).length;
+            const n136_t8 = winners_t8.filter(w => w === 136).length;
+            const nTie_t8 = winners_t8.filter(w => w === 0).length;
+
+            const n114_peak = winners_peak.filter(w => w === 114).length;
+            const n136_peak = winners_peak.filter(w => w === 136).length;
+            const nTie_peak = winners_peak.filter(w => w === 0).length;
+
+            const p114_t8 = n114_t8 / n;
+            const p136_t8 = n136_t8 / n;
+
+            const p114_peak = n114_peak / n;
+            const p136_peak = n136_peak / n;
+
+            const med_t8_abs114 = medianNum(t8_abs114_list);
+            const med_t8_abs136 = medianNum(t8_abs136_list);
+
+            const med_cap114 = medianNum(cap114_list);
+            const med_cap136 = medianNum(cap136_list);
+
+            truthLines.push(csvRow([
+              cfg.expId, runTag, dirTag, multBUsed.toFixed(4), modeLabel, primeCount,
+              n, n114_t8, n136_t8, nTie_t8, p114_t8, p136_t8,
+              n114_peak, n136_peak, nTie_peak, p114_peak, p136_peak,
+              med_t8_abs114, med_t8_abs136,
+              med_cap114, med_cap136
+            ]));
+
+            console.log(`[${cfg.expId}] ${cellId} | p114_t8=${p114_t8.toFixed(4)} (114=${n114_t8}/${n}) | p114_peak=${p114_peak.toFixed(4)}`);
+          }
+        }
+      }
+
+      const endTag = isoTag(new Date());
+      const baseName = `${cfg.expId}_${startTag}_${endTag}`;
+      unfreezeLiveLoop();
+
+      downloadText(`${baseName}_MASTER_summary.csv`, summaryLines.join(""));
+      downloadText(`${baseName}_MASTER_busTrace.csv`, traceLines.join(""));
+      downloadText(`${baseName}_phaseParity_truthTable.csv`, truthLines.join(""));
+
+      console.log(`\n[${cfg.expId}] DONE @ ${endTag}`);
+      console.log(`- ${baseName}_MASTER_summary.csv`);
+      console.log(`- ${baseName}_MASTER_busTrace.csv`);
+      console.log(`- ${baseName}_phaseParity_truthTable.csv`);
+
+      return { expId: cfg.expId, baseName, pressCUsed, dampUsed: cfg.dampUsed };
+    }
+  };
+
+  window.solPhase311_16bn5_parityTruthTable_marginPoints_v1 = Runner;
+  console.log("✅ Installed: solPhase311_16bn5_parityTruthTable_marginPoints_v1");
+  await Runner.run();
+
+})();

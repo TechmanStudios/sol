@@ -1,0 +1,28 @@
+{
+  "seriesName": "dual_inject_timing",
+  "question": "Does injecting consciousness at step 100 after an initial grail injection change the entropy trajectory?",
+  "invariants": {
+    "dt": 0.12,
+    "c_press": 0.1,
+    "damping": 0.2,
+    "rng_seed": 42
+  },
+  "injections": [
+    {"label": "grail", "amount": 50, "at_step": 0},
+    {"label": "consciousness", "amount": 30, "at_step": 100}
+  ],
+  "steps": 300,
+  "reps": 5,
+  "baseline": "fresh",
+  "metrics_every": 5,
+  "outputs": {
+    "summary_csv": true,
+    "trace_csv": true,
+    "run_bundle_md": true
+  },
+  "falsifiers": [
+    "Entropy curve is identical whether consciousness is injected or not",
+    "Second injection has no visible effect on flux"
+  ],
+  "notes": "Tests deferred injection support and multi-injection interaction."
+}

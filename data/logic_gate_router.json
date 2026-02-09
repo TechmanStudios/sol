@@ -1,0 +1,700 @@
+{
+  "experiment": "Logic Gate & Signal Router (Experiment 8)",
+  "engine_sha256": "5316e4fd6713b2d5e2dd4999780b5f7871c0a7b1c90e8f151698805653562eef",
+  "graph_sha256": "b9800d5313886818c7c1980829e1ca5da7d63d9e2218e36c020df80db19b06fb",
+  "total_trials": 87,
+  "total_seconds": 239.02752423286438,
+  "gates": {
+    "gate_1_not": {
+      "gate": "NOT",
+      "results": {
+        "0.2": {
+          "off": {
+            "basin": 9,
+            "iton": 0.20149253731343283,
+            "coherence": 0.9656068476888207
+          },
+          "on": {
+            "basin": 1,
+            "iton": 0.5135135135135135,
+            "coherence": 0.9854499032471035
+          },
+          "inverted": true
+        },
+        "5.0": {
+          "off": {
+            "basin": 9,
+            "iton": 0.0,
+            "coherence": 0.9944984510722928
+          },
+          "on": {
+            "basin": 1,
+            "iton": 0.0,
+            "coherence": 0.9953869188441449
+          },
+          "inverted": true
+        },
+        "20.0": {
+          "off": {
+            "basin": 22,
+            "iton": 0.0,
+            "coherence": 0.9987864110058371
+          },
+          "on": {
+            "basin": 22,
+            "iton": 0.0,
+            "coherence": 0.9974861441807296
+          },
+          "inverted": false
+        }
+      },
+      "pass_rate": 0.6666666666666666
+    },
+    "gate_2_and": {
+      "gate": "AND",
+      "results": {
+        "0.2": {
+          "states": {
+            "00": {
+              "basin": null,
+              "mass": 0.0,
+              "is_grail": false
+            },
+            "10": {
+              "basin": 9,
+              "is_grail": false,
+              "iton": 0.20149253731343283
+            },
+            "01": {
+              "basin": null,
+              "mass": 0.0,
+              "is_grail": false
+            },
+            "11": {
+              "basin": 1,
+              "is_grail": true,
+              "iton": 0.5135135135135135
+            }
+          },
+          "strict_pass": true,
+          "relaxed_pass": true
+        },
+        "5.0": {
+          "states": {
+            "00": {
+              "basin": null,
+              "mass": 0.0,
+              "is_grail": false
+            },
+            "10": {
+              "basin": 9,
+              "is_grail": false,
+              "iton": 0.0
+            },
+            "01": {
+              "basin": null,
+              "mass": 0.0,
+              "is_grail": false
+            },
+            "11": {
+              "basin": 1,
+              "is_grail": true,
+              "iton": 0.0
+            }
+          },
+          "strict_pass": true,
+          "relaxed_pass": true
+        },
+        "20.0": {
+          "states": {
+            "00": {
+              "basin": null,
+              "mass": 0.0,
+              "is_grail": false
+            },
+            "10": {
+              "basin": 22,
+              "is_grail": false,
+              "iton": 0.0
+            },
+            "01": {
+              "basin": null,
+              "mass": 0.0,
+              "is_grail": false
+            },
+            "11": {
+              "basin": 22,
+              "is_grail": false,
+              "iton": 0.0
+            }
+          },
+          "strict_pass": false,
+          "relaxed_pass": false
+        }
+      },
+      "strict_pass_rate": 0.6666666666666666,
+      "relaxed_pass_rate": 0.6666666666666666
+    },
+    "gate_3_or": {
+      "gate": "OR",
+      "results": {
+        "0.2": {
+          "states": {
+            "00": {
+              "mass": 0.0,
+              "maxRho": 0.0
+            },
+            "10": {
+              "mass": 14.18180332405375,
+              "maxRho": 0.10960372473812686,
+              "basin": 1
+            },
+            "01": {
+              "mass": 18.57767366717699,
+              "maxRho": 0.14277977798526018,
+              "basin": 2
+            },
+            "11": {
+              "mass": 32.99378625941626,
+              "maxRho": 0.256947581712484,
+              "basin": 1
+            }
+          },
+          "threshold": 7.090901662026875,
+          "correct": true
+        },
+        "5.0": {
+          "states": {
+            "00": {
+              "mass": 0.0,
+              "maxRho": 0.0
+            },
+            "10": {
+              "mass": 4.549563083318233e-10,
+              "maxRho": 3.491439902961668e-12,
+              "basin": 132
+            },
+            "01": {
+              "mass": 3.0943539519704925e-11,
+              "maxRho": 2.5557551856998007e-13,
+              "basin": 78
+            },
+            "11": {
+              "mass": 1.0599668511597528e-09,
+              "maxRho": 8.841527708561358e-12,
+              "basin": 1
+            }
+          },
+          "threshold": 1.5471769759852463e-11,
+          "correct": true
+        },
+        "20.0": {
+          "states": {
+            "00": {
+              "mass": 0.0,
+              "maxRho": 0.0
+            },
+            "10": {
+              "mass": 2.84525237916451e-18,
+              "maxRho": 4.589801248684026e-19,
+              "basin": 7
+            },
+            "01": {
+              "mass": 7.49236098918855e-17,
+              "maxRho": 1.996995293261007e-17,
+              "basin": 2
+            },
+            "11": {
+              "mass": 7.514973867862638e-17,
+              "maxRho": 1.9693846771548682e-17,
+              "basin": 2
+            }
+          },
+          "threshold": 1.422626189582255e-18,
+          "correct": true
+        }
+      },
+      "pass_rate": 1.0
+    },
+    "gate_4_router": {
+      "gate": "ROUTER",
+      "results": {
+        "UNIFORM": {
+          "basin": 9,
+          "basin_label": "metatron",
+          "basin_frac": 0.67,
+          "iton": 0.20149253731343283,
+          "coherence": 0.9656068476888207,
+          "top5": [
+            [
+              7,
+              0.9246952931415623
+            ],
+            [
+              5,
+              0.8245786930635377
+            ],
+            [
+              136,
+              0.7951826076047934
+            ],
+            [
+              12,
+              0.7441450712230092
+            ],
+            [
+              69,
+              0.7211908282568644
+            ]
+          ],
+          "description": "Default weights (w0=1.0 everywhere)"
+        },
+        "SPIRIT_3x": {
+          "basin": 1,
+          "basin_label": "grail",
+          "basin_frac": 0.52,
+          "iton": 0.5135135135135135,
+          "coherence": 0.9854499032471035,
+          "top5": [
+            [
+              14,
+              0.7628113823528887
+            ],
+            [
+              17,
+              0.7628113823528887
+            ],
+            [
+              30,
+              0.7628113823528887
+            ],
+            [
+              41,
+              0.7628113823528887
+            ],
+            [
+              112,
+              0.7628113823528887
+            ]
+          ],
+          "description": "Spirit-adjacent edges w0=3.0"
+        },
+        "GRAIL_ATTRACT": {
+          "basin": 9,
+          "basin_label": "metatron",
+          "basin_frac": 0.66,
+          "iton": 0.5915492957746479,
+          "coherence": 0.9227459860051119,
+          "top5": [
+            [
+              7,
+              0.6480708971314211
+            ],
+            [
+              136,
+              0.5878430799400354
+            ],
+            [
+              5,
+              0.5858704126195611
+            ],
+            [
+              67,
+              0.5847135311571815
+            ],
+            [
+              69,
+              0.5844055723974907
+            ]
+          ],
+          "description": "Edges touching grail neighbors w0=3.0, others w0=0.5"
+        },
+        "HUB_SUPPRESS": {
+          "basin": 9,
+          "basin_label": "metatron",
+          "basin_frac": 0.48,
+          "iton": 0.2785714285714286,
+          "coherence": 0.9658695248653913,
+          "top5": [
+            [
+              14,
+              1.65856018840441
+            ],
+            [
+              17,
+              1.65856018840441
+            ],
+            [
+              30,
+              1.65856018840441
+            ],
+            [
+              41,
+              1.65856018840441
+            ],
+            [
+              112,
+              1.65856018840441
+            ]
+          ],
+          "description": "Mega-hub (par,jg) edges w0=0.1, others w0=2.0"
+        },
+        "PYRAMID_FOCUS": {
+          "basin": 9,
+          "basin_label": "metatron",
+          "basin_frac": 0.71,
+          "iton": 0.5507246376811594,
+          "coherence": 0.9028979931071792,
+          "top5": [
+            [
+              7,
+              0.6050534229170594
+            ],
+            [
+              136,
+              0.5797179566013074
+            ],
+            [
+              5,
+              0.5741054508204967
+            ],
+            [
+              69,
+              0.5722222356313899
+            ],
+            [
+              52,
+              0.57151343474554
+            ]
+          ],
+          "description": "Pyramid neighborhood w0=3.0, spirit w0=0.3"
+        },
+        "d5.0_distinct": 2,
+        "d5.0_basins": [
+          1,
+          9
+        ],
+        "d20.0_distinct": 2,
+        "d20.0_basins": [
+          7,
+          22
+        ]
+      },
+      "distinct_basins_d02": 2
+    },
+    "gate_5_relay": {
+      "gate": "RELAY_CHAIN",
+      "results": {
+        "SIMULTANEOUS": {
+          "basin": 22,
+          "iton": 0.0,
+          "n_pass": 0,
+          "n_sources": 0,
+          "n_sinks": 0
+        },
+        "FORWARD": {
+          "basin": 22,
+          "iton": 0.0,
+          "n_pass": 0,
+          "n_sources": 0,
+          "n_sinks": 0
+        },
+        "REVERSE": {
+          "basin": 22,
+          "iton": 0.0,
+          "n_pass": 0,
+          "n_sources": 0,
+          "n_sinks": 0
+        },
+        "SPREAD": {
+          "basin": 1,
+          "iton": 0.0,
+          "n_pass": 0,
+          "n_sources": 0,
+          "n_sinks": 0
+        },
+        "gap_sweep": {
+          "25": {
+            "basin": 7,
+            "iton": 0.0,
+            "n_pass": 0
+          },
+          "50": {
+            "basin": 7,
+            "iton": 0.0,
+            "n_pass": 0
+          },
+          "75": {
+            "basin": 22,
+            "iton": 0.0,
+            "n_pass": 0
+          },
+          "100": {
+            "basin": 22,
+            "iton": 0.0,
+            "n_pass": 0
+          },
+          "125": {
+            "basin": 22,
+            "iton": 0.0,
+            "n_pass": 0
+          },
+          "150": {
+            "basin": 22,
+            "iton": 0.0,
+            "n_pass": 0
+          },
+          "200": {
+            "basin": 22,
+            "iton": 0.0,
+            "n_pass": 0
+          }
+        },
+        "damp_sweep": {
+          "0.2": {
+            "basin": 7,
+            "iton": 0.4411764705882353,
+            "n_pass": 30
+          },
+          "1.0": {
+            "basin": 7,
+            "iton": 0.0,
+            "n_pass": 0
+          },
+          "5.0": {
+            "basin": 22,
+            "iton": 0.0,
+            "n_pass": 0
+          },
+          "10.0": {
+            "basin": 22,
+            "iton": 0.0,
+            "n_pass": 0
+          },
+          "20.0": {
+            "basin": 22,
+            "iton": 0.0,
+            "n_pass": 0
+          },
+          "40.0": {
+            "basin": 22,
+            "iton": 0.0,
+            "n_pass": 0
+          },
+          "55.0": {
+            "basin": 22,
+            "iton": 0.0,
+            "n_pass": 0
+          }
+        }
+      }
+    },
+    "gate_6_mux": {
+      "gate": "MUX_2BIT",
+      "results": {
+        "d20": {
+          "states": {
+            "00_fwd_uniform": {
+              "basin": 22,
+              "basin_label": "christic",
+              "iton": 0.0,
+              "coherence": 0.029187136029236366,
+              "n_pass": 0,
+              "top5": [
+                [
+                  29,
+                  6.388159750272986e-21
+                ],
+                [
+                  22,
+                  1.2971328038723284e-21
+                ],
+                [
+                  90,
+                  1.1876451667821926e-21
+                ],
+                [
+                  23,
+                  6.128421750989528e-22
+                ],
+                [
+                  7,
+                  3.9874411632860977e-22
+                ]
+              ]
+            },
+            "01_fwd_spirit": {
+              "basin": 22,
+              "basin_label": "christic",
+              "iton": 0.0,
+              "coherence": 0.037656337441440764,
+              "n_pass": 0,
+              "top5": [
+                [
+                  29,
+                  6.187093836086843e-21
+                ],
+                [
+                  90,
+                  9.26045080262736e-22
+                ],
+                [
+                  22,
+                  4.468294320047619e-22
+                ],
+                [
+                  23,
+                  3.5142753555468945e-22
+                ],
+                [
+                  19,
+                  2.379350837988518e-22
+                ]
+              ]
+            },
+            "10_rev_uniform": {
+              "basin": 22,
+              "basin_label": "christic",
+              "iton": 0.0,
+              "coherence": 0.05422781805454268,
+              "n_pass": 0,
+              "top5": [
+                [
+                  29,
+                  9.121827230911715e-21
+                ],
+                [
+                  22,
+                  2.790728757956135e-21
+                ],
+                [
+                  90,
+                  2.4857502111134913e-21
+                ],
+                [
+                  1,
+                  1.912159910302382e-21
+                ],
+                [
+                  7,
+                  1.358332281230996e-21
+                ]
+              ]
+            },
+            "11_rev_spirit": {
+              "basin": 22,
+              "basin_label": "christic",
+              "iton": 0.0,
+              "coherence": 0.04868613346302658,
+              "n_pass": 0,
+              "top5": [
+                [
+                  29,
+                  1.972723470713494e-20
+                ],
+                [
+                  90,
+                  4.572463697177401e-21
+                ],
+                [
+                  23,
+                  2.9904318883355207e-21
+                ],
+                [
+                  22,
+                  2.3763998413873427e-21
+                ],
+                [
+                  19,
+                  1.5617127429552969e-21
+                ]
+              ]
+            }
+          },
+          "n_distinct_basins": 1,
+          "n_distinct_signatures": 1
+        },
+        "d02": {
+          "states": {
+            "00_fwd_uniform": {
+              "basin": 14,
+              "basin_label": "maia nartoomid",
+              "iton": 0.5365853658536586,
+              "coherence": 0.7680371363815952
+            },
+            "01_fwd_spirit": {
+              "basin": 14,
+              "basin_label": "maia nartoomid",
+              "iton": 0.2682926829268293,
+              "coherence": 0.7566819258431431
+            },
+            "10_rev_uniform": {
+              "basin": 7,
+              "basin_label": "numis'om",
+              "iton": 0.4411764705882353,
+              "coherence": 0.7663099151426761
+            },
+            "11_rev_spirit": {
+              "basin": 7,
+              "basin_label": "numis'om",
+              "iton": 0.48,
+              "coherence": 0.7228841218224666
+            }
+          },
+          "n_distinct_basins": 2
+        }
+      }
+    },
+    "gate_7_coherence": {
+      "gate": "COHERENCE_SWITCH",
+      "results": {
+        "0.2": {
+          "point_coherence": 0.9656068476888207,
+          "spread_coherence": 1.0,
+          "delta": 0.03439315231117934,
+          "switched": true,
+          "point_basin": 9,
+          "spread_basin": 1
+        },
+        "5.0": {
+          "point_coherence": 0.9944984510722928,
+          "spread_coherence": 1.0,
+          "delta": 0.005501548927707156,
+          "switched": false,
+          "point_basin": 9,
+          "spread_basin": 1
+        },
+        "20.0": {
+          "point_coherence": 0.9987864110058371,
+          "spread_coherence": 0.9999999999999998,
+          "delta": 0.0012135889941626843,
+          "switched": false,
+          "point_basin": 22,
+          "spread_basin": 1
+        },
+        "55.0": {
+          "point_coherence": 0.9993286659677215,
+          "spread_coherence": 1.0,
+          "delta": 0.0006713340322784811,
+          "switched": false,
+          "point_basin": 7,
+          "spread_basin": 1
+        }
+      },
+      "pass_rate": 0.25
+    },
+    "integration": {
+      "test": "INTEGRATION",
+      "results": {
+        "not_gate": true,
+        "and_gate": true,
+        "routing_orthogonality": true,
+        "coherence_switch": true,
+        "all_pass": true,
+        "basins_off": 9,
+        "basins_on": 1,
+        "n_routing_basins": 2
+      }
+    }
+  }
+}

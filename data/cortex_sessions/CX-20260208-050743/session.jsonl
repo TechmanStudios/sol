@@ -1,0 +1,8 @@
+{"ts": "2026-02-08T05:07:43.232786Z", "event": "session_start", "session_id": "CX-20260208-050743", "config": {"max_protocols": "1", "max_total_steps": "100000", "gap_type_filter": "None", "dry_run": "True", "out_dir": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions", "strict_guardrails": "True", "verbose": "False"}}
+{"ts": "2026-02-08T05:07:43.293346Z", "event": "knowledge_scan", "total_gaps": 37, "by_type": {"unpromoted": 3, "headless_baseline": 1, "weak_evidence": 11, "unfalsified": 4, "replication": 14, "unexplored_param": 4}}
+{"ts": "2026-02-08T05:07:43.293346Z", "event": "gap_selected", "gap_id": "unpromoted:CL-3", "gap_type": "unpromoted", "priority": 2, "description": "CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins \u2014 no p"}
+{"ts": "2026-02-08T05:07:43.293346Z", "event": "hypothesis_generated", "hypothesis_id": "H-001", "template": "threshold_scan", "question": "At what value of damping does the system behavior qualitatively change?"}
+{"ts": "2026-02-08T05:07:43.293346Z", "event": "hypothesis_augmented", "hypothesis_id": "H-001", "memory_falsifiers": 2}
+{"ts": "2026-02-08T05:07:43.295349Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260208-050743\\protocols\\h-001_protocol.json"}
+{"ts": "2026-02-08T05:07:43.295349Z", "event": "dry_run_skip", "hypothesis_id": "H-001"}
+{"ts": "2026-02-08T05:07:43.295349Z", "event": "budget_stop", "reason": "max_protocols reached (1/1)"}

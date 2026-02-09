@@ -1,0 +1,19 @@
+{
+  "stage": "consolidate",
+  "status": "passed",
+  "started_at": "2026-02-08T05:51:25.594892+00:00",
+  "completed_at": "2026-02-08T05:51:25.665463+00:00",
+  "elapsed_sec": 0.07,
+  "output": {
+    "session_id": "CX-20260208-055037",
+    "consolidated_at": "2026-02-08T05:51:25.642441+00:00",
+    "protocols_run": 1,
+    "total_steps": 12000,
+    "hypotheses_processed": 1,
+    "proof_packets_generated": [
+      "PP-2026-02-08-cortex-CX-20260208-055037-h-001-damping"
+    ],
+    "status": "consolidated"
+  },
+  "error": null
+}

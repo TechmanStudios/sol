@@ -1,0 +1,234 @@
+{
+  "meta": {
+    "version": 1,
+    "last_compacted": "2026-02-08T16:23:52.882442+00:00",
+    "trace_count": 14
+  },
+  "nodes": [
+    {
+      "id": 1000,
+      "label": "basin:132:132,138,52,94,58:1.0",
+      "group": "memory",
+      "source_session": "DS-20260208-052205",
+      "source_hypothesis": "H-001",
+      "confidence": 0.5800000000000001,
+      "created_at": "2026-02-08T05:22:44.144025+00:00",
+      "last_reinforced": "2026-02-08T05:22:44.144025+00:00",
+      "decay_rate": 0.02,
+      "tags": [
+        "basin:132:132,138,52,94,58:1.0",
+        "rhoMax:132",
+        "entropy:1.0"
+      ],
+      "rho": 0.0,
+      "p": 0.0,
+      "psi": 0.0,
+      "psi_bias": 0.0,
+      "semanticMass": 1.0,
+      "semanticMass0": 1.0,
+      "miss_count": 1
+    },
+    {
+      "id": 1001,
+      "label": "basin:1:1,1000,132,118,126:0.6",
+      "group": "memory",
+      "source_session": "DS-20260208-055125",
+      "source_hypothesis": "H-001",
+      "confidence": 0.6000000000000001,
+      "created_at": "2026-02-08T05:52:09.566217+00:00",
+      "last_reinforced": "2026-02-08T05:52:09.566217+00:00",
+      "decay_rate": 0.02,
+      "tags": [
+        "basin:1:1,1000,132,118,126:0.6",
+        "rhoMax:1",
+        "entropy:0.6"
+      ],
+      "rho": 0.0,
+      "p": 0.0,
+      "psi": 0.0,
+      "psi_bias": 0.0,
+      "semanticMass": 1.0,
+      "semanticMass0": 1.0,
+      "miss_count": 0
+    }
+  ],
+  "edges": [
+    {
+      "from_id": 1000,
+      "to_id": 1,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 132,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 118,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 1,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 132,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 118,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 1,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 132,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 118,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 1,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 132,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 118,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 1,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 132,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 118,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 132,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 138,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1000,
+      "to_id": 52,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-052205",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1001,
+      "to_id": 1,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-055125",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1001,
+      "to_id": 132,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-055125",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1001,
+      "to_id": 1,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-055125",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1001,
+      "to_id": 132,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260208-055125",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    }
+  ],
+  "id_counter": 1002
+}

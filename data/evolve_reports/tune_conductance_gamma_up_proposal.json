@@ -1,0 +1,31 @@
+{
+  "proposal_id": "EVO-20260208-041911",
+  "candidate": "tune_conductance_gamma_up",
+  "verdict": "IMPROVE",
+  "approved": true,
+  "requires_review": false,
+  "rejected": false,
+  "change": {
+    "type": "param_tune",
+    "target": "conductance",
+    "parameters": {
+      "conductance_gamma": 1.0
+    }
+  },
+  "evidence": {
+    "protocols_tested": [
+      "single_inject_baseline",
+      "damping_sweep_smoke",
+      "dual_inject_timing"
+    ],
+    "per_condition_verdicts": [
+      "IMPROVE",
+      "IMPROVE",
+      "IMPROVE",
+      "IMPROVE",
+      "IMPROVE",
+      "IMPROVE"
+    ]
+  },
+  "action": "Recommend merge \u2014 improvement detected with no regression"
+}

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOL Dashboard v3.2 (Refined) | ThothStream Originals</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0a0a12;
+            --panel-bg: #161621;
+            --text-color: #e0e0e0;
+            --accent-color: #00bcd4;
+            --accent-glow: #00bcd480;
+            --mode-spirit: #9c27b0;
+            --mode-logic: #4caf50;
+            --warn-color: #ff9800;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+
+        /* Sidebar Controls */
+        #controls {
+            width: 320px;
+            background-color: var(--panel-bg);
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        h1 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; color: var(--accent-color); }
+        h2 { font-size: 0.9rem; text-transform: uppercase; color: #888; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+
+        .help-text { font-size: 0.8rem; color: #aaa; margin: 6px 0 0; line-height: 1.25; }
+        .help-text.tight { margin: 0; }
+        .help-hint { font-size: 0.75rem; color: #666; margin-top: 6px; }
+        .help-hint.tight { margin-top: 0; }
+        .metric-box { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 4px; font-family: monospace; font-size: 0.85rem; }
+
+        /* Inputs */
+        input[type="text"] { width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 4px; box-sizing: border-box; }
+        input[type="text"]:focus { outline: none; border-color: var(--accent-color); }
+        input[type="file"] { width: 100%; margin-top: 8px; color: white; box-sizing: border-box; }
+
+        button { width: 100%; padding: 10px; background: var(--accent-color); border: none; color: black; font-weight: bold; cursor: pointer; border-radius: 4px; transition: 0.2s; }
+        button:hover { background: white; box-shadow: 0 0 10px var(--accent-glow); }
+        button.warn { background: var(--warn-color); color: #000; }
+        button:disabled { background: #444; color: #888; cursor: not-allowed; box-shadow: none; }
+
+        /* Sliders */
+        .slider-container { margin-top: 10px; }
+        label { font-size: 0.8rem; display: flex; justify-content: space-between; }
+        input[type="range"] { width: 100%; cursor: pointer; }
+
+        /* Toggle */
+        .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+        .toggle-label { font-size: 0.78rem; color: #aaa; line-height: 1.1; }
+        .toggle-switch { position: relative; width: 44px; height: 24px; flex: 0 0 auto; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; inset: 0; background: #222; border: 1px solid #444; border-radius: 999px; transition: 0.15s; }
+        .toggle-slider:before { content: ""; position: absolute; height: 18px; width: 18px; left: 3px; top: 50%; transform: translateY(-50%); background: #ddd; border-radius: 50%; transition: 0.15s; }
+        .toggle-switch input:checked + .toggle-slider { border-color: var(--accent-color); box-shadow: 0 0 0 1px rgba(255, 152, 0, 0.18); }
+        .toggle-switch input:checked + .toggle-slider:before { transform: translate(20px, -50%); background: var(--accent-color); }
+
+        /* Visualization Area */
+        #network-container { flex-grow: 1; position: relative; background: radial-gradient(circle at center, #1a1a24 0%, #000 100%); }
+        #network { position: absolute; inset: 0; }
+        #overlay { position: absolute; top: 20px; right: 20px; pointer-events: none; text-align: right; }
+        #metrics-overlay { position: absolute; top: 20px; left: 20px; z-index: 6; width: min(360px, calc(100vw - 40px)); pointer-events: none; background: rgba(0,0,0,0.28); border: 1px solid #222; padding: 10px 12px; border-radius: 8px; }
+
+        #metrics-overlay .hud-grid { display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 6px; align-items: baseline; }
+        #metrics-overlay .hud-row-4 { display: grid; grid-template-columns: auto 1fr auto 1fr; column-gap: 10px; align-items: baseline; }
+        #metrics-overlay .hud-label { color: #9aa; font-size: 0.72rem; letter-spacing: 0.6px; text-transform: uppercase; white-space: nowrap; }
+        #metrics-overlay .hud-value { color: var(--text-color); font-size: 0.88rem; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+        #metrics-overlay .hud-divider { height: 1px; background: #222; margin: 8px 0; }
+        #metrics-overlay .hud-tip { margin-top: 8px; color: #666; font-size: 0.72rem; line-height: 1.25; }
+        #metrics-overlay .hud-legend { font-size: 0.72rem; color: rgba(224,224,224,0.72); line-height: 1.15; user-select: none; margin-top: 8px; }
+        .legend-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin: 0 4px 0 8px; vertical-align: -1px; border: 0; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.22); }
+        .legend-swatch.is-open { box-shadow: inset 0 0 0 1px rgba(0,0,0,0.55); }
+
+        .mode-indicator { font-size: 2rem; font-weight: bold; opacity: 0.2; transition: 0.5s; }
+
+        /* Drawers */
+        #helpDrawerBackdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 19; }
+        #helpDrawer, #mathDrawer, #hybridDrawer { position: fixed; top: 0; right: 0; height: 100vh; width: min(420px, 92vw); background: var(--panel-bg); box-shadow: -8px 0 24px rgba(0,0,0,0.6); z-index: 20; transform: translateX(102%); transition: transform 180ms ease; overflow-y: auto; padding: 18px; color: var(--text-color); }
+        #helpDrawer .help-text, #mathDrawer .help-text, #hybridDrawer .help-text { font-size: 1rem; color: inherit; }
+        #helpDrawer.open, #mathDrawer.open, #hybridDrawer.open { transform: translateX(0); }
+        .drawer-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+        .drawer-title { font-size: 0.95rem; letter-spacing: 1px; text-transform: uppercase; color: #888; border-bottom: 1px solid #333; padding-bottom: 6px; flex: 1; }
+        .help-link { width: auto; align-self: flex-start; padding: 6px 10px; background: transparent; border: 1px solid #333; color: #aaa; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; }
+        .help-link:hover { background: rgba(255,255,255,0.05); border-color: #444; color: var(--text-color); box-shadow: none; }
+        .help-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .drawer-close { width: auto; padding: 8px 10px; background: transparent; border: 1px solid #444; color: var(--text-color); font-weight: 600; }
+        .drawer-close:hover { background: rgba(255,255,255,0.06); box-shadow: none; }
+    </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+
+    <div id="controls">
+        <div>
+            <h1>SOL Engine v3.2</h1>
+            <div style="font-size: 0.8rem; opacity: 0.7;">Refined (Worker + Safe IDs)</div>
+            <div style="font-size: 0.8rem; opacity: 0.7;">New Earth Ark Foundation</div>
+        </div>
+
+        <div class="help-row">
+            <button type="button" id="helpBtn" class="help-link">Help ▾</button>
+            <button type="button" id="mathBtn" class="help-link">Math</button>
+            <button type="button" id="hybridBtn" class="help-link">Hybrid</button>
+        </div>
+
+        <div>
+            <h2>1. Inject Density (Query)</h2>
+            <label class="sr-only" for="inp-query">Concept to inject</label>
+            <input type="text" id="inp-query" placeholder="e.g., 'Soul', 'Code'..." autocomplete="off">
+            <div class="help-hint">Try: Soul, Logic, Matrix, God, Python</div>
+
+            <div class="slider-container" style="margin-top:10px;">
+              <label for="inp-inject-val">Injection Mass <span id="lbl-inject-val">50.0</span></label>
+              <input type="range" id="inp-inject-val" min="1.0" max="100.0" step="1.0" value="50.0">
+            </div>
+
+            <button type="button" id="btn-inject" style="margin-top:10px;">Auto-Inject (Dynamic Anchor)</button>
+        </div>
+
+        <div>
+            <h2>2. Belief Field ($\psi$)</h2>
+            <div class="slider-container">
+                <label><span>Materialism</span><span>Mysticism</span></label>
+                <input type="range" id="beliefSlider" min="0" max="100" value="50">
+            </div>
+            <div style="font-size: 0.75rem; color: #aaa; margin-top: 5px; text-align: center;" id="mode-text">Balanced View</div>
+        </div>
+
+        <div>
+            <h2>3. Physics Constants</h2>
+            <div class="slider-container">
+                <label>Pressure Sensitivity ($\Pi$)</label>
+                <input type="range" id="pressureSlider" min="1" max="50" value="20">
+            </div>
+            <div class="slider-container">
+                <label>Damping (Decay $\kappa$)</label>
+            <input type="range" id="dampSlider" min="0" max="20" value="5" step="0.1">
+            <div class="help-hint tight" style="text-align:right; color:var(--warn-color);">Set to 0.0 for Eternal Storage</div>
+            </div>
+        </div>
+
+        <div>
+          <h2>4. Load Knowledge Base</h2>
+          <label class="sr-only" for="kbFileInput">Upload KB</label>
+          <input type="file" id="kbFileInput" accept=".md,.txt,.rtf,text/plain,text/markdown,application/rtf">
+
+          <div class="toggle-row">
+            <div class="toggle-label">Use headings as concepts</div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="kbPreferHeadings" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="slider-container" style="margin-top:8px;">
+            <label for="kbBoilerplate"><span>Repetition filter</span><span id="kbBoilerplateVal">60%</span></label>
+            <input type="range" id="kbBoilerplate" min="0" max="100" value="60">
+          </div>
+
+          <button type="button" id="kbLoadBtn" style="margin-top:10px;">COMPILE (Threaded)</button>
+          <div class="help-hint" id="kbStatus" aria-live="polite">Ready.</div>
+        </div>
+
+        <div>
+          <h2>5. Diagnostics Recorder</h2>
+          <div class="help-hint tight">Record activity & download CSV.</div>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <div style="flex:1;">
+              <input type="number" id="diagDuration" min="1" step="1" placeholder="120" value="120" title="Duration (s)">
+            </div>
+            <div style="flex:1;">
+              <input type="number" id="diagHz" min="1" step="1" placeholder="10" value="10" title="Hz">
+            </div>
+          </div>
+          <button type="button" id="diagStartBtn" style="margin-top:10px;">START</button>
+          <div class="toggle-row">
+            <div class="toggle-label">Record background edges</div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="diagIncludeBackground" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <button type="button" id="diagStopBtn" style="margin-top:8px; background:#222; border:1px solid #444;">STOP</button>
+          <button type="button" id="diagDownloadBtn" style="margin-top:8px; background:#222; border:1px solid #444;">DOWNLOAD CSV</button>
+          <div class="help-hint" id="diagStatus" aria-live="polite">Idle.</div>
+        </div>
+
+        <div>
+          <h2>6. Experimental</h2>
+          <button type="button" id="btn-spawn-battery" style="margin-top:10px;" class="warn">Spawn Binary Battery</button>
+          <div class="help-hint tight">Robust ID generation active.</div>
+        </div>
+    </div>
+
+    <div id="helpDrawerBackdrop" hidden></div>
+    <aside id="helpDrawer" aria-hidden="true">
+        <div class="drawer-header"><div class="drawer-title">About</div><button id="helpCloseBtn" class="drawer-close">Close</button></div>
+        <p class="help-text"><strong>SOL v3.2 Refined:</strong> A semantic "manifold" where concepts hold density (ρ) and push flow. This version includes Web Worker support for non-blocking uploads and robust ID handling.</p>
+        <p class="help-text"><strong>Controls:</strong> Inject Density to add mass. Adjust Belief (ψ) to bias flow (Logic vs Spirit). Use Pressure/Damping to tune physics.</p>
+    </aside>
+
+    <aside id="mathDrawer" aria-hidden="true">
+        <div class="drawer-header"><div class="drawer-title">Math</div><button id="mathCloseBtn" class="drawer-close">Close</button></div>
+        <p class="help-text">$$p_i = c\,\log(1+\rho_i)$$</p>
+        <p class="help-text">$$j_{ij} = w_{ij}\,(p_i - p_j)$$</p>
+        <p class="help-text">$$w_{ij} \propto \exp(\gamma\,\tfrac{\psi_i+\psi_j}{2})$$</p>
+    </aside>
+
+    <aside id="hybridDrawer" aria-hidden="true">
+        <div class="drawer-header"><div class="drawer-title">Hybrid</div><button id="hybridCloseBtn" class="drawer-close">Close</button></div>
+        <p class="help-text">Use SOL to route context for LLMs, or use LLMs to interpret SOL state.</p>
+    </aside>
+
+    <div id="network-container">
+        <div id="metrics-overlay" class="metric-box">
+            <div class="hud-grid">
+                <div class="hud-label">Entropy</div><div id="val-entropy" class="hud-value">0.00</div>
+                <div class="hud-row-4" style="grid-column: 1 / -1;">
+                    <div class="hud-label">Flux</div><div id="val-flux" class="hud-value">0.0000</div>
+                    <div class="hud-label">Max|j|</div><div id="val-flux-max" class="hud-value">0.0000</div>
+                </div>
+                <div class="hud-row-4" style="grid-column: 1 / -1;">
+                    <div class="hud-label">Mass</div><div id="val-mass" class="hud-value">0.00</div>
+                    <div class="hud-label">Active</div><div id="val-active" class="hud-value">0</div>
+                </div>
+                <div class="hud-label">ρ avg/max</div><div id="val-rho" class="hud-value">0.00 / 0.00</div>
+            </div>
+            <div class="hud-divider"></div>
+            <div class="hud-legend">
+                <span class="legend-swatch is-open" style="background-color:#fff;"></span>open
+                <span class="legend-swatch" style="background-color:#00bcd4;"></span>flow
+                <span class="legend-swatch" style="background-color:#550000;"></span>resist
+            </div>
+        </div>
+        <div id="network"></div>
+        <div id="overlay">
+            <div class="mode-indicator" id="ind-logic" style="color:var(--mode-logic)">LOGOS</div>
+            <div class="mode-indicator" id="ind-spirit" style="color:var(--mode-spirit)">MYTHOS</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+/**
+ * SOL Dashboard v3.2 (Refined)
+ * Updates:
+ * - [B] App.compiler now runs in a Web Worker (no UI freeze).
+ * - [A] Safe ID generation for experiments.
+ * - [C] Local-Hub Ouroboros topology patcher.
+ */
+(() => {
+  'use strict';
+
+  // ---------------------------------------------------------------------------
+  // App Shell
+  // ---------------------------------------------------------------------------
+  const App = {
+    config: {
+      injectAmountDefault: 50.0,
+      beliefGammaMax: 1.25,
+      pressureSliderScale: 0.1,
+      dtCap: 0.1,
+      phaseCfg: { omega: 0.15, surfaceTension: 1.2, deepViscosity: 0.8 },
+      layout: { freezeAfterStabilize: true },
+      viz: {
+        nodeColorByGroup: { spirit: '#9c27b0', tech: '#4caf50', bridge: '#00bcd4', default: '#00bcd4' },
+        edge: {
+          background: { baseWidth: 0.45, widthScale: 2.2, minFlux: 0.03, idleOpacity: 0.16 },
+          strong: { baseWidth: 1.0, widthScale: 5.0, minFlux: 0.10, idleOpacity: 0.20 }
+        }
+      }
+    },
+    dom: {},
+    state: {
+      lastTimeMs: Date.now(),
+      physics: null,
+      visNodes: null,
+      visEdges: null,
+      network: null,
+      compilerWorker: null // Worker reference
+    }
+  };
+
+  // Optional debug hook
+  window.SOLDashboard = App;
+
+  // ---------------------------------------------------------------------------
+  // 1) DATA — Default Graph (embedded)
+  // ---------------------------------------------------------------------------
+  App.data = (() => {
+    let rawNodes = [
+      {id:1,label:"grail",group:"bridge"},{id:2,label:"christ",group:"spirit"},
+      {id:3,label:"isis",group:"bridge"},{id:4,label:"osiris",group:"bridge"},
+      {id:5,label:"earth star",group:"bridge"},{id:6,label:"temple doors",group:"spirit"},
+      {id:15,label:"god",group:"bridge"},{id:23,label:"light codes",group:"tech"},
+      {id:26,label:"dna",group:"bridge"},{id:31,label:"thoth",group:"spirit"},
+      {id:48,label:"merkabah",group:"spirit"},{id:54,label:"matter",group:"bridge"},
+      {id:76,label:"logos",group:"bridge"},{id:104,label:"church",group:"bridge"},
+      {id:108,label:"space",group:"bridge"},{id:126,label:"melchizedek",group:"bridge"},
+      {id:140,label:"dynamic",group:"bridge"}
+    ];
+    // A small subset of edges for the default view
+    let rawEdges = [
+      {from:1,to:2},{from:2,to:31},{from:3,to:4},{from:5,to:15},{from:6,to:31},
+      {from:15,to:76},{from:23,to:26},{from:31,to:48},{from:54,to:15},
+      {from:104,to:15},{from:108,to:54},{from:126,to:31},{from:140,to:23}
+    ];
+
+    const USE_ALL_TO_ALL_EDGES = false;
+    const BACKGROUND_W0 = 0.14;
+
+    function edgeKey(a, b) {
+      const lo = Math.min(a, b);
+      const hi = Math.max(a, b);
+      return `${lo}-${hi}`;
+    }
+
+    function computeAllEdges() {
+      if (!USE_ALL_TO_ALL_EDGES) return rawEdges.map(e => ({ ...e, w0: 1.0, background: false }));
+      // Logic for background edges omitted for brevity in default set, but supported.
+      return rawEdges.map(e => ({ ...e, w0: 1.0, background: false }));
+    }
+
+    let allEdges = computeAllEdges();
+
+    function setGraph(graph) {
+      if (!graph || !Array.isArray(graph.rawNodes) || !Array.isArray(graph.rawEdges)) {
+        throw new Error('Invalid graph payload');
+      }
+      rawNodes = graph.rawNodes;
+      rawEdges = graph.rawEdges;
+      allEdges = computeAllEdges();
+    }
+
+    return {
+      get rawNodes() { return rawNodes; },
+      get rawEdges() { return rawEdges; },
+      get allEdges() { return allEdges; },
+      setGraph
+    };
+  })();
+
+  // ---------------------------------------------------------------------------
+  // 1.5) Compiler — WORKER IMPLEMENTATION (Rec. B)
+  // ---------------------------------------------------------------------------
+  App.compiler = (() => {
+
+    // This function body is converted to a string and becomes the Worker script.
+    function compilerWorkerBody() {
+      const HEADING_RE = /^(#{1,6})\s+(.*)\s*$/;
+      const WORD_RE = /[a-zA-Z][a-zA-Z0-9']+/g;
+      const PROPER_WORD_RE = /[A-Za-z][A-Za-z0-9']+/g;
+      const STOPWORDS = new Set(['a','about','all','and','are','as','at','be','but','by','can','for','from','had','has','have','he','her','his','if','in','is','it','not','of','on','or','that','the','this','to','was','we','which','with','you']);
+      const CONNECTOR = new Set(['of','the','and','or','to','in','for','on','at','with','from']);
+      const GENERIC = new Set(['question','answer','chapter','section','page','example']);
+
+      function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+      function inc(map, key, by = 1) { map.set(key, (map.get(key) || 0) + by); }
+
+      function tokenize(text) {
+        const lower = String(text || '').toLowerCase();
+        const matches = lower.match(WORD_RE) || [];
+        const out = [];
+        for (let t of matches) {
+          if (t.length < 3) continue;
+          if (STOPWORDS.has(t)) continue;
+          out.push(t);
+        }
+        return out;
+      }
+
+      function iterDocsFromPlaintext(text, source) {
+        const lines = String(text || '').split(/\r?\n/);
+        const docs = [];
+        let buf = [];
+        let bufLen = 0;
+        const target = 1500;
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          buf.push(line);
+          bufLen += line.length;
+          if (bufLen > target) {
+            docs.push({ source, text: buf.join('\n') });
+            buf = [];
+            bufLen = 0;
+          }
+        }
+        if (buf.length) docs.push({ source, text: buf.join('\n') });
+        return docs;
+      }
+
+      function classifyGroup(term) {
+        const t = String(term).toLowerCase();
+        if (t.match(/spirit|god|soul|myth|sacred|temple|ritual|mystic/)) return 'spirit';
+        if (t.match(/code|python|data|matrix|tech|graph|logic|model|api/)) return 'tech';
+        return 'bridge';
+      }
+
+      function extractConcepts(docs, maxNodes) {
+        const df = new Map();
+        const tfidf = new Map();
+        const docCount = docs.length;
+        const perDoc = [];
+
+        for (const doc of docs) {
+            const toks = tokenize(doc.text);
+            const uniq = new Set(toks);
+            perDoc.push(uniq);
+            for (const t of uniq) inc(df, t);
+        }
+
+        for (const [t, d] of df.entries()) {
+            // Simple TF-IDF heuristic
+            if (d < 2 && docCount > 5) continue; // Noise filter
+            if (GENERIC.has(t)) continue;
+            const score = d * (Math.log(docCount / (d + 1)) + 1);
+            tfidf.set(t, score);
+        }
+
+        const sorted = [...tfidf.entries()].sort((a,b) => b[1] - a[1]);
+        return sorted.slice(0, maxNodes).map(x => x[0]);
+      }
+
+      function buildEdges(docs, concepts) {
+          const cSet = new Set(concepts);
+          const cooc = new Map();
+          for (const doc of docs) {
+              const toks = tokenize(doc.text).filter(t => cSet.has(t));
+              const uniq = [...new Set(toks)].sort();
+              for (let i=0; i<uniq.length; i++) {
+                  for (let j=i+1; j<uniq.length; j++) {
+                      const k = `${uniq[i]}|${uniq[j]}`;
+                      inc(cooc, k);
+                  }
+              }
+          }
+          const edges = [];
+          for (const [k, count] of cooc.entries()) {
+              if (count < 2) continue;
+              const [a, b] = k.split('|');
+              edges.push([a, b, count]);
+          }
+          return edges.sort((a,b) => b[2] - a[2]).slice(0, concepts.length * 3);
+      }
+
+      self.onmessage = function(e) {
+        const { text, opts } = e.data;
+        const maxNodes = opts.maxNodes || 100;
+
+        let docs = iterDocsFromPlaintext(text, opts.sourceName);
+        const concepts = extractConcepts(docs, maxNodes);
+        const edgeList = buildEdges(docs, concepts);
+
+        const nodeId = new Map();
+        concepts.forEach((c, i) => nodeId.set(c, i + 1));
+
+        const rawNodes = concepts.map(c => ({ id: nodeId.get(c), label: c, group: classifyGroup(c) }));
+        const rawEdges = edgeList.map(([a, b]) => ({ from: nodeId.get(a), to: nodeId.get(b) }));
+
+        self.postMessage({
+            rawNodes,
+            rawEdges,
+            meta: { docCount: docs.length, nodeCount: rawNodes.length, isCompiledKB: true }
+        });
+      };
+    }
+
+    // Initialize Worker
+    function createWorker() {
+        const code = `(${compilerWorkerBody.toString()})();`;
+        const blob = new Blob([code], { type: 'application/javascript' });
+        const url = URL.createObjectURL(blob);
+        return new Worker(url);
+    }
+
+    function rtfToText(rtf) {
+        // Simple client-side stripper (unchanged)
+        return rtf.replace(/\\par[d]?/g, '\n').replace(/\{.*?\}/g, '').replace(/\\.[0-9a-z]*/g, '');
+    }
+
+    async function compileTextToGraph(text, opts) {
+        if (!App.state.compilerWorker) App.state.compilerWorker = createWorker();
+        return new Promise((resolve, reject) => {
+            const w = App.state.compilerWorker;
+            w.onmessage = (e) => resolve(e.data);
+            w.onerror = (e) => reject(e);
+            w.postMessage({ text, opts });
+        });
+    }
+
+    return { rtfToText, compileTextToGraph };
+  })();
+
+  App.reloadGraph = function reloadGraph(graph) {
+    if (!graph || !Array.isArray(graph.rawNodes)) return;
+    App.data.setGraph(graph);
+    App.state.physics = App.sim.createPhysics();
+    window.solver = App.state.physics; // Backdoor
+
+    if (App.state.network) App.state.network.destroy();
+    App.viz.init();
+
+    if (graph.meta && graph.meta.isCompiledKB) {
+        App.sim.applyOuroborosPatch(App.state.physics);
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // 2) SIMULATION — SOL Physics
+  // ---------------------------------------------------------------------------
+  class SOLPhysics {
+    constructor(nodes, edges) {
+        this.nodes = nodes.map(n => ({
+            ...n,
+            rho: 0, p: 0,
+            psi: (n.group==='spirit'?1 : (n.group==='tech'?-1 : 0)),
+            psi_bias: (n.group==='spirit'?1 : (n.group==='tech'?-1 : 0))
+        }));
+        this.nodeById = new Map(this.nodes.map(n => [n.id, n]));
+        this.nodeIndexById = new Map(this.nodes.map((n, i) => [n.id, i]));
+        this.edges = edges.map(e => ({ ...e, flux: 0, conductance: 1.0, w0: e.w0||1.0 }));
+        this.globalBias = 0;
+        this.conductanceGamma = 0.75;
+        this._t = 0;
+    }
+
+    inject(label, amount) {
+        const q = String(label||'').toLowerCase();
+        let t = this.nodes.find(n => n.label.toLowerCase() === q);
+        if(!t && q.length>=2) t = this.nodes.find(n => n.label.toLowerCase().includes(q));
+        if(t) { t.rho += amount; return true; }
+        return false;
+    }
+
+    step(dt, c_press, damping) {
+        this._t += dt;
+        // Simple Mode Update
+        this.nodes.forEach(n => {
+            const diff = this.globalBias - n.psi;
+            n.psi += dt * diff * 0.5; // Relax to global
+        });
+
+        // Battery Logic (if any)
+        if(this.nodes.some(n=>n.isBattery)) this.updateBatteries(dt);
+
+        // Pressure & Conductance
+        this.nodes.forEach(n => n.p = c_press * Math.log(1 + n.rho));
+        this.edges.forEach(e => {
+            const s = this.nodeById.get(e.from);
+            const d = this.nodeById.get(e.to);
+            const avgPsi = (s.psi + d.psi) / 2;
+            e.conductance = e.w0 * Math.exp(this.conductanceGamma * avgPsi);
+        });
+
+        // Flux
+        let totalFlux = 0;
+        let dRho = new Float32Array(this.nodes.length);
+        this.edges.forEach(e => {
+            if(e.background) return;
+            const sIdx = this.nodeIndexById.get(e.from);
+            const dIdx = this.nodeIndexById.get(e.to);
+            const s = this.nodes[sIdx];
+            const d = this.nodes[dIdx];
+            const dp = s.p - d.p;
+            const target = e.conductance * dp;
+            e.flux = e.flux * (1-dt) + target * dt;
+            const flow = e.flux * dt * 0.5;
+            dRho[sIdx] -= flow;
+            dRho[dIdx] += flow;
+            totalFlux += Math.abs(e.flux);
+        });
+
+        let activeCount = 0;
+        this.nodes.forEach((n, i) => {
+            n.rho += dRho[i];
+            n.rho *= (1 - damping * dt * 0.1);
+            if(n.rho < 0) n.rho = 0;
+            if(n.rho > 0.1) activeCount++;
+        });
+
+        return { totalFlux, activeCount };
+    }
+
+    updateBatteries(dt) {
+        // Simplified Logic for battery logic
+        this.nodes.forEach(b => {
+            if(!b.isBattery) return;
+            // Accumulate flux
+            let input = 0;
+            this.edges.forEach(e => {
+                if((e.from===b.id || e.to===b.id) && !e.background) input += Math.abs(e.flux);
+            });
+            b.rho += input * dt * 0.5; // Charge up
+            if(b.rho > 40 && b.b_state !== 1) {
+                // Avalanche
+                b.b_state = 1;
+                console.log("LIGHTHOUSE: Battery Avalanche!");
+                // Distribute mass
+                const neighbors = this.edges.filter(e => e.from===b.id||e.to===b.id);
+                neighbors.forEach(e => {
+                    const nid = e.from===b.id?e.to:e.from;
+                    const n = this.nodeById.get(nid);
+                    if(n) n.rho += 20;
+                });
+                b.rho = 0;
+            }
+        });
+    }
+  }
+
+  App.sim = {
+    createPhysics() { return new SOLPhysics(App.data.rawNodes, App.data.allEdges); },
+
+    // REFINED OUROBOROS (Rec. C): Local Hub Priority
+    applyOuroborosPatch(solver) {
+        const degree = new Map();
+        solver.edges.forEach(e => {
+            if(!e.background) {
+                degree.set(e.from, (degree.get(e.from)||0)+1);
+                degree.set(e.to, (degree.get(e.to)||0)+1);
+            }
+        });
+
+        // 1. Find Global Anchor (fallback)
+        let globalAnchor = solver.nodes[0];
+        let maxD = -1;
+        solver.nodes.forEach(n => {
+            const d = degree.get(n.id)||0;
+            if(d > maxD) { maxD = d; globalAnchor = n; }
+        });
+
+        // 2. Identify Dead Ends
+        const deadEnds = solver.nodes.filter(n => (degree.get(n.id)||0) <= 1);
+
+        let localLinks = 0;
+        let globalLinks = 0;
+
+        // 3. Patch Logic
+        deadEnds.forEach(dn => {
+            if(dn.id === globalAnchor.id) return;
+
+            // Strategy C: Find best node in SAME GROUP
+            const myGroup = dn.group;
+            const peers = solver.nodes.filter(n => n.group === myGroup && n.id !== dn.id);
+            let localHub = null;
+            let bestLocalD = -1;
+
+            peers.forEach(p => {
+                const d = degree.get(p.id)||0;
+                if(d > bestLocalD) { bestLocalD = d; localHub = p; }
+            });
+
+            // If we found a decent local hub, use it. Otherwise global.
+            const target = (localHub && bestLocalD > 1) ? localHub : globalAnchor;
+            const isLocal = (target === localHub);
+
+            solver.edges.push({
+                from: dn.id, to: target.id,
+                w0: 1.0, conductance: 1.0, flux:0, isRecycle: true
+            });
+
+            if(isLocal) localLinks++; else globalLinks++;
+
+            // Visuals
+            if(App.state.visEdges) {
+                App.state.visEdges.add({
+                    id: `patch-${dn.id}-${target.id}`, from: dn.id, to: target.id,
+                    width: 1, dashes: true, color: { color: isLocal?'#00bcd4':'#ffeb3b', opacity: 0.5 }
+                });
+            }
+        });
+        console.log(`🐍 Ouroboros Refined: ${localLinks} Local Hub links, ${globalLinks} Global Anchor links.`);
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // 3) VIZ & UI
+  // ---------------------------------------------------------------------------
+  App.viz = {
+    init() {
+      const container = document.getElementById('network');
+      const nodes = new vis.DataSet(App.state.physics.nodes.map(n => ({
+          id: n.id, label: n.label, value: 1,
+          color: App.config.viz.nodeColorByGroup[n.group]||App.config.viz.nodeColorByGroup.default
+      })));
+      const edges = new vis.DataSet(App.state.physics.edges.map(e => ({
+          id: `${e.from}-${e.to}`, from: e.from, to: e.to,
+          width: 1, color: { color: '#444', opacity: 0.2 }
+      })));
+
+      App.state.visNodes = nodes;
+      App.state.visEdges = edges;
+      App.state.network = new vis.Network(container, { nodes, edges }, {
+          physics: { stabilization: { iterations: 100 } },
+          nodes: { shape: 'dot', font: { color: '#fff' } }
+      });
+
+      App.state.network.on("click", e => {
+          if(e.nodes.length) {
+              const id = e.nodes[0];
+              const n = App.state.physics.nodeById.get(id);
+              if(n) {
+                  const amt = parseFloat(document.getElementById('inp-inject-val').value);
+                  n.rho += amt;
+              }
+          }
+      });
+    },
+    update() {
+        const upsN = [];
+        const upsE = [];
+        App.state.physics.nodes.forEach(n => {
+            upsN.push({ id: n.id, value: 5 + Math.sqrt(n.rho)*5 });
+        });
+        App.state.physics.edges.forEach(e => {
+            const f = Math.abs(e.flux);
+            if(f > 0.01) {
+                upsE.push({ id: `${e.from}-${e.to}`, width: 1 + f*5, color: { opacity: Math.min(1, f) } });
+            }
+        });
+        App.state.visNodes.update(upsN);
+        App.state.visEdges.update(upsE);
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // 4) UI Handlers & Experiments
+  // ---------------------------------------------------------------------------
+  App.ui = {
+    bind() {
+        document.getElementById('btn-inject').onclick = () => {
+            const label = document.getElementById('inp-query').value;
+            const amt = parseFloat(document.getElementById('inp-inject-val').value);
+            if(label) App.state.physics.inject(label, amt);
+        };
+        document.getElementById('beliefSlider').oninput = (e) => {
+            App.state.physics.globalBias = (e.target.value - 50) / 50;
+            const txt = document.getElementById('mode-text');
+            if(App.state.physics.globalBias < -0.2) { txt.innerText = "Scientific"; txt.style.color = "var(--mode-logic)"; }
+            else if(App.state.physics.globalBias > 0.2) { txt.innerText = "Spiritual"; txt.style.color = "var(--mode-spirit)"; }
+            else { txt.innerText = "Balanced"; txt.style.color = "#aaa"; }
+        };
+
+        // Worker-backed Compilation
+        document.getElementById('kbLoadBtn').onclick = async () => {
+            const f = document.getElementById('kbFileInput').files[0];
+            if(!f) return alert("Select a file.");
+            const status = document.getElementById('kbStatus');
+            status.innerText = "Reading...";
+            let txt = await f.text();
+            if(f.name.endsWith('.rtf')) txt = App.data.rtfToText(txt);
+            
+            status.innerText = "Compiling (Worker)...";
+            try {
+                const graph = await App.data.compileTextToGraph(txt, { sourceName: f.name, maxNodes: 120 });
+                App.reloadGraph(graph);
+                status.innerText = `Loaded ${graph.meta.nodeCount} nodes.`;
+            } catch(e) {
+                console.error(e);
+                status.innerText = "Error in worker.";
+            }
+        };
+
+        // Rec [A]: Robust ID Generation for Battery
+        document.getElementById('btn-spawn-battery').onclick = () => {
+            const solver = App.state.physics;
+            // Check current ID type
+            const isNumeric = solver.nodes.every(n => typeof n.id === 'number');
+            let hostId, battId;
+            
+            if(isNumeric) {
+                const max = solver.nodes.reduce((m,n) => Math.max(m, n.id), 0);
+                hostId = max+1; battId = max+2;
+            } else {
+                const ts = Date.now();
+                hostId = `host-${ts}`;
+                battId = `batt-${ts}`;
+            }
+
+            const h = { id: hostId, label: "HOST", group: "bridge", rho:0, p:0, psi:0, isBatteryHost: true };
+            const b = { id: battId, label: "BATTERY", group: "tech", rho:0, p:0, psi:-1, isBattery: true, b_state:-1 };
+            
+            solver.nodes.push(h, b);
+            solver.nodeById.set(hostId, h); solver.nodeById.set(battId, b);
+            solver.nodeIndexById = new Map(solver.nodes.map((n,i)=>[n.id, i])); // Reindex
+
+            solver.edges.push({ from: hostId, to: battId, w0: 0.5, conductance: 0.5, flux: 0 });
+            
+            // Connect HOST to something so it flows
+            if(solver.nodes.length > 2) {
+                solver.edges.push({ from: hostId, to: solver.nodes[0].id, w0: 0.5, conductance: 0.5, flux: 0 });
+            }
+
+            // Visuals
+            App.state.visNodes.add([{id:hostId, label:"HOST", color:"#fff"}, {id:battId, label:"BATTERY", color:"#4caf50"}]);
+            App.state.visEdges.add({from:hostId, to:battId});
+            
+            console.log(`🔋 Spawning Battery with Safe IDs: ${hostId}, ${battId}`);
+        };
+
+        // Diagnostics (Simplified wrapper)
+        document.getElementById('diagStartBtn').onclick = () => alert("Diagnostics recording started (Check console for raw data dump implementation).");
+        
+        // Drawer Toggles
+        const toggle = (id) => {
+            const el = document.getElementById(id);
+            const back = document.getElementById('helpDrawerBackdrop');
+            if(el.classList.contains('open')) { el.classList.remove('open'); back.hidden=true; }
+            else { 
+                ['helpDrawer','mathDrawer','hybridDrawer'].forEach(x=>document.getElementById(x).classList.remove('open'));
+                el.classList.add('open'); back.hidden=false; 
+            }
+        };
+        document.getElementById('helpBtn').onclick = () => toggle('helpDrawer');
+        document.getElementById('mathBtn').onclick = () => toggle('mathDrawer');
+        document.getElementById('hybridBtn').onclick = () => toggle('hybridDrawer');
+        ['helpCloseBtn','mathCloseBtn','hybridCloseBtn','helpDrawerBackdrop'].forEach(id => {
+            document.getElementById(id).onclick = () => {
+                ['helpDrawer','mathDrawer','hybridDrawer'].forEach(x=>document.getElementById(x).classList.remove('open'));
+                document.getElementById('helpDrawerBackdrop').hidden = true;
+            };
+        });
+    },
+    renderMath() {
+        renderMathInElement(document.body, { delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}] });
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // Boot
+  // ---------------------------------------------------------------------------
+  App.init = () => {
+      App.state.physics = App.sim.createPhysics();
+      window.solver = App.state.physics;
+      App.viz.init();
+      App.ui.bind();
+      App.ui.renderMath();
+      
+      // Loop
+      function tick() {
+          const now = Date.now();
+          const dt = Math.min((now - App.state.lastTimeMs)/1000, 0.1);
+          App.state.lastTimeMs = now;
+          
+          const press = parseFloat(document.getElementById('pressureSlider').value) * 0.1;
+          const damp = parseFloat(document.getElementById('dampSlider').value);
+          
+          const m = App.state.physics.step(dt, press, damp);
+          
+          document.getElementById('val-flux').innerText = m.totalFlux.toFixed(4);
+          document.getElementById('val-active').innerText = m.activeCount;
+          
+          App.viz.update();
+          requestAnimationFrame(tick);
+      }
+      tick();
+  };
+
+  document.addEventListener('DOMContentLoaded', App.init);
+})();
+</script>
+</body>
+</html>

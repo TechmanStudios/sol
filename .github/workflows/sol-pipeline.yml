@@ -1,0 +1,175 @@
+name: "SOL Pipeline: Full Research Cycle"
+
+on:
+  workflow_dispatch:
+    inputs:
+      skip_stages:
+        description: "Stages to skip (space-separated: cortex consolidate hippocampus evolve)"
+        required: false
+        default: ""
+      cortex_protocols:
+        description: "Max protocols per cortex session"
+        required: false
+        default: "3"
+      cortex_gap_type:
+        description: "Gap type filter for cortex"
+        required: false
+        default: ""
+      dream_sessions:
+        description: "Max sessions for dream replay"
+        required: false
+        default: ""
+      evolve_candidates:
+        description: "Evolve candidates to A/B test (space-separated)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Dry run (no execution)"
+        required: false
+        default: "false"
+        type: boolean
+  issues:
+    types: [labeled]
+  schedule:
+    # Weekly full pipeline — Mondays at 07:00 UTC
+    - cron: "0 7 * * 1"
+
+concurrency:
+  group: sol-pipeline
+  cancel-in-progress: false
+
+jobs:
+  check-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+    steps:
+      - id: check
+        run: |
+          if [[ "${{ github.event_name }}" == "issues" ]]; then
+            LABELS='${{ toJSON(github.event.issue.labels.*.name) }}'
+            if echo "$LABELS" | grep -q '"sol-pipeline"'; then
+              echo "should_run=true" >> $GITHUB_OUTPUT
+            else
+              echo "should_run=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          fi
+
+  pipeline:
+    needs: check-trigger
+    if: needs.check-trigger.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Engine smoke test
+        run: python tools/sol-core/cli.py smoke
+
+      - name: Record core graph SHA256
+        id: pre_sha
+        run: echo "sha=$(sha256sum tools/sol-core/default_graph.json | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+
+      - name: Run pipeline
+        id: pipeline
+        run: |
+          ARGS=""
+
+          # Skip stages
+          SKIP="${{ github.event.inputs.skip_stages }}"
+          if [ -n "$SKIP" ]; then
+            ARGS="$ARGS --skip $SKIP"
+          fi
+
+          # Cortex options
+          PROTOCOLS="${{ github.event.inputs.cortex_protocols }}"
+          if [ -n "$PROTOCOLS" ]; then
+            ARGS="$ARGS --cortex-protocols $PROTOCOLS"
+          fi
+
+          GAP_TYPE="${{ github.event.inputs.cortex_gap_type }}"
+          if [ -n "$GAP_TYPE" ]; then
+            ARGS="$ARGS --cortex-gap-type $GAP_TYPE"
+          fi
+
+          # Hippocampus options
+          DREAM="${{ github.event.inputs.dream_sessions }}"
+          if [ -n "$DREAM" ]; then
+            ARGS="$ARGS --dream-sessions $DREAM"
+          fi
+
+          # Evolve options
+          CANDIDATES="${{ github.event.inputs.evolve_candidates }}"
+          if [ -n "$CANDIDATES" ]; then
+            ARGS="$ARGS --evolve-candidates $CANDIDATES"
+          fi
+
+          # Dry run
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          python tools/sol-orchestrator/orchestrator.py $ARGS --json | tee pipeline_output.json
+
+      - name: Verify core immutability
+        run: |
+          POST_SHA=$(sha256sum tools/sol-core/default_graph.json | cut -d' ' -f1)
+          echo "Pre:  ${{ steps.pre_sha.outputs.sha }}"
+          echo "Post: $POST_SHA"
+          if [ "${{ steps.pre_sha.outputs.sha }}" != "$POST_SHA" ]; then
+            echo "::error::Core graph was MODIFIED during pipeline execution!"
+            exit 1
+          fi
+          echo "Core immutability: PASS"
+
+      - name: Upload pipeline results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-${{ github.run_id }}
+          path: |
+            data/pipeline_runs/
+            pipeline_output.json
+          retention-days: 90
+
+      - name: Commit pipeline results
+        if: success() && github.event.inputs.dry_run != 'true'
+        run: |
+          git config user.name "sol-orchestrator[bot]"
+          git config user.email "sol-orchestrator@users.noreply.github.com"
+          git add data/pipeline_runs/ data/cortex_sessions/ data/dream_sessions/ \
+                  data/memory_graph.json data/memory_traces/ data/meta_learning_log.jsonl \
+                  data/consolidation_log.jsonl solKnowledge/ || true
+          git diff --cached --quiet || git commit -m "pipeline: $(date -u +%Y-%m-%dT%H:%M:%SZ) run"
+          git push || true
+
+      - name: Comment on issue
+        if: github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let summary = 'Pipeline completed.';
+            try {
+              const data = JSON.parse(fs.readFileSync('pipeline_output.json', 'utf-8'));
+              summary = `## SOL Pipeline Report\n\n` +
+                `- **Verdict:** ${data.pipeline_verdict}\n` +
+                `- **Run ID:** ${data.run_id}\n` +
+                `- **Passed:** ${data.stages_passed} | **Failed:** ${data.stages_failed} | **Skipped:** ${data.stages_skipped}\n` +
+                `- **Time:** ${data.total_elapsed_sec}s\n` +
+                `- **Core Immutability:** ${data.core_immutability}\n`;
+            } catch (e) { /* ignore */ }
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: summary
+            });

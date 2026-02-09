@@ -1,0 +1,4420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOL Dashboard Test | ThothStream Concept Graph</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0a0a12;
+            --panel-bg: #161621;
+            --text-color: #e0e0e0;
+            --accent-color: #00bcd4;
+            --accent-glow: #00bcd480;
+            --mode-spirit: #9c27b0;
+            --mode-logic: #4caf50;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Sidebar Controls */
+        #controls {
+            width: 320px;
+            background-color: var(--panel-bg);
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        h1 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; color: var(--accent-color); }
+        h2 { font-size: 0.9rem; text-transform: uppercase; color: #888; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+
+        .help-text {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin: 6px 0 0;
+            line-height: 1.25;
+        }
+
+        .help-text.tight {
+            margin: 0;
+        }
+
+        .help-hint {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 6px;
+        }
+
+        .help-hint.tight {
+            margin-top: 0;
+        }
+        
+        .metric-box {
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        /* Inputs */
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus { outline: none; border-color: var(--accent-color); }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: var(--accent-color);
+            border: none;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+        button:hover { background: white; box-shadow: 0 0 10px var(--accent-glow); }
+
+        /* Sliders */
+        .slider-container { margin-top: 10px; }
+        label { font-size: 0.8rem; display: flex; justify-content: space-between; }
+        input[type="range"] { width: 100%; cursor: pointer; }
+
+        /* Visualization Area */
+        #network-container {
+            flex-grow: 1;
+            position: relative;
+            background: radial-gradient(circle at center, #1a1a24 0%, #000 100%);
+        }
+
+        #network {
+            position: absolute;
+            inset: 0;
+        }
+
+        #overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            pointer-events: none;
+            text-align: right;
+        }
+
+        #metrics-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 6;
+            width: min(360px, calc(100vw - 40px));
+            pointer-events: none;
+            background: rgba(0,0,0,0.28);
+            border: 1px solid #222;
+            padding: 10px 12px;
+            border-radius: 8px;
+        }
+
+        #metrics-overlay .hud-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            column-gap: 10px;
+            row-gap: 6px;
+            align-items: baseline;
+        }
+
+        #metrics-overlay .hud-row-4 {
+            display: grid;
+            grid-template-columns: auto 1fr auto 1fr;
+            column-gap: 10px;
+            align-items: baseline;
+        }
+
+        #metrics-overlay .hud-label {
+            color: #9aa;
+            font-size: 0.72rem;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        #metrics-overlay .hud-value {
+            color: var(--text-color);
+            font-size: 0.88rem;
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        #metrics-overlay .hud-divider {
+            height: 1px;
+            background: #222;
+            margin: 8px 0;
+        }
+
+        #metrics-overlay .hud-tip {
+          margin-top: 8px;
+          color: #666;
+          font-size: 0.72rem;
+          line-height: 1.25;
+        }
+        .mode-indicator {
+            font-size: 2rem;
+            font-weight: bold;
+            opacity: 0.2;
+            transition: 0.5s;
+        }
+
+        /* Help Drawer (side window) */
+        #helpDrawerBackdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 19;
+        }
+
+        #helpDrawer,
+        #mathDrawer,
+        #hybridDrawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: min(420px, 92vw);
+            background: var(--panel-bg);
+            box-shadow: -8px 0 24px rgba(0,0,0,0.6);
+            z-index: 20;
+            transform: translateX(102%);
+            transition: transform 180ms ease;
+            overflow-y: auto;
+            padding: 18px;
+            color: var(--text-color);
+        }
+
+        /* Help drawer typography: unify color + bump sizes ~25%.
+           NOTE: many base styles use `rem`, which ignores parent `font-size`,
+           so we override sizes explicitly inside the drawer. */
+        #helpDrawer .drawer-title,
+        #helpDrawer h2,
+        #helpDrawer .help-text,
+        #helpDrawer .help-hint,
+        #mathDrawer .drawer-title,
+        #mathDrawer h2,
+        #mathDrawer .help-text,
+        #mathDrawer .help-hint,
+        #hybridDrawer .drawer-title,
+        #hybridDrawer h2,
+        #hybridDrawer .help-text,
+        #hybridDrawer .help-hint {
+            color: inherit;
+        }
+
+        #helpDrawer .help-text,
+        #mathDrawer .help-text,
+        #hybridDrawer .help-text { font-size: 1rem; }        /* 0.8rem * 1.25 */
+        #helpDrawer .help-hint,
+        #mathDrawer .help-hint,
+        #hybridDrawer .help-hint { font-size: 0.9375rem; }   /* 0.75rem * 1.25 */
+        #helpDrawer h2,
+        #mathDrawer h2,
+        #hybridDrawer h2 { font-size: 1.125rem; }            /* 0.9rem * 1.25 */
+        #helpDrawer .drawer-title,
+        #mathDrawer .drawer-title,
+        #hybridDrawer .drawer-title { font-size: 1.1875rem; }/* 0.95rem * 1.25 */
+
+        #helpDrawer.open,
+        #mathDrawer.open,
+        #hybridDrawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .drawer-title {
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #888;
+            border-bottom: 1px solid #333;
+            padding-bottom: 6px;
+            flex: 1;
+        }
+
+        .help-link {
+            width: auto;
+            align-self: flex-start;
+            padding: 6px 10px;
+            background: transparent;
+            border: 1px solid #333;
+            color: #aaa;
+            font-weight: 600;
+            font-size: 0.78rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .help-link:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: #444;
+            color: var(--text-color);
+            box-shadow: none;
+        }
+
+        .help-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .edge-legend {
+            font-size: 0.72rem;
+            color: rgba(224,224,224,0.72);
+            line-height: 1.15;
+            user-select: none;
+        }
+
+        #metrics-overlay .hud-legend {
+            font-size: 0.72rem;
+            color: rgba(224,224,224,0.72);
+            line-height: 1.15;
+            user-select: none;
+            margin-top: 8px;
+        }
+
+        #metrics-overlay .hud-legend .legend-swatch {
+            margin-left: 6px;
+        }
+
+        .legend-swatch {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            margin: 0 4px 0 8px;
+            vertical-align: -1px;
+            border: 0;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.22);
+        }
+
+        /* The “open / high conductance” swatch is pure white.
+           Give it a dark inset border so it doesn't read as gray-on-gray. */
+        .legend-swatch.is-open {
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.55);
+        }
+
+        .drawer-close {
+            width: auto;
+            padding: 8px 10px;
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .drawer-close:hover {
+            background: rgba(255,255,255,0.06);
+            box-shadow: none;
+        }
+    </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+
+    <div id="controls">
+        <div>
+            <h1>SOL Engine v1.0</h1>
+            <div style="font-size: 0.8rem; opacity: 0.7;">New Earth Ark Foundation</div>
+            <div style="font-size: 0.8rem; opacity: 0.7;">Techman Studios</div>
+        </div>
+
+        <div class="help-row">
+            <button type="button" id="helpBtn" class="help-link" aria-expanded="false" aria-controls="helpDrawer" title="Open the help / explanation panel">Help ▾</button>
+            <button type="button" id="mathBtn" class="help-link" aria-expanded="false" aria-controls="mathDrawer" title="Open the math / equations panel">Math</button>
+            <button type="button" id="hybridBtn" class="help-link" aria-expanded="false" aria-controls="hybridDrawer" title="Open hybrid ideas (SOL + LLMs)">Hybrid</button>
+        </div>
+
+        <div>
+            <h2>1. Inject Density (Query)</h2>
+            <label class="sr-only" for="queryInput">Concept to inject</label>
+            <input type="text" id="queryInput" placeholder="e.g., 'Soul', 'Code', 'Energy'..." autocomplete="off" title="Adds density (mass) to a matching concept node">
+            <div class="help-hint">Try: Soul, Logic, Matrix, God, Python</div>
+            <button type="button" id="injectBtn" style="margin-top:10px;">INJECT</button>
+            <div class="help-hint">Tip: press Enter to inject.</div>
+        </div>
+
+        <div>
+            <h2>2. Belief Field ($\psi$)</h2>
+            
+            <div class="slider-container">
+                <label>
+                    <span>Materialism</span>
+                    <span>Mysticism</span>
+                </label>
+                <input type="range" id="beliefSlider" min="0" max="100" value="50" title="Controls how strongly belief-mode ($\psi$) shapes edge conductance (center = neutral, ends = stronger gating)">
+            </div>
+            <div style="font-size: 0.75rem; color: #aaa; margin-top: 5px; text-align: center;" id="mode-text">Balanced View</div>
+            <p class="help-hint">Tip: center is neutral; ends are stronger.</p>
+        </div>
+
+        <div>
+            <h2>3. Physics Constants</h2>
+            <div class="slider-container">
+                <label>Pressure Sensitivity ($\Pi$)</label>
+                <input type="range" id="pressureSlider" min="1" max="50" value="20" title="Higher = pressure rises faster with density; flow propagates more aggressively">
+            </div>
+            <div class="slider-container">
+                <label>Damping (Decay $\kappa$)</label>
+                <input type="range" id="dampSlider" min="1" max="20" value="5" title="Higher = faster decay of density; motion settles sooner">
+            </div>
+        </div>
+    </div>
+
+    <div id="helpDrawerBackdrop" hidden></div>
+    <aside id="helpDrawer" aria-hidden="true">
+        <div class="drawer-header">
+            <div class="drawer-title">About & How To</div>
+            <button type="button" id="helpCloseBtn" class="drawer-close" title="Close help (Esc)">Close</button>
+        </div>
+
+      <p class="help-text tight"><strong>What is this?</strong> A tiny semantic “manifold” where concepts hold density (ρ) and push flow across links.</p>
+      <p class="help-text"><strong>How to:</strong> Inject a word → watch it spread → adjust Belief (ψ) to open/close pathways → tune Pressure (Π) and Damping to change speed/persistence.</p>
+
+        <h2 style="margin-top: 14px;">Thermodynamic-inspired flow (intuition)</h2>
+        <div class="help-hint">
+          <div><strong>Aim:</strong> treat meaning like a “semantic field” where attention/activation can accumulate, spread, and dissipate over time.</div>
+          <div><strong>How this demo does it:</strong> concepts are nodes, relations are edges, and we move density $\rho$ by pressure differences across edges (a conservative, flow-like update).</div>
+          <div><strong>What’s captured:</strong> denser regions push outward; damping fades signal; the belief/mode field $\psi$ changes conductance (how easily flow moves through links).</div>
+        </div>
+
+        <h2 style="margin-top: 14px;">Live Metrics</h2>
+        <div class="help-hint">
+            <div><strong>Entropy</strong>: normalized Shannon entropy of the density distribution (higher = more spread out).</div>
+            <div><strong>Flux</strong>: how much is moving across edges per step.</div>
+            <div><strong>Active</strong>: how many nodes are currently “lit”.</div>
+        </div>
+
+        <h2 style="margin-top: 14px;">Controls</h2>
+        <p class="help-text"><strong>Inject Density (Query)</strong>: adds “mass” (ρ) to a concept node. Bigger injections create stronger pressure gradients and faster propagation.</p>
+        <p class="help-text"><strong>Belief Field (ψ)</strong>: biases which links become more conductive. Left privileges tech/logic pathways; right privileges spirit/mythos pathways.</p>
+        <p class="help-text"><strong>Pressure (Π)</strong>: higher = denser nodes push harder, so waves spread faster.</p>
+        <p class="help-text"><strong>Damping</strong>: higher = faster fade-out (less persistence). Lower = longer-lasting activation.</p>
+
+        <h2 style="margin-top: 14px;">What You’ll See</h2>
+        <div class="help-hint">
+          <div><strong>Node size</strong> grows with density (ρ).</div>
+            <div><strong>Edge thickness</strong> grows with flux magnitude.</div>
+            <div><strong>Arrow direction</strong> indicates flow direction (flux sign).</div>
+            <div><strong>Edge brightness</strong> reflects how open/conductive the link is under the current belief bias.</div>
+        </div>
+    </aside>
+
+      <aside id="hybridDrawer" aria-hidden="true">
+        <div class="drawer-header">
+          <div class="drawer-title">Hybrid: SOL + LLMs</div>
+          <button type="button" id="hybridCloseBtn" class="drawer-close" title="Close hybrid (Esc)">Close</button>
+        </div>
+
+        <p class="help-text tight"><strong>What is this?</strong> A few practical ways to combine SOL-style state/flow with modern LLMs (ChatGPT/Gemini/Grok-class) in a single workflow.</p>
+
+        <h2 style="margin-top: 14px;">Why it feels like “thinking”</h2>
+        <p class="help-text">This is a metaphor for thought as a semantic fluid. When you inject a concept, you add “mass” to that idea; it builds local pressure and spreads along available pathways, like diffusion/flow in a thermodynamic system.</p>
+        <p class="help-text">Entropy rises as activation distributes across the network; damping acts like dissipation (signal fades). The belief field doesn’t add energy by itself — it changes conductance, like opening/closing channels that guide where the semantic fluid can move.</p>
+
+        <h2 style="margin-top: 14px;">How this differs from LLMs</h2>
+        <div class="help-hint">
+          <div><strong>SOL here is a live dynamical system:</strong> explicit state evolves over time (ρ on nodes + flux on edges) with interpretable rules (pressure, conductance, damping).</div>
+          <div><strong>Modern LLMs are trained sequence models:</strong> they generate text via next-token prediction from learned parameters, conditioned on prompt + context window (no explicit conserved mass/flux on your graph).</div>
+          <div><strong>Memory model:</strong> SOL’s “memory” is the simulation state. LLM continuity usually requires context, retrieval, tools, or an external memory layer.</div>
+        </div>
+
+        <h2 style="margin-top: 14px;">Hybrid interaction patterns (3)</h2>
+        <div class="help-hint">
+          <div><strong>1) SOL-as-Router (query steering):</strong> Use the activation landscape to select which concepts to retrieve/summarize and which mode to apply; then pass that structured context to the LLM as a compact prompt.</div>
+          <div><strong>2) LLM-as-Interpreter (state narration):</strong> Let SOL run; then ask the LLM to translate the state into language: “What clusters lit up, what pathways opened/closed, what thread is emerging?”</div>
+          <div><strong>3) LLM-as-Editor (graph growth):</strong> Use the LLM to propose new nodes/edges (or reweight edges) from text; SOL becomes the runtime engine that shows how those edits change propagation and stability.</div>
+        </div>
+      </aside>
+
+      <aside id="mathDrawer" aria-hidden="true">
+        <div class="drawer-header">
+          <div class="drawer-title">Math & Equations</div>
+          <button type="button" id="mathCloseBtn" class="drawer-close" title="Close math (Esc)">Close</button>
+        </div>
+
+        <p class="help-text tight"><strong>What is this?</strong> This panel shows the exact equations used by the simulation loop.</p>
+
+        <h2 style="margin-top: 14px;">Equations (as implemented)</h2>
+        <div class="help-hint">
+          <div><strong>State:</strong> each node carries density $\rho_i(t)\ge 0$ and a mode/belief scalar $\psi_i(t)$.</div>
+          <div style="opacity:0.9;">(This demo uses a conservative / Darcy-style pressure-driven flux on a graph; $k=1$ for $\psi$.)</div>
+          <div style="margin-top:6px;"><strong>Pressure (equation of state):</strong></div>
+          <div>$$p_i = \Pi(\rho_i) = c\,\log(1+\rho_i)$$</div>
+
+          <div style="margin-top:6px;"><strong>Mode-shaped conductance (strictly positive):</strong></div>
+          <div>$$w_{ij} = \mathrm{clip}\Big(w^{(0)}_{ij}\,\exp\big(\gamma\,\tfrac{\psi_i+\psi_j}{2}\big),\;w_{\min},\;w_{\max}\Big)$$</div>
+
+          <div style="margin-top:6px;"><strong>Edge flux (Darcy-style):</strong></div>
+          <div>$$j_{ij} = w_{ij}\,(p_i - p_j)$$</div>
+
+          <div style="margin-top:6px;"><strong>Continuity (graph form):</strong></div>
+          <div>$$\dot{\rho} + B^\top j = s_{\rho}$$</div>
+
+          <div style="margin-top:6px;"><strong>Circulation (not modeled in this demo):</strong></div>
+          <div style="opacity:0.9;">A divergence-free circulatory component (cycle-space flow) is not represented or visualized here.</div>
+
+          <div style="margin-top:6px;"><strong>This demo uses (implementation note):</strong></div>
+          <div style="opacity:0.92;">We apply edge-wise transfers (finite-volume style) and then damping:</div>
+          <div>$$\rho_i \leftarrow \rho_i - \tfrac{1}{2}\,j_{ij}\,\Delta t,\quad \rho_j \leftarrow \rho_j + \tfrac{1}{2}\,j_{ij}\,\Delta t$$</div>
+          <div>$$\rho_i \leftarrow \rho_i\,(1-\kappa\,\Delta t),\quad \rho_i\ge 0$$</div>
+          <div style="opacity:0.92;">For numerical stability in the visualization we smooth flux:</div>
+          <div>$$j_{ij}\leftarrow (1-\Delta t)\,j_{ij}+\Delta t\,\big(w_{ij}(p_i-p_j)\big)$$</div>
+          <div style="opacity:0.9;">Here $\kappa$ is controlled by the Damping slider; $c$ is controlled by the Pressure slider.</div>
+        </div>
+
+        <p class="help-text" style="margin-top: 14px; opacity: 0.9;">This is a simplified, stable, graph-based model of a larger semantic-flow idea; the equations shown here aim to mimic the same qualitative dynamics at a small, inspectable scale.</p>
+      </aside>
+
+    <div id="network-container">
+        <div id="metrics-overlay" class="metric-box">
+            <div class="hud-grid">
+                <div class="hud-label">Entropy</div><div id="val-entropy" class="hud-value">0.00</div>
+
+                <div class="hud-row-4" style="grid-column: 1 / -1;">
+                    <div class="hud-label">Flux</div><div id="val-flux" class="hud-value">0.0000</div>
+                    <div class="hud-label">Max|j|</div><div id="val-flux-max" class="hud-value">0.0000</div>
+                </div>
+
+                <div class="hud-row-4" style="grid-column: 1 / -1;">
+                    <div class="hud-label">Mass</div><div id="val-mass" class="hud-value">0.00</div>
+                    <div class="hud-label">Active</div><div id="val-active" class="hud-value">0</div>
+                </div>
+
+                <div class="hud-label">ρ avg/max</div><div id="val-rho" class="hud-value">0.00 / 0.00</div>
+            </div>
+
+            <div class="hud-divider"></div>
+
+            <div class="hud-grid">
+                <div class="hud-row-4" style="grid-column: 1 / -1;">
+                    <div class="hud-label">Π</div><div id="val-pi" class="hud-value">0.00</div>
+                    <div class="hud-label">Damp</div><div id="val-damp" class="hud-value">0.00</div>
+                </div>
+                <div class="hud-row-4" style="grid-column: 1 / -1;">
+                    <div class="hud-label">Bias</div><div id="val-bias" class="hud-value">0.00</div>
+                    <div class="hud-label">γ</div><div id="val-gamma" class="hud-value">0.00</div>
+                </div>
+            </div>
+
+            <div class="hud-legend" aria-label="Edge color legend">
+                Lines:
+                <span class="legend-swatch is-open" style="background-color:#fff;"></span>flowing + open (high conductance)
+                <span class="legend-swatch" style="background-color:#00bcd4;"></span>flowing (normal)
+                <span class="legend-swatch" style="background-color:#550000;"></span>flowing (resisting)
+                <span class="legend-swatch" style="background-color:#444;"></span>idle
+            </div>
+
+            <div class="hud-tip">Tip: zoom in to reveal faint “sublines” (weak background links) and watch their flow.</div>
+        </div>
+        <div id="network"></div>
+        <div id="overlay">
+            <div class="mode-indicator" id="ind-logic" style="color:var(--mode-logic)">LOGOS</div>
+            <div class="mode-indicator" id="ind-spirit" style="color:var(--mode-spirit)">MYTHOS</div>
+        </div>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+/**
+ * SOL Dashboard — single-file refactor
+ * Goal: keep it 1-click / 1-file while making the codebase modular-in-spirit.
+ *
+ * Structure (still all in this one <script>):
+ *   App.config  - tunables + display rules
+ *   App.data    - semantic graph
+ *   App.sim     - SOL physics engine
+ *   App.viz     - vis-network glue
+ *   App.ui      - DOM + handlers
+ *   App.loop    - requestAnimationFrame timing + per-frame updates
+ */
+(() => {
+  'use strict';
+
+  // ---------------------------------------------------------------------------
+  // App shell
+  // ---------------------------------------------------------------------------
+  const App = {
+    config: {
+      injectAmountDefault: 50.0,
+      beliefGammaMax: 1.25,
+      pressureSliderScale: 0.1,
+      dtCap: 0.1,
+
+      layout: {
+        freezeAfterStabilize: true
+      },
+
+      viz: {
+        nodeColorByGroup: {
+          spirit: '#9c27b0',
+          tech: '#4caf50',
+          bridge: '#00bcd4',
+          default: '#00bcd4'
+        },
+        edge: {
+          background: {
+            baseWidth: 0.45,
+            widthScale: 2.2,
+            minFlux: 0.03,
+            idleOpacity: 0.16,
+            activeOpacityScale: 2.5
+          },
+          strong: {
+            baseWidth: 1.0,
+            widthScale: 5.0,
+            minFlux: 0.10,
+            idleOpacity: 0.20
+          }
+        }
+      }
+    },
+
+    dom: {},
+
+    state: {
+      lastTimeMs: Date.now(),
+      physics: null,
+      visNodes: null,
+      visEdges: null,
+      network: null
+    }
+  };
+
+  // Optional debug hook (harmless; remove if you want a “sealed” artifact)
+  window.SOLDashboard = App;
+
+  // ---------------------------------------------------------------------------
+  // 1) DATA — semantic graph (kept nearly identical to original for safety)
+  // ---------------------------------------------------------------------------
+  App.data = (() => {
+// --- 1. DATA: The Semantic Graph ---
+        // We define a small "Gem" subset with mixed categories.
+        // categories: 'spirit', 'tech', 'bridge'
+        const rawNodes = [
+            {
+                        "id": 1,
+                        "label": "grail",
+                        "group": "bridge"
+            },
+            {
+                        "id": 2,
+                        "label": "christ",
+                        "group": "spirit"
+            },
+            {
+                        "id": 3,
+                        "label": "isis",
+                        "group": "bridge"
+            },
+            {
+                        "id": 4,
+                        "label": "earth star",
+                        "group": "bridge"
+            },
+            {
+                        "id": 5,
+                        "label": "stone",
+                        "group": "bridge"
+            },
+            {
+                        "id": 6,
+                        "label": "solar",
+                        "group": "bridge"
+            },
+            {
+                        "id": 7,
+                        "label": "eye",
+                        "group": "bridge"
+            },
+            {
+                        "id": 8,
+                        "label": "temple doors",
+                        "group": "spirit"
+            },
+            {
+                        "id": 9,
+                        "label": "osiris",
+                        "group": "bridge"
+            },
+            {
+                        "id": 10,
+                        "label": "god",
+                        "group": "bridge"
+            },
+            {
+                        "id": 11,
+                        "label": "golden",
+                        "group": "bridge"
+            },
+            {
+                        "id": 12,
+                        "label": "doors",
+                        "group": "bridge"
+            },
+            {
+                        "id": 13,
+                        "label": "holy",
+                        "group": "bridge"
+            },
+            {
+                        "id": 14,
+                        "label": "numis'om",
+                        "group": "spirit"
+            },
+            {
+                        "id": 15,
+                        "label": "path",
+                        "group": "bridge"
+            },
+            {
+                        "id": 16,
+                        "label": "skull",
+                        "group": "bridge"
+            },
+            {
+                        "id": 17,
+                        "label": "christic",
+                        "group": "spirit"
+            },
+            {
+                        "id": 18,
+                        "label": "fire",
+                        "group": "bridge"
+            },
+            {
+                        "id": 19,
+                        "label": "dna",
+                        "group": "bridge"
+            },
+            {
+                        "id": 20,
+                        "label": "pure",
+                        "group": "bridge"
+            },
+            {
+                        "id": 21,
+                        "label": "thothhorra",
+                        "group": "spirit"
+            },
+            {
+                        "id": 22,
+                        "label": "pyramid",
+                        "group": "bridge"
+            },
+            {
+                        "id": 23,
+                        "label": "ark",
+                        "group": "bridge"
+            },
+            {
+                        "id": 24,
+                        "label": "sun",
+                        "group": "bridge"
+            },
+            {
+                        "id": 25,
+                        "label": "templar",
+                        "group": "bridge"
+            },
+            {
+                        "id": 26,
+                        "label": "master",
+                        "group": "bridge"
+            },
+            {
+                        "id": 27,
+                        "label": "mother",
+                        "group": "bridge"
+            },
+            {
+                        "id": 28,
+                        "label": "metatron",
+                        "group": "spirit"
+            },
+            {
+                        "id": 29,
+                        "label": "johannine",
+                        "group": "bridge"
+            },
+            {
+                        "id": 30,
+                        "label": "universe",
+                        "group": "bridge"
+            },
+            {
+                        "id": 31,
+                        "label": "mystery",
+                        "group": "bridge"
+            },
+            {
+                        "id": 32,
+                        "label": "dweller",
+                        "group": "bridge"
+            },
+            {
+                        "id": 33,
+                        "label": "venus",
+                        "group": "spirit"
+            },
+            {
+                        "id": 34,
+                        "label": "flame",
+                        "group": "bridge"
+            },
+            {
+                        "id": 35,
+                        "label": "gate",
+                        "group": "bridge"
+            },
+            {
+                        "id": 36,
+                        "label": "yeshua",
+                        "group": "bridge"
+            },
+            {
+                        "id": 37,
+                        "label": "matter",
+                        "group": "bridge"
+            },
+            {
+                        "id": 38,
+                        "label": "orion",
+                        "group": "bridge"
+            },
+            {
+                        "id": 39,
+                        "label": "grace",
+                        "group": "bridge"
+            },
+            {
+                        "id": 40,
+                        "label": "lineages",
+                        "group": "bridge"
+            },
+            {
+                        "id": 41,
+                        "label": "love",
+                        "group": "bridge"
+            },
+            {
+                        "id": 42,
+                        "label": "atlantis",
+                        "group": "bridge"
+            },
+            {
+                        "id": 43,
+                        "label": "mind",
+                        "group": "bridge"
+            },
+            {
+                        "id": 44,
+                        "label": "lion",
+                        "group": "bridge"
+            },
+            {
+                        "id": 45,
+                        "label": "crystal",
+                        "group": "bridge"
+            },
+            {
+                        "id": 46,
+                        "label": "matrix",
+                        "group": "tech"
+            },
+            {
+                        "id": 47,
+                        "label": "metatronic",
+                        "group": "spirit"
+            },
+            {
+                        "id": 48,
+                        "label": "skulls",
+                        "group": "bridge"
+            },
+            {
+                        "id": 49,
+                        "label": "power",
+                        "group": "bridge"
+            },
+            {
+                        "id": 50,
+                        "label": "tree",
+                        "group": "bridge"
+            },
+            {
+                        "id": 51,
+                        "label": "blood",
+                        "group": "bridge"
+            },
+            {
+                        "id": 52,
+                        "label": "self",
+                        "group": "bridge"
+            },
+            {
+                        "id": 53,
+                        "label": "maia nartoomid",
+                        "group": "bridge"
+            },
+            {
+                        "id": 54,
+                        "label": "reality",
+                        "group": "bridge"
+            },
+            {
+                        "id": 55,
+                        "label": "system",
+                        "group": "tech"
+            },
+            {
+                        "id": 56,
+                        "label": "old",
+                        "group": "bridge"
+            },
+            {
+                        "id": 57,
+                        "label": "universal",
+                        "group": "bridge"
+            },
+            {
+                        "id": 58,
+                        "label": "creation",
+                        "group": "bridge"
+            },
+            {
+                        "id": 59,
+                        "label": "king",
+                        "group": "bridge"
+            },
+            {
+                        "id": 60,
+                        "label": "john",
+                        "group": "bridge"
+            },
+            {
+                        "id": 61,
+                        "label": "nature",
+                        "group": "bridge"
+            },
+            {
+                        "id": 62,
+                        "label": "jesus",
+                        "group": "bridge"
+            },
+            {
+                        "id": 63,
+                        "label": "atlantean",
+                        "group": "bridge"
+            },
+            {
+                        "id": 64,
+                        "label": "star lineages",
+                        "group": "bridge"
+            },
+            {
+                        "id": 65,
+                        "label": "adam",
+                        "group": "bridge"
+            },
+            {
+                        "id": 66,
+                        "label": "tehuti",
+                        "group": "bridge"
+            },
+            {
+                        "id": 67,
+                        "label": "rose",
+                        "group": "bridge"
+            },
+            {
+                        "id": 68,
+                        "label": "central",
+                        "group": "bridge"
+            },
+            {
+                        "id": 69,
+                        "label": "egypt",
+                        "group": "bridge"
+            },
+            {
+                        "id": 70,
+                        "label": "new earth star",
+                        "group": "spirit"
+            },
+            {
+                        "id": 71,
+                        "label": "mari",
+                        "group": "bridge"
+            },
+            {
+                        "id": 72,
+                        "label": "logos",
+                        "group": "bridge"
+            },
+            {
+                        "id": 73,
+                        "label": "city",
+                        "group": "bridge"
+            },
+            {
+                        "id": 74,
+                        "label": "crystals",
+                        "group": "bridge"
+            },
+            {
+                        "id": 75,
+                        "label": "knowledge",
+                        "group": "bridge"
+            },
+            {
+                        "id": 76,
+                        "label": "black",
+                        "group": "bridge"
+            },
+            {
+                        "id": 77,
+                        "label": "adam kadmon",
+                        "group": "bridge"
+            },
+            {
+                        "id": 78,
+                        "label": "mysteries",
+                        "group": "bridge"
+            },
+            {
+                        "id": 79,
+                        "label": "holorian",
+                        "group": "bridge"
+            },
+            {
+                        "id": 80,
+                        "label": "goddess",
+                        "group": "bridge"
+            },
+            {
+                        "id": 81,
+                        "label": "future",
+                        "group": "bridge"
+            },
+            {
+                        "id": 82,
+                        "label": "activation",
+                        "group": "bridge"
+            },
+            {
+                        "id": 83,
+                        "label": "lotus",
+                        "group": "bridge"
+            },
+            {
+                        "id": 84,
+                        "label": "light codes",
+                        "group": "tech"
+            },
+            {
+                        "id": 85,
+                        "label": "book",
+                        "group": "bridge"
+            },
+            {
+                        "id": 86,
+                        "label": "inner earth",
+                        "group": "bridge"
+            },
+            {
+                        "id": 87,
+                        "label": "simeon",
+                        "group": "bridge"
+            },
+            {
+                        "id": 88,
+                        "label": "name",
+                        "group": "bridge"
+            },
+            {
+                        "id": 89,
+                        "label": "blue star",
+                        "group": "bridge"
+            },
+            {
+                        "id": 90,
+                        "label": "kadmon",
+                        "group": "bridge"
+            },
+            {
+                        "id": 91,
+                        "label": "sea",
+                        "group": "bridge"
+            },
+            {
+                        "id": 92,
+                        "label": "grid",
+                        "group": "bridge"
+            },
+            {
+                        "id": 93,
+                        "label": "queen",
+                        "group": "bridge"
+            },
+            {
+                        "id": 94,
+                        "label": "consciousness",
+                        "group": "bridge"
+            },
+            {
+                        "id": 95,
+                        "label": "presence",
+                        "group": "bridge"
+            },
+            {
+                        "id": 96,
+                        "label": "activation rite",
+                        "group": "bridge"
+            },
+            {
+                        "id": 97,
+                        "label": "space",
+                        "group": "bridge"
+            },
+            {
+                        "id": 98,
+                        "label": "forms",
+                        "group": "bridge"
+            },
+            {
+                        "id": 99,
+                        "label": "high",
+                        "group": "bridge"
+            },
+            {
+                        "id": 100,
+                        "label": "egyptian",
+                        "group": "bridge"
+            },
+            {
+                        "id": 101,
+                        "label": "church",
+                        "group": "bridge"
+            },
+            {
+                        "id": 102,
+                        "label": "akashic practice",
+                        "group": "spirit"
+            },
+            {
+                        "id": 103,
+                        "label": "still",
+                        "group": "bridge"
+            },
+            {
+                        "id": 104,
+                        "label": "lord",
+                        "group": "bridge"
+            },
+            {
+                        "id": 105,
+                        "label": "since",
+                        "group": "bridge"
+            },
+            {
+                        "id": 106,
+                        "label": "great",
+                        "group": "bridge"
+            },
+            {
+                        "id": 107,
+                        "label": "great pyramid",
+                        "group": "bridge"
+            },
+            {
+                        "id": 108,
+                        "label": "gem",
+                        "group": "bridge"
+            },
+            {
+                        "id": 109,
+                        "label": "mar",
+                        "group": "bridge"
+            },
+            {
+                        "id": 110,
+                        "label": "sanctuary",
+                        "group": "bridge"
+            },
+            {
+                        "id": 111,
+                        "label": "dragon",
+                        "group": "bridge"
+            },
+            {
+                        "id": 112,
+                        "label": "journey",
+                        "group": "bridge"
+            },
+            {
+                        "id": 113,
+                        "label": "take",
+                        "group": "bridge"
+            },
+            {
+                        "id": 114,
+                        "label": "lords",
+                        "group": "bridge"
+            },
+            {
+                        "id": 115,
+                        "label": "crystal skull",
+                        "group": "bridge"
+            },
+            {
+                        "id": 116,
+                        "label": "practice",
+                        "group": "bridge"
+            },
+            {
+                        "id": 117,
+                        "label": "lady",
+                        "group": "bridge"
+            },
+            {
+                        "id": 118,
+                        "label": "individual",
+                        "group": "bridge"
+            },
+            {
+                        "id": 119,
+                        "label": "rite",
+                        "group": "bridge"
+            },
+            {
+                        "id": 120,
+                        "label": "valley",
+                        "group": "bridge"
+            }
+];
+
+        const rawEdges = [
+            {
+                        "from": 82,
+                        "to": 96
+            },
+            {
+                        "from": 82,
+                        "to": 102
+            },
+            {
+                        "from": 82,
+                        "to": 40
+            },
+            {
+                        "from": 82,
+                        "to": 116
+            },
+            {
+                        "from": 82,
+                        "to": 119
+            },
+            {
+                        "from": 82,
+                        "to": 64
+            },
+            {
+                        "from": 96,
+                        "to": 102
+            },
+            {
+                        "from": 96,
+                        "to": 84
+            },
+            {
+                        "from": 96,
+                        "to": 40
+            },
+            {
+                        "from": 96,
+                        "to": 53
+            },
+            {
+                        "from": 96,
+                        "to": 116
+            },
+            {
+                        "from": 96,
+                        "to": 119
+            },
+            {
+                        "from": 96,
+                        "to": 64
+            },
+            {
+                        "from": 96,
+                        "to": 25
+            },
+            {
+                        "from": 65,
+                        "to": 77
+            },
+            {
+                        "from": 65,
+                        "to": 101
+            },
+            {
+                        "from": 65,
+                        "to": 58
+            },
+            {
+                        "from": 65,
+                        "to": 19
+            },
+            {
+                        "from": 65,
+                        "to": 79
+            },
+            {
+                        "from": 65,
+                        "to": 90
+            },
+            {
+                        "from": 65,
+                        "to": 114
+            },
+            {
+                        "from": 65,
+                        "to": 37
+            },
+            {
+                        "from": 65,
+                        "to": 47
+            },
+            {
+                        "from": 65,
+                        "to": 57
+            },
+            {
+                        "from": 77,
+                        "to": 17
+            },
+            {
+                        "from": 77,
+                        "to": 58
+            },
+            {
+                        "from": 77,
+                        "to": 19
+            },
+            {
+                        "from": 77,
+                        "to": 79
+            },
+            {
+                        "from": 77,
+                        "to": 90
+            },
+            {
+                        "from": 77,
+                        "to": 114
+            },
+            {
+                        "from": 77,
+                        "to": 47
+            },
+            {
+                        "from": 102,
+                        "to": 84
+            },
+            {
+                        "from": 102,
+                        "to": 40
+            },
+            {
+                        "from": 102,
+                        "to": 53
+            },
+            {
+                        "from": 102,
+                        "to": 116
+            },
+            {
+                        "from": 102,
+                        "to": 119
+            },
+            {
+                        "from": 102,
+                        "to": 64
+            },
+            {
+                        "from": 102,
+                        "to": 25
+            },
+            {
+                        "from": 23,
+                        "to": 101
+            },
+            {
+                        "from": 23,
+                        "to": 39
+            },
+            {
+                        "from": 23,
+                        "to": 79
+            },
+            {
+                        "from": 23,
+                        "to": 29
+            },
+            {
+                        "from": 23,
+                        "to": 44
+            },
+            {
+                        "from": 23,
+                        "to": 120
+            },
+            {
+                        "from": 63,
+                        "to": 42
+            },
+            {
+                        "from": 63,
+                        "to": 101
+            },
+            {
+                        "from": 63,
+                        "to": 100
+            },
+            {
+                        "from": 63,
+                        "to": 79
+            },
+            {
+                        "from": 63,
+                        "to": 60
+            },
+            {
+                        "from": 63,
+                        "to": 104
+            },
+            {
+                        "from": 63,
+                        "to": 38
+            },
+            {
+                        "from": 42,
+                        "to": 101
+            },
+            {
+                        "from": 42,
+                        "to": 69
+            },
+            {
+                        "from": 42,
+                        "to": 79
+            },
+            {
+                        "from": 42,
+                        "to": 59
+            },
+            {
+                        "from": 42,
+                        "to": 31
+            },
+            {
+                        "from": 76,
+                        "to": 101
+            },
+            {
+                        "from": 76,
+                        "to": 80
+            },
+            {
+                        "from": 76,
+                        "to": 107
+            },
+            {
+                        "from": 76,
+                        "to": 79
+            },
+            {
+                        "from": 76,
+                        "to": 59
+            },
+            {
+                        "from": 76,
+                        "to": 117
+            },
+            {
+                        "from": 76,
+                        "to": 97
+            },
+            {
+                        "from": 51,
+                        "to": 101
+            },
+            {
+                        "from": 51,
+                        "to": 80
+            },
+            {
+                        "from": 51,
+                        "to": 1
+            },
+            {
+                        "from": 51,
+                        "to": 79
+            },
+            {
+                        "from": 51,
+                        "to": 118
+            },
+            {
+                        "from": 51,
+                        "to": 60
+            },
+            {
+                        "from": 51,
+                        "to": 59
+            },
+            {
+                        "from": 89,
+                        "to": 101
+            },
+            {
+                        "from": 89,
+                        "to": 79
+            },
+            {
+                        "from": 89,
+                        "to": 29
+            },
+            {
+                        "from": 89,
+                        "to": 60
+            },
+            {
+                        "from": 89,
+                        "to": 38
+            },
+            {
+                        "from": 89,
+                        "to": 120
+            },
+            {
+                        "from": 89,
+                        "to": 33
+            },
+            {
+                        "from": 85,
+                        "to": 101
+            },
+            {
+                        "from": 85,
+                        "to": 79
+            },
+            {
+                        "from": 85,
+                        "to": 60
+            },
+            {
+                        "from": 85,
+                        "to": 59
+            },
+            {
+                        "from": 85,
+                        "to": 104
+            },
+            {
+                        "from": 85,
+                        "to": 31
+            },
+            {
+                        "from": 68,
+                        "to": 101
+            },
+            {
+                        "from": 68,
+                        "to": 107
+            },
+            {
+                        "from": 68,
+                        "to": 79
+            },
+            {
+                        "from": 68,
+                        "to": 86
+            },
+            {
+                        "from": 68,
+                        "to": 104
+            },
+            {
+                        "from": 68,
+                        "to": 37
+            },
+            {
+                        "from": 68,
+                        "to": 67
+            },
+            {
+                        "from": 68,
+                        "to": 6
+            },
+            {
+                        "from": 68,
+                        "to": 97
+            },
+            {
+                        "from": 68,
+                        "to": 24
+            },
+            {
+                        "from": 68,
+                        "to": 55
+            },
+            {
+                        "from": 2,
+                        "to": 17
+            },
+            {
+                        "from": 2,
+                        "to": 101
+            },
+            {
+                        "from": 2,
+                        "to": 79
+            },
+            {
+                        "from": 2,
+                        "to": 62
+            },
+            {
+                        "from": 2,
+                        "to": 60
+            },
+            {
+                        "from": 2,
+                        "to": 36
+            },
+            {
+                        "from": 17,
+                        "to": 101
+            },
+            {
+                        "from": 17,
+                        "to": 34
+            },
+            {
+                        "from": 17,
+                        "to": 79
+            },
+            {
+                        "from": 17,
+                        "to": 62
+            },
+            {
+                        "from": 17,
+                        "to": 90
+            },
+            {
+                        "from": 17,
+                        "to": 36
+            },
+            {
+                        "from": 101,
+                        "to": 73
+            },
+            {
+                        "from": 101,
+                        "to": 94
+            },
+            {
+                        "from": 101,
+                        "to": 74
+            },
+            {
+                        "from": 101,
+                        "to": 12
+            },
+            {
+                        "from": 101,
+                        "to": 111
+            },
+            {
+                        "from": 101,
+                        "to": 69
+            },
+            {
+                        "from": 101,
+                        "to": 34
+            },
+            {
+                        "from": 101,
+                        "to": 98
+            },
+            {
+                        "from": 101,
+                        "to": 81
+            },
+            {
+                        "from": 101,
+                        "to": 35
+            },
+            {
+                        "from": 101,
+                        "to": 108
+            },
+            {
+                        "from": 101,
+                        "to": 10
+            },
+            {
+                        "from": 101,
+                        "to": 80
+            },
+            {
+                        "from": 101,
+                        "to": 11
+            },
+            {
+                        "from": 101,
+                        "to": 39
+            },
+            {
+                        "from": 101,
+                        "to": 1
+            },
+            {
+                        "from": 101,
+                        "to": 106
+            },
+            {
+                        "from": 101,
+                        "to": 107
+            },
+            {
+                        "from": 101,
+                        "to": 92
+            },
+            {
+                        "from": 101,
+                        "to": 99
+            },
+            {
+                        "from": 101,
+                        "to": 79
+            },
+            {
+                        "from": 101,
+                        "to": 13
+            },
+            {
+                        "from": 101,
+                        "to": 118
+            },
+            {
+                        "from": 101,
+                        "to": 86
+            },
+            {
+                        "from": 101,
+                        "to": 3
+            },
+            {
+                        "from": 101,
+                        "to": 62
+            },
+            {
+                        "from": 101,
+                        "to": 29
+            },
+            {
+                        "from": 101,
+                        "to": 60
+            },
+            {
+                        "from": 101,
+                        "to": 112
+            },
+            {
+                        "from": 101,
+                        "to": 59
+            },
+            {
+                        "from": 101,
+                        "to": 75
+            },
+            {
+                        "from": 101,
+                        "to": 117
+            },
+            {
+                        "from": 101,
+                        "to": 44
+            },
+            {
+                        "from": 101,
+                        "to": 72
+            },
+            {
+                        "from": 101,
+                        "to": 104
+            },
+            {
+                        "from": 101,
+                        "to": 114
+            },
+            {
+                        "from": 101,
+                        "to": 83
+            },
+            {
+                        "from": 101,
+                        "to": 41
+            },
+            {
+                        "from": 101,
+                        "to": 109
+            },
+            {
+                        "from": 101,
+                        "to": 71
+            },
+            {
+                        "from": 101,
+                        "to": 26
+            },
+            {
+                        "from": 101,
+                        "to": 46
+            },
+            {
+                        "from": 101,
+                        "to": 37
+            },
+            {
+                        "from": 101,
+                        "to": 47
+            },
+            {
+                        "from": 101,
+                        "to": 43
+            },
+            {
+                        "from": 101,
+                        "to": 27
+            },
+            {
+                        "from": 101,
+                        "to": 78
+            },
+            {
+                        "from": 101,
+                        "to": 31
+            },
+            {
+                        "from": 101,
+                        "to": 88
+            },
+            {
+                        "from": 101,
+                        "to": 61
+            },
+            {
+                        "from": 101,
+                        "to": 56
+            },
+            {
+                        "from": 101,
+                        "to": 9
+            },
+            {
+                        "from": 101,
+                        "to": 15
+            },
+            {
+                        "from": 101,
+                        "to": 49
+            },
+            {
+                        "from": 101,
+                        "to": 95
+            },
+            {
+                        "from": 101,
+                        "to": 20
+            },
+            {
+                        "from": 101,
+                        "to": 22
+            },
+            {
+                        "from": 101,
+                        "to": 67
+            },
+            {
+                        "from": 101,
+                        "to": 110
+            },
+            {
+                        "from": 101,
+                        "to": 91
+            },
+            {
+                        "from": 101,
+                        "to": 52
+            },
+            {
+                        "from": 101,
+                        "to": 87
+            },
+            {
+                        "from": 101,
+                        "to": 105
+            },
+            {
+                        "from": 101,
+                        "to": 97
+            },
+            {
+                        "from": 101,
+                        "to": 103
+            },
+            {
+                        "from": 101,
+                        "to": 5
+            },
+            {
+                        "from": 101,
+                        "to": 55
+            },
+            {
+                        "from": 101,
+                        "to": 113
+            },
+            {
+                        "from": 101,
+                        "to": 66
+            },
+            {
+                        "from": 101,
+                        "to": 8
+            },
+            {
+                        "from": 101,
+                        "to": 50
+            },
+            {
+                        "from": 101,
+                        "to": 57
+            },
+            {
+                        "from": 101,
+                        "to": 30
+            },
+            {
+                        "from": 101,
+                        "to": 120
+            },
+            {
+                        "from": 101,
+                        "to": 36
+            },
+            {
+                        "from": 73,
+                        "to": 81
+            },
+            {
+                        "from": 73,
+                        "to": 11
+            },
+            {
+                        "from": 73,
+                        "to": 99
+            },
+            {
+                        "from": 73,
+                        "to": 79
+            },
+            {
+                        "from": 73,
+                        "to": 86
+            },
+            {
+                        "from": 73,
+                        "to": 112
+            },
+            {
+                        "from": 73,
+                        "to": 104
+            },
+            {
+                        "from": 73,
+                        "to": 109
+            },
+            {
+                        "from": 73,
+                        "to": 56
+            },
+            {
+                        "from": 73,
+                        "to": 22
+            },
+            {
+                        "from": 73,
+                        "to": 91
+            },
+            {
+                        "from": 73,
+                        "to": 105
+            },
+            {
+                        "from": 73,
+                        "to": 16
+            },
+            {
+                        "from": 73,
+                        "to": 120
+            },
+            {
+                        "from": 94,
+                        "to": 98
+            },
+            {
+                        "from": 94,
+                        "to": 79
+            },
+            {
+                        "from": 94,
+                        "to": 114
+            },
+            {
+                        "from": 94,
+                        "to": 47
+            },
+            {
+                        "from": 94,
+                        "to": 66
+            },
+            {
+                        "from": 58,
+                        "to": 79
+            },
+            {
+                        "from": 58,
+                        "to": 90
+            },
+            {
+                        "from": 58,
+                        "to": 104
+            },
+            {
+                        "from": 58,
+                        "to": 114
+            },
+            {
+                        "from": 45,
+                        "to": 115
+            },
+            {
+                        "from": 45,
+                        "to": 74
+            },
+            {
+                        "from": 45,
+                        "to": 32
+            },
+            {
+                        "from": 45,
+                        "to": 79
+            },
+            {
+                        "from": 45,
+                        "to": 16
+            },
+            {
+                        "from": 45,
+                        "to": 48
+            },
+            {
+                        "from": 115,
+                        "to": 32
+            },
+            {
+                        "from": 115,
+                        "to": 79
+            },
+            {
+                        "from": 115,
+                        "to": 117
+            },
+            {
+                        "from": 115,
+                        "to": 83
+            },
+            {
+                        "from": 115,
+                        "to": 93
+            },
+            {
+                        "from": 115,
+                        "to": 16
+            },
+            {
+                        "from": 115,
+                        "to": 48
+            },
+            {
+                        "from": 115,
+                        "to": 21
+            },
+            {
+                        "from": 74,
+                        "to": 92
+            },
+            {
+                        "from": 74,
+                        "to": 79
+            },
+            {
+                        "from": 74,
+                        "to": 60
+            },
+            {
+                        "from": 74,
+                        "to": 120
+            },
+            {
+                        "from": 19,
+                        "to": 108
+            },
+            {
+                        "from": 19,
+                        "to": 79
+            },
+            {
+                        "from": 19,
+                        "to": 90
+            },
+            {
+                        "from": 19,
+                        "to": 28
+            },
+            {
+                        "from": 19,
+                        "to": 21
+            },
+            {
+                        "from": 12,
+                        "to": 79
+            },
+            {
+                        "from": 12,
+                        "to": 60
+            },
+            {
+                        "from": 12,
+                        "to": 46
+            },
+            {
+                        "from": 12,
+                        "to": 31
+            },
+            {
+                        "from": 12,
+                        "to": 66
+            },
+            {
+                        "from": 12,
+                        "to": 8
+            },
+            {
+                        "from": 111,
+                        "to": 7
+            },
+            {
+                        "from": 111,
+                        "to": 18
+            },
+            {
+                        "from": 111,
+                        "to": 35
+            },
+            {
+                        "from": 111,
+                        "to": 92
+            },
+            {
+                        "from": 111,
+                        "to": 99
+            },
+            {
+                        "from": 111,
+                        "to": 79
+            },
+            {
+                        "from": 111,
+                        "to": 59
+            },
+            {
+                        "from": 111,
+                        "to": 83
+            },
+            {
+                        "from": 111,
+                        "to": 28
+            },
+            {
+                        "from": 111,
+                        "to": 61
+            },
+            {
+                        "from": 111,
+                        "to": 14
+            },
+            {
+                        "from": 111,
+                        "to": 54
+            },
+            {
+                        "from": 111,
+                        "to": 5
+            },
+            {
+                        "from": 111,
+                        "to": 113
+            },
+            {
+                        "from": 111,
+                        "to": 30
+            },
+            {
+                        "from": 111,
+                        "to": 120
+            },
+            {
+                        "from": 111,
+                        "to": 33
+            },
+            {
+                        "from": 32,
+                        "to": 3
+            },
+            {
+                        "from": 32,
+                        "to": 117
+            },
+            {
+                        "from": 32,
+                        "to": 93
+            },
+            {
+                        "from": 32,
+                        "to": 16
+            },
+            {
+                        "from": 32,
+                        "to": 48
+            },
+            {
+                        "from": 4,
+                        "to": 79
+            },
+            {
+                        "from": 4,
+                        "to": 29
+            },
+            {
+                        "from": 4,
+                        "to": 28
+            },
+            {
+                        "from": 4,
+                        "to": 70
+            },
+            {
+                        "from": 4,
+                        "to": 14
+            },
+            {
+                        "from": 4,
+                        "to": 105
+            },
+            {
+                        "from": 69,
+                        "to": 100
+            },
+            {
+                        "from": 69,
+                        "to": 107
+            },
+            {
+                        "from": 69,
+                        "to": 79
+            },
+            {
+                        "from": 69,
+                        "to": 60
+            },
+            {
+                        "from": 69,
+                        "to": 59
+            },
+            {
+                        "from": 69,
+                        "to": 22
+            },
+            {
+                        "from": 100,
+                        "to": 107
+            },
+            {
+                        "from": 100,
+                        "to": 79
+            },
+            {
+                        "from": 100,
+                        "to": 59
+            },
+            {
+                        "from": 100,
+                        "to": 44
+            },
+            {
+                        "from": 100,
+                        "to": 78
+            },
+            {
+                        "from": 100,
+                        "to": 9
+            },
+            {
+                        "from": 7,
+                        "to": 79
+            },
+            {
+                        "from": 7,
+                        "to": 44
+            },
+            {
+                        "from": 7,
+                        "to": 28
+            },
+            {
+                        "from": 7,
+                        "to": 14
+            },
+            {
+                        "from": 7,
+                        "to": 87
+            },
+            {
+                        "from": 18,
+                        "to": 79
+            },
+            {
+                        "from": 18,
+                        "to": 60
+            },
+            {
+                        "from": 18,
+                        "to": 44
+            },
+            {
+                        "from": 18,
+                        "to": 104
+            },
+            {
+                        "from": 18,
+                        "to": 120
+            },
+            {
+                        "from": 34,
+                        "to": 79
+            },
+            {
+                        "from": 34,
+                        "to": 62
+            },
+            {
+                        "from": 34,
+                        "to": 60
+            },
+            {
+                        "from": 34,
+                        "to": 67
+            },
+            {
+                        "from": 98,
+                        "to": 108
+            },
+            {
+                        "from": 98,
+                        "to": 107
+            },
+            {
+                        "from": 98,
+                        "to": 99
+            },
+            {
+                        "from": 98,
+                        "to": 79
+            },
+            {
+                        "from": 98,
+                        "to": 118
+            },
+            {
+                        "from": 98,
+                        "to": 104
+            },
+            {
+                        "from": 98,
+                        "to": 61
+            },
+            {
+                        "from": 98,
+                        "to": 54
+            },
+            {
+                        "from": 81,
+                        "to": 79
+            },
+            {
+                        "from": 81,
+                        "to": 60
+            },
+            {
+                        "from": 81,
+                        "to": 44
+            },
+            {
+                        "from": 81,
+                        "to": 31
+            },
+            {
+                        "from": 35,
+                        "to": 79
+            },
+            {
+                        "from": 35,
+                        "to": 60
+            },
+            {
+                        "from": 35,
+                        "to": 44
+            },
+            {
+                        "from": 35,
+                        "to": 120
+            },
+            {
+                        "from": 108,
+                        "to": 107
+            },
+            {
+                        "from": 108,
+                        "to": 79
+            },
+            {
+                        "from": 108,
+                        "to": 44
+            },
+            {
+                        "from": 108,
+                        "to": 104
+            },
+            {
+                        "from": 108,
+                        "to": 20
+            },
+            {
+                        "from": 108,
+                        "to": 55
+            },
+            {
+                        "from": 10,
+                        "to": 79
+            },
+            {
+                        "from": 10,
+                        "to": 44
+            },
+            {
+                        "from": 10,
+                        "to": 104
+            },
+            {
+                        "from": 10,
+                        "to": 41
+            },
+            {
+                        "from": 10,
+                        "to": 31
+            },
+            {
+                        "from": 10,
+                        "to": 66
+            },
+            {
+                        "from": 80,
+                        "to": 79
+            },
+            {
+                        "from": 80,
+                        "to": 13
+            },
+            {
+                        "from": 80,
+                        "to": 59
+            },
+            {
+                        "from": 80,
+                        "to": 117
+            },
+            {
+                        "from": 80,
+                        "to": 71
+            },
+            {
+                        "from": 80,
+                        "to": 27
+            },
+            {
+                        "from": 80,
+                        "to": 31
+            },
+            {
+                        "from": 80,
+                        "to": 88
+            },
+            {
+                        "from": 80,
+                        "to": 95
+            },
+            {
+                        "from": 80,
+                        "to": 67
+            },
+            {
+                        "from": 80,
+                        "to": 110
+            },
+            {
+                        "from": 11,
+                        "to": 79
+            },
+            {
+                        "from": 11,
+                        "to": 44
+            },
+            {
+                        "from": 11,
+                        "to": 67
+            },
+            {
+                        "from": 11,
+                        "to": 120
+            },
+            {
+                        "from": 39,
+                        "to": 79
+            },
+            {
+                        "from": 39,
+                        "to": 117
+            },
+            {
+                        "from": 39,
+                        "to": 104
+            },
+            {
+                        "from": 39,
+                        "to": 41
+            },
+            {
+                        "from": 39,
+                        "to": 43
+            },
+            {
+                        "from": 39,
+                        "to": 31
+            },
+            {
+                        "from": 39,
+                        "to": 15
+            },
+            {
+                        "from": 39,
+                        "to": 52
+            },
+            {
+                        "from": 1,
+                        "to": 79
+            },
+            {
+                        "from": 1,
+                        "to": 29
+            },
+            {
+                        "from": 1,
+                        "to": 59
+            },
+            {
+                        "from": 1,
+                        "to": 104
+            },
+            {
+                        "from": 106,
+                        "to": 107
+            },
+            {
+                        "from": 106,
+                        "to": 79
+            },
+            {
+                        "from": 106,
+                        "to": 59
+            },
+            {
+                        "from": 106,
+                        "to": 44
+            },
+            {
+                        "from": 106,
+                        "to": 22
+            },
+            {
+                        "from": 107,
+                        "to": 92
+            },
+            {
+                        "from": 107,
+                        "to": 79
+            },
+            {
+                        "from": 107,
+                        "to": 3
+            },
+            {
+                        "from": 107,
+                        "to": 59
+            },
+            {
+                        "from": 107,
+                        "to": 44
+            },
+            {
+                        "from": 107,
+                        "to": 37
+            },
+            {
+                        "from": 107,
+                        "to": 38
+            },
+            {
+                        "from": 107,
+                        "to": 9
+            },
+            {
+                        "from": 107,
+                        "to": 22
+            },
+            {
+                        "from": 107,
+                        "to": 97
+            },
+            {
+                        "from": 92,
+                        "to": 79
+            },
+            {
+                        "from": 92,
+                        "to": 60
+            },
+            {
+                        "from": 92,
+                        "to": 120
+            },
+            {
+                        "from": 99,
+                        "to": 79
+            },
+            {
+                        "from": 99,
+                        "to": 31
+            },
+            {
+                        "from": 79,
+                        "to": 13
+            },
+            {
+                        "from": 79,
+                        "to": 118
+            },
+            {
+                        "from": 79,
+                        "to": 86
+            },
+            {
+                        "from": 79,
+                        "to": 3
+            },
+            {
+                        "from": 79,
+                        "to": 62
+            },
+            {
+                        "from": 79,
+                        "to": 29
+            },
+            {
+                        "from": 79,
+                        "to": 60
+            },
+            {
+                        "from": 79,
+                        "to": 112
+            },
+            {
+                        "from": 79,
+                        "to": 90
+            },
+            {
+                        "from": 79,
+                        "to": 59
+            },
+            {
+                        "from": 79,
+                        "to": 75
+            },
+            {
+                        "from": 79,
+                        "to": 117
+            },
+            {
+                        "from": 79,
+                        "to": 84
+            },
+            {
+                        "from": 79,
+                        "to": 44
+            },
+            {
+                        "from": 79,
+                        "to": 72
+            },
+            {
+                        "from": 79,
+                        "to": 104
+            },
+            {
+                        "from": 79,
+                        "to": 114
+            },
+            {
+                        "from": 79,
+                        "to": 83
+            },
+            {
+                        "from": 79,
+                        "to": 41
+            },
+            {
+                        "from": 79,
+                        "to": 109
+            },
+            {
+                        "from": 79,
+                        "to": 71
+            },
+            {
+                        "from": 79,
+                        "to": 26
+            },
+            {
+                        "from": 79,
+                        "to": 46
+            },
+            {
+                        "from": 79,
+                        "to": 37
+            },
+            {
+                        "from": 79,
+                        "to": 28
+            },
+            {
+                        "from": 79,
+                        "to": 47
+            },
+            {
+                        "from": 79,
+                        "to": 43
+            },
+            {
+                        "from": 79,
+                        "to": 27
+            },
+            {
+                        "from": 79,
+                        "to": 78
+            },
+            {
+                        "from": 79,
+                        "to": 31
+            },
+            {
+                        "from": 79,
+                        "to": 88
+            },
+            {
+                        "from": 79,
+                        "to": 61
+            },
+            {
+                        "from": 79,
+                        "to": 56
+            },
+            {
+                        "from": 79,
+                        "to": 38
+            },
+            {
+                        "from": 79,
+                        "to": 9
+            },
+            {
+                        "from": 79,
+                        "to": 15
+            },
+            {
+                        "from": 79,
+                        "to": 49
+            },
+            {
+                        "from": 79,
+                        "to": 95
+            },
+            {
+                        "from": 79,
+                        "to": 20
+            },
+            {
+                        "from": 79,
+                        "to": 22
+            },
+            {
+                        "from": 79,
+                        "to": 93
+            },
+            {
+                        "from": 79,
+                        "to": 54
+            },
+            {
+                        "from": 79,
+                        "to": 67
+            },
+            {
+                        "from": 79,
+                        "to": 110
+            },
+            {
+                        "from": 79,
+                        "to": 91
+            },
+            {
+                        "from": 79,
+                        "to": 52
+            },
+            {
+                        "from": 79,
+                        "to": 87
+            },
+            {
+                        "from": 79,
+                        "to": 105
+            },
+            {
+                        "from": 79,
+                        "to": 16
+            },
+            {
+                        "from": 79,
+                        "to": 48
+            },
+            {
+                        "from": 79,
+                        "to": 6
+            },
+            {
+                        "from": 79,
+                        "to": 97
+            },
+            {
+                        "from": 79,
+                        "to": 103
+            },
+            {
+                        "from": 79,
+                        "to": 5
+            },
+            {
+                        "from": 79,
+                        "to": 24
+            },
+            {
+                        "from": 79,
+                        "to": 55
+            },
+            {
+                        "from": 79,
+                        "to": 113
+            },
+            {
+                        "from": 79,
+                        "to": 8
+            },
+            {
+                        "from": 79,
+                        "to": 50
+            },
+            {
+                        "from": 79,
+                        "to": 57
+            },
+            {
+                        "from": 79,
+                        "to": 30
+            },
+            {
+                        "from": 79,
+                        "to": 120
+            },
+            {
+                        "from": 79,
+                        "to": 33
+            },
+            {
+                        "from": 79,
+                        "to": 36
+            },
+            {
+                        "from": 13,
+                        "to": 62
+            },
+            {
+                        "from": 13,
+                        "to": 59
+            },
+            {
+                        "from": 13,
+                        "to": 117
+            },
+            {
+                        "from": 118,
+                        "to": 62
+            },
+            {
+                        "from": 118,
+                        "to": 52
+            },
+            {
+                        "from": 86,
+                        "to": 29
+            },
+            {
+                        "from": 86,
+                        "to": 105
+            },
+            {
+                        "from": 86,
+                        "to": 120
+            },
+            {
+                        "from": 3,
+                        "to": 117
+            },
+            {
+                        "from": 3,
+                        "to": 71
+            },
+            {
+                        "from": 3,
+                        "to": 9
+            },
+            {
+                        "from": 62,
+                        "to": 60
+            },
+            {
+                        "from": 62,
+                        "to": 41
+            },
+            {
+                        "from": 62,
+                        "to": 71
+            },
+            {
+                        "from": 62,
+                        "to": 26
+            },
+            {
+                        "from": 62,
+                        "to": 20
+            },
+            {
+                        "from": 62,
+                        "to": 52
+            },
+            {
+                        "from": 62,
+                        "to": 113
+            },
+            {
+                        "from": 62,
+                        "to": 36
+            },
+            {
+                        "from": 29,
+                        "to": 60
+            },
+            {
+                        "from": 29,
+                        "to": 109
+            },
+            {
+                        "from": 29,
+                        "to": 71
+            },
+            {
+                        "from": 29,
+                        "to": 70
+            },
+            {
+                        "from": 29,
+                        "to": 67
+            },
+            {
+                        "from": 29,
+                        "to": 105
+            },
+            {
+                        "from": 29,
+                        "to": 5
+            },
+            {
+                        "from": 29,
+                        "to": 120
+            },
+            {
+                        "from": 60,
+                        "to": 75
+            },
+            {
+                        "from": 60,
+                        "to": 72
+            },
+            {
+                        "from": 60,
+                        "to": 104
+            },
+            {
+                        "from": 60,
+                        "to": 71
+            },
+            {
+                        "from": 60,
+                        "to": 26
+            },
+            {
+                        "from": 60,
+                        "to": 78
+            },
+            {
+                        "from": 60,
+                        "to": 31
+            },
+            {
+                        "from": 60,
+                        "to": 56
+            },
+            {
+                        "from": 60,
+                        "to": 110
+            },
+            {
+                        "from": 60,
+                        "to": 8
+            },
+            {
+                        "from": 60,
+                        "to": 50
+            },
+            {
+                        "from": 60,
+                        "to": 120
+            },
+            {
+                        "from": 60,
+                        "to": 33
+            },
+            {
+                        "from": 60,
+                        "to": 36
+            },
+            {
+                        "from": 112,
+                        "to": 59
+            },
+            {
+                        "from": 112,
+                        "to": 31
+            },
+            {
+                        "from": 112,
+                        "to": 87
+            },
+            {
+                        "from": 90,
+                        "to": 114
+            },
+            {
+                        "from": 90,
+                        "to": 47
+            },
+            {
+                        "from": 90,
+                        "to": 57
+            },
+            {
+                        "from": 59,
+                        "to": 44
+            },
+            {
+                        "from": 59,
+                        "to": 104
+            },
+            {
+                        "from": 59,
+                        "to": 27
+            },
+            {
+                        "from": 59,
+                        "to": 31
+            },
+            {
+                        "from": 59,
+                        "to": 88
+            },
+            {
+                        "from": 59,
+                        "to": 49
+            },
+            {
+                        "from": 59,
+                        "to": 93
+            },
+            {
+                        "from": 59,
+                        "to": 103
+            },
+            {
+                        "from": 75,
+                        "to": 44
+            },
+            {
+                        "from": 75,
+                        "to": 72
+            },
+            {
+                        "from": 75,
+                        "to": 43
+            },
+            {
+                        "from": 75,
+                        "to": 31
+            },
+            {
+                        "from": 117,
+                        "to": 104
+            },
+            {
+                        "from": 117,
+                        "to": 83
+            },
+            {
+                        "from": 117,
+                        "to": 71
+            },
+            {
+                        "from": 117,
+                        "to": 27
+            },
+            {
+                        "from": 117,
+                        "to": 88
+            },
+            {
+                        "from": 117,
+                        "to": 95
+            },
+            {
+                        "from": 117,
+                        "to": 93
+            },
+            {
+                        "from": 117,
+                        "to": 67
+            },
+            {
+                        "from": 117,
+                        "to": 16
+            },
+            {
+                        "from": 117,
+                        "to": 103
+            },
+            {
+                        "from": 117,
+                        "to": 24
+            },
+            {
+                        "from": 84,
+                        "to": 116
+            },
+            {
+                        "from": 84,
+                        "to": 119
+            },
+            {
+                        "from": 84,
+                        "to": 64
+            },
+            {
+                        "from": 40,
+                        "to": 53
+            },
+            {
+                        "from": 40,
+                        "to": 116
+            },
+            {
+                        "from": 40,
+                        "to": 119
+            },
+            {
+                        "from": 40,
+                        "to": 64
+            },
+            {
+                        "from": 40,
+                        "to": 25
+            },
+            {
+                        "from": 44,
+                        "to": 72
+            },
+            {
+                        "from": 44,
+                        "to": 104
+            },
+            {
+                        "from": 44,
+                        "to": 114
+            },
+            {
+                        "from": 44,
+                        "to": 26
+            },
+            {
+                        "from": 44,
+                        "to": 78
+            },
+            {
+                        "from": 44,
+                        "to": 31
+            },
+            {
+                        "from": 44,
+                        "to": 61
+            },
+            {
+                        "from": 44,
+                        "to": 38
+            },
+            {
+                        "from": 44,
+                        "to": 49
+            },
+            {
+                        "from": 44,
+                        "to": 95
+            },
+            {
+                        "from": 44,
+                        "to": 22
+            },
+            {
+                        "from": 44,
+                        "to": 91
+            },
+            {
+                        "from": 44,
+                        "to": 52
+            },
+            {
+                        "from": 44,
+                        "to": 6
+            },
+            {
+                        "from": 44,
+                        "to": 24
+            },
+            {
+                        "from": 44,
+                        "to": 66
+            },
+            {
+                        "from": 44,
+                        "to": 50
+            },
+            {
+                        "from": 44,
+                        "to": 57
+            },
+            {
+                        "from": 44,
+                        "to": 30
+            },
+            {
+                        "from": 72,
+                        "to": 104
+            },
+            {
+                        "from": 72,
+                        "to": 31
+            },
+            {
+                        "from": 72,
+                        "to": 15
+            },
+            {
+                        "from": 72,
+                        "to": 6
+            },
+            {
+                        "from": 72,
+                        "to": 55
+            },
+            {
+                        "from": 104,
+                        "to": 114
+            },
+            {
+                        "from": 104,
+                        "to": 41
+            },
+            {
+                        "from": 104,
+                        "to": 88
+            },
+            {
+                        "from": 104,
+                        "to": 56
+            },
+            {
+                        "from": 104,
+                        "to": 38
+            },
+            {
+                        "from": 104,
+                        "to": 49
+            },
+            {
+                        "from": 104,
+                        "to": 95
+            },
+            {
+                        "from": 104,
+                        "to": 20
+            },
+            {
+                        "from": 104,
+                        "to": 91
+            },
+            {
+                        "from": 104,
+                        "to": 52
+            },
+            {
+                        "from": 104,
+                        "to": 6
+            },
+            {
+                        "from": 104,
+                        "to": 103
+            },
+            {
+                        "from": 104,
+                        "to": 5
+            },
+            {
+                        "from": 104,
+                        "to": 24
+            },
+            {
+                        "from": 104,
+                        "to": 113
+            },
+            {
+                        "from": 104,
+                        "to": 50
+            },
+            {
+                        "from": 114,
+                        "to": 48
+            },
+            {
+                        "from": 114,
+                        "to": 24
+            },
+            {
+                        "from": 114,
+                        "to": 57
+            },
+            {
+                        "from": 83,
+                        "to": 14
+            },
+            {
+                        "from": 83,
+                        "to": 48
+            },
+            {
+                        "from": 83,
+                        "to": 21
+            },
+            {
+                        "from": 53,
+                        "to": 116
+            },
+            {
+                        "from": 53,
+                        "to": 119
+            },
+            {
+                        "from": 53,
+                        "to": 64
+            },
+            {
+                        "from": 53,
+                        "to": 25
+            },
+            {
+                        "from": 109,
+                        "to": 46
+            },
+            {
+                        "from": 109,
+                        "to": 91
+            },
+            {
+                        "from": 109,
+                        "to": 87
+            },
+            {
+                        "from": 109,
+                        "to": 50
+            },
+            {
+                        "from": 109,
+                        "to": 36
+            },
+            {
+                        "from": 71,
+                        "to": 27
+            },
+            {
+                        "from": 71,
+                        "to": 110
+            },
+            {
+                        "from": 71,
+                        "to": 36
+            },
+            {
+                        "from": 26,
+                        "to": 120
+            },
+            {
+                        "from": 46,
+                        "to": 87
+            },
+            {
+                        "from": 46,
+                        "to": 8
+            },
+            {
+                        "from": 37,
+                        "to": 31
+            },
+            {
+                        "from": 28,
+                        "to": 47
+            },
+            {
+                        "from": 28,
+                        "to": 70
+            },
+            {
+                        "from": 28,
+                        "to": 14
+            },
+            {
+                        "from": 28,
+                        "to": 87
+            },
+            {
+                        "from": 43,
+                        "to": 52
+            },
+            {
+                        "from": 43,
+                        "to": 66
+            },
+            {
+                        "from": 78,
+                        "to": 31
+            },
+            {
+                        "from": 31,
+                        "to": 61
+            },
+            {
+                        "from": 31,
+                        "to": 56
+            },
+            {
+                        "from": 31,
+                        "to": 15
+            },
+            {
+                        "from": 31,
+                        "to": 49
+            },
+            {
+                        "from": 31,
+                        "to": 67
+            },
+            {
+                        "from": 31,
+                        "to": 103
+            },
+            {
+                        "from": 31,
+                        "to": 5
+            },
+            {
+                        "from": 31,
+                        "to": 8
+            },
+            {
+                        "from": 31,
+                        "to": 30
+            },
+            {
+                        "from": 70,
+                        "to": 14
+            },
+            {
+                        "from": 70,
+                        "to": 87
+            },
+            {
+                        "from": 70,
+                        "to": 105
+            },
+            {
+                        "from": 14,
+                        "to": 87
+            },
+            {
+                        "from": 14,
+                        "to": 33
+            },
+            {
+                        "from": 38,
+                        "to": 55
+            },
+            {
+                        "from": 9,
+                        "to": 16
+            },
+            {
+                        "from": 15,
+                        "to": 87
+            },
+            {
+                        "from": 116,
+                        "to": 119
+            },
+            {
+                        "from": 116,
+                        "to": 64
+            },
+            {
+                        "from": 20,
+                        "to": 66
+            },
+            {
+                        "from": 93,
+                        "to": 16
+            },
+            {
+                        "from": 93,
+                        "to": 48
+            },
+            {
+                        "from": 54,
+                        "to": 87
+            },
+            {
+                        "from": 54,
+                        "to": 66
+            },
+            {
+                        "from": 54,
+                        "to": 120
+            },
+            {
+                        "from": 119,
+                        "to": 64
+            },
+            {
+                        "from": 119,
+                        "to": 25
+            },
+            {
+                        "from": 110,
+                        "to": 87
+            },
+            {
+                        "from": 91,
+                        "to": 113
+            },
+            {
+                        "from": 87,
+                        "to": 66
+            },
+            {
+                        "from": 87,
+                        "to": 8
+            },
+            {
+                        "from": 87,
+                        "to": 33
+            },
+            {
+                        "from": 105,
+                        "to": 5
+            },
+            {
+                        "from": 16,
+                        "to": 48
+            },
+            {
+                        "from": 16,
+                        "to": 21
+            },
+            {
+                        "from": 48,
+                        "to": 21
+            },
+            {
+                        "from": 6,
+                        "to": 33
+            },
+            {
+                        "from": 97,
+                        "to": 30
+            },
+            {
+                        "from": 64,
+                        "to": 25
+            },
+            {
+                        "from": 113,
+                        "to": 21
+            },
+            {
+                        "from": 66,
+                        "to": 8
+            },
+            {
+                        "from": 66,
+                        "to": 120
+            },
+            {
+                        "from": 57,
+                        "to": 30
+            }
+];
+
+        // Optional: connect every node to every other node with weak background links.
+        // This lets signal propagate globally while preserving the strong semantic topology above.
+        const USE_ALL_TO_ALL_EDGES = false;
+        const BACKGROUND_W0 = 0.14; // base permeability for weak links
+
+        function edgeKey(a, b) {
+            const lo = Math.min(a, b);
+            const hi = Math.max(a, b);
+            return `${lo}-${hi}`;
+        }
+
+        const allEdges = (() => {
+            if (!USE_ALL_TO_ALL_EDGES) return rawEdges.map(e => ({ ...e, w0: 1.0, background: false }));
+
+            const strong = rawEdges.map(e => ({ ...e, w0: 1.0, background: false }));
+            const existing = new Set(strong.map(e => edgeKey(e.from, e.to)));
+
+            const ids = rawNodes.map(n => n.id);
+            const background = [];
+            for (let i = 0; i < ids.length; i++) {
+                for (let j = i + 1; j < ids.length; j++) {
+                    const a = ids[i];
+                    const b = ids[j];
+                    const k = edgeKey(a, b);
+                    if (existing.has(k)) continue;
+                    background.push({ from: a, to: b, w0: BACKGROUND_W0, background: true });
+                }
+            }
+            return strong.concat(background);
+        })();
+
+    return { rawNodes, rawEdges, USE_ALL_TO_ALL_EDGES, BACKGROUND_W0, edgeKey, allEdges };
+  })();
+
+  // ---------------------------------------------------------------------------
+  // 2) Simulation — SOL physics engine (kept identical; just namespaced by usage)
+  // ---------------------------------------------------------------------------
+class SOLPhysics {
+            constructor(nodes, edges) {
+                this.nodes = nodes.map(n => ({ 
+                    ...n, 
+                    rho: 0,   // Density
+                    p: 0,     // Pressure
+                    psi_bias: n.group === 'spirit' ? 1 : (n.group === 'tech' ? -1 : 0), // +1 Mystic, -1 Logic
+                    psi: n.group === 'spirit' ? 1 : (n.group === 'tech' ? -1 : 0) // Evolving mode field (per-node)
+                }));
+
+                this.nodeById = new Map(this.nodes.map(n => [n.id, n]));
+                this.nodeIndexById = new Map(this.nodes.map((n, idx) => [n.id, idx]));
+                
+                this.edges = edges.map(e => ({ 
+                    ...e,
+                    w0: (typeof e.w0 === 'number' ? e.w0 : 1.0),
+                    background: !!e.background,
+                    flux: 0,
+                    conductance: 1.0
+                }));
+                
+                this.globalBias = 0; // -1 (Logic) to +1 (Spirit)
+
+                // Per-node mode evolution (kept lightweight; stable defaults)
+                this.psiDiffusion = 0.6;     // graph diffusion strength
+                this.psiRelaxBase = 0.12;    // relax toward intrinsic node bias
+                // Option A (recommended): belief slider shapes conductance sensitivity, not direct psi forcing.
+                this.psiGlobalNudge = 0.0;
+                this.psiClamp = 1.0;
+
+                // Mode-shaped conductance parameters (keeps weights positive)
+                this.conductanceBase = 1.0;
+                this.conductanceGamma = 0.75;
+                this.conductanceMin = 0.1;
+                this.conductanceMax = 3.0;
+            }
+
+            clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+            // Equation of State: P = c * log(1 + rho)
+            computePressure(c_press) {
+                this.nodes.forEach(n => {
+                    n.p = c_press * Math.log(1 + n.rho);
+                });
+            }
+
+            // Evolve per-node mode field psi using a simple graph reaction-diffusion step.
+            // Keeps the dashboard close to SOL v2's "mode field" idea without expensive matrix ops.
+            updatePsi(dt) {
+                const lap = new Array(this.nodes.length).fill(0);
+
+                // Edge-based Laplacian accumulation
+                this.edges.forEach(e => {
+                    const ia = this.nodeIndexById.get(e.from);
+                    const ib = this.nodeIndexById.get(e.to);
+                    if (ia === undefined || ib === undefined) return;
+                    const a = this.nodes[ia];
+                    const b = this.nodes[ib];
+                    const d = b.psi - a.psi;
+                    lap[ia] += d;
+                    lap[ib] -= d;
+                });
+
+                // Node-local reaction terms
+                this.nodes.forEach((n, idx) => {
+                    const rhoNorm = n.rho / (n.rho + 40); // 0..1
+                    const relaxToBias = (this.psiRelaxBase * (0.35 + 0.65 * rhoNorm)) * (n.psi_bias - n.psi);
+                    const relaxToGlobal = this.psiGlobalNudge * (this.globalBias - n.psi);
+                    const diffusion = this.psiDiffusion * lap[idx];
+
+                    n.psi += dt * (diffusion + relaxToBias + relaxToGlobal);
+                    n.psi = this.clamp(n.psi, -this.psiClamp, this.psiClamp);
+                });
+            }
+
+            // Update Edge Conductance based on Belief Field
+            updateConductance() {
+                this.edges.forEach(e => {
+                    const src = this.nodeById.get(e.from);
+                    const dst = this.nodeById.get(e.to);
+
+                    // SOL v2-style mode-shaped conductance: strictly positive weights.
+                    // w_e(psi) = w0 * exp(gamma * avgPsi)
+                    const avgPsi = (src.psi + dst.psi) / 2;
+                    const w = (e.w0 * this.conductanceBase) * Math.exp(this.conductanceGamma * avgPsi);
+                    e.conductance = this.clamp(w, this.conductanceMin, this.conductanceMax);
+                });
+            }
+
+            // Main Time Step
+            step(dt, c_press, damping) {
+                // Update evolving per-node mode field first (so conductance responds to psi)
+                this.updatePsi(dt);
+                this.computePressure(c_press);
+                this.updateConductance();
+
+                let totalFlux = 0;
+                const dRho = new Array(this.nodes.length).fill(0);
+
+                // 1. Calculate fluxes, then apply a simultaneous continuity-style update.
+                // This matches the discrete form rho_dot + B^T j = s_rho (up to scaling).
+                this.edges.forEach(e => {
+                    const ia = this.nodeIndexById.get(e.from);
+                    const ib = this.nodeIndexById.get(e.to);
+                    if (ia === undefined || ib === undefined) return;
+
+                    const src = this.nodes[ia];
+                    const dst = this.nodes[ib];
+
+                    // Gradient: High P -> Low P
+                    const deltaP = src.p - dst.p;
+
+                    // Flux j = Conductance * DeltaP (Darcy-style)
+                    const targetFlux = e.conductance * deltaP;
+
+                    // Apply slight inertia/smoothing
+                    e.flux = e.flux * (1 - dt) + targetFlux * dt;
+                    totalFlux += Math.abs(e.flux);
+
+                    // Transport Mass (finite-volume / continuity)
+                    const flowAmt = e.flux * dt * 0.5; // scale factor
+                    dRho[ia] -= flowAmt;
+                    dRho[ib] += flowAmt;
+                });
+
+                this.nodes.forEach((n, idx) => {
+                    n.rho += dRho[idx];
+                });
+
+                // 3. Natural Decay / Entropy (prevents infinite explosion)
+                // Also ensures negative density doesn't happen (vacuum)
+                let activeCount = 0;
+                this.nodes.forEach(n => {
+                    n.rho *= (1.0 - (damping * dt * 0.1)); 
+                    if(n.rho < 0) n.rho = 0;
+                    if(n.rho > 0.1) activeCount++;
+                });
+
+                return { totalFlux, activeCount };
+            }
+
+            inject(label, amount) {
+                const q = String(label ?? '').trim().toLowerCase();
+                if (!q) return false;
+
+                let target = this.nodes.find(n => n.label.toLowerCase() === q);
+                if (!target && q.length >= 2) {
+                    const matches = this.nodes.filter(n => n.label.toLowerCase().includes(q));
+                    if (matches.length === 1) target = matches[0];
+                }
+
+                if (!target) return false;
+                target.rho += amount;
+                return true;
+            }
+        }
+
+  App.sim = {
+    createPhysics() {
+      return new SOLPhysics(App.data.rawNodes, App.data.allEdges);
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // 3) Visualization — vis-network setup
+  // ---------------------------------------------------------------------------
+  App.viz = {
+    init() {
+      const { nodeColorByGroup, edge } = App.config.viz;
+      const container = App.dom.network;
+
+      const physics = App.state.physics;
+
+      // Vis.js DataSets
+      const visNodes = new vis.DataSet(
+        physics.nodes.map(n => ({
+          id: n.id,
+          label: n.label,
+          value: 1,
+          color: nodeColorByGroup[n.group] || nodeColorByGroup.default
+        }))
+      );
+
+      const visEdges = new vis.DataSet(
+        physics.edges.map(e => ({
+          id: `${e.from}-${e.to}`,
+          from: e.from,
+          to: e.to,
+          // Critical: keep weak background links out of the layout solver.
+          physics: !e.background,
+          width: e.background ? edge.background.baseWidth : edge.strong.baseWidth,
+          color: {
+            color: e.background ? '#333' : '#333',
+            opacity: e.background ? edge.background.idleOpacity : 0.3
+          },
+          arrows: 'to' // Visualization only; flow is bidirectional in the sim.
+        }))
+      );
+
+      const options = {
+        nodes: {
+          shape: 'dot',
+          font: { color: '#fff', face: 'monospace' },
+          borderWidth: 2
+        },
+        physics: {
+          forceAtlas2Based: {
+            gravitationalConstant: -50,
+            centralGravity: 0.01,
+            springLength: 100,
+            springConstant: 0.08
+          },
+          solver: 'forceAtlas2Based',
+          stabilization: {
+            enabled: true,
+            iterations: 220,
+            updateInterval: 25
+          }
+        },
+        interaction: {
+          hover: true,
+          dragView: true,
+          dragNodes: false,
+          zoomView: true
+        }
+      };
+
+      const network = new vis.Network(container, { nodes: visNodes, edges: visEdges }, options);
+
+      // Click-to-inject: clicking a node performs the same action as typing its label
+      // and pressing the Inject button (uses the same default inject amount).
+      network.on('click', (params) => {
+        try {
+          const nodeIds = params && params.nodes;
+          if (!nodeIds || nodeIds.length === 0) return;
+
+          const clickedId = nodeIds[0];
+          const clickedNode = physics.nodeById && physics.nodeById.get(clickedId);
+          const label = clickedNode && clickedNode.label;
+          if (!label) return;
+
+          if (App.dom && App.dom.queryInput) App.dom.queryInput.value = label;
+          if (App.ui && typeof App.ui.injectQuery === 'function') App.ui.injectQuery();
+        } catch (err) {
+          // No-op: click injection should never break interaction
+        }
+      });
+
+      if (App.config.layout.freezeAfterStabilize) {
+        network.once('stabilizationIterationsDone', () => {
+          network.setOptions({ physics: false });
+        });
+      }
+
+      App.state.visNodes = visNodes;
+      App.state.visEdges = visEdges;
+      App.state.network = network;
+    },
+
+    applyFrameUpdates() {
+      const { edge } = App.config.viz;
+      const { physics, visNodes, visEdges } = App.state;
+
+      const updatesNodes = [];
+      const updatesEdges = [];
+
+      // Node size = density
+      physics.nodes.forEach(n => {
+        const size = 5 + Math.sqrt(n.rho) * 10;
+        updatesNodes.push({ id: n.id, value: size });
+      });
+
+      // Edge width + color + arrows = flux & conductance
+      physics.edges.forEach(e => {
+        const fluxAbs = Math.abs(e.flux);
+        const isBg = !!e.background;
+
+        const baseWidth = isBg ? edge.background.baseWidth : edge.strong.baseWidth;
+        const widthScale = isBg ? edge.background.widthScale : edge.strong.widthScale;
+        const minFlux = isBg ? edge.background.minFlux : edge.strong.minFlux;
+        const idleOpacity = isBg ? edge.background.idleOpacity : edge.strong.idleOpacity;
+
+        const width = baseWidth + fluxAbs * widthScale;
+
+        let color = '#444';
+        let opacity = idleOpacity;
+        let arrows = 'to';
+
+        if (fluxAbs > minFlux) {
+          if (isBg) {
+            const scale = (typeof edge.background.activeOpacityScale === 'number') ? edge.background.activeOpacityScale : 2.5;
+            opacity = Math.min(1, idleOpacity + fluxAbs * scale);
+          } else {
+            opacity = Math.min(1, fluxAbs);
+          }
+          arrows = e.flux >= 0 ? 'to' : 'from';
+
+          // Conductance-coded “openness”
+          if (e.conductance > 1.0) color = '#fff';       // Super-conductive
+          else if (e.conductance < 0.5) color = '#550000'; // Resisting
+          else color = '#00bcd4';
+        }
+
+        updatesEdges.push({
+          id: `${e.from}-${e.to}`,
+          width,
+          color: { color, opacity },
+          arrows
+        });
+      });
+
+      visNodes.update(updatesNodes);
+      visEdges.update(updatesEdges);
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // 4) UI — DOM bindings, drawer, and handlers
+  // ---------------------------------------------------------------------------
+  App.ui = {
+    cacheDom() {
+      const byId = (id) => document.getElementById(id);
+
+      App.dom = {
+        network: byId('network'),
+
+        queryInput: byId('queryInput'),
+        injectBtn: byId('injectBtn'),
+
+        beliefSlider: byId('beliefSlider'),
+        pressureSlider: byId('pressureSlider'),
+        dampSlider: byId('dampSlider'),
+
+        modeText: byId('mode-text'),
+        indSpirit: byId('ind-spirit'),
+        indLogic: byId('ind-logic'),
+
+        helpBtn: byId('helpBtn'),
+        helpDrawer: byId('helpDrawer'),
+        helpDrawerBackdrop: byId('helpDrawerBackdrop'),
+        helpCloseBtn: byId('helpCloseBtn'),
+
+        mathBtn: byId('mathBtn'),
+        mathDrawer: byId('mathDrawer'),
+        mathCloseBtn: byId('mathCloseBtn'),
+
+        hybridBtn: byId('hybridBtn'),
+        hybridDrawer: byId('hybridDrawer'),
+        hybridCloseBtn: byId('hybridCloseBtn'),
+
+        metrics: {
+          entropy: byId('val-entropy'),
+          flux: byId('val-flux'),
+          fluxMax: byId('val-flux-max'),
+          mass: byId('val-mass'),
+          rho: byId('val-rho'),
+          active: byId('val-active'),
+          pi: byId('val-pi'),
+          damp: byId('val-damp'),
+          bias: byId('val-bias'),
+          gamma: byId('val-gamma')
+        }
+      };
+    },
+
+    bindEvents() {
+      App.dom.injectBtn.addEventListener('click', App.ui.injectQuery);
+      App.dom.queryInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') App.ui.injectQuery();
+      });
+
+      App.dom.beliefSlider.addEventListener('input', App.ui.onBeliefInput);
+
+      App.ui.initDrawers();
+
+      window.addEventListener('resize', () => {
+        if (App.state.network) App.state.network.redraw();
+      });
+    },
+
+    injectQuery() {
+      const val = App.dom.queryInput.value.trim();
+      if (!val) return;
+
+      const ok = App.state.physics.inject(val, App.config.injectAmountDefault);
+
+      if (ok) {
+        const input = App.dom.queryInput;
+        input.style.borderColor = '#00bcd4';
+        setTimeout(() => (input.style.borderColor = '#444'), 300);
+      } else {
+        alert('Concept not found in current Gem. Try: Soul, Logic, Matrix...');
+      }
+    },
+
+    onBeliefInput(e) {
+      const val = parseInt(e.target.value, 10);
+      const bias = (val - 50) / 50; // 0..100 -> -1..+1
+
+      const physics = App.state.physics;
+      physics.globalBias = bias;
+
+      // Belief shapes conductance sensitivity/sign (gamma)
+      physics.conductanceGamma = bias * App.config.beliefGammaMax;
+
+      // UI feedback
+      const txt = App.dom.modeText;
+      const indSpirit = App.dom.indSpirit;
+      const indLogic = App.dom.indLogic;
+
+      indSpirit.style.opacity = 0.2;
+      indLogic.style.opacity = 0.2;
+
+      if (bias < -0.3) {
+        txt.innerText = 'Scientific Materialism Active';
+        txt.style.color = 'var(--mode-logic)';
+        indLogic.style.opacity = 1.0;
+      } else if (bias > 0.3) {
+        txt.innerText = 'Esoteric/Spiritual Active';
+        txt.style.color = 'var(--mode-spirit)';
+        indSpirit.style.opacity = 1.0;
+      } else {
+        txt.innerText = 'Balanced View';
+        txt.style.color = '#aaa';
+      }
+    },
+
+    initDrawers() {
+      const helpBtn = App.dom.helpBtn;
+      const helpDrawer = App.dom.helpDrawer;
+      const helpCloseBtn = App.dom.helpCloseBtn;
+
+      const mathBtn = App.dom.mathBtn;
+      const mathDrawer = App.dom.mathDrawer;
+      const mathCloseBtn = App.dom.mathCloseBtn;
+
+      const hybridBtn = App.dom.hybridBtn;
+      const hybridDrawer = App.dom.hybridDrawer;
+      const hybridCloseBtn = App.dom.hybridCloseBtn;
+
+      const backdrop = App.dom.helpDrawerBackdrop;
+
+      const isAnyOpen = () =>
+        helpDrawer.classList.contains('open') || mathDrawer.classList.contains('open') || hybridDrawer.classList.contains('open');
+
+      const closeAll = () => {
+        helpDrawer.classList.remove('open');
+        helpDrawer.setAttribute('aria-hidden', 'true');
+        helpBtn.setAttribute('aria-expanded', 'false');
+
+        mathDrawer.classList.remove('open');
+        mathDrawer.setAttribute('aria-hidden', 'true');
+        mathBtn.setAttribute('aria-expanded', 'false');
+
+        hybridDrawer.classList.remove('open');
+        hybridDrawer.setAttribute('aria-hidden', 'true');
+        hybridBtn.setAttribute('aria-expanded', 'false');
+
+        backdrop.hidden = true;
+      };
+
+      const openHelp = () => {
+        mathDrawer.classList.remove('open');
+        mathDrawer.setAttribute('aria-hidden', 'true');
+        mathBtn.setAttribute('aria-expanded', 'false');
+
+        hybridDrawer.classList.remove('open');
+        hybridDrawer.setAttribute('aria-hidden', 'true');
+        hybridBtn.setAttribute('aria-expanded', 'false');
+
+        helpDrawer.classList.add('open');
+        helpDrawer.setAttribute('aria-hidden', 'false');
+        helpBtn.setAttribute('aria-expanded', 'true');
+        backdrop.hidden = false;
+      };
+
+      const openMath = () => {
+        helpDrawer.classList.remove('open');
+        helpDrawer.setAttribute('aria-hidden', 'true');
+        helpBtn.setAttribute('aria-expanded', 'false');
+
+        hybridDrawer.classList.remove('open');
+        hybridDrawer.setAttribute('aria-hidden', 'true');
+        hybridBtn.setAttribute('aria-expanded', 'false');
+
+        mathDrawer.classList.add('open');
+        mathDrawer.setAttribute('aria-hidden', 'false');
+        mathBtn.setAttribute('aria-expanded', 'true');
+        backdrop.hidden = false;
+      };
+
+      const openHybrid = () => {
+        helpDrawer.classList.remove('open');
+        helpDrawer.setAttribute('aria-hidden', 'true');
+        helpBtn.setAttribute('aria-expanded', 'false');
+
+        mathDrawer.classList.remove('open');
+        mathDrawer.setAttribute('aria-hidden', 'true');
+        mathBtn.setAttribute('aria-expanded', 'false');
+
+        hybridDrawer.classList.add('open');
+        hybridDrawer.setAttribute('aria-hidden', 'false');
+        hybridBtn.setAttribute('aria-expanded', 'true');
+        backdrop.hidden = false;
+      };
+
+      helpBtn.addEventListener('click', () => {
+        const isOpen = helpDrawer.classList.contains('open');
+        if (isOpen) closeAll();
+        else openHelp();
+      });
+
+      mathBtn.addEventListener('click', () => {
+        const isOpen = mathDrawer.classList.contains('open');
+        if (isOpen) closeAll();
+        else openMath();
+      });
+
+      hybridBtn.addEventListener('click', () => {
+        const isOpen = hybridDrawer.classList.contains('open');
+        if (isOpen) closeAll();
+        else openHybrid();
+      });
+
+      helpCloseBtn.addEventListener('click', closeAll);
+      mathCloseBtn.addEventListener('click', closeAll);
+      hybridCloseBtn.addEventListener('click', closeAll);
+      backdrop.addEventListener('click', closeAll);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isAnyOpen()) closeAll();
+      });
+    },
+
+    // Optional: auto-inject via URL for debugging/reproduction.
+    // Example: sol_dashboard.html?inject=Soul&amount=50
+    maybeAutoInjectFromUrl() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const inject = params.get('inject');
+        if (!inject) return;
+
+        const amount = parseFloat(params.get('amount') || String(App.config.injectAmountDefault));
+        const safeAmount = Number.isFinite(amount) ? amount : App.config.injectAmountDefault;
+
+        App.dom.queryInput.value = inject;
+
+        setTimeout(() => {
+          const ok = App.state.physics.inject(inject, safeAmount);
+          void ok;
+        }, 250);
+      } catch (err) {
+        // No-op
+      }
+    },
+
+    renderMath() {
+      // Render inline TeX like $\rho$, $\psi$, $\Pi$.
+      if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ],
+          throwOnError: false
+        });
+      }
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // 5) Loop — timing + metrics + per-frame updates
+  // ---------------------------------------------------------------------------
+  App.loop = {
+    start() {
+      App.state.lastTimeMs = Date.now();
+      requestAnimationFrame(App.loop.tick);
+    },
+
+    tick() {
+      const now = Date.now();
+      const dt = Math.min((now - App.state.lastTimeMs) / 1000, App.config.dtCap);
+      App.state.lastTimeMs = now;
+
+      // UI params
+      const pressC = parseFloat(App.dom.pressureSlider.value) * App.config.pressureSliderScale;
+      const damp = parseFloat(App.dom.dampSlider.value);
+      const bias = Math.max(-1, Math.min(1, App.state.physics.globalBias));
+
+      // Step physics
+      const metrics = App.state.physics.step(dt, pressC, damp);
+
+      // Format: higher precision so "0" doesn’t hide slow dynamics
+      const fmtSmall = (v) => {
+        const a = Math.abs(v);
+        if (a === 0) return '0.0000';
+        if (a < 1e-4) return v.toExponential(2);
+        if (a < 1000) return v.toFixed(4);
+        return v.toExponential(3);
+      };
+
+      // Aggregate density stats
+      let sumRho = 0;
+      let maxRho = 0;
+      for (const n of App.state.physics.nodes) {
+        sumRho += n.rho;
+        if (n.rho > maxRho) maxRho = n.rho;
+      }
+      const avgRho = sumRho / Math.max(1, App.state.physics.nodes.length);
+
+      // Normalized Shannon entropy (0..1)
+      let entropy = 0;
+      if (sumRho > 0) {
+        let H = 0;
+        for (const n of App.state.physics.nodes) {
+          const p = n.rho / sumRho;
+          if (p > 0) H -= p * Math.log(p);
+        }
+        const Hmax = Math.log(Math.max(1, App.state.physics.nodes.length));
+        entropy = Hmax > 0 ? (H / Hmax) : 0;
+      }
+
+      // Flux max
+      let maxFluxAbs = 0;
+      for (const e of App.state.physics.edges) {
+        const a = Math.abs(e.flux);
+        if (a > maxFluxAbs) maxFluxAbs = a;
+      }
+
+      // UI metrics
+      const m = App.dom.metrics;
+      if (m.entropy) m.entropy.innerText = entropy.toFixed(4);
+      if (m.flux) m.flux.innerText = fmtSmall(metrics.totalFlux);
+      if (m.fluxMax) m.fluxMax.innerText = fmtSmall(maxFluxAbs);
+      if (m.mass) m.mass.innerText = sumRho.toFixed(2);
+      if (m.rho) m.rho.innerText = `${avgRho.toFixed(2)} / ${maxRho.toFixed(2)}`;
+      if (m.active) m.active.innerText = metrics.activeCount;
+      if (m.pi) m.pi.innerText = pressC.toFixed(2);
+      if (m.damp) m.damp.innerText = damp.toFixed(2);
+      if (m.bias) m.bias.innerText = bias.toFixed(2);
+      if (m.gamma) m.gamma.innerText = App.state.physics.conductanceGamma.toFixed(2);
+
+      // Visualization updates
+      App.viz.applyFrameUpdates();
+
+      requestAnimationFrame(App.loop.tick);
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // Boot
+  // ---------------------------------------------------------------------------
+  App.init = function init() {
+    App.ui.cacheDom();
+    App.state.physics = App.sim.createPhysics();
+    App.viz.init();
+    App.ui.bindEvents();
+    App.ui.maybeAutoInjectFromUrl();
+    App.ui.renderMath();
+    App.loop.start();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', App.init);
+  } else {
+    App.init();
+  }
+})();
+</script>
+</body>
+</html>

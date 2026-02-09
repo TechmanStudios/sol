@@ -1,0 +1,74 @@
+{
+  "protocol": "dual_inject_timing",
+  "engine_version": "sol_engine.py-phase0",
+  "rng_seed": 42,
+  "total_steps": 300,
+  "conditions": {
+    "baseline": {
+      "params": {
+        "dt": 0.12,
+        "c_press": 0.1,
+        "damping": 0.2
+      },
+      "checkpoints": [
+        {
+          "step": 1,
+          "entropy": 0.0010148804102415707,
+          "totalFlux": 0.3945293006809089,
+          "mass": 49.879999999999995,
+          "rhoMaxId": 1,
+          "activeCount": 1,
+          "maxRho": 49.856385054178446
+        },
+        {
+          "step": 76,
+          "entropy": 0.321435123485574,
+          "totalFlux": 6.561694963418637,
+          "mass": 46.90605134995433,
+          "rhoMaxId": 1,
+          "activeCount": 24,
+          "maxRho": 36.34991893900838
+        },
+        {
+          "step": 151,
+          "entropy": 0.6184385849268368,
+          "totalFlux": 7.116172819294878,
+          "mass": 42.16908443737067,
+          "rhoMaxId": 1,
+          "activeCount": 114,
+          "maxRho": 21.38716173148568
+        },
+        {
+          "step": 226,
+          "entropy": 0.8809036120203115,
+          "totalFlux": 6.33363651704989,
+          "mass": 36.16614981049715,
+          "rhoMaxId": 1,
+          "activeCount": 128,
+          "maxRho": 7.3702012939099495
+        },
+        {
+          "step": 300,
+          "entropy": 0.9857352346713806,
+          "totalFlux": 1.311032888530845,
+          "mass": 29.992099091172364,
+          "rhoMaxId": 132,
+          "activeCount": 127,
+          "maxRho": 0.38200282296201715
+        }
+      ],
+      "final_metrics": {
+        "entropy": 0.9857352346713806,
+        "totalFlux": 1.311032888530845,
+        "maxFluxAbs": 0.023896309369775808,
+        "mass": 29.992099091172364,
+        "avgRho": 0.21422927922265975,
+        "maxRho": 0.38200282296201715,
+        "rhoMaxId": 132,
+        "activeCount": 127,
+        "vortNorm_global": 0.0,
+        "vortNorm_global_ema": 0.0
+      }
+    }
+  }
+}

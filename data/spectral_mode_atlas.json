@@ -1,0 +1,933 @@
+{
+  "timestamp": "2026-02-08T16:49:38",
+  "runtime_sec": 55.27,
+  "heartbeat_freq": 0.238732414637843,
+  "steps": 2000,
+  "sample_every": 2,
+  "atlas": {
+    "0.2": {
+      "n_heartbeat_locked": 0,
+      "n_independent": 140,
+      "mass_peak_freq": 0.004166666666666667,
+      "mass_hb_fraction": 2.0596009907905606e-06,
+      "mass_harmonics": [
+        {
+          "freq": 0.004166666666666667,
+          "power": 113096913.29805745,
+          "power_fraction": 0.9322497807381637,
+          "type": "independent"
+        }
+      ],
+      "top_heartbeat_nodes": [],
+      "top_independent_nodes": [
+        {
+          "id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 5,
+          "label": "earth star",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 12,
+          "label": "eye",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 7,
+          "label": "numis'om",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 136,
+          "label": "maia christianne",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 98,
+          "label": "simeon",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        }
+      ],
+      "coupling_pairs": [
+        {
+          "node_a": 14,
+          "node_b": 17,
+          "plv": 1.0,
+          "amp_a": 0.426809794764047,
+          "amp_b": 0.426809794764047
+        },
+        {
+          "node_a": 14,
+          "node_b": 30,
+          "plv": 1.0,
+          "amp_a": 0.426809794764047,
+          "amp_b": 0.426809794764047
+        },
+        {
+          "node_a": 14,
+          "node_b": 41,
+          "plv": 1.0,
+          "amp_a": 0.426809794764047,
+          "amp_b": 0.426809794764047
+        },
+        {
+          "node_a": 14,
+          "node_b": 112,
+          "plv": 1.0,
+          "amp_a": 0.426809794764047,
+          "amp_b": 0.426809794764047
+        },
+        {
+          "node_a": 14,
+          "node_b": 113,
+          "plv": 1.0,
+          "amp_a": 0.426809794764047,
+          "amp_b": 0.426809794764047
+        },
+        {
+          "node_a": 17,
+          "node_b": 30,
+          "plv": 1.0,
+          "amp_a": 0.426809794764047,
+          "amp_b": 0.426809794764047
+        },
+        {
+          "node_a": 17,
+          "node_b": 41,
+          "plv": 1.0,
+          "amp_a": 0.426809794764047,
+          "amp_b": 0.426809794764047
+        },
+        {
+          "node_a": 17,
+          "node_b": 112,
+          "plv": 1.0,
+          "amp_a": 0.426809794764047,
+          "amp_b": 0.426809794764047
+        },
+        {
+          "node_a": 17,
+          "node_b": 113,
+          "plv": 1.0,
+          "amp_a": 0.426809794764047,
+          "amp_b": 0.426809794764047
+        },
+        {
+          "node_a": 27,
+          "node_b": 77,
+          "plv": 1.0,
+          "amp_a": 0.5315240201137322,
+          "amp_b": 0.5315240201137322
+        }
+      ],
+      "freq_distribution": {
+        "total_active": 140,
+        "mean_freq": 0.004166666666666666,
+        "std_freq": 8.673617379884035e-19
+      }
+    },
+    "5.0": {
+      "n_heartbeat_locked": 0,
+      "n_independent": 140,
+      "mass_peak_freq": 0.004166666666666667,
+      "mass_hb_fraction": 9.564773108951346e-07,
+      "mass_harmonics": [
+        {
+          "freq": 0.004166666666666667,
+          "power": 1304388.047058569,
+          "power_fraction": 0.9937008244890386,
+          "type": "independent"
+        }
+      ],
+      "top_heartbeat_nodes": [],
+      "top_independent_nodes": [
+        {
+          "id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 5,
+          "label": "earth star",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 12,
+          "label": "eye",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 132,
+          "label": "magdalene",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 98,
+          "label": "simeon",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 79,
+          "label": "par",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        }
+      ],
+      "coupling_pairs": [
+        {
+          "node_a": 27,
+          "node_b": 77,
+          "plv": 1.0,
+          "amp_a": 0.037331966518440354,
+          "amp_b": 0.037331966518440354
+        },
+        {
+          "node_a": 27,
+          "node_b": 81,
+          "plv": 1.0,
+          "amp_a": 0.037331966518440354,
+          "amp_b": 0.037331966518440354
+        },
+        {
+          "node_a": 28,
+          "node_b": 51,
+          "plv": 1.0,
+          "amp_a": 0.021095322580827275,
+          "amp_b": 0.021095322580827275
+        },
+        {
+          "node_a": 77,
+          "node_b": 81,
+          "plv": 1.0,
+          "amp_a": 0.037331966518440354,
+          "amp_b": 0.037331966518440354
+        },
+        {
+          "node_a": 43,
+          "node_b": 57,
+          "plv": 0.9999965949330307,
+          "amp_a": 0.011027693591582668,
+          "amp_b": 0.010534400718618475
+        },
+        {
+          "node_a": 79,
+          "node_b": 82,
+          "plv": 0.9999935688248077,
+          "amp_a": 0.03778054755622136,
+          "amp_b": 0.035497447427115046
+        },
+        {
+          "node_a": 62,
+          "node_b": 65,
+          "plv": 0.999993390763451,
+          "amp_a": 0.010957997959376268,
+          "amp_b": 0.01075720614843417
+        },
+        {
+          "node_a": 43,
+          "node_b": 73,
+          "plv": 0.9999924654411133,
+          "amp_a": 0.011027693591582668,
+          "amp_b": 0.011077354352735212
+        },
+        {
+          "node_a": 57,
+          "node_b": 65,
+          "plv": 0.9999914575105866,
+          "amp_a": 0.010534400718618475,
+          "amp_b": 0.01075720614843417
+        },
+        {
+          "node_a": 57,
+          "node_b": 73,
+          "plv": 0.9999902621958794,
+          "amp_a": 0.010534400718618475,
+          "amp_b": 0.011077354352735212
+        }
+      ],
+      "freq_distribution": {
+        "total_active": 140,
+        "mean_freq": 0.004166666666666666,
+        "std_freq": 8.673617379884035e-19
+      }
+    },
+    "20.0": {
+      "n_heartbeat_locked": 0,
+      "n_independent": 140,
+      "mass_peak_freq": 0.004166666666666667,
+      "mass_hb_fraction": 6.363494760857242e-07,
+      "mass_harmonics": [
+        {
+          "freq": 0.004166666666666667,
+          "power": 78491.12887329744,
+          "power_fraction": 0.9996950383437035,
+          "type": "independent"
+        }
+      ],
+      "top_heartbeat_nodes": [],
+      "top_independent_nodes": [
+        {
+          "id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 79,
+          "label": "par",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 82,
+          "label": "johannine grove",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 89,
+          "label": "mystery school",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 132,
+          "label": "magdalene",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 104,
+          "label": "church",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        }
+      ],
+      "coupling_pairs": [
+        {
+          "node_a": 27,
+          "node_b": 77,
+          "plv": 1.0,
+          "amp_a": 0.003984508828785587,
+          "amp_b": 0.003984508828785587
+        },
+        {
+          "node_a": 27,
+          "node_b": 81,
+          "plv": 1.0,
+          "amp_a": 0.003984508828785587,
+          "amp_b": 0.003984508828785587
+        },
+        {
+          "node_a": 28,
+          "node_b": 51,
+          "plv": 1.0,
+          "amp_a": 0.0019093995456040535,
+          "amp_b": 0.0019093995456040535
+        },
+        {
+          "node_a": 77,
+          "node_b": 81,
+          "plv": 1.0,
+          "amp_a": 0.003984508828785587,
+          "amp_b": 0.003984508828785587
+        },
+        {
+          "node_a": 2,
+          "node_b": 9,
+          "plv": 0.9999992256582596,
+          "amp_a": 0.7300097092075756,
+          "amp_b": 1.0272451219799303
+        },
+        {
+          "node_a": 5,
+          "node_b": 12,
+          "plv": 0.9999981883485535,
+          "amp_a": 0.0040405428378576325,
+          "amp_b": 0.004092799722008671
+        },
+        {
+          "node_a": 43,
+          "node_b": 62,
+          "plv": 0.9999979472565604,
+          "amp_a": 0.0005641519772956966,
+          "amp_b": 0.0005980467696112409
+        },
+        {
+          "node_a": 79,
+          "node_b": 82,
+          "plv": 0.9999978550524091,
+          "amp_a": 0.007983302838302671,
+          "amp_b": 0.0075508083254553545
+        },
+        {
+          "node_a": 65,
+          "node_b": 73,
+          "plv": 0.9999967713096428,
+          "amp_a": 0.0005703454614516774,
+          "amp_b": 0.0005672920292710918
+        },
+        {
+          "node_a": 62,
+          "node_b": 114,
+          "plv": 0.9999946175370046,
+          "amp_a": 0.0005980467696112409,
+          "amp_b": 0.0005642280159960045
+        }
+      ],
+      "freq_distribution": {
+        "total_active": 140,
+        "mean_freq": 0.004166666666666666,
+        "std_freq": 8.673617379884035e-19
+      }
+    },
+    "55.0": {
+      "n_heartbeat_locked": 0,
+      "n_independent": 140,
+      "mass_peak_freq": 0.004166666666666667,
+      "mass_hb_fraction": 1.8596847308341653e-06,
+      "mass_harmonics": [
+        {
+          "freq": 0.004166666666666667,
+          "power": 2118.9702467599254,
+          "power_fraction": 0.9999858061698358,
+          "type": "independent"
+        }
+      ],
+      "top_heartbeat_nodes": [],
+      "top_independent_nodes": [
+        {
+          "id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 79,
+          "label": "par",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 82,
+          "label": "johannine grove",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 89,
+          "label": "mystery school",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 104,
+          "label": "church",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 132,
+          "label": "magdalene",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        }
+      ],
+      "coupling_pairs": [
+        {
+          "node_a": 27,
+          "node_b": 77,
+          "plv": 1.0,
+          "amp_a": 0.00022167744486871688,
+          "amp_b": 0.00022167744486871688
+        },
+        {
+          "node_a": 27,
+          "node_b": 81,
+          "plv": 1.0,
+          "amp_a": 0.00022167744486871688,
+          "amp_b": 0.00022167744486871688
+        },
+        {
+          "node_a": 28,
+          "node_b": 51,
+          "plv": 1.0,
+          "amp_a": 0.00010975738642963169,
+          "amp_b": 0.00010975738642963169
+        },
+        {
+          "node_a": 77,
+          "node_b": 81,
+          "plv": 1.0,
+          "amp_a": 0.00022167744486871688,
+          "amp_b": 0.00022167744486871688
+        },
+        {
+          "node_a": 2,
+          "node_b": 9,
+          "plv": 0.9999999967631916,
+          "amp_a": 0.1411670560572939,
+          "amp_b": 0.19762627220651346
+        },
+        {
+          "node_a": 43,
+          "node_b": 57,
+          "plv": 0.999999986336835,
+          "amp_a": 9.675103212907933e-06,
+          "amp_b": 9.673116199670995e-06
+        },
+        {
+          "node_a": 43,
+          "node_b": 62,
+          "plv": 0.9999999609698137,
+          "amp_a": 9.675103212907933e-06,
+          "amp_b": 1.03206475513813e-05
+        },
+        {
+          "node_a": 57,
+          "node_b": 62,
+          "plv": 0.999999921344193,
+          "amp_a": 9.673116199670995e-06,
+          "amp_b": 1.03206475513813e-05
+        },
+        {
+          "node_a": 57,
+          "node_b": 123,
+          "plv": 0.9999998892818147,
+          "amp_a": 9.673116199670995e-06,
+          "amp_b": 9.632299687898492e-06
+        },
+        {
+          "node_a": 65,
+          "node_b": 73,
+          "plv": 0.9999998699446268,
+          "amp_a": 9.833842296721702e-06,
+          "amp_b": 9.662996245177006e-06
+        }
+      ],
+      "freq_distribution": {
+        "total_active": 140,
+        "mean_freq": 0.004166666666666666,
+        "std_freq": 8.673617379884035e-19
+      }
+    },
+    "79.5": {
+      "n_heartbeat_locked": 0,
+      "n_independent": 140,
+      "mass_peak_freq": 0.004166666666666667,
+      "mass_hb_fraction": 6.163908143461883e-09,
+      "mass_harmonics": [
+        {
+          "freq": 0.004166666666666667,
+          "power": 0.007035654279761549,
+          "power_fraction": 0.9999995246871257,
+          "type": "independent"
+        }
+      ],
+      "top_heartbeat_nodes": [],
+      "top_independent_nodes": [
+        {
+          "id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 82,
+          "label": "johannine grove",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 79,
+          "label": "par",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 89,
+          "label": "mystery school",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 104,
+          "label": "church",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 98,
+          "label": "simeon",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        }
+      ],
+      "coupling_pairs": [
+        {
+          "node_a": 1,
+          "node_b": 23,
+          "plv": 1.0,
+          "amp_a": 0.0005118062094431593,
+          "amp_b": 0.0002542140843901938
+        },
+        {
+          "node_a": 1,
+          "node_b": 29,
+          "plv": 1.0,
+          "amp_a": 0.0005118062094431593,
+          "amp_b": 0.00038278040557735484
+        },
+        {
+          "node_a": 2,
+          "node_b": 9,
+          "plv": 1.0,
+          "amp_a": 0.00032452698509838666,
+          "amp_b": 0.00045433777913759783
+        },
+        {
+          "node_a": 23,
+          "node_b": 29,
+          "plv": 1.0,
+          "amp_a": 0.0002542140843901938,
+          "amp_b": 0.00038278040557735484
+        },
+        {
+          "node_a": 27,
+          "node_b": 77,
+          "plv": 1.0,
+          "amp_a": 2.570356965300997e-06,
+          "amp_b": 2.570356965300997e-06
+        },
+        {
+          "node_a": 27,
+          "node_b": 81,
+          "plv": 1.0,
+          "amp_a": 2.570356965300997e-06,
+          "amp_b": 2.570356965300997e-06
+        },
+        {
+          "node_a": 28,
+          "node_b": 51,
+          "plv": 1.0,
+          "amp_a": 7.911064298017935e-07,
+          "amp_b": 7.911064298017935e-07
+        },
+        {
+          "node_a": 77,
+          "node_b": 81,
+          "plv": 1.0,
+          "amp_a": 2.570356965300997e-06,
+          "amp_b": 2.570356965300997e-06
+        },
+        {
+          "node_a": 79,
+          "node_b": 89,
+          "plv": 0.9999999990971915,
+          "amp_a": 1.6166656000270415e-05,
+          "amp_b": 1.3218092208126574e-05
+        },
+        {
+          "node_a": 62,
+          "node_b": 123,
+          "plv": 0.9999999964021549,
+          "amp_a": 1.670204704717564e-08,
+          "amp_b": 1.592670880984943e-08
+        }
+      ],
+      "freq_distribution": {
+        "total_active": 140,
+        "mean_freq": 0.004166666666666666,
+        "std_freq": 8.673617379884035e-19
+      }
+    },
+    "83.0": {
+      "n_heartbeat_locked": 0,
+      "n_independent": 140,
+      "mass_peak_freq": 0.004166666666666667,
+      "mass_hb_fraction": 2.2858737308416422e-07,
+      "mass_harmonics": [
+        {
+          "freq": 0.004166666666666667,
+          "power": 8.208153814596779e-07,
+          "power_fraction": 0.9999962882302624,
+          "type": "independent"
+        }
+      ],
+      "top_heartbeat_nodes": [],
+      "top_independent_nodes": [
+        {
+          "id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 82,
+          "label": "johannine grove",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 79,
+          "label": "par",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 89,
+          "label": "mystery school",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 104,
+          "label": "church",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        },
+        {
+          "id": 98,
+          "label": "simeon",
+          "group": "bridge",
+          "peak_freq": 0.004166666666666667
+        }
+      ],
+      "coupling_pairs": [
+        {
+          "node_a": 1,
+          "node_b": 23,
+          "plv": 1.0,
+          "amp_a": 3.422779527505829e-06,
+          "amp_b": 1.5902564478649821e-06
+        },
+        {
+          "node_a": 1,
+          "node_b": 29,
+          "plv": 1.0,
+          "amp_a": 3.422779527505829e-06,
+          "amp_b": 2.492316186363961e-06
+        },
+        {
+          "node_a": 2,
+          "node_b": 9,
+          "plv": 1.0,
+          "amp_a": 2.452828460555259e-06,
+          "amp_b": 3.4339598447773553e-06
+        },
+        {
+          "node_a": 23,
+          "node_b": 29,
+          "plv": 1.0,
+          "amp_a": 1.5902564478649821e-06,
+          "amp_b": 2.492316186363961e-06
+        },
+        {
+          "node_a": 27,
+          "node_b": 77,
+          "plv": 1.0,
+          "amp_a": 1.7092628089981455e-07,
+          "amp_b": 1.7092628089981455e-07
+        },
+        {
+          "node_a": 27,
+          "node_b": 81,
+          "plv": 1.0,
+          "amp_a": 1.7092628089981455e-07,
+          "amp_b": 1.7092628089981455e-07
+        },
+        {
+          "node_a": 28,
+          "node_b": 51,
+          "plv": 1.0,
+          "amp_a": 5.320349585587963e-08,
+          "amp_b": 5.320349585587963e-08
+        },
+        {
+          "node_a": 77,
+          "node_b": 81,
+          "plv": 1.0,
+          "amp_a": 1.7092628089981455e-07,
+          "amp_b": 1.7092628089981455e-07
+        },
+        {
+          "node_a": 5,
+          "node_b": 98,
+          "plv": 0.999999999999351,
+          "amp_a": 2.0759563803972887e-07,
+          "amp_b": 2.1315262093049748e-07
+        },
+        {
+          "node_a": 12,
+          "node_b": 132,
+          "plv": 0.9999999999967116,
+          "amp_a": 1.9689418370318642e-07,
+          "amp_b": 1.9703083150466316e-07
+        }
+      ],
+      "freq_distribution": {
+        "total_active": 140,
+        "mean_freq": 0.004166666666666666,
+        "std_freq": 8.673617379884035e-19
+      }
+    }
+  }
+}

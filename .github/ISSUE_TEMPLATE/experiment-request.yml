@@ -1,0 +1,73 @@
+name: SOL Cortex — Experiment Request
+description: Request an autonomous research session using sol-cortex
+title: "[cortex] "
+labels: ["sol-cortex", "experiment-request"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## SOL Cortex Experiment Request
+        Request an autonomous research session. The cortex agent will detect knowledge gaps,
+        generate hypotheses, build protocols, and execute them against the SOL engine.
+
+  - type: dropdown
+    id: gap_type
+    attributes:
+      label: Target Gap Type
+      description: Which type of knowledge gap should the cortex focus on?
+      options:
+        - "(auto-select best gap)"
+        - unpromoted — Claims not yet promoted to proven
+        - weak_evidence — Claims with insufficient replication
+        - unfalsified — Claims lacking falsification attempts
+        - replication — Previously tested but needs independent replication
+        - headless_baseline — Missing headless engine baselines
+        - unexplored_param — Parameter regions never swept
+    validations:
+      required: false
+
+  - type: dropdown
+    id: max_protocols
+    attributes:
+      label: Max Protocols
+      description: Maximum number of protocols to generate and execute per session
+      options:
+        - "3"
+        - "1"
+        - "2"
+        - "5"
+        - "10"
+      default: 0
+    validations:
+      required: false
+
+  - type: textarea
+    id: target_claim
+    attributes:
+      label: Target Claim (optional)
+      description: |
+        If you want the cortex to focus on a specific claim, provide the claim ID
+        (e.g., CL-1, CL-3) or describe the phenomenon.
+      placeholder: "CL-3: The system exhibits field-like coherent behavior"
+    validations:
+      required: false
+
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis Seed (optional)
+      description: |
+        Optionally provide a starting hypothesis for the cortex to test.
+        Leave blank for fully autonomous gap detection.
+      placeholder: "Increasing conductance gamma above 2.0 may trigger phase transition in entropy"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: dry_run
+    attributes:
+      label: Dry Run
+      description: Generate hypotheses and protocols without executing them
+      options:
+        - label: Run in dry-run mode (no execution)

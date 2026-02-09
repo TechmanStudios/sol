@@ -1,0 +1,29 @@
+{
+  "seriesName": "damping_sweep_smoke",
+  "question": "How does damping affect entropy and mass retention over 200 steps?",
+  "invariants": {
+    "dt": 0.12,
+    "c_press": 0.1,
+    "rng_seed": 42
+  },
+  "knobs": {
+    "damping": [0.05, 0.1, 0.2, 0.5]
+  },
+  "injections": [
+    {"label": "grail", "amount": 50, "at_step": 0}
+  ],
+  "steps": 200,
+  "reps": 3,
+  "baseline": "fresh",
+  "metrics_every": 10,
+  "outputs": {
+    "summary_csv": true,
+    "trace_csv": true,
+    "run_bundle_md": true
+  },
+  "falsifiers": [
+    "Higher damping produces higher final mass (would indicate mass creation bug)",
+    "Entropy is identical across all damping values (would indicate damping has no effect)"
+  ],
+  "notes": "Phase 1 smoke test — verifies auto_run pipeline end-to-end."
+}

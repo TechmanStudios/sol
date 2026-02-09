@@ -1,0 +1,29 @@
+{
+  "planName": "smoke_plan_v1",
+  "notes": "Tiny smoke plan: one basin, one grid point, short duration. Intended to validate wiring + downloads + organizer + candidate creation.",
+  "basins": [90],
+  "replicates": 1,
+  "engine": {
+    "strictStepParams": true
+  },
+  "scenario": {
+    "type": "inject_then_watch",
+    "injectAmount": 30,
+    "preSteps": 1,
+    "preDt": 0.12
+  },
+  "measurement": {
+    "durationMs": 3000,
+    "everyMs": 250,
+    "dt": 0.12,
+    "includeBackgroundEdges": false
+  },
+  "grid": {
+    "pressureC": [20],
+    "damping": [8]
+  },
+  "timing": {
+    "timingMode": "tight",
+    "spinWaitMs": 2.0
+  }
+}

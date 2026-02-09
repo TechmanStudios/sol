@@ -1,0 +1,180 @@
+name: SOL Hippocampus — Dream Cycle & Memory
+
+on:
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Hippocampus command to run'
+        required: true
+        default: 'dream'
+        type: choice
+        options: ['dream', 'compact', 'status', 'meta']
+      dream_sessions:
+        description: 'Max sessions to replay (dream only)'
+        required: false
+        default: '5'
+        type: choice
+        options: ['1', '3', '5', '10']
+      dry_run:
+        description: 'Dry run (show plan without executing)'
+        required: false
+        default: false
+        type: boolean
+
+  # Triggered by labeled issues
+  issues:
+    types: [labeled]
+
+  # Nightly dream cycle — consolidate the day's experiments
+  schedule:
+    - cron: '0 4 * * *'  # Daily 04:00 UTC
+
+  # Run after cortex completes
+  workflow_run:
+    workflows: ["SOL Cortex — Autonomous Research"]
+    types: [completed]
+
+# Prevent concurrent hippocampus sessions
+concurrency:
+  group: sol-hippocampus
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  PYTHON_VERSION: '3.11'
+  SOL_ROOT: ${{ github.workspace }}
+
+jobs:
+  check-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+      command: ${{ steps.check.outputs.command }}
+      dream_sessions: ${{ steps.check.outputs.dream_sessions }}
+      dry_run: ${{ steps.check.outputs.dry_run }}
+    steps:
+      - id: check
+        run: |
+          if [[ "${{ github.event_name }}" == "issues" ]]; then
+            LABEL="${{ github.event.label.name }}"
+            if [[ "$LABEL" == "sol-hippocampus" || "$LABEL" == "dream-cycle" ]]; then
+              echo "should_run=true" >> "$GITHUB_OUTPUT"
+              echo "command=dream" >> "$GITHUB_OUTPUT"
+              echo "dream_sessions=5" >> "$GITHUB_OUTPUT"
+              echo "dry_run=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "should_run=false" >> "$GITHUB_OUTPUT"
+            fi
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "command=${{ inputs.command || 'dream' }}" >> "$GITHUB_OUTPUT"
+            echo "dream_sessions=${{ inputs.dream_sessions || '5' }}" >> "$GITHUB_OUTPUT"
+            echo "dry_run=${{ inputs.dry_run || 'false' }}" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.event_name }}" == "schedule" ]]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "command=dream" >> "$GITHUB_OUTPUT"
+            echo "dream_sessions=5" >> "$GITHUB_OUTPUT"
+            echo "dry_run=false" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            # Post-cortex: always dream
+            if [[ "${{ github.event.workflow_run.conclusion }}" == "success" ]]; then
+              echo "should_run=true" >> "$GITHUB_OUTPUT"
+              echo "command=dream" >> "$GITHUB_OUTPUT"
+              echo "dream_sessions=3" >> "$GITHUB_OUTPUT"
+              echo "dry_run=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "should_run=false" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+  hippocampus:
+    needs: check-trigger
+    if: needs.check-trigger.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run hippocampus — ${{ needs.check-trigger.outputs.command }}
+        id: hippo
+        env:
+          COMMAND: ${{ needs.check-trigger.outputs.command }}
+          DREAM_SESSIONS: ${{ needs.check-trigger.outputs.dream_sessions }}
+          DRY_RUN: ${{ needs.check-trigger.outputs.dry_run }}
+        run: |
+          cd tools/sol-hippocampus
+
+          if [[ "$COMMAND" == "dream" ]]; then
+            ARGS="dream --sessions $DREAM_SESSIONS --json"
+            if [[ "$DRY_RUN" == "true" ]]; then
+              ARGS="$ARGS --dry-run"
+            fi
+            python cli.py $ARGS | tee dream_output.json
+
+          elif [[ "$COMMAND" == "compact" ]]; then
+            python cli.py compact --json
+
+          elif [[ "$COMMAND" == "status" ]]; then
+            python cli.py status --json
+
+          elif [[ "$COMMAND" == "meta" ]]; then
+            python cli.py meta
+          fi
+
+      - name: Compact memory after dream
+        if: needs.check-trigger.outputs.command == 'dream' && needs.check-trigger.outputs.dry_run != 'true'
+        run: |
+          cd tools/sol-hippocampus
+          python cli.py compact --json
+
+      - name: Verify core immutability
+        run: |
+          CORE_HASH=$(sha256sum tools/sol-core/default_graph.json | cut -d' ' -f1)
+          echo "Core graph hash: $CORE_HASH"
+          # Verify no modifications to sacred engine
+          git diff --name-only tools/sol-core/sol_engine.py | wc -l | xargs -I{} test {} -eq 0
+
+      - name: Commit memory updates
+        if: needs.check-trigger.outputs.dry_run != 'true'
+        run: |
+          git config user.name "sol-hippocampus[bot]"
+          git config user.email "sol-hippocampus@users.noreply.github.com"
+
+          # Stage only memory data files
+          git add data/memory_graph.json data/memory_traces/ data/dream_sessions/ data/meta_learning_log.jsonl 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "No memory changes to commit"
+          else
+            TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            git commit -m "hippocampus: ${{ needs.check-trigger.outputs.command }} cycle @ $TIMESTAMP"
+            git push
+          fi
+
+      - name: Upload dream artifacts
+        if: needs.check-trigger.outputs.command == 'dream' && needs.check-trigger.outputs.dry_run != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dream-session-${{ github.run_id }}
+          path: |
+            data/dream_sessions/
+            data/memory_graph.json
+          retention-days: 90

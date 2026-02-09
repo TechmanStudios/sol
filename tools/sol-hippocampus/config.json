@@ -1,0 +1,44 @@
+{
+    "memory_limits": {
+        "max_memory_nodes": 500,
+        "max_memory_edges": 2000,
+        "memory_node_id_start": 1000,
+        "memory_confidence_floor": 0.05,
+        "memory_decay_rate_default": 0.02,
+        "memory_coupling_w0": 0.30
+    },
+    "dream_cycle": {
+        "max_sessions_per_dream": 5,
+        "max_replays_per_session": 10,
+        "dream_compression_factor": 0.5,
+        "dream_reps": 3,
+        "recency_half_life_days": 7.0,
+        "stability_threshold": 2,
+        "fade_miss_threshold": 3,
+        "max_dream_sessions_per_day": 3
+    },
+    "meta_learning": {
+        "ema_alpha": 0.30,
+        "cold_start_threshold": 5,
+        "insight_weights": {
+            "proof_packet_promoted": 1.0,
+            "novel_basin_discovered": 0.5,
+            "informative_variation": 0.3,
+            "expected_redundant": 0.1,
+            "sanity_failed": 0.0
+        }
+    },
+    "retrieval": {
+        "max_findings_per_query": 20,
+        "novelty_exclusion_tolerance": 0.05
+    },
+    "kb_index": {
+        "kb_path": "KB/ThothStream_Knowledgebase.md",
+        "index_path": "data/kb_index.json",
+        "chunk_max_lines": 500,
+        "chunk_min_lines": 20,
+        "enrich_top_k": 3,
+        "augment_top_k": 2,
+        "auto_build": true
+    }
+}

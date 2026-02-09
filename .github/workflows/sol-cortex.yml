@@ -1,0 +1,203 @@
+name: SOL Cortex — Autonomous Research
+
+on:
+  # Manual trigger with parameters
+  workflow_dispatch:
+    inputs:
+      max_protocols:
+        description: 'Max protocols per session (1-10)'
+        required: false
+        default: '3'
+        type: choice
+        options: ['1', '2', '3', '5', '10']
+      gap_type:
+        description: 'Target gap type (leave empty for auto-select)'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - ''
+          - unpromoted
+          - weak_evidence
+          - unfalsified
+          - replication
+          - headless_baseline
+          - unexplored_param
+      dry_run:
+        description: 'Dry run (generate but do not execute)'
+        required: false
+        default: false
+        type: boolean
+
+  # Triggered by labeled issues
+  issues:
+    types: [labeled]
+
+  # Scheduled: weekly autonomous research cycle
+  schedule:
+    - cron: '0 6 * * 1'  # Monday 06:00 UTC
+
+# Prevent concurrent cortex sessions
+concurrency:
+  group: sol-cortex
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+env:
+  PYTHON_VERSION: '3.11'
+  SOL_ROOT: ${{ github.workspace }}
+
+jobs:
+  # Gate: only run on issue events if the label matches
+  check-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+      max_protocols: ${{ steps.check.outputs.max_protocols }}
+      gap_type: ${{ steps.check.outputs.gap_type }}
+      dry_run: ${{ steps.check.outputs.dry_run }}
+    steps:
+      - id: check
+        run: |
+          if [[ "${{ github.event_name }}" == "issues" ]]; then
+            LABEL="${{ github.event.label.name }}"
+            if [[ "$LABEL" == "sol-cortex" || "$LABEL" == "experiment-request" ]]; then
+              echo "should_run=true" >> "$GITHUB_OUTPUT"
+              echo "max_protocols=3" >> "$GITHUB_OUTPUT"
+              echo "gap_type=" >> "$GITHUB_OUTPUT"
+              echo "dry_run=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "should_run=false" >> "$GITHUB_OUTPUT"
+            fi
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "max_protocols=${{ inputs.max_protocols || '3' }}" >> "$GITHUB_OUTPUT"
+            echo "gap_type=${{ inputs.gap_type || '' }}" >> "$GITHUB_OUTPUT"
+            echo "dry_run=${{ inputs.dry_run || 'false' }}" >> "$GITHUB_OUTPUT"
+          else
+            # schedule
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "max_protocols=3" >> "$GITHUB_OUTPUT"
+            echo "gap_type=" >> "$GITHUB_OUTPUT"
+            echo "dry_run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  cortex-session:
+    needs: check-trigger
+    if: needs.check-trigger.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Verify engine
+        run: |
+          cd tools/sol-core
+          python cli.py smoke
+          echo "Engine smoke test passed"
+
+      - name: Run cortex session
+        id: cortex
+        run: |
+          cd tools/sol-cortex
+          ARGS="--max-protocols ${{ needs.check-trigger.outputs.max_protocols }}"
+
+          GAP_TYPE="${{ needs.check-trigger.outputs.gap_type }}"
+          if [[ -n "$GAP_TYPE" ]]; then
+            ARGS="$ARGS --gap-type $GAP_TYPE"
+          fi
+
+          DRY_RUN="${{ needs.check-trigger.outputs.dry_run }}"
+          if [[ "$DRY_RUN" == "true" ]]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          python run_loop.py $ARGS 2>&1 | tee session_output.txt
+
+          # Extract session ID from output
+          SESSION_ID=$(grep -oP 'Session \K[A-Z]+-\d+-\d+' session_output.txt | head -1)
+          echo "session_id=$SESSION_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Run consolidation
+        if: needs.check-trigger.outputs.dry_run != 'true'
+        run: |
+          SESSION_DIR="data/cortex_sessions/${{ steps.cortex.outputs.session_id }}"
+          if [[ -d "$SESSION_DIR" ]]; then
+            python tools/sol-cortex/consolidate.py "$SESSION_DIR"
+          fi
+
+      - name: Upload session artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cortex-session-${{ steps.cortex.outputs.session_id }}
+          path: |
+            data/cortex_sessions/${{ steps.cortex.outputs.session_id }}/
+          retention-days: 90
+
+      - name: Commit results to repo
+        if: needs.check-trigger.outputs.dry_run != 'true'
+        run: |
+          git config user.name "sol-cortex[bot]"
+          git config user.email "sol-cortex[bot]@users.noreply.github.com"
+
+          SESSION_DIR="data/cortex_sessions/${{ steps.cortex.outputs.session_id }}"
+          git add "$SESSION_DIR/" || true
+          git add "solKnowledge/" || true
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "cortex: session ${{ steps.cortex.outputs.session_id }}
+
+          Protocols run: $(jq -r '.protocols_run' $SESSION_DIR/summary.json 2>/dev/null || echo '?')
+          Total steps: $(jq -r '.total_steps' $SESSION_DIR/summary.json 2>/dev/null || echo '?')
+          Gaps addressed: $(jq -r '.gaps_addressed | length' $SESSION_DIR/summary.json 2>/dev/null || echo '?')"
+            git push
+          fi
+
+      - name: Comment on issue (if triggered by issue)
+        if: github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const sessionId = '${{ steps.cortex.outputs.session_id }}';
+            const sessionDir = `data/cortex_sessions/${sessionId}`;
+            let summary = 'Session completed.';
+            try {
+              const raw = fs.readFileSync(`${sessionDir}/summary.json`, 'utf8');
+              const s = JSON.parse(raw);
+              summary = [
+                `### SOL Cortex Session: ${sessionId}`,
+                '',
+                `- **Protocols run:** ${s.protocols_run}`,
+                `- **Total steps:** ${s.total_steps}`,
+                `- **Hypotheses:** ${s.hypotheses_generated}`,
+                `- **Gaps addressed:** ${s.gaps_addressed?.length || 0}`,
+                '',
+                '**Sanity Results:**',
+                ...(s.sanity_results || []).map(r =>
+                  `- ${r.hypothesis} (${r.series}): ${r.sanity_passed ? '✓ PASS' : '✗ FAIL'}`
+                ),
+                '',
+                `Full artifacts: [download from Actions](${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID})`,
+              ].join('\n');
+            } catch (e) { /* fallback to default */ }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: summary,
+            });

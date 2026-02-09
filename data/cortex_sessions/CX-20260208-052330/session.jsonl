@@ -1,0 +1,11 @@
+{"ts": "2026-02-08T05:23:31.007244Z", "event": "session_start", "session_id": "CX-20260208-052330", "config": {"max_protocols": "1", "max_total_steps": "100000", "gap_type_filter": "unfalsified", "dry_run": "False", "out_dir": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions", "strict_guardrails": "True", "verbose": "True"}}
+{"ts": "2026-02-08T05:23:31.098833Z", "event": "knowledge_scan", "total_gaps": 39, "by_type": {"unpromoted": 3, "headless_baseline": 1, "weak_evidence": 11, "unfalsified": 4, "replication": 16, "unexplored_param": 4}}
+{"ts": "2026-02-08T05:23:31.100835Z", "event": "gap_selected", "gap_id": "unfalsified:CL-2", "gap_type": "unfalsified", "priority": 3, "description": "CL-2: falsifier not yet tested \u2014 wide-target failures at matched baseline when applying the same law."}
+{"ts": "2026-02-08T05:23:31.101836Z", "event": "gap_enriched", "gap_id": "unfalsified:CL-2", "memory_context": "Memory nodes: 1 | Memory edges: 18 | Avg confidence: 0.600 | Tags: basin(1), entropy(1), rhoMax(1)"}
+{"ts": "2026-02-08T05:23:31.101836Z", "event": "hypothesis_generated", "hypothesis_id": "H-001", "template": "threshold_scan", "question": "At what value of damping does the system behavior qualitatively change?"}
+{"ts": "2026-02-08T05:23:31.101836Z", "event": "hypothesis_augmented", "hypothesis_id": "H-001", "memory_falsifiers": 2}
+{"ts": "2026-02-08T05:23:31.102837Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260208-052330\\protocols\\h-001_protocol.json"}
+{"ts": "2026-02-08T05:23:31.118853Z", "event": "execution_start", "hypothesis_id": "H-001", "series": "h-001"}
+{"ts": "2026-02-08T05:24:18.348591Z", "event": "execution_complete", "hypothesis_id": "H-001", "elapsed_sec": 47.23, "sanity_passed": true, "anomalies": [], "total_session_steps": 12000}
+{"ts": "2026-02-08T05:24:18.348591Z", "event": "meta_recorded", "hypothesis_id": "H-001", "template": "threshold_scan", "gap_type": "unfalsified"}
+{"ts": "2026-02-08T05:24:18.348591Z", "event": "budget_stop", "reason": "max_protocols reached (1/1)"}

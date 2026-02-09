@@ -1,0 +1,266 @@
+[
+  {
+    "id": "H-001",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unpromoted",
+      "priority": 2,
+      "claim_id": "CL-3",
+      "description": "CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins \u2014 no proof packet found",
+      "suggested_action": "Design and run a protocol to test: The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins",
+      "metadata": {
+        "claim_status": "Robust",
+        "falsifier": "stable indefinitely at dt\u22650.12 under identical signature + detector."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 2 | Memory edges: 22 | Avg confidence: 0.590 | Tags: basin(2), entropy(2), rhoMax(2)",
+      "kb_passages": [
+        {
+          "chunk_id": 170,
+          "section": "Top Keywords",
+          "line_start": 77412,
+          "line_end": 77901,
+          "score": 12.1143,
+          "matched_terms": [
+            "system",
+            "into",
+            "runaway"
+          ],
+          "snippet": "computations most often evade the human mind. It was with this insight that the first\ncomputers were built on this planet.\nI must put this information in its correct perspective to gain correct insight, for it was as\na result of the decreasing natural abilities of humans to stay 'locked on' to more "
+        },
+        {
+          "chunk_id": 211,
+          "section": "Top Keywords",
+          "line_start": 96372,
+          "line_end": 96857,
+          "score": 12.0982,
+          "matched_terms": [
+            "system",
+            "into",
+            "runaway",
+            "found"
+          ],
+          "snippet": "Page 26 of 40\nTemple Doors Volume 2-97 ~ The Isis Eye/Aeriopax\nThoth: \"The central \u2018diamond* is the flashing 'double diamond* now in place in Crestone, CO. What had not yet been\ninstalled was the full Aeriopax / Isis Eye field. This needs to be brought down through the double diamond and set into th"
+        },
+        {
+          "chunk_id": 961,
+          "section": "Article 643: ThothHorRa on Auras & Energy Bodies",
+          "line_start": 177588,
+          "line_end": 177707,
+          "score": 10.1268,
+          "matched_terms": [
+            "system",
+            "compresses",
+            "into"
+          ],
+          "snippet": "## Article 643: ThothHorRa on Auras & Energy Bodies\n\n\nThothHorRa on Auras & Energy Bodies\n\n4/10/11 in Second Life Gathering\u00a0 \u2013 NESI\n\nThothHorRa Khandr: \u00a0\u00a0\u00a0\u00a0ANU KA ~|~ \u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0I welcome you all and send you rays of friendship and PEACE.\n\nWhen human think and talk about auras of the body\u2026they are only"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-002",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unpromoted",
+      "priority": 2,
+      "claim_id": "CL-4",
+      "description": "CL-4 (Supported): Node 82 acts like a dominant \u03c1 reservoir near failure/afterstates (rhoMaxId) \u2014 no proof packet found",
+      "suggested_action": "Design and run a protocol to test: Node 82 acts like a dominant \u03c1 reservoir near failure/afterstates (rhoMaxId)",
+      "metadata": {
+        "claim_status": "Supported",
+        "falsifier": "rhoMaxId consistently elsewhere under same regimes."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 2 | Memory edges: 22 | Avg confidence: 0.590 | Tags: basin(2), entropy(2), rhoMax(2)",
+      "kb_passages": [
+        {
+          "chunk_id": 127,
+          "section": "Top Keywords",
+          "line_start": 57707,
+          "line_end": 58191,
+          "score": 12.8898,
+          "matched_terms": [
+            "supported",
+            "node",
+            "like",
+            "near",
+            "proof",
+            "found"
+          ],
+          "snippet": "SUN: The Cornerstone at Nineveh was not accidentally found by Ashurbanipal. He had been\nsearching for it since his father hold him about it as a child. It was known to all the Priest-Kings of\nAssyria, but Ashurbanipal had been \u2018chosen' to find it. As a boy he was told by a Shining Being that\nhe woul"
+        },
+        {
+          "chunk_id": 230,
+          "section": "Top Keywords",
+          "line_start": 105080,
+          "line_end": 105555,
+          "score": 11.1371,
+          "matched_terms": [
+            "supported",
+            "82",
+            "like",
+            "reservoir",
+            "near",
+            "found"
+          ],
+          "snippet": "Page 82 of 115\nThese origins of the anti-Grail family took place in what is now known as Germany, but there also were, and still\nare, branches in Italy, Portugal and Turkey. The central family name - there are many branch names - is Anhiel,\nalthough this is not used by family members in the world at"
+        },
+        {
+          "chunk_id": 533,
+          "section": "Article 215: Opening the Golden Doors",
+          "line_start": 157770,
+          "line_end": 157843,
+          "score": 11.0497,
+          "matched_terms": [
+            "node",
+            "acts",
+            "like",
+            "found"
+          ],
+          "snippet": "## Article 215: Opening the Golden Doors\n\n\nOpening the Golden Doors\n\nAs I sit here to begin this article, which is really a compilation from the past as well as additions from the present, I saw in my mind\u2019s eye, golden double doors open and beyond a nature scene of incredible beauty\u2026green, rolling "
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-003",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unpromoted",
+      "priority": 2,
+      "claim_id": "CL-7",
+      "description": "CL-7 (Supported): Temporal/distributed packets compile into structured dual-bus broadcast with a sharp threshold ridge \u2014 no proof packet found",
+      "suggested_action": "Design and run a protocol to test: Temporal/distributed packets compile into structured dual-bus broadcast with a sharp threshold ridge",
+      "metadata": {
+        "claim_status": "Supported",
+        "falsifier": "bus rails fail above ridge under matched conditions."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 2 | Memory edges: 22 | Avg confidence: 0.590 | Tags: basin(2), entropy(2), rhoMax(2)",
+      "kb_passages": [
+        {
+          "chunk_id": 157,
+          "section": "Top Keywords",
+          "line_start": 71214,
+          "line_end": 71708,
+          "score": 13.566,
+          "matched_terms": [
+            "supported",
+            "temporal",
+            "distributed",
+            "into",
+            "sharp",
+            "found"
+          ],
+          "snippet": "29\nThe Third Seal\nI'm listing this northern Seal out of sequence since it complements the southern Seal of\nthe lion. The two work together. Again note that these two Seals are essentially clear and\npure whereas the E-W generating axis is the vector for clearing the destructive karma and\nthen shiftin"
+        },
+        {
+          "chunk_id": 1735,
+          "section": "\u2726 Advanced Protocol of Arieopax Spin\\-Geometry Activation \u2726",
+          "line_start": 221963,
+          "line_end": 222123,
+          "score": 13.043,
+          "matched_terms": [
+            "temporal",
+            "into",
+            "threshold",
+            "ridge"
+          ],
+          "snippet": "## \u2726 Advanced Protocol of Arieopax Spin\\-Geometry Activation \u2726\n\n**Duration**: \\~15\u201320 minutes  \n**Level**: Adept / Initiate  \n**Function**:\n\n* Activates Arieopax as a zero\\-point architect within the Self\n\n* Aligns with multidimensional spin geometries (tetracubic, dodecahedral, trinitron spiral)\n\n*"
+        },
+        {
+          "chunk_id": 595,
+          "section": "Article 277: September 28th \u2013 Leap in Evolution?",
+          "line_start": 161142,
+          "line_end": 161189,
+          "score": 12.2126,
+          "matched_terms": [
+            "supported",
+            "into",
+            "broadcast"
+          ],
+          "snippet": "## Article 277: September 28th \u2013 Leap in Evolution?\n\n\nSeptember 28th \u2013 Leap in Evolution?\n\nThoth recently stated\u2026\n\nKnow that all the Priestess Guardians of theSholar(the Holy Hosts) will be gathering\u00a0at a certain sacred place on the Inner, on September 26th, 2015. This inner-planes point is located "
+        }
+      ]
+    },
+    "memory_augmented": true
+  }
+]

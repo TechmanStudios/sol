@@ -1,0 +1,21 @@
+{"ts": "2026-02-08T16:22:18.853689Z", "event": "session_start", "session_id": "CX-20260208-162218", "config": {"max_protocols": "3", "max_total_steps": "100000", "gap_type_filter": "None", "dry_run": "True", "out_dir": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions", "strict_guardrails": "True", "verbose": "False"}}
+{"ts": "2026-02-08T16:22:18.936450Z", "event": "knowledge_scan", "total_gaps": 40, "by_type": {"unpromoted": 3, "headless_baseline": 1, "weak_evidence": 11, "unfalsified": 4, "replication": 17, "unexplored_param": 4}}
+{"ts": "2026-02-08T16:22:18.936450Z", "event": "gap_selected", "gap_id": "unpromoted:CL-3", "gap_type": "unpromoted", "priority": 2, "description": "CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins \u2014 no p"}
+{"ts": "2026-02-08T16:22:18.942496Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-3", "memory_context": "Memory nodes: 2 | Memory edges: 22 | Avg confidence: 0.590 | Tags: basin(2), entropy(2), rhoMax(2)"}
+{"ts": "2026-02-08T16:22:18.942496Z", "event": "hypothesis_generated", "hypothesis_id": "H-001", "template": "threshold_scan", "question": "At what value of damping does the system behavior qualitatively change?"}
+{"ts": "2026-02-08T16:22:18.943496Z", "event": "hypothesis_augmented", "hypothesis_id": "H-001", "memory_falsifiers": 2}
+{"ts": "2026-02-08T16:22:18.945498Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260208-162218\\protocols\\h-001_protocol.json"}
+{"ts": "2026-02-08T16:22:18.945498Z", "event": "dry_run_skip", "hypothesis_id": "H-001"}
+{"ts": "2026-02-08T16:22:18.945498Z", "event": "gap_selected", "gap_id": "unpromoted:CL-4", "gap_type": "unpromoted", "priority": 2, "description": "CL-4 (Supported): Node 82 acts like a dominant \u03c1 reservoir near failure/afterstates (rhoMaxId) \u2014 no proof packet found"}
+{"ts": "2026-02-08T16:22:18.948007Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-4", "memory_context": "Memory nodes: 2 | Memory edges: 22 | Avg confidence: 0.590 | Tags: basin(2), entropy(2), rhoMax(2)"}
+{"ts": "2026-02-08T16:22:18.948511Z", "event": "hypothesis_generated", "hypothesis_id": "H-002", "template": "threshold_scan", "question": "At what value of damping does the system behavior qualitatively change?"}
+{"ts": "2026-02-08T16:22:18.948511Z", "event": "hypothesis_augmented", "hypothesis_id": "H-002", "memory_falsifiers": 2}
+{"ts": "2026-02-08T16:22:18.949513Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260208-162218\\protocols\\h-002_protocol.json"}
+{"ts": "2026-02-08T16:22:18.949513Z", "event": "dry_run_skip", "hypothesis_id": "H-002"}
+{"ts": "2026-02-08T16:22:18.949513Z", "event": "gap_selected", "gap_id": "unpromoted:CL-7", "gap_type": "unpromoted", "priority": 2, "description": "CL-7 (Supported): Temporal/distributed packets compile into structured dual-bus broadcast with a sharp threshold ridge \u2014"}
+{"ts": "2026-02-08T16:22:18.953023Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-7", "memory_context": "Memory nodes: 2 | Memory edges: 22 | Avg confidence: 0.590 | Tags: basin(2), entropy(2), rhoMax(2)"}
+{"ts": "2026-02-08T16:22:18.953023Z", "event": "hypothesis_generated", "hypothesis_id": "H-003", "template": "threshold_scan", "question": "At what value of damping does the system behavior qualitatively change?"}
+{"ts": "2026-02-08T16:22:18.954025Z", "event": "hypothesis_augmented", "hypothesis_id": "H-003", "memory_falsifiers": 2}
+{"ts": "2026-02-08T16:22:18.956026Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260208-162218\\protocols\\h-003_protocol.json"}
+{"ts": "2026-02-08T16:22:18.956026Z", "event": "dry_run_skip", "hypothesis_id": "H-003"}
+{"ts": "2026-02-08T16:22:18.956026Z", "event": "budget_stop", "reason": "max_protocols reached (3/3)"}

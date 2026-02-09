@@ -1,0 +1,19 @@
+{
+  "session_id": "CX-20260208-052330",
+  "completed_at": "2026-02-08T05:24:18.348591Z",
+  "protocols_run": 1,
+  "total_steps": 12000,
+  "hypotheses_generated": 1,
+  "gaps_addressed": [
+    "unfalsified:CL-2"
+  ],
+  "sanity_results": [
+    {
+      "hypothesis": "H-001",
+      "series": "h-001",
+      "sanity_passed": true,
+      "anomalies": []
+    }
+  ],
+  "dry_run": false
+}

@@ -1,0 +1,133 @@
+# SOL RSI — Recursive Self-Improvement
+#
+# Runs the RSI outer loop on a schedule or manual trigger.
+# Mode: cron (unattended single cycle)
+#
+# Three execution contexts:
+#   1. GitHub Actions (this workflow) — scheduled cron + manual dispatch
+#   2. Local persistent — run on personal machine for N hours
+#   3. Server persistent — run on VM/server continuously
+
+name: SOL RSI
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Execution mode"
+        required: true
+        default: "cron"
+        type: choice
+        options:
+          - cron
+          - persistent
+      cycles:
+        description: "Number of RSI cycles to run"
+        required: true
+        default: "1"
+        type: string
+      budget_hours:
+        description: "Maximum runtime in hours (0 = unlimited)"
+        required: true
+        default: "2"
+        type: string
+      dry_run:
+        description: "Dry run (evaluate + plan only)"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+  # Weekly schedule: Sunday 03:00 UTC (before cortex Mon 06:00)
+  schedule:
+    - cron: "0 3 * * 0"
+
+  # Trigger on sol-rsi labeled issues
+  issues:
+    types: [labeled]
+
+concurrency:
+  group: sol-rsi-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  rsi-cycle:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'schedule' ||
+      (github.event_name == 'issues' &&
+       contains(github.event.issue.labels.*.name, 'sol-rsi'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy
+
+      - name: Verify engine integrity
+        run: |
+          echo "Checking sol_engine.py SHA256..."
+          SHA=$(sha256sum tools/sol-core/sol_engine.py | cut -d' ' -f1)
+          EXPECTED="5316e4fd6713b2d5e2dd4999780b5f7871c0a7b1c90e8f151698805653562eef"
+          if [ "$SHA" != "$EXPECTED" ]; then
+            echo "::error::Engine SHA256 mismatch! Expected $EXPECTED got $SHA"
+            exit 1
+          fi
+          echo "Engine integrity verified."
+
+          echo "Checking default_graph.json SHA256..."
+          SHA=$(sha256sum tools/sol-core/default_graph.json | cut -d' ' -f1)
+          EXPECTED="b9800d5313886818c7c1980829e1ca5da7d63d9e2218e36c020df80db19b06fb"
+          if [ "$SHA" != "$EXPECTED" ]; then
+            echo "::error::Graph SHA256 mismatch! Expected $EXPECTED got $SHA"
+            exit 1
+          fi
+          echo "Graph integrity verified."
+
+      - name: Run RSI cycle
+        run: |
+          MODE="${{ github.event.inputs.mode || 'cron' }}"
+          CYCLES="${{ github.event.inputs.cycles || '1' }}"
+          BUDGET="${{ github.event.inputs.budget_hours || '2' }}"
+          DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
+
+          ARGS="--mode $MODE --cycles $CYCLES --budget-hours $BUDGET"
+          if [ "$DRY_RUN" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          python tools/sol-rsi/rsi_engine.py $ARGS
+
+      - name: Commit results
+        run: |
+          git config user.name "sol-rsi[bot]"
+          git config user.email "sol-rsi@techmanstudios.com"
+          git add -A data/rsi/ solKnowledge/
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "RSI cycle $(date +%Y%m%d-%H%M%S): fitness update"
+            git push
+          fi
+
+      - name: Print status
+        run: python tools/sol-rsi/rsi_engine.py --status

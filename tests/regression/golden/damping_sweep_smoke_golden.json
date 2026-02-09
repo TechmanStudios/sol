@@ -1,0 +1,272 @@
+{
+  "protocol": "damping_sweep_smoke",
+  "engine_version": "sol_engine.py-phase0",
+  "rng_seed": 42,
+  "total_steps": 200,
+  "conditions": {
+    "damping=0.05": {
+      "params": {
+        "dt": 0.12,
+        "c_press": 0.1,
+        "damping": 0.05
+      },
+      "checkpoints": [
+        {
+          "step": 1,
+          "entropy": 0.0010148804102415707,
+          "totalFlux": 0.3945293006809089,
+          "mass": 49.96999999999999,
+          "rhoMaxId": 1,
+          "activeCount": 1,
+          "maxRho": 49.94634244501397
+        },
+        {
+          "step": 51,
+          "entropy": 0.22086619516336625,
+          "totalFlux": 6.390097537406226,
+          "mass": 49.327316969287544,
+          "rhoMaxId": 1,
+          "activeCount": 6,
+          "maxRho": 42.09431176120862
+        },
+        {
+          "step": 101,
+          "entropy": 0.43734540960540114,
+          "totalFlux": 7.020852082903516,
+          "mass": 48.274703099936765,
+          "rhoMaxId": 1,
+          "activeCount": 95,
+          "maxRho": 32.7134245098012
+        },
+        {
+          "step": 151,
+          "entropy": 0.6321069721191325,
+          "totalFlux": 7.2991447142772685,
+          "mass": 46.71290757045343,
+          "rhoMaxId": 1,
+          "activeCount": 120,
+          "maxRho": 23.063223336100148
+        },
+        {
+          "step": 200,
+          "entropy": 0.8047557945536549,
+          "totalFlux": 6.966144419480268,
+          "mass": 45.255505122391384,
+          "rhoMaxId": 1,
+          "activeCount": 128,
+          "maxRho": 13.737506937410918
+        }
+      ],
+      "final_metrics": {
+        "entropy": 0.8047557945536549,
+        "totalFlux": 6.966144419480268,
+        "maxFluxAbs": 0.4472639742774219,
+        "mass": 45.255505122391384,
+        "avgRho": 0.3232536080170813,
+        "maxRho": 13.737506937410918,
+        "rhoMaxId": 1,
+        "activeCount": 128,
+        "vortNorm_global": 0.0,
+        "vortNorm_global_ema": 0.0
+      }
+    },
+    "damping=0.1": {
+      "params": {
+        "dt": 0.12,
+        "c_press": 0.1,
+        "damping": 0.1
+      },
+      "checkpoints": [
+        {
+          "step": 1,
+          "entropy": 0.001014880410241593,
+          "totalFlux": 0.3945293006809089,
+          "mass": 49.94,
+          "rhoMaxId": 1,
+          "activeCount": 1,
+          "maxRho": 49.91635664806879
+        },
+        {
+          "step": 51,
+          "entropy": 0.21958800106749865,
+          "totalFlux": 6.369711664742559,
+          "mass": 48.950882294905874,
+          "rhoMaxId": 1,
+          "activeCount": 6,
+          "maxRho": 41.82039559322542
+        },
+        {
+          "step": 101,
+          "entropy": 0.43365208344470996,
+          "totalFlux": 6.979332168962591,
+          "mass": 47.376480533082464,
+          "rhoMaxId": 1,
+          "activeCount": 91,
+          "maxRho": 32.257312002978644
+        },
+        {
+          "step": 151,
+          "entropy": 0.6274185279183402,
+          "totalFlux": 7.23747566889909,
+          "mass": 45.1335326218389,
+          "rhoMaxId": 1,
+          "activeCount": 118,
+          "maxRho": 22.492854651824466
+        },
+        {
+          "step": 200,
+          "entropy": 0.8022312814168397,
+          "totalFlux": 6.877613285362548,
+          "mass": 42.86228757299683,
+          "rhoMaxId": 1,
+          "activeCount": 128,
+          "maxRho": 13.131402959503008
+        }
+      ],
+      "final_metrics": {
+        "entropy": 0.8022312814168397,
+        "totalFlux": 6.877613285362548,
+        "maxFluxAbs": 0.4434346133766598,
+        "mass": 42.86228757299683,
+        "avgRho": 0.30615919694997734,
+        "maxRho": 13.131402959503008,
+        "rhoMaxId": 1,
+        "activeCount": 128,
+        "vortNorm_global": 0.0,
+        "vortNorm_global_ema": 0.0
+      }
+    },
+    "damping=0.2": {
+      "params": {
+        "dt": 0.12,
+        "c_press": 0.1,
+        "damping": 0.2
+      },
+      "checkpoints": [
+        {
+          "step": 1,
+          "entropy": 0.0010148804102415707,
+          "totalFlux": 0.3945293006809089,
+          "mass": 49.879999999999995,
+          "rhoMaxId": 1,
+          "activeCount": 1,
+          "maxRho": 49.856385054178446
+        },
+        {
+          "step": 51,
+          "entropy": 0.2170742331758461,
+          "totalFlux": 6.329365672417393,
+          "mass": 48.20843815810802,
+          "rhoMaxId": 1,
+          "activeCount": 5,
+          "maxRho": 41.277554024175146
+        },
+        {
+          "step": 101,
+          "entropy": 0.4264734612925338,
+          "totalFlux": 6.897793798480849,
+          "mass": 45.64422706047639,
+          "rhoMaxId": 1,
+          "activeCount": 80,
+          "maxRho": 31.362199364454156
+        },
+        {
+          "step": 151,
+          "entropy": 0.6184385849268368,
+          "totalFlux": 7.116172819294878,
+          "mass": 42.16908443737067,
+          "rhoMaxId": 1,
+          "activeCount": 114,
+          "maxRho": 21.38716173148568
+        },
+        {
+          "step": 200,
+          "entropy": 0.7978638206231267,
+          "totalFlux": 6.700688756158557,
+          "mass": 38.499715472951635,
+          "rhoMaxId": 1,
+          "activeCount": 128,
+          "maxRho": 11.977050224286582
+        }
+      ],
+      "final_metrics": {
+        "entropy": 0.7978638206231267,
+        "totalFlux": 6.700688756158557,
+        "maxFluxAbs": 0.4354110255428152,
+        "mass": 38.499715472951635,
+        "avgRho": 0.27499796766394025,
+        "maxRho": 11.977050224286582,
+        "rhoMaxId": 1,
+        "activeCount": 128,
+        "vortNorm_global": 0.0,
+        "vortNorm_global_ema": 0.0
+      }
+    },
+    "damping=0.5": {
+      "params": {
+        "dt": 0.12,
+        "c_press": 0.1,
+        "damping": 0.5
+      },
+      "checkpoints": [
+        {
+          "step": 1,
+          "entropy": 0.001014880410241593,
+          "totalFlux": 0.3945293006809089,
+          "mass": 49.699999999999996,
+          "rhoMaxId": 1,
+          "activeCount": 1,
+          "maxRho": 49.67647027250739
+        },
+        {
+          "step": 51,
+          "entropy": 0.20986565294303483,
+          "totalFlux": 6.211599955882454,
+          "mass": 46.061294236230665,
+          "rhoMaxId": 1,
+          "activeCount": 5,
+          "maxRho": 39.68826298708948
+        },
+        {
+          "step": 101,
+          "entropy": 0.40658053917036296,
+          "totalFlux": 6.665479839650954,
+          "mass": 40.912934105611534,
+          "rhoMaxId": 1,
+          "activeCount": 39,
+          "maxRho": 28.808923082622464
+        },
+        {
+          "step": 151,
+          "entropy": 0.5948054116700401,
+          "totalFlux": 6.765207837230124,
+          "mass": 34.601901233902886,
+          "rhoMaxId": 1,
+          "activeCount": 98,
+          "maxRho": 18.334897113271904
+        },
+        {
+          "step": 200,
+          "entropy": 0.7907322350831726,
+          "totalFlux": 6.167300403737393,
+          "mass": 28.141593419741827,
+          "rhoMaxId": 1,
+          "activeCount": 110,
+          "maxRho": 8.94170303585825
+        }
+      ],
+      "final_metrics": {
+        "entropy": 0.7907322350831726,
+        "totalFlux": 6.167300403737393,
+        "maxFluxAbs": 0.4086099725923374,
+        "mass": 28.141593419741827,
+        "avgRho": 0.20101138156958448,
+        "maxRho": 8.94170303585825,
+        "rhoMaxId": 1,
+        "activeCount": 110,
+        "vortNorm_global": 0.0,
+        "vortNorm_global_ema": 0.0
+      }
+    }
+  }
+}

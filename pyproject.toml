@@ -1,0 +1,17 @@
+[project]
+name = "sol"
+version = "0.1.0"
+description = "SOL Engine — Quantum-encoded semantic manifold"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [
+    "tools/sol-core",
+    "tools/sol-hippocampus",
+    "tools/sol-cortex",
+    "tools/sol-orchestrator",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]

@@ -1,0 +1,26 @@
+{
+  "seriesName": "single_inject_baseline",
+  "question": "What is the baseline behavior of a single grail injection at default parameters?",
+  "invariants": {
+    "dt": 0.12,
+    "c_press": 0.1,
+    "damping": 0.2,
+    "rng_seed": 42
+  },
+  "injections": [
+    {"label": "grail", "amount": 50, "at_step": 0}
+  ],
+  "steps": 300,
+  "reps": 1,
+  "baseline": "fresh",
+  "metrics_every": 1,
+  "outputs": {
+    "summary_csv": true,
+    "trace_csv": true,
+    "run_bundle_md": true
+  },
+  "falsifiers": [
+    "Mass increases after injection (would indicate mass creation from nothing)"
+  ],
+  "notes": "Reference baseline for comparison with multi-injection and sweep protocols."
+}

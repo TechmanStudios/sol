@@ -1,0 +1,27 @@
+{
+  "stage": "cortex",
+  "status": "passed",
+  "started_at": "2026-02-08T05:50:37.620748+00:00",
+  "completed_at": "2026-02-08T05:51:25.593890+00:00",
+  "elapsed_sec": 47.97,
+  "output": {
+    "session_id": "CX-20260208-055037",
+    "session_dir": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260208-055037",
+    "protocols_run": 1,
+    "total_steps": 12000,
+    "hypotheses": 1,
+    "gaps_addressed": [
+      "unpromoted:CL-3"
+    ],
+    "sanity_results": [
+      {
+        "hypothesis": "H-001",
+        "series": "h-001",
+        "sanity_passed": true,
+        "anomalies": []
+      }
+    ],
+    "dry_run": false
+  },
+  "error": null
+}

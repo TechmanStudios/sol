@@ -1,0 +1,223 @@
+name: SOL Evolve — A/B Regression Testing
+
+on:
+  # Manual trigger with candidate selection
+  workflow_dispatch:
+    inputs:
+      candidate:
+        description: 'Candidate name to test'
+        required: true
+        type: choice
+        options:
+          - tune_conductance_gamma_up
+          - tune_conductance_gamma_down
+          - tune_battery_flip_threshold
+          - tune_battery_resonance_boost
+          - tune_psi_diffusion_up
+          - tune_psi_relax_base
+          - tune_phase_omega
+          - tune_mhd_build_rate
+          - tune_jeans_critical
+      protocol:
+        description: 'Protocol to test against (empty = all canonical)'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - ''
+          - single_inject_baseline
+          - damping_sweep_smoke
+          - dual_inject_timing
+      rebuild_golden:
+        description: 'Rebuild golden baselines before testing'
+        required: false
+        default: false
+        type: boolean
+
+  # Triggered by labeled issues
+  issues:
+    types: [labeled]
+
+# Prevent concurrent evolve runs
+concurrency:
+  group: sol-evolve
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+env:
+  PYTHON_VERSION: '3.11'
+  SOL_ROOT: ${{ github.workspace }}
+
+jobs:
+  # Gate: only run on issue events if the label matches
+  check-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+      candidate: ${{ steps.check.outputs.candidate }}
+      protocol: ${{ steps.check.outputs.protocol }}
+      rebuild_golden: ${{ steps.check.outputs.rebuild_golden }}
+    steps:
+      - id: check
+        run: |
+          if [[ "${{ github.event_name }}" == "issues" ]]; then
+            LABEL="${{ github.event.label.name }}"
+            if [[ "$LABEL" == "sol-evolve" || "$LABEL" == "evolution-request" ]]; then
+              echo "should_run=true" >> "$GITHUB_OUTPUT"
+              # Parse candidate from issue body (first line after "Candidate:")
+              echo "candidate=" >> "$GITHUB_OUTPUT"
+              echo "protocol=" >> "$GITHUB_OUTPUT"
+              echo "rebuild_golden=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "should_run=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "candidate=${{ inputs.candidate }}" >> "$GITHUB_OUTPUT"
+            echo "protocol=${{ inputs.protocol || '' }}" >> "$GITHUB_OUTPUT"
+            echo "rebuild_golden=${{ inputs.rebuild_golden || 'false' }}" >> "$GITHUB_OUTPUT"
+          fi
+
+  evolve-test:
+    needs: check-trigger
+    if: needs.check-trigger.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Verify engine
+        run: |
+          cd tools/sol-core
+          python cli.py smoke
+          echo "Engine smoke test passed"
+
+      - name: Rebuild golden baselines (if requested)
+        if: needs.check-trigger.outputs.rebuild_golden == 'true'
+        run: |
+          cd tools/sol-evolve
+          python regression_builder.py
+          echo "Golden baselines rebuilt"
+
+      - name: Verify golden baselines
+        run: |
+          cd tools/sol-evolve
+          python regression_builder.py --verify
+          echo "Golden baselines verified"
+
+      - name: Run A/B test
+        id: abtest
+        run: |
+          CANDIDATE="${{ needs.check-trigger.outputs.candidate }}"
+          if [[ -z "$CANDIDATE" ]]; then
+            echo "::error::No candidate specified"
+            exit 1
+          fi
+
+          cd tools/sol-evolve
+          ARGS="--candidate $CANDIDATE --json"
+
+          PROTOCOL="${{ needs.check-trigger.outputs.protocol }}"
+          if [[ -n "$PROTOCOL" ]]; then
+            ARGS="$ARGS --protocol $PROTOCOL"
+          fi
+
+          python ab_test.py $ARGS --out ab_result.json 2>&1 | tee ab_output.txt
+
+          # Extract verdict
+          VERDICT=$(jq -r '.overall_verdict' ab_result.json 2>/dev/null || echo "UNKNOWN")
+          echo "verdict=$VERDICT" >> "$GITHUB_OUTPUT"
+          echo "candidate=$CANDIDATE" >> "$GITHUB_OUTPUT"
+
+      - name: Generate regression report
+        id: report
+        run: |
+          CANDIDATE="${{ needs.check-trigger.outputs.candidate }}"
+          cd tools/sol-evolve
+
+          OUT_DIR="../../data/evolve_reports/${CANDIDATE}_$(date +%Y%m%d_%H%M%S)"
+          python pr_gen.py --candidate "$CANDIDATE" --out-dir "$OUT_DIR"
+          echo "report_dir=$OUT_DIR" >> "$GITHUB_OUTPUT"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: evolve-${{ steps.abtest.outputs.candidate }}-${{ github.run_number }}
+          path: |
+            data/evolve_reports/
+            tools/sol-evolve/ab_result.json
+          retention-days: 90
+
+      - name: Commit reports
+        run: |
+          git config user.name "sol-evolve[bot]"
+          git config user.email "sol-evolve[bot]@users.noreply.github.com"
+
+          git add data/evolve_reports/ || true
+          git add tests/regression/golden/ || true
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            CANDIDATE="${{ steps.abtest.outputs.candidate }}"
+            VERDICT="${{ steps.abtest.outputs.verdict }}"
+            git commit -m "evolve: $CANDIDATE → $VERDICT
+
+          Run: #${{ github.run_number }}
+          Candidate: $CANDIDATE
+          Verdict: $VERDICT"
+            git push
+          fi
+
+      - name: Comment on issue (if triggered by issue)
+        if: github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const candidate = '${{ steps.abtest.outputs.candidate }}';
+            const verdict = '${{ steps.abtest.outputs.verdict }}';
+            let details = '';
+            try {
+              const raw = fs.readFileSync('tools/sol-evolve/ab_result.json', 'utf8');
+              const r = JSON.parse(raw);
+              const protocols = r.protocol_results || [];
+              details = protocols.map(p =>
+                `| ${p.protocol} | ${p.verdict} | ${p.improved}/${p.total} improved | ${p.regressed}/${p.total} regressed |`
+              ).join('\n');
+              details = '\n| Protocol | Verdict | Improved | Regressed |\n|---|---|---|---|\n' + details;
+            } catch (e) { /* fallback */ }
+
+            const emojiMap = { IMPROVE: '🟢', PASS: '🔵', REGRESS: '🔴', MIXED: '🟡' };
+            const emoji = emojiMap[verdict] || '⚪';
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: [
+                `### SOL Evolve: ${candidate}`,
+                '',
+                `**Verdict:** ${emoji} ${verdict}`,
+                details,
+                '',
+                `Full report: [download from Actions](${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID})`,
+              ].join('\n'),
+            });
+
+      - name: Fail on regression
+        if: steps.abtest.outputs.verdict == 'REGRESS'
+        run: |
+          echo "::error::A/B test resulted in REGRESSION for ${{ steps.abtest.outputs.candidate }}"
+          exit 1

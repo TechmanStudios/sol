@@ -1,0 +1,43 @@
+[
+  {
+    "id": "H-001",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unfalsified",
+      "priority": 3,
+      "claim_id": "CL-2",
+      "description": "CL-2: falsifier not yet tested \u2014 wide-target failures at matched baseline when applying the same law.",
+      "suggested_action": "Design a protocol to explicitly test falsifier for CL-2",
+      "metadata": {
+        "falsifier": "wide-target failures at matched baseline when applying the same law."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 1 | Memory edges: 18 | Avg confidence: 0.600 | Tags: basin(1), entropy(1), rhoMax(1)"
+    }
+  }
+]
