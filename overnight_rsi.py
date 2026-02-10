@@ -2758,36 +2758,68 @@ def main():
         executed_experiments: set[str] = set()
 
         def _exp_dedup_key(exp_type: str, genome: dict) -> str:
-            """Create a dedup key for an experiment type + genome config."""
-            # Static generators always produce the same output for the same type
-            static_types = {"logic_gate", "clock_signal", "raw_lead_followup",
-                            "cascade_pipeline", "replication",
-                            "information_theoretic", "capacity_measurement",
-                            "error_correction", "perturbation_analysis",
-                            "symmetry_breaking"}
-            if exp_type in static_types:
+            """Create a parameter-aware dedup key.
+
+            Instead of keying by type alone, we hash the genome's
+            parameter_focus zones and template_preferences so that the
+            same experiment type with *different* parameter configs is
+            treated as a new experiment.
+            """
+            import hashlib
+
+            def _genome_param_hash(g: dict) -> str:
+                """Hash the genome's parameter-relevant state."""
+                parts = []
+                # Damping priority zones (which zone we'd sweep)
+                zones = g.get("parameter_focus", {}).get(
+                    "damping_priority_zones", [])
+                for z in sorted(zones,
+                                key=lambda z: z.get("range", [0])[0]):
+                    parts.append(f"{z.get('range')}:{z.get('priority',0):.2f}")
+                # Template preferences (they shift each cycle)
+                prefs = g.get("template_preferences", {})
+                for k in sorted(prefs.keys()):
+                    parts.append(f"{k}={prefs[k]:.2f}")
+                # Exploration + mutation rates
+                parts.append(f"e={g.get('exploration_rate', 0):.2f}")
+                parts.append(f"m={g.get('mutation_rate', 0):.2f}")
+                h = hashlib.md5("|".join(parts).encode()).hexdigest()[:8]
+                return h
+
+            # --- Truly static generators (deterministic, no params) ---
+            # These only need to run once ever.
+            truly_static = {"capacity_measurement"}
+            if exp_type in truly_static:
                 return exp_type
 
-            # Randomized generators: include a cycle counter so they can
-            # re-run with different random seeds each iteration
-            randomized_types = {"stochastic_injection", "multi_damping_sweep",
-                                "resonance_hunting", "boundary_cartography",
-                                "phase_space_mapping"}
+            # --- Randomized generators: always unique per cycle ---
+            randomized_types = {"stochastic_injection", "resonance_hunting"}
             if exp_type in randomized_types:
                 return f"{exp_type}_iter{phase2_cycle}"
 
-            # parameter_sweep varies by genome priority zones
+            # --- Parameter-aware types: key includes genome hash ---
+            param_hash = _genome_param_hash(genome)
+
             if exp_type == "parameter_sweep":
-                zones = genome.get("parameter_focus", {}).get("damping_priority_zones", [])
+                zones = genome.get("parameter_focus", {}).get(
+                    "damping_priority_zones", [])
                 if zones:
-                    zone = max(zones, key=lambda z: z.get("priority", 0))
-                    return f"parameter_sweep_{zone['range']}"
-                return "parameter_sweep_[0,84]"
+                    zone = max(zones,
+                               key=lambda z: z.get("priority", 0))
+                    return f"parameter_sweep_{zone['range']}_{param_hash}"
+                return f"parameter_sweep_[0,84]_{param_hash}"
 
-            if exp_type == "injection_protocol":
-                return "injection_protocol"
+            # Gen-2 types: each re-run is unique because the genome
+            # determines zone centers, injection patterns, etc.
+            gen2_types = {"multi_damping_sweep", "phase_space_mapping",
+                          "perturbation_analysis", "symmetry_breaking",
+                          "boundary_cartography"}
+            if exp_type in gen2_types:
+                return f"{exp_type}_{param_hash}_iter{phase2_cycle}"
 
-            return f"{exp_type}_generic"
+            # Everything else: type + genome hash (runs again when
+            # genome mutates enough to change the hash)
+            return f"{exp_type}_{param_hash}"
 
         while not budget.exhausted():
             phase2_cycle += 1

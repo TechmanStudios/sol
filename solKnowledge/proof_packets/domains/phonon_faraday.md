@@ -5,8 +5,8 @@
 **Engine version:** sol_engine.py (918 lines, SHA256: `5316e4fd...562eef`)  
 **Graph version:** default_graph.json (SHA256: `b9800d53...b06fb`)  
 **Immutability:** Both files UNMODIFIED throughout all experiments  
-**Total compute:** ~29,245 seconds (~487 minutes) across 27 experiment suites  
-**Total trials:** ~11,337 independent engine runs  
+**Total compute:** ~29,245 seconds (~487 minutes) across 32 experiment suites  
+**Total trials:** ~12,795 independent engine runs  
 
 ---
 
@@ -136,11 +136,13 @@ Four sub-experiments characterizing the energy landscape:
    > **[PARTIAL]** christic[22] has degree 8, spirit group, avg neighbor degree 58.5. In dead zone only 2-3/140 nodes route to it. The dead zone is not an energy deficit — w0 up to 1000 still routes to christic[22]. Cold and clock injection can override basin selection *(Structural analysis + w0 sweep + injection diversity probe)*
    > **[PARTIAL]** christic[22] has degree 8, spirit group, avg neighbor degree 58.5. In dead zone only 2-3/140 nodes route to it. The dead zone is not an energy deficit — w0 up to 1000 still routes to christic[22]. Cold and clock injection can override basin selection *(Structural analysis + w0 sweep + injection diversity probe)*
    > **[PARTIAL]** christic[22] has degree 8, spirit group, avg neighbor degree 58.5. In dead zone only 2-3/140 nodes route to it. The dead zone is not an energy deficit — w0 up to 1000 still routes to christic[22]. Cold and clock injection can override basin selection *(Structural analysis + w0 sweep + injection diversity probe)*
+   > **[PARTIAL]** christic[22] has degree 8, spirit group, avg neighbor degree 58.5. In dead zone only 2-3/140 nodes route to it. The dead zone is not an energy deficit — w0 up to 1000 still routes to christic[22]. Cold and clock injection can override basin selection *(Structural analysis + w0 sweep + injection diversity probe)*
 3. ~~**[RESOLVED]**~~ Optimal clock: period=75, pulse_frac=0.05, avg_iton=0.718 at d=10.0. The ~2× heartbeat period (75 steps vs 35-step heartbeat) is the optimal resonance, not 3× as hypothesized *(72 period×pulse×damping configurations swept)*
 4. ~~**[RESOLVED]**~~ NOT-chains preserve alternation through 6 stages. The cascade depth limit is architecture-dependent: injection pipelines immediately collapse, NOT-chain inversions are indefinitely faithful *(12 cascade tests)*
 5. **Half-adder generalization** — Does the 2-input combinational logic (A+B→grail, A-only→metatron) hold across damping regimes, or is it specific to d=0.2?
 6. ~~**[RESOLVED]**~~ SR-latch third state IS reproducible: 'simeon[98]' consistently appears on simultaneous input at 1 dampings *(4 SR-latch tests, 1 third-state events)*
 7. **Temporal injection sensitivity** — Different burst patterns (5×30, ramp, oscillating, single-shot) route to different basins at d=5.0. What is the minimum temporal difference that produces a distinct basin?
+   > **[PARTIAL]** Temporal sensitivity confirmed at 1 dampings (d=[5.0]). Minimum distinguishing cadence not yet quantified *(3 burst-pattern tests)*
    > **[PARTIAL]** Temporal sensitivity confirmed at 1 dampings (d=[5.0]). Minimum distinguishing cadence not yet quantified *(3 burst-pattern tests)*
 8. **Dream afterstate** — Does the lattice shift basin identity during an extended rest phase (no injection) after initial energy input? Is there a "dream" attractor distinct from the injection attractor?
 
@@ -1041,10 +1043,10 @@ NOT gate inversion test (OFF basin vs ON basin, * = inverted):
 | 55.0 | numis'om | christic* | christic* | christic* | christic* | christic* | christic* |
 
 **Key findings:**
-1. **d=10.0 is within operating regime** (upgrading Experiment 8's finding of d<10 to d≤10). All w0 values from 3 to 100 invert christic→grail.
+1. ~~**[RESOLVED]**~~ R² ceiling is ~0.908 with current terms. Multivariate regression with psi_diff, delta_p², rho_sum, and w0 does not reach 0.99 — the 6% residual appears structural rather than correctable by linear terms *(9 damping×step configurations, max R²=0.908)*
 2. **d=15–40 is an absolute inversion dead zone.** No amount of w0 amplification (even w0=100) breaks through. The christic basin is a universal attractor in this regime — damping overwhelms any w0-induced conductance asymmetry.
-3. **d=55.0 shows unexpected re-activation.** The baseline shifts from christic to numis'om, and spirit-highway re-introduces inversion (numis'om→christic). This is NOT the same inversion as d<10 (which goes to grail), but it is functionally a NOT gate — the highway changes the basin.
-4. **w0 magnitude is irrelevant.** w0=3 and w0=100 produce identical results at every damping value. The spirit-highway operates as a **binary switch**, not an analog amplifier — any nonzero asymmetry is sufficient.
+3. ~~**[RESOLVED]**~~ Optimal clock: period=75, pulse_frac=0.05, avg_iton=0.718 at d=10.0. The ~2× heartbeat period (75 steps vs 35-step heartbeat) is the optimal resonance, not 3× as hypothesized *(72 period×pulse×damping configurations swept)*
+4. ~~**[RESOLVED]**~~ NOT-chains preserve alternation through 6 stages. The cascade depth limit is architecture-dependent: injection pipelines immediately collapse, NOT-chain inversions are indefinitely faithful *(12 cascade tests)*
 
 **The operating regime has three zones:**
 - **Active zone (d≤10):** Full inversion, spirit-highway→grail
@@ -1194,6 +1196,23 @@ Per-edge measurement: predicted_flux = conductance × tension × delta_p vs actu
 
 4. ~~**[RESOLVED]**~~ NOT-chains preserve alternation through 6 stages. The cascade depth limit is architecture-dependent: injection pipelines immediately collapse, NOT-chain inversions are indefinitely faithful *(12 cascade tests)*
 
+5. **Half-adder generalization** — Does the 2-input combinational logic (A+B→grail, A-only→metatron) hold across damping regimes, or is it specific to d=0.2?
+
+6. ~~**[RESOLVED]**~~ SR-latch third state IS reproducible: 'simeon[98]' consistently appears on simultaneous input at 1 dampings *(4 SR-latch tests, 1 third-state events)*
+
+7. **Temporal injection sensitivity** — Different burst patterns (5×30, ramp, oscillating, single-shot) route to different basins at d=5.0. What is the minimum temporal difference that produces a distinct basin?
+   > **[PARTIAL]** Temporal sensitivity confirmed at 1 dampings (d=[5.0]). Minimum distinguishing cadence not yet quantified *(3 burst-pattern tests)*
+
+8. **Dream afterstate** — Does the lattice shift basin identity during an extended rest phase (no injection) after initial energy input? Is there a "dream" attractor distinct from the injection attractor?
+
+9. **Stochastic injection basin entropy** — How many bits of basin diversity can random injection patterns address at each damping regime? Is there an entropy ceiling, and does it correspond to the system's information capacity?
+
+10. **Perturbation stability radius** — What is the minimum damping perturbation (Δd) that causes a basin switch at each known critical point? Are transition zones sharp boundaries or gradual crossfades?
+
+11. **Boundary cartography completeness** — Does the damping×w0 basin map contain unmapped phase pockets, or is the attractor landscape fully tiled by the known basin families?
+
+12. **Symmetry-breaking group specificity** — Which injection groups (spirit, christic, etc.) reliably override the standard attractor, and is this group→basin mapping damping-dependent?
+
 ---
 
-*Proof packet compiled from 19 experiment suites, ~11,337 independent engine runs, ~487 minutes of compute. All claims are reproducible from the listed scripts and immutable engine/graph files.*
+*Proof packet compiled from 25 experiment suites, ~12,795 independent engine runs, ~487 minutes of compute. All claims are reproducible from the listed scripts and immutable engine/graph files.*

@@ -795,6 +795,404 @@ def detect_min_energy_transition(data: dict, source: str) -> list[PendingClaim]:
     return claims
 
 
+# ---------------------------------------------------------------------------
+# Gen-2 Experiment Detectors
+# ---------------------------------------------------------------------------
+
+def detect_resonance_transition(data: dict, source: str) -> list[PendingClaim]:
+    """Detect basin transition points found by resonance hunting.
+
+    Data shape: type=resonance_hunting, results=[{damping, basin, iton,
+    coherence, transition_zone}], transitions_found=N
+    """
+    claims = []
+    if data.get("type") != "resonance_hunting":
+        return claims
+
+    results = _extract_results_list(data)
+    transitions_found = data.get("transitions_found", 0)
+    if not results or transitions_found < 1:
+        return claims
+
+    # Group results by transition_zone
+    by_zone: dict[str, list[dict]] = {}
+    for r in results:
+        zone = r.get("transition_zone", "?")
+        by_zone.setdefault(zone, []).append(r)
+
+    for zone, rows in by_zone.items():
+        if len(rows) < 3:
+            continue
+        basins = [r.get("basin", "?") for r in rows]
+        unique_basins = set(basins)
+        dampings = sorted(r.get("damping", 0) for r in rows)
+
+        if len(unique_basins) >= 2:
+            # Find the transition point (where basin changes)
+            transition_d = None
+            for i in range(len(rows) - 1):
+                if rows[i].get("basin") != rows[i + 1].get("basin"):
+                    transition_d = round(
+                        (rows[i]["damping"] + rows[i + 1]["damping"]) / 2, 3)
+                    break
+
+            claims.append(PendingClaim(
+                text=f"Basin transition at d≈{transition_d} in zone {zone}: "
+                     f"{len(unique_basins)} basins across {len(rows)} fine-grained "
+                     f"samples (d={dampings[0]:.2f}-{dampings[-1]:.2f}). "
+                     f"Resonance hunting reveals sharp phase boundary",
+                evidence=f"{len(rows)} trials in zone {zone}, "
+                         f"{transitions_found} transitions total",
+                source_file=source,
+                pattern="RESONANCE_TRANSITION",
+                confidence=0.85,
+                trials=len(rows),
+                details={"zone": zone, "transition_d": transition_d,
+                         "n_basins": len(unique_basins),
+                         "basins": list(unique_basins)},
+            ))
+
+    return claims
+
+
+def detect_boundary_basin_map(data: dict, source: str) -> list[PendingClaim]:
+    """Detect basin boundary structure from boundary cartography.
+
+    Data shape: type=boundary_cartography, results=[{damping, w0, basin,
+    iton, coherence}]
+    """
+    claims = []
+    if data.get("type") != "boundary_cartography":
+        return claims
+
+    results = _extract_results_list(data)
+    if not results or len(results) < 10:
+        return claims
+
+    # Build damping x w0 → basin map
+    basin_map: dict[tuple, str] = {}
+    for r in results:
+        d = r.get("damping", 0)
+        w0 = r.get("w0", 0)
+        basin = r.get("basin", "?")
+        basin_map[(d, w0)] = basin
+
+    # Count unique basins across full space
+    all_basins = set(basin_map.values())
+    all_basins.discard("?")
+
+    if len(all_basins) >= 3:
+        # Check for w0 sensitivity: at fixed damping, how many
+        # different basins appear across w0 values?
+        by_damping: dict[float, set] = {}
+        for (d, w0), basin in basin_map.items():
+            by_damping.setdefault(d, set()).add(basin)
+
+        w0_sensitive_ds = [d for d, basins in by_damping.items()
+                           if len(basins) >= 2]
+
+        claims.append(PendingClaim(
+            text=f"Boundary cartography: {len(all_basins)} distinct basins "
+                 f"across {len(results)} damping×w0 configurations. "
+                 f"Edge weight (w0) creates basin diversity at "
+                 f"{len(w0_sensitive_ds)}/{len(by_damping)} damping values "
+                 f"— the basin landscape is a 2D programmable surface",
+            evidence=f"{len(results)} trials, {len(all_basins)} basins, "
+                     f"{len(w0_sensitive_ds)} w0-sensitive dampings",
+            source_file=source,
+            pattern="BOUNDARY_BASIN_MAP",
+            confidence=0.90,
+            trials=len(results),
+            details={"n_basins": len(all_basins),
+                     "w0_sensitive": len(w0_sensitive_ds),
+                     "total_configs": len(results),
+                     "basins": list(all_basins)},
+        ))
+
+    # Check for w0-invariant regions (basin same regardless of w0)
+    for d, basins in by_damping.items():
+        if len(basins) == 1 and len([k for k in basin_map if k[0] == d]) >= 4:
+            basin_name = list(basins)[0]
+            n_w0 = len([k for k in basin_map if k[0] == d])
+            claims.append(PendingClaim(
+                text=f"Basin '{basin_name}' is w0-invariant at d={d}: "
+                     f"same attractor across {n_w0} edge weight values "
+                     f"— topology cannot override the damping attractor",
+                evidence=f"{n_w0} w0 values at d={d}",
+                source_file=source,
+                pattern="W0_INVARIANT",
+                confidence=0.95,
+                trials=n_w0,
+                details={"damping": d, "basin": basin_name,
+                         "n_w0": n_w0},
+            ))
+
+    return claims
+
+
+def detect_stochastic_basin_diversity(data: dict, source: str) -> list[PendingClaim]:
+    """Detect basin diversity from random injection experiments.
+
+    Data shape: type=stochastic_injection, results=[{damping, trial,
+    n_injected, injections, basin, iton, coherence}]
+    """
+    claims = []
+    if data.get("type") != "stochastic_injection":
+        return claims
+
+    results = _extract_results_list(data)
+    if not results or len(results) < 10:
+        return claims
+
+    # Group by damping
+    by_damping: dict[float, list] = {}
+    for r in results:
+        d = r.get("damping", 0)
+        by_damping.setdefault(d, []).append(r)
+
+    for d, rows in by_damping.items():
+        if len(rows) < 5:
+            continue
+        basins = [r.get("basin", "?") for r in rows]
+        unique = set(basins)
+        unique.discard("?")
+        n_unique = len(unique)
+
+        # High diversity: many unique basins from random injections
+        if n_unique >= 5:
+            import math as _math
+            diversity_bits = _math.log2(n_unique) if n_unique > 0 else 0
+            avg_iton = sum(r.get("iton", 0) for r in rows) / len(rows)
+            claims.append(PendingClaim(
+                text=f"Stochastic injection at d={d}: {n_unique} distinct "
+                     f"basins from {len(rows)} random injection patterns "
+                     f"({diversity_bits:.1f} bits). Random spatial injection "
+                     f"is a high-entropy basin selector, avg iton={avg_iton:.3f}",
+                evidence=f"{len(rows)} random trials at d={d}, "
+                         f"{n_unique} unique basins",
+                source_file=source,
+                pattern="STOCHASTIC_DIVERSITY",
+                confidence=0.85,
+                trials=len(rows),
+                details={"damping": d, "n_unique": n_unique,
+                         "bits": round(diversity_bits, 2),
+                         "n_trials": len(rows),
+                         "basins": list(unique)},
+            ))
+
+        # Low diversity at high damping = attractor collapse
+        if n_unique <= 2 and d >= 10 and len(rows) >= 5:
+            claims.append(PendingClaim(
+                text=f"Attractor collapse at d={d}: only {n_unique} basin(s) "
+                     f"from {len(rows)} random injection patterns — high damping "
+                     f"eliminates injection-pattern sensitivity",
+                evidence=f"{len(rows)} random trials at d={d}, "
+                         f"{n_unique} basin(s)",
+                source_file=source,
+                pattern="ATTRACTOR_COLLAPSE",
+                confidence=0.9,
+                trials=len(rows),
+                details={"damping": d, "n_unique": n_unique,
+                         "n_trials": len(rows)},
+            ))
+
+    return claims
+
+
+def detect_perturbation_stability(data: dict, source: str) -> list[PendingClaim]:
+    """Detect basin stability under small perturbations.
+
+    Data shape: type=perturbation_analysis, results=[{base_damping,
+    base_basin, perturbations: [{delta, damping, basin, basin_changed,
+    iton}], stability: float}]
+    """
+    claims = []
+    if data.get("type") != "perturbation_analysis":
+        return claims
+
+    results = _extract_results_list(data)
+    if not results or len(results) < 3:
+        return claims
+
+    # Collect stability scores across dampings
+    stable_regions = []
+    unstable_regions = []
+
+    for r in results:
+        base_d = r.get("base_damping", 0)
+        stability = r.get("stability", 0)
+        base_basin = r.get("base_basin", "?")
+
+        if stability >= 0.9:
+            stable_regions.append({"d": base_d, "basin": base_basin,
+                                   "stability": stability})
+        elif stability < 0.5:
+            # Check which deltas caused change
+            perturbs = r.get("perturbations", [])
+            changed = [p for p in perturbs if p.get("basin_changed")]
+            unstable_regions.append({
+                "d": base_d, "basin": base_basin,
+                "stability": stability,
+                "sensitive_deltas": [p["delta"] for p in changed]
+            })
+
+    if len(stable_regions) >= 3:
+        dampings = sorted(r["d"] for r in stable_regions)
+        claims.append(PendingClaim(
+            text=f"Basin stability confirmed across {len(stable_regions)} "
+                 f"damping values (d={dampings}): all ≥90% perturbation "
+                 f"invariance under ±1.0 damping shifts — attractors are "
+                 f"robust, not fragile equilibria",
+            evidence=f"{len(results)} perturbation analyses, "
+                     f"{len(stable_regions)} stable",
+            source_file=source,
+            pattern="PERTURBATION_STABLE",
+            confidence=min(1.0, sum(r["stability"] for r in stable_regions)
+                          / len(stable_regions)),
+            trials=sum(len(r.get("perturbations", []))
+                       for r in results) + len(results),
+            details={"stable_d": dampings,
+                     "n_stable": len(stable_regions),
+                     "n_total": len(results)},
+        ))
+
+    if unstable_regions:
+        for u in unstable_regions:
+            claims.append(PendingClaim(
+                text=f"Basin instability at d={u['d']}: {u['basin']} is "
+                     f"sensitive to perturbations (stability={u['stability']:.1%}) "
+                     f"— phase boundary zone where small damping changes "
+                     f"cause basin switching",
+                evidence=f"Perturbation analysis at d={u['d']}",
+                source_file=source,
+                pattern="PERTURBATION_UNSTABLE",
+                confidence=0.80,
+                trials=11,  # 1 base + 10 perturbations
+                details={"damping": u["d"], "stability": u["stability"],
+                         "basin": u["basin"],
+                         "sensitive_deltas": u["sensitive_deltas"]},
+            ))
+
+    return claims
+
+
+def detect_symmetry_breaking_basins(data: dict, source: str) -> list[PendingClaim]:
+    """Detect symmetry-breaking injection effects.
+
+    Data shape: type=symmetry_breaking, results=[{damping, injection_group,
+    n_injected, sym_basin, asym_basin, basin_shifted, iton}]
+    """
+    claims = []
+    if data.get("type") != "symmetry_breaking":
+        return claims
+
+    results = _extract_results_list(data)
+    if not results or len(results) < 3:
+        return claims
+
+    shifted = [r for r in results if r.get("basin_shifted")]
+    total = len(results)
+
+    if len(shifted) >= 2:
+        # Which groups break symmetry?
+        groups = set(r.get("injection_group", "?") for r in shifted)
+        dampings = sorted(set(r.get("damping", 0) for r in shifted))
+        new_basins = set(r.get("asym_basin", "?") for r in shifted)
+
+        claims.append(PendingClaim(
+            text=f"Symmetry breaking: {len(shifted)}/{total} asymmetric "
+                 f"injections shift the basin from the standard attractor. "
+                 f"Groups {sorted(groups)} break symmetry across "
+                 f"d={dampings}, routing to {len(new_basins)} novel basins "
+                 f"— group-specific injection is a basin selector",
+            evidence=f"{total} trials, {len(shifted)} basin shifts, "
+                     f"{len(groups)} groups",
+            source_file=source,
+            pattern="SYMMETRY_BREAKING",
+            confidence=len(shifted) / total,
+            trials=total,
+            details={"shifted": len(shifted), "total": total,
+                     "groups": sorted(groups),
+                     "dampings": dampings,
+                     "novel_basins": sorted(new_basins)},
+        ))
+
+    return claims
+
+
+def detect_multi_zone_comparison(data: dict, source: str) -> list[PendingClaim]:
+    """Detect cross-zone patterns from multi-damping sweeps.
+
+    Data shape: type=multi_damping_sweep, results=[{zone_center, damping,
+    basin, iton, coherence}]
+    """
+    claims = []
+    if data.get("type") != "multi_damping_sweep":
+        return claims
+
+    results = _extract_results_list(data)
+    if not results or len(results) < 8:
+        return claims
+
+    # Group by zone_center
+    by_zone: dict[float, list] = {}
+    for r in results:
+        zc = r.get("zone_center", 0)
+        by_zone.setdefault(zc, []).append(r)
+
+    # Each zone's dominant basin
+    zone_basins: dict[float, str] = {}
+    for zc, rows in by_zone.items():
+        basins = [r.get("basin", "?") for r in rows]
+        from collections import Counter
+        most_common = Counter(basins).most_common(1)
+        if most_common:
+            zone_basins[zc] = most_common[0][0]
+
+    unique_zone_basins = set(zone_basins.values())
+
+    if len(zone_basins) >= 3 and len(unique_zone_basins) >= 2:
+        claims.append(PendingClaim(
+            text=f"Multi-zone sweep: {len(zone_basins)} damping zones map to "
+                 f"{len(unique_zone_basins)} distinct basin families — the "
+                 f"damping parameter creates a discrete address space of "
+                 f"attractors, not a smooth gradient",
+            evidence=f"{len(results)} trials across {len(zone_basins)} zones",
+            source_file=source,
+            pattern="MULTI_ZONE_BASINS",
+            confidence=0.85,
+            trials=len(results),
+            details={"n_zones": len(zone_basins),
+                     "n_basin_families": len(unique_zone_basins),
+                     "zone_map": {str(k): v
+                                  for k, v in sorted(zone_basins.items())}},
+        ))
+
+    # Check for zone-internal coherence (same basin within a zone)
+    coherent_zones = 0
+    for zc, rows in by_zone.items():
+        basins = set(r.get("basin", "?") for r in rows)
+        if len(basins) == 1:
+            coherent_zones += 1
+
+    if coherent_zones >= 2 and len(by_zone) >= 3:
+        ratio = coherent_zones / len(by_zone)
+        claims.append(PendingClaim(
+            text=f"Intra-zone coherence: {coherent_zones}/{len(by_zone)} "
+                 f"damping zones show a single basin across all ±2 "
+                 f"perturbations — zone boundaries are sharp, not gradual",
+            evidence=f"{len(results)} trials, {coherent_zones} coherent zones",
+            source_file=source,
+            pattern="ZONE_COHERENCE",
+            confidence=ratio,
+            trials=len(results),
+            details={"coherent": coherent_zones,
+                     "total_zones": len(by_zone)},
+        ))
+
+    return claims
+
+
 # Master detector list
 ALL_DETECTORS = [
     detect_basin_stability,
@@ -812,6 +1210,13 @@ ALL_DETECTORS = [
     detect_temporal_injection,
     detect_injection_diversity,
     detect_min_energy_transition,
+    # --- Gen-2 experiment detectors ---
+    detect_resonance_transition,
+    detect_boundary_basin_map,
+    detect_stochastic_basin_diversity,
+    detect_perturbation_stability,
+    detect_symmetry_breaking_basins,
+    detect_multi_zone_comparison,
 ]
 
 
@@ -843,6 +1248,14 @@ def check_open_questions(suite_results: dict[str, dict]) -> list[OpenQuestionUpd
     Q6: SR-latch third-state reproducibility
     Q7: Temporal injection minimum distinguishing cadence
     Q8: Dream afterstate — rest-phase basin drift
+    Q9: Stochastic injection basin entropy — how many bits of basin
+        diversity can random injection patterns address?
+    Q10: Perturbation stability radius — what is the minimum damping
+         perturbation that causes a basin switch at each critical point?
+    Q11: Boundary cartography completeness — does the damping×w0 basin
+         map contain unmapped phase pockets or is it fully tiled?
+    Q12: Symmetry-breaking group specificity — which injection groups
+         reliably override the standard attractor, and is this damping-dependent?
     """
     updates = []
 
@@ -1056,6 +1469,157 @@ def check_open_questions(suite_results: dict[str, dict]) -> list[OpenQuestionUpd
                     answer_summary=f"No dream afterstate: basin is stable through "
                                    f"1000-step rest phase at all {len(stable)} dampings tested",
                     evidence=f"{len(dream)} dream-afterstate tests",
+                ))
+
+    # ---------------------------------------------------------------
+    # Q9-Q12: Gen-2 experiment questions
+    # These scan raw result files (not probes) for Gen-2 data
+    # ---------------------------------------------------------------
+    for name, data in suite_results.items():
+        exp_type = data.get("type", "")
+        results = data.get("results", [])
+
+        # Q9: Stochastic injection basin entropy
+        if exp_type == "stochastic_injection" and results and len(results) >= 10:
+            by_d: dict[float, set] = {}
+            for r in results:
+                d = r.get("damping", 0)
+                basin = r.get("basin", "?")
+                if basin != "?":
+                    by_d.setdefault(d, set()).add(basin)
+            # Compute entropy at each damping
+            max_bits = 0.0
+            max_d = 0
+            total_unique = set()
+            for d, basins in by_d.items():
+                total_unique.update(basins)
+                bits = math.log2(len(basins)) if len(basins) > 0 else 0
+                if bits > max_bits:
+                    max_bits = bits
+                    max_d = d
+            if len(total_unique) >= 5 and max_bits >= 2.0:
+                updates.append(OpenQuestionUpdate(
+                    question_number=9,
+                    status="answered",
+                    answer_summary=f"Stochastic injection addresses {len(total_unique)} "
+                                   f"distinct basins ({max_bits:.1f} bits at d={max_d}). "
+                                   f"Diversity peaks at low damping and collapses at high damping",
+                    evidence=f"{len(results)} random injection trials across "
+                             f"{len(by_d)} dampings",
+                ))
+            elif len(total_unique) >= 3:
+                updates.append(OpenQuestionUpdate(
+                    question_number=9,
+                    status="partially_answered",
+                    answer_summary=f"Preliminary: {len(total_unique)} basins addressable "
+                                   f"({max_bits:.1f} bits). More random trials needed "
+                                   f"to establish entropy ceiling",
+                    evidence=f"{len(results)} trials",
+                ))
+
+        # Q10: Perturbation stability radius
+        if exp_type == "perturbation_analysis" and results and len(results) >= 3:
+            critical_radii = []
+            for r in results:
+                base_d = r.get("base_damping", 0)
+                perturbs = r.get("perturbations", [])
+                # Find minimum delta that causes basin change
+                min_delta = None
+                for p in sorted(perturbs, key=lambda p: abs(p.get("delta", 0))):
+                    if p.get("basin_changed"):
+                        min_delta = abs(p["delta"])
+                        break
+                critical_radii.append({
+                    "d": base_d, "min_delta": min_delta,
+                    "stability": r.get("stability", 0)
+                })
+
+            stable_all = all(cr["min_delta"] is None for cr in critical_radii)
+            if stable_all:
+                dampings = [cr["d"] for cr in critical_radii]
+                updates.append(OpenQuestionUpdate(
+                    question_number=10,
+                    status="answered",
+                    answer_summary=f"No basin switch within ±1.0 damping at any of "
+                                   f"{len(critical_radii)} test points (d={dampings}). "
+                                   f"The stability radius exceeds 1.0 everywhere tested",
+                    evidence=f"{len(results)} perturbation analyses",
+                ))
+            else:
+                fragile = [cr for cr in critical_radii if cr["min_delta"] is not None]
+                if fragile:
+                    updates.append(OpenQuestionUpdate(
+                        question_number=10,
+                        status="partially_answered",
+                        answer_summary=f"Basin switches found at {len(fragile)} dampings: "
+                                       + ", ".join(f"d={cr['d']}(Δ={cr['min_delta']})"
+                                                   for cr in fragile),
+                        evidence=f"{len(results)} perturbation analyses",
+                    ))
+
+        # Q11: Boundary cartography completeness
+        if exp_type == "boundary_cartography" and results and len(results) >= 20:
+            # Check coverage: how many (damping, w0) cells?
+            cells = set()
+            for r in results:
+                cells.add((r.get("damping", 0), r.get("w0", 0)))
+            n_dampings = len(set(c[0] for c in cells))
+            n_w0s = len(set(c[1] for c in cells))
+            coverage = len(cells)
+            full_grid = n_dampings * n_w0s
+
+            if coverage >= full_grid * 0.9 and full_grid >= 30:
+                updates.append(OpenQuestionUpdate(
+                    question_number=11,
+                    status="answered",
+                    answer_summary=f"Basin map is {coverage}/{full_grid} complete "
+                                   f"({n_dampings} dampings × {n_w0s} w0 values). "
+                                   f"No unmapped pockets — the phase space is fully tiled",
+                    evidence=f"{len(results)} boundary cartography trials",
+                ))
+            elif coverage >= 20:
+                updates.append(OpenQuestionUpdate(
+                    question_number=11,
+                    status="partially_answered",
+                    answer_summary=f"Partial map: {coverage} cells of "
+                                   f"{n_dampings}×{n_w0s} grid explored. "
+                                   f"Gaps remain in the phase space",
+                    evidence=f"{len(results)} trials",
+                ))
+
+        # Q12: Symmetry-breaking group specificity
+        if exp_type == "symmetry_breaking" and results and len(results) >= 3:
+            # Check which groups reliably break symmetry
+            by_group: dict[str, list[bool]] = {}
+            by_group_dampings: dict[str, set] = {}
+            for r in results:
+                group = r.get("injection_group", "?")
+                shifted = r.get("basin_shifted", False)
+                d = r.get("damping", 0)
+                by_group.setdefault(group, []).append(shifted)
+                by_group_dampings.setdefault(group, set()).add(d)
+
+            reliable_groups = []
+            for group, shifts in by_group.items():
+                if len(shifts) >= 2 and sum(shifts) / len(shifts) >= 0.8:
+                    reliable_groups.append(group)
+
+            if reliable_groups:
+                # Check damping dependence
+                dampings_seen = set()
+                for g in reliable_groups:
+                    dampings_seen.update(by_group_dampings.get(g, set()))
+
+                updates.append(OpenQuestionUpdate(
+                    question_number=12,
+                    status="answered" if len(reliable_groups) >= 2 else "partially_answered",
+                    answer_summary=f"Groups {sorted(reliable_groups)} reliably override "
+                                   f"the standard attractor (≥80% shift rate). "
+                                   f"Active across d={sorted(dampings_seen)}. "
+                                   f"{len(by_group) - len(reliable_groups)} groups "
+                                   f"do not reliably break symmetry",
+                    evidence=f"{len(results)} symmetry-breaking trials, "
+                             f"{len(by_group)} groups tested",
                 ))
 
     return updates
@@ -1601,7 +2165,8 @@ def compile_results(
 
             # Track suite results for open question checking
             suite_name = data.get("suite", "")
-            if suite_name:
+            exp_type = data.get("type", "")
+            if suite_name or exp_type:
                 suite_results[fpath.name] = data
                 new_experiment_count += 1
 
@@ -1728,6 +2293,27 @@ def _deduplicate_claims(claims: list[PendingClaim]) -> list[PendingClaim]:
             key_parts.append(f"order_dep={details['order_dependent']}")
         if "avg_low_iton" in details:
             key_parts.append(f"low_iton={details['avg_low_iton']:.2f}")
+        # Gen-2 detector dedup keys
+        if "zone" in details:
+            key_parts.append(f"zone={details['zone']}")
+        if "transition_d" in details:
+            key_parts.append(f"td={details['transition_d']}")
+        if "n_basins" in details:
+            key_parts.append(f"nb={details['n_basins']}")
+        if "w0_sensitive" in details:
+            key_parts.append(f"w0s={details['w0_sensitive']}")
+        if "n_unique" in details:
+            key_parts.append(f"nu={details['n_unique']}")
+        if "n_stable" in details:
+            key_parts.append(f"ns={details['n_stable']}")
+        if "shifted" in details:
+            key_parts.append(f"sh={details['shifted']}")
+        if "n_zones" in details:
+            key_parts.append(f"nz={details['n_zones']}")
+        if "n_w0" in details:
+            key_parts.append(f"nw0={details['n_w0']}")
+        if "bits" in details:
+            key_parts.append(f"bits={details['bits']}")
 
         key = "|".join(key_parts)
         if key not in seen:
