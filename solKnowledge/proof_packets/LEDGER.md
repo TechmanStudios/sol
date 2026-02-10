@@ -17,9 +17,9 @@ solKnowledge/proof_packets/
 
 | Domain | Packet | Claims | Open Qs | Trials | Compute (min) | Suites | Last Updated |
 |--------|--------|-------:|--------:|-------:|---------------:|-------:|--------------|
-| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 37 | 1 | 9,372 | 487 | 16 | 2026-02-09 |
+| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 37 | 1 | 11,020 | 487 | 22 | 2026-02-10 |
 
-**Totals:** 37 claims | 1 open question | 9,372 trials | 487 min compute
+**Totals:** 37 claims | 5 open questions | 11,020 trials | 487 min compute
 
 ## Global Claim Index
 
@@ -73,6 +73,10 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | Q2 | phonon_faraday | Dead zone physics — why christic[22] traps | **PARTIAL** |
 | Q3 | phonon_faraday | Clock optimization — optimal period/pulse | ~~RESOLVED~~ |
 | Q4 | phonon_faraday | Cascade depth limit — architecture-dependent | ~~RESOLVED~~ |
+| Q5 | phonon_faraday | Half-adder generalization across damping regimes | OPEN |
+| Q6 | phonon_faraday | SR-latch third-state reproducibility | OPEN |
+| Q7 | phonon_faraday | Temporal injection minimum distinguishing cadence | OPEN |
+| Q8 | phonon_faraday | Dream afterstate — rest-phase basin drift | OPEN |
 
 ## Raw Audit Trail
 
@@ -98,4 +102,4 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 
 ---
 
-*Maintained by claim_compiler.py and rsi_engine.py. Last regenerated: 2026-02-09.*
+*Maintained by claim_compiler.py and rsi_engine.py. Last regenerated: 2026-02-10.*

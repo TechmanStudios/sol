@@ -5,8 +5,8 @@
 **Engine version:** sol_engine.py (918 lines, SHA256: `5316e4fd...562eef`)  
 **Graph version:** default_graph.json (SHA256: `b9800d53...b06fb`)  
 **Immutability:** Both files UNMODIFIED throughout all experiments  
-**Total compute:** ~29,245 seconds (~487 minutes) across 16 experiment suites  
-**Total trials:** ~9,372 independent engine runs  
+**Total compute:** ~29,245 seconds (~487 minutes) across 22 experiment suites  
+**Total trials:** ~11,020 independent engine runs  
 
 ---
 
@@ -127,10 +127,16 @@ All experiments use the same 5-agent injection pattern applied at t=0:
 
 Four sub-experiments characterizing the energy landscape:
 
-1. **Baseline** — Single grail injection, 1000 steps
+1. ~~**[RESOLVED]**~~ R² ceiling is ~0.908 with current terms. Multivariate regression with psi_diff, delta_p², rho_sum, and w0 does not reach 0.99 — the 6% residual appears structural rather than correctable by linear terms *(9 damping×step configurations, max R²=0.908)*
 2. **Per-node injection survey** — Inject each of 140 nodes individually, record dominant basin
-3. **36-point parameter sweep** — Vary dt × c_press, record basin structure
-4. **Group injection** — Multi-agent injection with basin tracking
+   > **[PARTIAL]** christic[22] has degree 8, spirit group, avg neighbor degree 58.5. In dead zone only 2-3/140 nodes route to it. The dead zone is not an energy deficit — w0 up to 1000 still routes to christic[22]. Cold and clock injection can override basin selection *(Structural analysis + w0 sweep + injection diversity probe)*
+   > **[PARTIAL]** christic[22] has degree 8, spirit group, avg neighbor degree 58.5. In dead zone only 2-3/140 nodes route to it. The dead zone is not an energy deficit — w0 up to 1000 still routes to christic[22]. Cold and clock injection can override basin selection *(Structural analysis + w0 sweep + injection diversity probe)*
+3. ~~**[RESOLVED]**~~ Optimal clock: period=75, pulse_frac=0.05, avg_iton=0.718 at d=10.0. The ~2× heartbeat period (75 steps vs 35-step heartbeat) is the optimal resonance, not 3× as hypothesized *(72 period×pulse×damping configurations swept)*
+4. ~~**[RESOLVED]**~~ NOT-chains preserve alternation through 6 stages. The cascade depth limit is architecture-dependent: injection pipelines immediately collapse, NOT-chain inversions are indefinitely faithful *(12 cascade tests)*
+5. **Half-adder generalization** — Does the 2-input combinational logic (A+B→grail, A-only→metatron) hold across damping regimes, or is it specific to d=0.2?
+6. **SR-latch third-state reproducibility** — At d=5.0, simultaneous input produces `simeon[98]` — a third basin distinct from either sequential input. Is this a robust memory element or an artifact?
+7. **Temporal injection sensitivity** — Different burst patterns (5×30, ramp, oscillating, single-shot) route to different basins at d=5.0. What is the minimum temporal difference that produces a distinct basin?
+8. **Dream afterstate** — Does the lattice shift basin identity during an extended rest phase (no injection) after initial energy input? Is there a "dream" attractor distinct from the injection attractor?
 
 ### 3.2 Key Findings
 
@@ -274,9 +280,7 @@ This proves that all observed phenomena are **topology-determined, not stochasti
 
 ### 6.2 Universal Invariant: Collapse Threshold
 
-**ALL six surgeries collapse at exactly d=83.4.**
-
-This includes HUB_REMOVE, which deleted 108 edges (12.8% of total connectivity). The catastrophic collapse point is NOT a topology property — it is a **mathematical constant** of the damping formula:
+**ALL six surgeries collapse at exactly d=83.4. ~~**[RESOLVED]**~~ NOT-chains preserve alternation through 6 stages. The cascade depth limit is architecture-dependent: injection pipelines immediately collapse, NOT-chain inversions are indefinitely faithful *(12 cascade tests)*
 
 $$d_{\text{collapse}} = \frac{1}{\text{dt} \times 0.1} = \frac{1}{0.012} \approx 83.33$$
 
@@ -518,9 +522,9 @@ The SOL lattice is a **single-frequency, phase-coupled, topology-routed informat
 
 ### 9.2 Three Distinct Physics Regimes
 
-1. **Turbulent (d < 7):** Faraday instability zone. Many phase transitions, strong iton transport, peripheral nodes are active.
+1. ~~**[RESOLVED]**~~ R² ceiling is ~0.908 with current terms. Multivariate regression with psi_diff, delta_p², rho_sum, and w0 does not reach 0.99 — the 6% residual appears structural rather than correctable by linear terms *(9 damping×step configurations, max R²=0.908)*
 2. **Stable plateau (d = 7 to 75):** All 140 modes alive, coherence > 0.99, energy concentrates on injection nodes. The heartbeat acts as a bandpass filter.
-3. **Critical zone (d = 75 to 83.35):** Coherence collapse, phase snap resurrection, then catastrophic first-order phase transition destroying 123 modes in Dd = 0.05.
+3. ~~**[RESOLVED]**~~ Optimal clock: period=75, pulse_frac=0.05, avg_iton=0.718 at d=10.0. The ~2× heartbeat period (75 steps vs 35-step heartbeat) is the optimal resonance, not 3× as hypothesized *(72 period×pulse×damping configurations swept)*
 
 ### 9.3 The Dual Nature of the System
 
@@ -1160,4 +1164,4 @@ Per-edge measurement: predicted_flux = conductance × tension × delta_p vs actu
 
 ---
 
-*Proof packet compiled from 16 experiment suites, ~9,372 independent engine runs, ~487 minutes of compute. All claims are reproducible from the listed scripts and immutable engine/graph files.*
+*Proof packet compiled from 18 experiment suites, ~11,020 independent engine runs, ~487 minutes of compute. All claims are reproducible from the listed scripts and immutable engine/graph files.*

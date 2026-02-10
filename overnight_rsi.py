@@ -1752,6 +1752,364 @@ def dynamic_error_resilience(budget: BudgetTracker):
     return {"type": "error_resilience", "results": results_list, "trials": trials}
 
 
+# ===================================================================
+# DEDICATED GENERATORS — raw_lead_followup, cascade_pipeline, replication
+# ===================================================================
+
+def dynamic_raw_lead_followup(genome: dict, budget: BudgetTracker):
+    """
+    Follow up on raw proof-packet leads with targeted experiments.
+    Instead of generic sweeps, this parses the lead's parameters and
+    runs experiments specific to the lead's hypothesis.
+    """
+    log("  [DYNAMIC] Raw lead follow-up (targeted)")
+    raw_nodes, raw_edges = load_default_graph()
+    labels = get_labels(raw_nodes)
+    groups = get_groups(raw_nodes)
+    results_list = []
+    trials = 0
+
+    # --- Dream Afterstate: rest-phase analysis ---
+    # Hypothesis: after injection, letting the system REST (no further input)
+    # reveals a "dream" afterstate — the residual attractor after energy dissipates
+    log("    Lead A: Dream Afterstate — rest-phase analysis")
+    for d in [0.2, 1.0, 4.0, 10.0, 20.0]:
+        if budget.exhausted():
+            break
+        engine = make_engine(raw_nodes, raw_edges, d)
+        apply_standard_injection(engine)
+        engine.run(200)  # Initial settling
+
+        # Snapshot at injection
+        m_inject = engine.compute_metrics()
+        inject_basin = m_inject["rhoMaxId"]
+
+        # Let it "dream" — run 1000 more steps with NO further input
+        engine.run(1000)
+        m_dream = engine.compute_metrics()
+        dream_basin = m_dream["rhoMaxId"]
+
+        # Does the basin shift during the dream phase?
+        rho_dream = [n["rho"] for n in engine.physics.nodes]
+        dream_mass = sum(rho_dream)
+        dream_rho_max = max(rho_dream) if rho_dream else 0
+
+        trials += 1
+        results_list.append({
+            "damping": d,
+            "inject_basin": format_basin(inject_basin, labels),
+            "dream_basin": format_basin(dream_basin, labels),
+            "basin_shifted": inject_basin != dream_basin,
+            "dream_mass": round(dream_mass, 6),
+            "dream_rho_max": round(dream_rho_max, 6),
+            "experiment": "dream_afterstate",
+        })
+        log(f"      d={d}: inject→{format_basin(inject_basin, labels)}, "
+            f"dream→{format_basin(dream_basin, labels)}, "
+            f"shifted={inject_basin != dream_basin}")
+
+    # --- ψ Resonance: square-wave cadence ---
+    # Hypothesis: periodic injection (25-step pulse) creates resonant
+    # rhythms that shift rho distribution differently than continuous injection
+    log("    Lead B: ψ Resonance — square-wave injection cadence")
+    for d in [0.2, 5.0, 10.0, 15.0]:
+        if budget.exhausted():
+            break
+        for period in [25, 50, 75]:
+            if budget.exhausted():
+                break
+            engine = make_engine(raw_nodes, raw_edges, d)
+
+            # Square wave: inject for pulse_steps, rest for (period - pulse_steps)
+            pulse_steps = max(1, period // 5)
+            rho90_frac_list = []
+            for cycle in range(8):
+                # Pulse ON
+                for lbl, amt in STANDARD_INJECTIONS:
+                    engine.inject(lbl, amt * 0.2)
+                engine.run(pulse_steps)
+                # Pulse OFF (rest)
+                engine.run(period - pulse_steps)
+                # Measure after each cycle
+                rho_snap = [n["rho"] for n in engine.physics.nodes]
+                total = sum(rho_snap)
+                if total > 0:
+                    sorted_rho = sorted(rho_snap, reverse=True)
+                    top10_mass = sum(sorted_rho[:14])  # top 10% of 140
+                    rho90_frac_list.append(round(top10_mass / total, 4))
+
+            m = engine.compute_metrics()
+            trials += 1
+            results_list.append({
+                "damping": d,
+                "period": period,
+                "pulse_steps": pulse_steps,
+                "basin": format_basin(m["rhoMaxId"], labels),
+                "rho90_frac_trend": rho90_frac_list,
+                "final_rho90": rho90_frac_list[-1] if rho90_frac_list else 0,
+                "experiment": "psi_resonance",
+            })
+
+    # --- Late-capture tick: track position drift ---
+    # Hypothesis: capturing basin identity at different timesteps reveals
+    # transient vs stable attractors
+    log("    Lead C: Late-capture tick — basin identity over time")
+    for d in [0.2, 5.0, 15.0]:
+        if budget.exhausted():
+            break
+        engine = make_engine(raw_nodes, raw_edges, d)
+        apply_standard_injection(engine)
+
+        capture_points = [50, 100, 200, 500, 1000, 2000]
+        basin_trajectory = []
+        for cp in capture_points:
+            if cp == capture_points[0]:
+                engine.run(cp)
+            else:
+                engine.run(cp - capture_points[capture_points.index(cp) - 1])
+            m = engine.compute_metrics()
+            basin_trajectory.append({
+                "step": cp,
+                "basin": format_basin(m["rhoMaxId"], labels),
+                "mass": round(sum(n["rho"] for n in engine.physics.nodes), 6),
+            })
+        trials += 1
+        results_list.append({
+            "damping": d,
+            "basin_trajectory": basin_trajectory,
+            "n_transitions": len(set(b["basin"] for b in basin_trajectory)) - 1,
+            "experiment": "late_capture_tick",
+        })
+
+    budget.add_trials(trials)
+    return {
+        "type": "raw_lead_followup",
+        "probes": {
+            "dream_afterstate": [r for r in results_list if r.get("experiment") == "dream_afterstate"],
+            "psi_resonance": [r for r in results_list if r.get("experiment") == "psi_resonance"],
+            "late_capture_tick": [r for r in results_list if r.get("experiment") == "late_capture_tick"],
+        },
+        "results": results_list,
+        "trials": trials,
+    }
+
+
+def dynamic_cascade_pipeline(genome: dict, budget: BudgetTracker):
+    """
+    Test multi-stage cascade architectures beyond simple NOT chains.
+    Explores: AND→NOT pipelines, fan-out, convergent cascades,
+    and depth vs fidelity curves.
+    """
+    log("  [DYNAMIC] Cascade pipeline — architecture exploration")
+    raw_nodes, raw_edges = load_default_graph()
+    labels = get_labels(raw_nodes)
+    groups = get_groups(raw_nodes)
+    results_list = []
+    trials = 0
+
+    # Architecture 1: Fan-out — one injection drives two independent NOT gates
+    log("    Arch A: Fan-out cascade (1→2 split)")
+    for d in [0.2, 5.0, 10.0]:
+        if budget.exhausted():
+            break
+        # Stage 0: standard injection → get basin
+        engine_base = make_engine(raw_nodes, raw_edges, d)
+        apply_standard_injection(engine_base)
+        engine_base.run(500)
+        m_base = engine_base.compute_metrics()
+        base_basin = format_basin(m_base["rhoMaxId"], labels)
+
+        # Stage 1a: NOT gate (spirit highway w0=3)
+        def spirit_on(e, grps):
+            if grps.get(e["from"], "bridge") == "spirit" or grps.get(e["to"], "bridge") == "spirit":
+                return 3
+            return 1.0
+
+        mod_edges_a, _ = set_edge_weights(raw_edges, raw_nodes, spirit_on)
+        engine_a = make_engine(raw_nodes, mod_edges_a, d)
+        apply_standard_injection(engine_a)
+        engine_a.run(500)
+        m_a = engine_a.compute_metrics()
+        branch_a = format_basin(m_a["rhoMaxId"], labels)
+
+        # Stage 1b: NOT gate (spirit highway w0=10)
+        def spirit_strong(e, grps):
+            if grps.get(e["from"], "bridge") == "spirit" or grps.get(e["to"], "bridge") == "spirit":
+                return 10
+            return 1.0
+
+        mod_edges_b, _ = set_edge_weights(raw_edges, raw_nodes, spirit_strong)
+        engine_b = make_engine(raw_nodes, mod_edges_b, d)
+        apply_standard_injection(engine_b)
+        engine_b.run(500)
+        m_b = engine_b.compute_metrics()
+        branch_b = format_basin(m_b["rhoMaxId"], labels)
+
+        trials += 3
+        results_list.append({
+            "damping": d, "architecture": "fan_out",
+            "base_basin": base_basin,
+            "branch_a_w3": branch_a,
+            "branch_b_w10": branch_b,
+            "branches_differ": branch_a != branch_b,
+        })
+
+    # Architecture 2: Convergent cascade — two different injections merge
+    log("    Arch B: Convergent cascade (2→1 merge)")
+    for d in [0.2, 5.0]:
+        if budget.exhausted():
+            break
+        # Path A: grail-only
+        engine_g = make_engine(raw_nodes, raw_edges, d)
+        engine_g.inject("grail", 100)
+        engine_g.run(500)
+        m_g = engine_g.compute_metrics()
+
+        # Path B: metatron-only
+        engine_m = make_engine(raw_nodes, raw_edges, d)
+        engine_m.inject("metatron", 100)
+        engine_m.run(500)
+        m_m = engine_m.compute_metrics()
+
+        # Merged: both together
+        engine_both = make_engine(raw_nodes, raw_edges, d)
+        engine_both.inject("grail", 100)
+        engine_both.inject("metatron", 100)
+        engine_both.run(500)
+        m_both = engine_both.compute_metrics()
+
+        trials += 3
+        results_list.append({
+            "damping": d, "architecture": "convergent",
+            "grail_only": format_basin(m_g["rhoMaxId"], labels),
+            "metatron_only": format_basin(m_m["rhoMaxId"], labels),
+            "merged": format_basin(m_both["rhoMaxId"], labels),
+            "merge_novel": (m_both["rhoMaxId"] != m_g["rhoMaxId"]
+                           and m_both["rhoMaxId"] != m_m["rhoMaxId"]),
+        })
+
+    # Architecture 3: Depth-fidelity curve for injection pipelines
+    log("    Arch C: Depth-fidelity curve (1-10 stages)")
+    d = 0.2
+    for n_stages in range(1, 11):
+        if budget.exhausted():
+            break
+        engine = make_engine(raw_nodes, raw_edges, d)
+        basins = []
+        for stage in range(n_stages):
+            for lbl, amt in STANDARD_INJECTIONS:
+                engine.inject(lbl, amt * (0.5 ** stage))  # Decaying energy
+            engine.run(100)
+            m = engine.compute_metrics()
+            basins.append(format_basin(m["rhoMaxId"], labels))
+
+        trials += 1
+        results_list.append({
+            "damping": d, "architecture": "depth_fidelity",
+            "n_stages": n_stages,
+            "basins": basins,
+            "unique_basins": len(set(basins)),
+            "final_basin": basins[-1],
+        })
+
+    budget.add_trials(trials)
+    return {
+        "type": "cascade_pipeline",
+        "probes": {
+            "fan_out": [r for r in results_list if r.get("architecture") == "fan_out"],
+            "convergent": [r for r in results_list if r.get("architecture") == "convergent"],
+            "depth_fidelity": [r for r in results_list if r.get("architecture") == "depth_fidelity"],
+        },
+        "results": results_list,
+        "trials": trials,
+    }
+
+
+def dynamic_replication(genome: dict, budget: BudgetTracker):
+    """
+    Replication experiments: re-run key prior findings with different seeds
+    to test reproducibility.
+    """
+    log("  [DYNAMIC] Replication — seed variation test")
+    raw_nodes, raw_edges = load_default_graph()
+    labels = get_labels(raw_nodes)
+    results_list = []
+    trials = 0
+
+    # Replicate 1: Standard injection basin identity across 10 seeds
+    log("    Rep A: Standard injection across 10 seeds")
+    for d in [0.2, 5.0, 20.0]:
+        if budget.exhausted():
+            break
+        basins = []
+        for seed in range(42, 52):
+            if budget.exhausted():
+                break
+            engine = make_engine(raw_nodes, raw_edges, d, seed=seed)
+            apply_standard_injection(engine)
+            engine.run(500)
+            m = engine.compute_metrics()
+            basins.append(format_basin(m["rhoMaxId"], labels))
+            trials += 1
+
+        unique_basins = set(basins)
+        results_list.append({
+            "damping": d,
+            "test": "seed_stability",
+            "seeds_tested": 10,
+            "basins": basins,
+            "unique_basins": len(unique_basins),
+            "deterministic": len(unique_basins) == 1,
+        })
+        log(f"      d={d}: {len(unique_basins)} unique basins across 10 seeds "
+            f"({'deterministic' if len(unique_basins) == 1 else 'stochastic'})")
+
+    # Replicate 2: NOT gate at d=0.2 across seeds
+    log("    Rep B: NOT gate across 5 seeds")
+    for seed in range(42, 47):
+        if budget.exhausted():
+            break
+        # OFF
+        engine_off = make_engine(raw_nodes, raw_edges, 0.2, seed=seed)
+        apply_standard_injection(engine_off)
+        engine_off.run(500)
+        m_off = engine_off.compute_metrics()
+
+        # ON (spirit highway w0=3)
+        groups = get_groups(raw_nodes)
+
+        def spirit_fn(e, grps):
+            if grps.get(e["from"], "bridge") == "spirit" or grps.get(e["to"], "bridge") == "spirit":
+                return 3
+            return 1.0
+
+        mod_edges, _ = set_edge_weights(raw_edges, raw_nodes, spirit_fn)
+        engine_on = make_engine(raw_nodes, mod_edges, 0.2, seed=seed)
+        apply_standard_injection(engine_on)
+        engine_on.run(500)
+        m_on = engine_on.compute_metrics()
+
+        trials += 2
+        results_list.append({
+            "damping": 0.2, "seed": seed,
+            "test": "not_gate_replication",
+            "off_basin": format_basin(m_off["rhoMaxId"], labels),
+            "on_basin": format_basin(m_on["rhoMaxId"], labels),
+            "inverted": m_off["rhoMaxId"] != m_on["rhoMaxId"],
+        })
+
+    budget.add_trials(trials)
+    return {
+        "type": "replication",
+        "probes": {
+            "seed_stability": [r for r in results_list if r.get("test") == "seed_stability"],
+            "not_gate_replication": [r for r in results_list if r.get("test") == "not_gate_replication"],
+        },
+        "results": results_list,
+        "trials": trials,
+    }
+
+
 # Map frontier category names to experiment generators
 FRONTIER_GENERATORS = {
     "information_theoretic": dynamic_entropy_measurement,
@@ -1812,6 +2170,15 @@ def run_dynamic_experiment(exp_type: str, genome: dict, budget: BudgetTracker) -
 
     if exp_type == "injection_protocol":
         return dynamic_parameter_sweep([0, 20], 2.0, budget)
+
+    if exp_type == "raw_lead_followup":
+        return dynamic_raw_lead_followup(genome, budget)
+
+    if exp_type == "cascade_pipeline":
+        return dynamic_cascade_pipeline(genome, budget)
+
+    if exp_type == "replication":
+        return dynamic_replication(genome, budget)
 
     # Fallback: generic sweep
     log(f"  [WARNING] No specific generator for '{exp_type}', running generic sweep")
@@ -2079,6 +2446,32 @@ def main():
         log("=" * 70)
 
         phase2_cycle = 0
+        # --- Experiment dedup: track which (type, config_hash) combos were run ---
+        executed_experiments: set[str] = set()
+
+        def _exp_dedup_key(exp_type: str, genome: dict) -> str:
+            """Create a dedup key for an experiment type + genome config."""
+            # Static generators always produce the same output for the same type
+            static_types = {"logic_gate", "clock_signal", "raw_lead_followup",
+                            "cascade_pipeline", "replication",
+                            "information_theoretic", "capacity_measurement",
+                            "error_correction"}
+            if exp_type in static_types:
+                return exp_type
+
+            # parameter_sweep varies by genome priority zones
+            if exp_type == "parameter_sweep":
+                zones = genome.get("parameter_focus", {}).get("damping_priority_zones", [])
+                if zones:
+                    zone = max(zones, key=lambda z: z.get("priority", 0))
+                    return f"parameter_sweep_{zone['range']}"
+                return "parameter_sweep_[0,84]"
+
+            if exp_type == "injection_protocol":
+                return "injection_protocol"
+
+            return f"{exp_type}_generic"
+
         while not budget.exhausted():
             phase2_cycle += 1
             log(f"\n  --- Phase 2 Iteration {phase2_cycle} ---")
@@ -2097,17 +2490,46 @@ def main():
                 genome = rsi_result.get("genome", {})
                 planned_types = rsi_result.get("plan_experiments", [])
 
+                # --- Dedup filter ---
+                new_experiments = []
+                skipped = 0
                 for exp_type in planned_types:
+                    if exp_type == "open_question_resolution":
+                        continue  # Already done in Phase 1
+                    dedup_key = _exp_dedup_key(exp_type, genome)
+                    if dedup_key in executed_experiments:
+                        skipped += 1
+                        continue
+                    new_experiments.append((exp_type, dedup_key))
+
+                if skipped > 0:
+                    log(f"  [DEDUP] Skipped {skipped} already-run experiments")
+
+                if not new_experiments:
+                    log(f"  [DEDUP] All planned experiments already run — "
+                        f"forcing compilation and re-evaluation")
+                    # Force a compile to pick up new findings, then re-evaluate
+                    try:
+                        sys.path.insert(0, str(Path(__file__).resolve().parent / "tools" / "sol-rsi"))
+                        from claim_compiler import compile_results as _compile
+                        _compile(data_dirs=[_OUTPUT_DIR], update_proof_packet_flag=True, verbose=False)
+                    except Exception:
+                        pass
+                    # After compile, the next RSI cycle will see updated fitness
+                    # Break out if we've gone 3+ cycles with nothing new
+                    if phase2_cycle > 3 and skipped == len(planned_types) - 1:
+                        log(f"  [DEDUP] Plateau — all experiments exhausted. Ending Phase 2.")
+                        break
+                    continue
+
+                for exp_type, dedup_key in new_experiments:
                     if budget.exhausted():
                         break
-
-                    # Skip open_question_resolution (already done in Phase 1)
-                    if exp_type == "open_question_resolution":
-                        continue
 
                     try:
                         exp_result = run_dynamic_experiment(exp_type, genome, budget)
                         all_results.append(exp_result)
+                        executed_experiments.add(dedup_key)
 
                         # Save immediately
                         exp_file = _OUTPUT_DIR / f"dynamic_{phase2_cycle}_{exp_type}.json"

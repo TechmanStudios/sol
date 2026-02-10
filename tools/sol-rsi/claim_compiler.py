@@ -548,6 +548,253 @@ def detect_extreme_w0_invariance(data: dict, source: str) -> list[PendingClaim]:
     return claims
 
 
+# ---------------------------------------------------------------------------
+# 2b. NEW Claim Detectors — Latch, Adder, Temporal, Injection Diversity
+# ---------------------------------------------------------------------------
+
+def detect_latch_behavior(data: dict, source: str) -> list[PendingClaim]:
+    """Detect SR-latch or memory-element behavior from probe data."""
+    claims = []
+    probes = data.get("probes", {})
+
+    sr_data = probes.get("sr_latch", [])
+    if not sr_data:
+        # Also check top-level results for latch-style keys
+        results = _extract_results_list(data)
+        sr_data = [r for r in results
+                   if "grail_first" in r or "order_dependent" in r]
+    if not sr_data or len(sr_data) < 2:
+        return claims
+
+    for row in sr_data:
+        d = row.get("damping", "?")
+        grail_first = row.get("grail_first", "")
+        metatron_first = row.get("metatron_first", "")
+        simultaneous = row.get("simultaneous", "")
+        order_dep = row.get("order_dependent", None)
+
+        # Skip empty rows
+        if not grail_first and not metatron_first:
+            continue
+
+        # Third-state detection: simultaneous input produces a different basin
+        if (simultaneous and grail_first and metatron_first
+                and simultaneous != grail_first
+                and simultaneous != metatron_first):
+            claims.append(PendingClaim(
+                text=f"SR-latch at d={d} exhibits third-state behavior: sequential "
+                     f"inputs route to '{grail_first}'/'{metatron_first}', but "
+                     f"simultaneous input produces distinct basin '{simultaneous}' — "
+                     f"a memory element with three output states",
+                evidence=f"SR-latch probe at d={d}, 3 input orderings",
+                source_file=source,
+                pattern="LATCH_BEHAVIOR",
+                confidence=0.9,
+                trials=3,
+                details={"damping": d, "grail_first": grail_first,
+                         "metatron_first": metatron_first,
+                         "simultaneous": simultaneous,
+                         "order_dependent": order_dep},
+            ))
+
+        # Order-dependent routing
+        if order_dep is True and grail_first != metatron_first:
+            claims.append(PendingClaim(
+                text=f"Injection order determines basin identity at d={d}: "
+                     f"grail-first → '{grail_first}', metatron-first → "
+                     f"'{metatron_first}' — the lattice has input-order memory",
+                evidence=f"SR-latch probe at d={d}",
+                source_file=source,
+                pattern="LATCH_BEHAVIOR",
+                confidence=1.0,
+                trials=2,
+                details={"damping": d, "order_dependent": True,
+                         "grail_first": grail_first,
+                         "metatron_first": metatron_first},
+            ))
+
+    return claims
+
+
+def detect_half_adder(data: dict, source: str) -> list[PendingClaim]:
+    """Detect half-adder (2-input arithmetic) behavior."""
+    claims = []
+    probes = data.get("probes", {})
+
+    ha_data = probes.get("half_adder", [])
+    if not ha_data:
+        results = _extract_results_list(data)
+        ha_data = [r for r in results if "A" in r and "B" in r and "basin" in r]
+    if not ha_data or len(ha_data) < 3:
+        return claims
+
+    # Build truth table: (A, B) → basin
+    truth_table = {}
+    for row in ha_data:
+        a = row.get("A", 0)
+        b = row.get("B", 0)
+        basin = row.get("basin", "")
+        if basin and basin not in ("?[None]", "None"):
+            truth_table[(a, b)] = basin
+
+    # Need at least 3 valid entries from {(0,0), (1,0), (0,1), (1,1)}
+    if len(truth_table) < 3:
+        return claims
+
+    # Count distinct output basins
+    unique_outputs = set(truth_table.values())
+
+    # A valid adder has: (0,0)→null/zero, (1,0)→basin_a, (0,1)→basin_b, (1,1)→basin_sum
+    # Key: (1,1) should differ from single-input results
+    basin_11 = truth_table.get((1, 1))
+    basin_10 = truth_table.get((1, 0))
+    basin_01 = truth_table.get((0, 1))
+
+    if basin_11 and basin_10 and basin_11 != basin_10:
+        claims.append(PendingClaim(
+            text=f"Half-adder behavior: dual injection (A+B) routes to "
+                 f"'{basin_11}', while single-A routes to '{basin_10}'"
+                 f"{' and single-B routes to ' + repr(basin_01) if basin_01 else ''}"
+                 f" — {len(unique_outputs)} distinct output states from "
+                 f"2-input combinational logic",
+            evidence=f"{len(truth_table)}-entry truth table, "
+                     f"{len(unique_outputs)} unique basins",
+            source_file=source,
+            pattern="HALF_ADDER",
+            confidence=0.95,
+            trials=len(ha_data),
+            details={"truth_table": {f"{k[0]},{k[1]}": v
+                                     for k, v in truth_table.items()},
+                     "unique_outputs": len(unique_outputs)},
+        ))
+
+    return claims
+
+
+def detect_temporal_injection(data: dict, source: str) -> list[PendingClaim]:
+    """Detect that different temporal injection patterns route to different basins."""
+    claims = []
+    probes = data.get("probes", {})
+
+    burst_data = probes.get("burst_patterns", [])
+    if not burst_data or len(burst_data) < 2:
+        return claims
+
+    for row in burst_data:
+        d = row.get("damping", "?")
+        patterns = {}
+        for key in ("burst_5x30", "ramp_10to50", "oscillating", "single_shot"):
+            val = row.get(key)
+            if val and val not in ("?", "None"):
+                patterns[key] = val
+
+        if len(patterns) < 3:
+            continue
+
+        unique_basins = set(patterns.values())
+        if len(unique_basins) >= 3:
+            claims.append(PendingClaim(
+                text=f"Temporal injection diversity at d={d}: {len(unique_basins)} "
+                     f"distinct basins from {len(patterns)} injection patterns "
+                     f"({', '.join(f'{k}→{v}' for k, v in patterns.items())}) — "
+                     f"the lattice is sensitive to injection *timing*, not just total energy",
+                evidence=f"{len(patterns)} temporal patterns at d={d}, "
+                         f"{len(unique_basins)} unique basins",
+                source_file=source,
+                pattern="TEMPORAL_INJECTION",
+                confidence=0.9,
+                trials=len(patterns),
+                details={"damping": d, "patterns": patterns,
+                         "unique_basins": len(unique_basins)},
+            ))
+
+    return claims
+
+
+def detect_injection_diversity(data: dict, source: str) -> list[PendingClaim]:
+    """Detect that different injection configurations route to different basins."""
+    claims = []
+    probes = data.get("probes", {})
+
+    asym_data = probes.get("asymmetric", [])
+    if not asym_data or len(asym_data) < 4:
+        return claims
+
+    # Group by damping
+    by_damping: dict = {}
+    for row in asym_data:
+        d = row.get("damping", 0)
+        config = row.get("config", "?")
+        basin = row.get("basin", "?")
+        by_damping.setdefault(d, {})[config] = basin
+
+    for d, configs in by_damping.items():
+        unique_basins = set(configs.values())
+        if len(unique_basins) >= 3 and len(configs) >= 3:
+            claims.append(PendingClaim(
+                text=f"Injection topology diversity at d={d}: {len(unique_basins)} "
+                     f"distinct basins from {len(configs)} injection configurations "
+                     f"— spatial injection pattern selects the attractor",
+                evidence=f"{len(configs)} configs at d={d}, "
+                         f"{len(unique_basins)} unique basins",
+                source_file=source,
+                pattern="INJECTION_DIVERSITY",
+                confidence=0.9,
+                trials=len(configs),
+                details={"damping": d, "configs": configs,
+                         "unique_basins": len(unique_basins)},
+            ))
+
+    return claims
+
+
+def detect_min_energy_transition(data: dict, source: str) -> list[PendingClaim]:
+    """Detect minimum energy basin identity transitions."""
+    claims = []
+    probes = data.get("probes", {})
+    results = _extract_results_list(data)
+
+    # Check for min_energy probe or results with total_energy field
+    min_e = probes.get("min_energy", [])
+    if not min_e:
+        min_e = [r for r in results if "total_energy" in r]
+    if not min_e or len(min_e) < 4:
+        return claims
+
+    # Sort by energy descending
+    sorted_e = sorted(min_e, key=lambda x: x.get("total_energy", 0), reverse=True)
+
+    # Track iton transitions
+    high_e = [r for r in sorted_e if r.get("total_energy", 0) >= 50]
+    low_e = [r for r in sorted_e if r.get("total_energy", 0) <= 10]
+
+    if high_e and low_e:
+        high_iton = [r.get("iton", 0) for r in high_e if "iton" in r]
+        low_iton = [r.get("iton", 0) for r in low_e if "iton" in r]
+
+        if high_iton and low_iton:
+            avg_high = sum(high_iton) / len(high_iton)
+            avg_low = sum(low_iton) / len(low_iton)
+
+            # Counterintuitive: lower energy → higher iton
+            if avg_low > avg_high * 1.5 and avg_low >= 0.7:
+                claims.append(PendingClaim(
+                    text=f"Counterintuitive energy-iton relationship: low injection "
+                         f"energy (E≤10) produces *higher* iton ({avg_low:.3f}) than "
+                         f"high energy (E≥50, iton={avg_high:.3f}) — minimal "
+                         f"perturbation yields maximal information transport",
+                    evidence=f"{len(min_e)} energy levels tested",
+                    source_file=source,
+                    pattern="MIN_ENERGY_ITON",
+                    confidence=0.85,
+                    trials=len(min_e),
+                    details={"avg_high_iton": avg_high, "avg_low_iton": avg_low,
+                             "n_levels": len(min_e)},
+                ))
+
+    return claims
+
+
 # Master detector list
 ALL_DETECTORS = [
     detect_basin_stability,
@@ -559,6 +806,12 @@ ALL_DETECTORS = [
     detect_cascade_fidelity,
     detect_energy_threshold,
     detect_extreme_w0_invariance,
+    # --- NEW detectors (Phase 2 plateau break) ---
+    detect_latch_behavior,
+    detect_half_adder,
+    detect_temporal_injection,
+    detect_injection_diversity,
+    detect_min_energy_transition,
 ]
 
 
@@ -580,12 +833,16 @@ def run_detectors(data: dict, source: str) -> list[PendingClaim]:
 
 def check_open_questions(suite_results: dict[str, dict]) -> list[OpenQuestionUpdate]:
     """
-    Check if overnight results answer the 4 known open questions.
+    Check if overnight results answer the known open questions.
 
     Q1: Higher-order analog correction (R² > 0.99?)
     Q2: Dead zone physics (why christic[22]?)
     Q3: Clock optimization (optimal period?)
     Q4: Cascade depth limit (max depth?)
+    Q5: Half-adder generalization across damping regimes
+    Q6: SR-latch third-state reproducibility
+    Q7: Temporal injection minimum distinguishing cadence
+    Q8: Dream afterstate — rest-phase basin drift
     """
     updates = []
 
@@ -676,6 +933,129 @@ def check_open_questions(suite_results: dict[str, dict]) -> list[OpenQuestionUpd
                                    "injection pipelines immediately collapse, "
                                    "NOT-chain inversions are indefinitely faithful",
                     evidence=f"{len(q4)} cascade tests",
+                ))
+
+        # Q5: Half-adder generalization
+        ha = probes.get("half_adder", [])
+        if ha and isinstance(ha, list) and len(ha) >= 3:
+            # Check if there are results at multiple dampings
+            dampings_tested = set()
+            truth_tables_by_d: dict[float, dict] = {}
+            for row in ha:
+                d = row.get("damping", 0.2)  # Default assumes d=0.2
+                a = row.get("A", 0)
+                b = row.get("B", 0)
+                basin = row.get("basin", "")
+                if basin and basin not in ("?[None]", "None"):
+                    dampings_tested.add(d)
+                    truth_tables_by_d.setdefault(d, {})[(a, b)] = basin
+
+            if len(dampings_tested) >= 2:
+                # Check if A+B still differs from A-only at each damping
+                generalizes = True
+                for d, tt in truth_tables_by_d.items():
+                    if tt.get((1, 1)) == tt.get((1, 0)):
+                        generalizes = False
+                        break
+
+                if generalizes:
+                    updates.append(OpenQuestionUpdate(
+                        question_number=5,
+                        status="answered",
+                        answer_summary=f"Half-adder generalizes across {len(dampings_tested)} "
+                                       f"damping values — dual input always differs from single input",
+                        evidence=f"{len(ha)} truth-table entries across d={sorted(dampings_tested)}",
+                    ))
+                else:
+                    updates.append(OpenQuestionUpdate(
+                        question_number=5,
+                        status="partially_answered",
+                        answer_summary=f"Half-adder tested at {len(dampings_tested)} dampings "
+                                       f"but does not generalize — at some dampings A+B equals A-only",
+                        evidence=f"{len(ha)} entries across d={sorted(dampings_tested)}",
+                    ))
+
+        # Q6: SR-latch third-state reproducibility
+        sr = probes.get("sr_latch", [])
+        if sr and isinstance(sr, list) and len(sr) >= 2:
+            third_states = []
+            for row in sr:
+                d = row.get("damping", "?")
+                g_first = row.get("grail_first", "")
+                m_first = row.get("metatron_first", "")
+                simul = row.get("simultaneous", "")
+                if simul and g_first and m_first and simul != g_first and simul != m_first:
+                    third_states.append({"damping": d, "third": simul})
+
+            if third_states:
+                # Check if the third state is consistent (same basin) across tests
+                third_basins = set(ts["third"] for ts in third_states)
+                if len(third_basins) == 1:
+                    updates.append(OpenQuestionUpdate(
+                        question_number=6,
+                        status="answered",
+                        answer_summary=f"SR-latch third state IS reproducible: "
+                                       f"'{list(third_basins)[0]}' consistently appears "
+                                       f"on simultaneous input at {len(third_states)} dampings",
+                        evidence=f"{len(sr)} SR-latch tests, {len(third_states)} third-state events",
+                    ))
+                else:
+                    updates.append(OpenQuestionUpdate(
+                        question_number=6,
+                        status="partially_answered",
+                        answer_summary=f"Third state varies by damping: "
+                                       f"{len(third_basins)} distinct third-state basins observed",
+                        evidence=f"{len(sr)} SR-latch tests",
+                    ))
+
+        # Q7: Temporal injection sensitivity
+        burst = probes.get("burst_patterns", [])
+        if burst and isinstance(burst, list) and len(burst) >= 2:
+            # Check how many dampings show ≥3 distinct basins from temporal patterns
+            sensitive_dampings = []
+            for row in burst:
+                d = row.get("damping", "?")
+                patterns = {}
+                for key in ("burst_5x30", "ramp_10to50", "oscillating", "single_shot"):
+                    val = row.get(key)
+                    if val and val not in ("?", "None"):
+                        patterns[key] = val
+                unique = set(patterns.values())
+                if len(unique) >= 3:
+                    sensitive_dampings.append(d)
+
+            if sensitive_dampings:
+                updates.append(OpenQuestionUpdate(
+                    question_number=7,
+                    status="partially_answered",
+                    answer_summary=f"Temporal sensitivity confirmed at {len(sensitive_dampings)} "
+                                   f"dampings (d={sorted(sensitive_dampings)}). "
+                                   f"Minimum distinguishing cadence not yet quantified",
+                    evidence=f"{len(burst)} burst-pattern tests",
+                ))
+
+        # Q8: Dream afterstate
+        dream = probes.get("dream_afterstate", [])
+        if dream and isinstance(dream, list) and len(dream) >= 3:
+            shifted = [r for r in dream if r.get("basin_shifted") is True]
+            stable = [r for r in dream if r.get("basin_shifted") is False]
+            if shifted:
+                shift_dampings = [r.get("damping", "?") for r in shifted]
+                updates.append(OpenQuestionUpdate(
+                    question_number=8,
+                    status="answered" if len(shifted) >= 2 else "partially_answered",
+                    answer_summary=f"Dream afterstate confirmed: basin shifts during rest "
+                                   f"phase at {len(shifted)} dampings (d={shift_dampings}). "
+                                   f"Stable at {len(stable)} dampings",
+                    evidence=f"{len(dream)} dream-afterstate tests",
+                ))
+            elif stable and len(stable) >= 3:
+                updates.append(OpenQuestionUpdate(
+                    question_number=8,
+                    status="answered",
+                    answer_summary=f"No dream afterstate: basin is stable through "
+                                   f"1000-step rest phase at all {len(stable)} dampings tested",
+                    evidence=f"{len(dream)} dream-afterstate tests",
                 ))
 
     return updates
@@ -1336,6 +1716,17 @@ def _deduplicate_claims(claims: list[PendingClaim]) -> list[PendingClaim]:
             key_parts.append(details["inject_type"])
         if "type" in details:
             key_parts.append(details["type"])
+        # New detector dedup keys
+        if "truth_table" in details:
+            key_parts.append(f"tt_keys={sorted(details['truth_table'].keys())}")
+        if "patterns" in details:
+            key_parts.append(f"n_patterns={len(details['patterns'])}")
+        if "configs" in details:
+            key_parts.append(f"n_configs={len(details['configs'])}")
+        if "order_dependent" in details:
+            key_parts.append(f"order_dep={details['order_dependent']}")
+        if "avg_low_iton" in details:
+            key_parts.append(f"low_iton={details['avg_low_iton']:.2f}")
 
         key = "|".join(key_parts)
         if key not in seen:
