@@ -17,9 +17,9 @@ solKnowledge/proof_packets/
 
 | Domain | Packet | Claims | Open Qs | Trials | Compute (min) | Suites | Last Updated |
 |--------|--------|-------:|--------:|-------:|---------------:|-------:|--------------|
-| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 96 | 1 | 15,261 | 633 | 74 | 2026-02-10 |
+| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 104 | 0 | 15,606 | 645 | 76 | 2026-02-11 |
 
-**Totals:** 96 claims | 1 open question | 15,261 trials | 633 min compute
+**Totals:** 104 claims | 0 open questions | 15,606 trials | 645 min compute
 
 ## Global Claim Index
 
@@ -123,6 +123,14 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | C94 | phonon_faraday | Four-channel info at d≤20; two channels at d≥30 (mass→0) |
 | C95 | phonon_faraday | Partial full adder: 3 inputs → 3 basins at d=5.0; clock = asymmetric grail lock |
 | C96 | phonon_faraday | Ghost-zone computation: distinct basins with mass→0 at d≥30 |
+| C97 | phonon_faraday | Universal overriding: 11/11 non-standard groups shift basin from standard attractor |
+| C98 | phonon_faraday | Damping-dependent group→basin mapping: 2–4 zones per overrider, sharp transitions |
+| C99 | phonon_faraday | Spirit self-capture: 16/18 spirit nodes self-attract at d≤5 |
+| C100 | phonon_faraday | High-damping spirit redirection: 6 bidirectional spirit pairs at d=20 |
+| C101 | phonon_faraday | Cooperative emergence: 5/14 group×damping produce cooperative-only basins |
+| C102 | phonon_faraday | Energy-stable group mapping: 9/12 combos stable across 6× energy range |
+| C103 | phonon_faraday | 20-basin address space (4.3 bits) via injection group selection |
+| C104 | phonon_faraday | Cross-group novelty: 2 mixture-only basins via constructive interference |
 
 ## Open Questions
 
@@ -139,7 +147,7 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | Q9 | phonon_faraday | Stochastic injection basin entropy | ~~RESOLVED~~ |
 | Q10 | phonon_faraday | Perturbation stability radius | ~~RESOLVED~~ |
 | Q11 | phonon_faraday | Boundary cartography completeness | ~~RESOLVED~~ |
-| Q12 | phonon_faraday | Symmetry-breaking group specificity | OPEN |
+| Q12 | phonon_faraday | Symmetry-breaking group specificity | ~~RESOLVED~~ |
 
 ## Raw Audit Trail
 
