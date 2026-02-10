@@ -1,0 +1,271 @@
+﻿======================================================================
+EXPERIMENT 13: Half-Adder Generalization (Q5 Investigation)
+Graph: 140 nodes, 845 edges
+======================================================================
+
+======================================================================
+PROBE A: Full truth table x damping sweep
+======================================================================
+
+  d=  0.2:
+    (0,0) = None                            mass=0.0000
+    (1,0) = metatron[9]                     mass=142.3973  iton=0.964
+    (0,1) = None                            mass=0.0000  iton=0.000
+    (1,1) = grail[1]                        mass=153.1924  iton=0.986
+    -> 3 distinct basins | XOR-like: True
+
+  d=  1.0:
+    (0,0) = None                            mass=0.0000
+    (1,0) = metatron[9]                     mass=62.1737  iton=0.986
+    (0,1) = None                            mass=0.0000  iton=0.000
+    (1,1) = grail[1]                        mass=64.0061  iton=1.000
+    -> 3 distinct basins | XOR-like: True
+
+  d=  2.0:
+    (0,0) = None                            mass=0.0000
+    (1,0) = metatron[9]                     mass=21.4505  iton=1.000
+    (0,1) = None                            mass=0.0000  iton=0.000
+    (1,1) = grail[1]                        mass=21.3248  iton=1.000
+    -> 3 distinct basins | XOR-like: True
+
+  d=  5.0:
+    (0,0) = None                            mass=0.0000
+    (1,0) = metatron[9]                     mass=0.7932  iton=1.000
+    (0,1) = None                            mass=0.0000  iton=0.000
+    (1,1) = maia nartoomid[14]              mass=0.7841  iton=1.000
+    -> 3 distinct basins | XOR-like: True
+
+  d=  7.5:
+    (0,0) = None                            mass=0.0000
+    (1,0) = maia nartoomid[14]              mass=0.0499  iton=1.000
+    (0,1) = None                            mass=0.0000  iton=0.000
+    (1,1) = maia nartoomid[14]              mass=0.0492  iton=1.000
+    -> 2 distinct basins | XOR-like: False
+
+  d= 10.0:
+    (0,0) = None                            mass=0.0000
+    (1,0) = maia nartoomid[14]              mass=0.0031  iton=1.000
+    (0,1) = None                            mass=0.0000  iton=0.000
+    (1,1) = maia nartoomid[14]              mass=0.0030  iton=1.000
+    -> 2 distinct basins | XOR-like: False
+
+  d= 12.0:
+    (0,0) = None                            mass=0.0000
+    (1,0) = maia nartoomid[14]              mass=0.0003  iton=1.000
+    (0,1) = None                            mass=0.0000  iton=0.000
+    (1,1) = maia nartoomid[14]              mass=0.0003  iton=1.000
+    -> 2 distinct basins | XOR-like: False
+
+  d= 15.0:
+    (0,0) = None                            mass=0.0000
+    (1,0) = maia nartoomid[14]              mass=0.0000  iton=1.000
+    (0,1) = None                            mass=0.0000  iton=0.000
+    (1,1) = maia nartoomid[14]              mass=0.0000  iton=1.000
+    -> 2 distinct basins | XOR-like: False
+
+  d= 20.0:
+    (0,0) = None                            mass=0.0000
+    (1,0) = maia nartoomid[14]              mass=0.0000  iton=1.000
+    (0,1) = None                            mass=0.0000  iton=0.000
+    (1,1) = maia nartoomid[14]              mass=0.0000  iton=1.000
+    -> 2 distinct basins | XOR-like: False
+
+  d= 30.0:
+    (0,0) = None                            mass=0.0000
+    (1,0) = maia nartoomid[14]              mass=0.0000  iton=0.000
+    (0,1) = None                            mass=0.0000  iton=0.000
+    (1,1) = christine hayes[90]             mass=0.0000  iton=0.000
+    -> 3 distinct basins | XOR-like: True
+
+  d= 40.0:
+    (0,0) = None                            mass=0.0000
+    (1,0) = spirit heart[67]                mass=0.0000  iton=0.000
+    (0,1) = None                            mass=0.0000  iton=0.000
+    (1,1) = temple doors[6]                 mass=0.0000  iton=0.000
+    -> 3 distinct basins | XOR-like: True
+
+  d= 55.0:
+    (0,0) = None                            mass=0.0000
+    (1,0) = christic[22]                    mass=0.0000  iton=0.000
+    (0,1) = None                            mass=0.0000  iton=0.000
+    (1,1) = heart sanctuary[69]             mass=0.0000  iton=0.000
+    -> 3 distinct basins | XOR-like: True
+
+  >> Half-adder collapse detected at d=7.5
+
+======================================================================
+PROBE B: w0 amplification rescue
+======================================================================
+
+  d=  0.2:
+    w0=  2.0: A-only=metatron[9]                A+B=grail[1]                   [DIFF]
+    w0=  3.0: A-only=metatron[9]                A+B=grail[1]                   [DIFF]
+    w0=  5.0: A-only=metatron[9]                A+B=grail[1]                   [DIFF]
+    w0= 10.0: A-only=metatron[9]                A+B=grail[1]                   [DIFF]
+    w0= 20.0: A-only=metatron[9]                A+B=grail[1]                   [DIFF]
+    w0= 50.0: A-only=metatron[9]                A+B=grail[1]                   [DIFF]
+
+  d=  5.0:
+    w0=  2.0: A-only=metatron[9]                A+B=maia nartoomid[14]         [DIFF]
+    w0=  3.0: A-only=metatron[9]                A+B=maia nartoomid[14]         [DIFF]
+    w0=  5.0: A-only=metatron[9]                A+B=maia nartoomid[14]         [DIFF]
+    w0= 10.0: A-only=metatron[9]                A+B=maia nartoomid[14]         [DIFF]
+    w0= 20.0: A-only=metatron[9]                A+B=maia nartoomid[14]         [DIFF]
+    w0= 50.0: A-only=metatron[9]                A+B=maia nartoomid[14]         [DIFF]
+
+  d= 10.0:
+    w0=  2.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0=  3.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0=  5.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0= 10.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0= 20.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0= 50.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+
+  d= 15.0:
+    w0=  2.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0=  3.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0=  5.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0= 10.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0= 20.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0= 50.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+
+  d= 20.0:
+    w0=  2.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0=  3.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0=  5.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0= 10.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0= 20.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+    w0= 50.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]
+
+  d= 40.0:
+    w0=  2.0: A-only=spirit heart[67]           A+B=merkabah[48]               [DIFF]
+    w0=  3.0: A-only=spirit heart[67]           A+B=temple doors[6]            [DIFF]
+    w0=  5.0: A-only=spirit heart[67]           A+B=christine hayes[90]        [DIFF]
+    w0= 10.0: A-only=spirit heart[67]           A+B=christine hayes[90]        [DIFF]
+    w0= 20.0: A-only=spirit heart[67]           A+B=christine hayes[90]        [DIFF]
+    w0= 50.0: A-only=spirit heart[67]           A+B=christine hayes[90]        [DIFF]
+
+======================================================================
+PROBE C: Fine boundary around collapse (centered on d=7.5)
+======================================================================
+  d=  4.5: A-only=metatron[9]                A+B=maia nartoomid[14]         [DIFF]  iton_diff=+0.000
+  d=  5.0: A-only=metatron[9]                A+B=maia nartoomid[14]         [DIFF]  iton_diff=+0.000
+  d=  5.5: A-only=metatron[9]                A+B=maia nartoomid[14]         [DIFF]  iton_diff=+0.000
+  d=  6.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]  iton_diff=+0.000
+  d=  6.5: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]  iton_diff=+0.000
+  d=  7.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]  iton_diff=+0.000
+  d=  7.5: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]  iton_diff=+0.000
+  d=  8.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]  iton_diff=+0.000
+  d=  8.5: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]  iton_diff=+0.000
+  d=  9.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]  iton_diff=+0.000
+  d=  9.5: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]  iton_diff=+0.000
+  d= 10.0: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]  iton_diff=+0.000
+  d= 10.5: A-only=maia nartoomid[14]         A+B=maia nartoomid[14]         [SAME]  iton_diff=+0.000
+
+======================================================================
+PROBE D: Alternative B-encodings
+======================================================================
+
+  d=  0.2: A-only = metatron[9]
+    B=spirit_3x      : A+B=grail[1]                   [DIFF]  iton_diff=+0.022
+    B=hub_wall       : A+B=metatron[9]                [SAME]  iton_diff=-0.200
+    B=cold_inject    : A+B=metatron[9]                [SAME]  iton_diff=-0.028
+    B=rev_seq        : A+B=metatron[9]                [SAME]  iton_diff=+0.015
+
+  d=  5.0: A-only = metatron[9]
+    B=spirit_3x      : A+B=maia nartoomid[14]         [DIFF]  iton_diff=+0.000
+    B=hub_wall       : A+B=metatron[9]                [SAME]  iton_diff=-0.086
+    B=cold_inject    : A+B=metatron[9]                [SAME]  iton_diff=+0.000
+    B=rev_seq        : A+B=grail[1]                   [DIFF]  iton_diff=+0.000
+
+  d= 10.0: A-only = maia nartoomid[14]
+    B=spirit_3x      : A+B=maia nartoomid[14]         [SAME]  iton_diff=+0.000
+    B=hub_wall       : A+B=maia nartoomid[14]         [SAME]  iton_diff=-0.086
+    B=cold_inject    : A+B=metatron[9]                [DIFF]  iton_diff=+0.000
+    B=rev_seq        : A+B=thothhorra[31]             [DIFF]  iton_diff=+0.000
+
+======================================================================
+PROBE E: Output channel diversity (from Probe A data)
+======================================================================
+
+      d | Basin distinct |   Iton range |    Coh range |    Ent range | Info channels
+  --------------------------------------------------------------------------------
+    0.2 |              3 |        0.986 |       0.9984 |       0.9931 |  4 (basin,iton,coh,ent)
+    1.0 |              3 |        1.000 |       0.9856 |       0.9986 |  4 (basin,iton,coh,ent)
+    2.0 |              3 |        1.000 |       0.9013 |       0.9994 |  4 (basin,iton,coh,ent)
+    5.0 |              3 |        1.000 |       0.6137 |       0.9998 |  4 (basin,iton,coh,ent)
+    7.5 |              2 |        1.000 |       0.6443 |       0.9998 |  4 (basin,iton,coh,ent)
+   10.0 |              2 |        1.000 |       0.6638 |       0.9998 |  4 (basin,iton,coh,ent)
+   12.0 |              2 |        1.000 |       0.6730 |       0.9998 |  4 (basin,iton,coh,ent)
+   15.0 |              2 |        1.000 |       0.6804 |       0.9998 |  4 (basin,iton,coh,ent)
+   20.0 |              2 |        1.000 |       0.6833 |       0.9998 |  4 (basin,iton,coh,ent)
+   30.0 |              3 |        0.000 |       0.6748 |       0.0000 |  2 (basin,coh)
+   40.0 |              3 |        0.000 |       0.6570 |       0.0000 |  2 (basin,coh)
+   55.0 |              3 |        0.000 |       0.6691 |       0.0000 |  2 (basin,coh)
+
+======================================================================
+PROBE F: Full adder attempt (3 inputs: injection, highway, clock)
+======================================================================
+
+  d=0.2: (A=injection, B=highway, C=clock)
+    (0,0,0) -> None                            mass=0.0000
+    (0,0,1) -> None                            mass=0.0000
+    (0,1,0) -> None                            mass=0.0000
+    (0,1,1) -> grail[1]                        mass=17.1941
+    (1,0,0) -> metatron[9]                     mass=142.3973
+    (1,0,1) -> grail[1]                        mass=160.4151
+    (1,1,0) -> grail[1]                        mass=153.1924
+    (1,1,1) -> grail[1]                        mass=171.2078
+    -> 2 distinct non-null basins
+
+  d=5.0: (A=injection, B=highway, C=clock)
+    (0,0,0) -> None                            mass=0.0000
+    (0,0,1) -> None                            mass=0.0000
+    (0,1,0) -> None                            mass=0.0000
+    (0,1,1) -> grail[1]                        mass=5.8133
+    (1,0,0) -> metatron[9]                     mass=0.7932
+    (1,0,1) -> grail[1]                        mass=6.5503
+    (1,1,0) -> maia nartoomid[14]              mass=0.7841
+    (1,1,1) -> grail[1]                        mass=6.5881
+    -> 3 distinct non-null basins
+
+======================================================================
+EXPERIMENT 13 SUMMARY
+======================================================================
+
+  Half-adder WORKS at: [0.2, 1.0, 2.0, 5.0, 30.0, 40.0, 55.0]
+  Half-adder BROKEN at: [7.5, 10.0, 12.0, 15.0, 20.0]
+
+  Operating regime: d <= 55.0
+  XOR-like behavior at: [0.2, 1.0, 2.0, 5.0, 30.0, 40.0, 55.0]
+
+  w0 rescue results:
+    d=0.2: rescued at w0=[2.0, 3.0, 5.0, 10.0, 20.0, 50.0]
+    d=5.0: rescued at w0=[2.0, 3.0, 5.0, 10.0, 20.0, 50.0]
+    d=10.0: NO rescue at any w0
+    d=15.0: NO rescue at any w0
+    d=20.0: NO rescue at any w0
+    d=40.0: rescued at w0=[2.0, 3.0, 5.0, 10.0, 20.0, 50.0]
+
+  Output channels carrying information:
+    d=0.2: 4 channels (basin, iton, coh, ent)
+    d=1.0: 4 channels (basin, iton, coh, ent)
+    d=2.0: 4 channels (basin, iton, coh, ent)
+    d=5.0: 4 channels (basin, iton, coh, ent)
+    d=7.5: 4 channels (basin, iton, coh, ent)
+    d=10.0: 4 channels (basin, iton, coh, ent)
+    d=12.0: 4 channels (basin, iton, coh, ent)
+    d=15.0: 4 channels (basin, iton, coh, ent)
+    d=20.0: 4 channels (basin, iton, coh, ent)
+    d=30.0: 2 channels (basin, coh)
+    d=40.0: 2 channels (basin, coh)
+    d=55.0: 2 channels (basin, coh)
+
+  Full adder (3-input) distinct basins:
+    d=0.2: 2 distinct basins
+    d=5.0: 3 distinct basins
+
+  Total trials: 190
+  Total time: 1164.9s (19.4 min)
+
+  Data saved to G:\docs\TechmanStudios\sol\data\q5_half_adder.json

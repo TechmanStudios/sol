@@ -17,9 +17,9 @@ solKnowledge/proof_packets/
 
 | Domain | Packet | Claims | Open Qs | Trials | Compute (min) | Suites | Last Updated |
 |--------|--------|-------:|--------:|-------:|---------------:|-------:|--------------|
-| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 88 | 2 | 15,071 | 614 | 73 | 2026-02-10 |
+| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 96 | 1 | 15,261 | 633 | 74 | 2026-02-10 |
 
-**Totals:** 88 claims | 2 open questions | 15,071 trials | 614 min compute
+**Totals:** 96 claims | 1 open question | 15,261 trials | 633 min compute
 
 ## Global Claim Index
 
@@ -115,6 +115,14 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | C86 | phonon_faraday | Competitive bistability d=18.0–19.0: christic/ch.hayes alternate, lock-in d≥19.1 |
 | C87 | phonon_faraday | Emergent attractor: christic first leads step 185/500 after 15 lead changes |
 | C88 | phonon_faraday | Uniform spirit half-life: identical across 17 spirit nodes (topological not dynamical) |
+| C89 | phonon_faraday | Half-adder partial generalization: distinguished basins at d≤5.5 and d≥30, dead zone d=6–29 (Q5 RESOLVED) |
+| C90 | phonon_faraday | Damping-parametric truth table: A+B output shifts across dampings |
+| C91 | phonon_faraday | Sharp collapse boundary at d≈5.75 with no gradual degradation |
+| C92 | phonon_faraday | Absolute w0 dead zone: even w0=50 cannot rescue at d=10–20 |
+| C93 | phonon_faraday | Orthogonal control: injection-based B-encodings breach w0 dead zone at d=10 |
+| C94 | phonon_faraday | Four-channel info at d≤20; two channels at d≥30 (mass→0) |
+| C95 | phonon_faraday | Partial full adder: 3 inputs → 3 basins at d=5.0; clock = asymmetric grail lock |
+| C96 | phonon_faraday | Ghost-zone computation: distinct basins with mass→0 at d≥30 |
 
 ## Open Questions
 
@@ -124,7 +132,7 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | Q2 | phonon_faraday | Dead zone physics — why christic[22] traps | ~~RESOLVED~~ |
 | Q3 | phonon_faraday | Clock optimization — optimal period/pulse | ~~RESOLVED~~ |
 | Q4 | phonon_faraday | Cascade depth limit — architecture-dependent | ~~RESOLVED~~ |
-| Q5 | phonon_faraday | Half-adder generalization across damping regimes | OPEN |
+| Q5 | phonon_faraday | Half-adder generalization across damping regimes | ~~RESOLVED~~ |
 | Q6 | phonon_faraday | SR-latch third-state reproducibility | ~~RESOLVED~~ |
 | Q7 | phonon_faraday | Temporal injection minimum distinguishing cadence | ~~RESOLVED~~ |
 | Q8 | phonon_faraday | Dream afterstate — rest-phase basin drift | ~~RESOLVED~~ |

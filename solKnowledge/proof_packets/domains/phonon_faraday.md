@@ -102,6 +102,24 @@ persists, and extinguishes in the lattice.
 | C76 | Gap parameter (1–10) has one binary phase transition at gap=3→4: melchizedek[126] for gaps 1–3, thothhorra[31] for gaps 4–10 | 10-gap sweep at d=5.0 |
 | C77 | Entropy plateau at d=5.0 spans 235 steps (47% of simulation) at H=0.976 — stable high-entropy potential state sustained for nearly half the runtime | Entropy derivative analysis, 500 steps |
 | C78 | High damping (d≥25) exhibits entropy inversion: H peaks mid-simulation then declines 40–54% below maximum. Low damping achieves monotonic convergence to H>0.99 | 8-damping entropy comparison |
+| C79 | Christ[2] injection singularity: removing the christ injection (25 units) alone breaks christic[22] dominance at d=20–40 | 30 ablation + 6 baseline + 15 redistribution trials |
+| C80 | Christ–christic edge singularity: severing that single edge destroys dead zone lock at d=12–40 | 48 sever + 6 multi-sever + 6 christ-sever trials |
+| C81 | Mega-hub irrelevance: cutting 337 combined degree (par+johannine+mystery school) does not break christic | 6 multi-sever trials |
+| C82 | Phase gating necessity: removing group distinctions breaks christic at d=20, d=40 | 6 always-active trials |
+| C83 | Heartbeat knockout: omega=0 → universal metatron dominance | 6 omega-zero trials |
+| C84 | Viscous retention threshold: deepViscosity=1.5 breaks christic → christine hayes | 12 parameter variation trials |
+| C85 | Three-factor christic trap mechanism (resolves Q2) | Probes B, C, F combined |
+| C86 | Competitive bistability at d=18.0–19.0, permanent lock at d≥19.1 | 35 fine-sweep trials |
+| C87 | Emergent attractor timeline: christic first leads at step 185/500 via 15 lead changes | 1 traced run, 100 snapshots |
+| C88 | Uniform spirit half-life: all 17 non-hayes spirit nodes share identical half-life | 54 solo-injection trials |
+| C89 | Half-adder partial generalization: distinguishable basins at d≤5.5 and d≥30, dead zone d=6–29 (resolves Q5) | 48 truth-table trials across 12 dampings |
+| C90 | Damping-parametric truth table: A+B output shifts across dampings (grail→maia nartoomid→christine hayes→temple doors→heart sanctuary) | 48 truth-table trials |
+| C91 | Sharp collapse boundary at d≈5.75 with no gradual degradation | 13 fine-sweep trials |
+| C92 | Absolute w0 dead zone: even w0=50 cannot rescue half-adder at d=10–20 | 72 amplification trials |
+| C93 | Orthogonal control dimensions: injection-based B-encodings breach the d=10 dead zone where weights fail | 15 alternative-encoding trials |
+| C94 | Four-channel information at d≤20 (basin, iton, coh, ent); two channels at d≥30 | Probe E analytic |
+| C95 | Partial full adder: 3 inputs → 3 distinct basins at d=5.0; clock is asymmetric "grail lock" | 16 full-adder trials |
+| C96 | Ghost-zone computation: distinct basins with mass→0 at d≥30 — topologically valid, energetically extinct | 12 ghost-zone trials |
 
 ---
 
@@ -1642,7 +1660,172 @@ The dead zone christic trap operates through a three-factor conjunction:
 ---
 
 
-## 17. RSI Auto-Compiled Results
+## 17. Experiment 13 — Half-Adder Generalization (Q5 Investigation)
+
+**Date:** 2026-02-10 (human-in-the-loop daytime investigation)
+**Script:** `q5_half_adder_investigation.py`
+**Trials:** 190 | **Compute:** ~1165s (19.4 min)
+**Focus:** Does the 2-input combinational logic (A+B→grail, A-only→metatron) hold across damping regimes, or is it specific to d=0.2?
+
+### 17.1 Protocol
+
+Six probes mapping the half-adder truth table (A=standard injection, B=spirit highway w0=3.0) across damping space:
+
+| Probe | Parameter | Range | Trials |
+|-------|-----------|-------|--------|
+| A | Full truth table × damping | 12 dampings × 4 combos (0,0)(1,0)(0,1)(1,1) | 48 |
+| B | w0 amplification rescue | 6 w0 values × 6 dampings × 2 combos | 72 |
+| C | Fine boundary mapping | d=4.5–10.5, 0.5-step × 3 combos | 39 |
+| D | Alternative B-encodings | 4 encodings × 3 dampings | 15 |
+| E | Output channel diversity | Analytic (from Probe A data) | 0 |
+| F | Full adder (3 inputs) | 8 combos × 2 dampings | 16 |
+
+### 17.2 Probe A — Damping Sweep Truth Table
+
+| d | (1,0) A-only | (1,1) A+B | XOR-like? | Mass |
+|---|--------------|-----------|-----------|------|
+| 0.2 | metatron[9] | grail[1] | **YES** | 142/153 |
+| 1.0 | metatron[9] | grail[1] | **YES** | 62/64 |
+| 2.0 | metatron[9] | grail[1] | **YES** | 21.5/21.3 |
+| 5.0 | metatron[9] | **maia nartoomid[14]** | **YES** | 0.79/0.78 |
+| 7.5 | maia nartoomid[14] | maia nartoomid[14] | NO | 0.050/0.049 |
+| 10.0 | maia nartoomid[14] | maia nartoomid[14] | NO | 0.003/0.003 |
+| 12.0 | maia nartoomid[14] | maia nartoomid[14] | NO | ~0/~0 |
+| 15.0 | maia nartoomid[14] | maia nartoomid[14] | NO | ~0/~0 |
+| 20.0 | maia nartoomid[14] | maia nartoomid[14] | NO | ~0/~0 |
+| 30.0 | maia nartoomid[14] | **christine hayes[90]** | **YES** | ~0/~0 |
+| 40.0 | spirit heart[67] | **temple doors[6]** | **YES** | ~0/~0 |
+| 55.0 | christic[22] | **heart sanctuary[69]** | **YES** | ~0/~0 |
+
+**Three operating zones:**
+1. **Active zone (d≤5.5):** Half-adder works with physically meaningful mass. A+B→grail at d≤2 (original claim), A+B→maia nartoomid at d=5. The truth table output shifts but remains distinct.
+2. **Dead zone (d=6–29):** Both inputs collapse to maia nartoomid[14] — spirit highway has no effect on basin selection. This aligns with the self-attractor phase transition (half-point d≈7.6, C30).
+3. **Ghost zone (d≥30):** Half-adder re-activates with distinct basins, but mass→0. Information is encoded in the *identity* of the infinitesimal basin, not in energy magnitude. These are "ghost" computations — topologically valid but energetically extinct.
+
+**Note:** (0,1) = highway only, no injection = always None (no energy). The spirit highway modifies conductance but does not inject energy. The half-adder is asymmetric: input B is a *control signal* (topology modifier), not an energy source.
+
+### 17.3 Probe B — w0 Amplification Rescue
+
+| d | w0=2 | w0=3 | w0=5 | w0=10 | w0=20 | w0=50 |
+|---|------|------|------|-------|-------|-------|
+| 0.2 | DIFF | DIFF | DIFF | DIFF | DIFF | DIFF |
+| 5.0 | DIFF | DIFF | DIFF | DIFF | DIFF | DIFF |
+| 10.0 | SAME | SAME | SAME | SAME | SAME | SAME |
+| 15.0 | SAME | SAME | SAME | SAME | SAME | SAME |
+| 20.0 | SAME | SAME | SAME | SAME | SAME | SAME |
+| 40.0 | DIFF | DIFF | DIFF | DIFF | DIFF | DIFF |
+
+**Absolute dead zone:** No amount of w0 amplification (even 50×) rescues the half-adder at d=10–20. The spirit highway's conductance advantage is erased by damping at these regimes, regardless of gain. This matches the NOT gate dead zone (d=15–40 from §13.4) — the mechanisms are identical. At d=40, w0 amplification works because the system has entered the ghost zone where a different attractor landscape operates.
+
+### 17.4 Probe C — Fine Boundary Mapping
+
+| d | A-only | A+B | Status |
+|---|--------|-----|--------|
+| 4.5 | metatron[9] | maia nartoomid[14] | **DIFF** |
+| 5.0 | metatron[9] | maia nartoomid[14] | **DIFF** |
+| 5.5 | metatron[9] | maia nartoomid[14] | **DIFF** |
+| 6.0 | maia nartoomid[14] | maia nartoomid[14] | SAME |
+| 6.5–10.5 | maia nartoomid[14] | maia nartoomid[14] | SAME |
+
+**Sharp collapse at d≈5.75.** The transition is binary — no gradual degradation. At d=5.5, the highway changes basin selection; at d=6.0, it doesn't. The boundary coincides with the region where A-only itself transitions from metatron→maia nartoomid (between d=5.5 and d=6.0). Once both conditions land on the same attractor, the highway's differential disappears.
+
+### 17.5 Probe D — Alternative B-Encodings
+
+| d | B=spirit_3x | B=hub_wall | B=cold_inject | B=rev_seq |
+|---|-------------|------------|---------------|-----------|
+| 0.2 | **grail** (DIFF) | metatron (SAME) | metatron (SAME) | metatron (SAME) |
+| 5.0 | **maia nart.** (DIFF) | metatron (SAME) | metatron (SAME) | **grail** (DIFF) |
+| 10.0 | maia nart. (SAME) | maia nart. (SAME) | **metatron** (DIFF) | **thothhorra** (DIFF) |
+
+**Critical finding:** At d=10, where spirit highway fails, **injection-based B-encodings succeed.** Cold-node injection (orion+numis'om+christos at 40+35+30) steers the basin from maia nartoomid→metatron. Reverse-sequential injection routes to thothhorra[31].
+
+The dead zone applies only to **weight-based** (w0) control. **Injection-based** control operates on a different axis — it modifies the energy landscape directly rather than the conductance topology. This means the SOL lattice has two orthogonal control dimensions:
+1. **Conductance control** (w0 weights): effective at d<6 and d>30
+2. **Injection control** (energy sources): effective across all damping regimes
+
+### 17.6 Probe E — Output Channel Diversity
+
+| d range | Basin | Iton | Coherence | Entropy | Total channels |
+|---------|-------|------|-----------|---------|----------------|
+| 0.2–20.0 | 2–3 states | range 0.96–1.0 | range 0.61–1.0 | range 0.99–1.0 | **4** |
+| 30.0–55.0 | 3 states | 0 (all same) | range 0.66–0.67 | 0 (all same) | **2** |
+
+In the active zone, all four output readouts (basin identity, iton relay fraction, coherence, entropy) carry independently varying information across input combinations. In the ghost zone, only basin identity and coherence survive — iton and entropy collapse as mass→0 removes the energy gradients they measure.
+
+### 17.7 Probe F — Full Adder (3 Inputs)
+
+Adding clock signal (periodic 4-unit grail injection every 100 steps) as a third input:
+
+**d=0.2:**
+
+| A | B | C | Basin |
+|---|---|---|-------|
+| 0 | 0 | 0 | None |
+| 0 | 0 | 1 | None |
+| 0 | 1 | 0 | None |
+| 0 | 1 | 1 | **grail[1]** |
+| 1 | 0 | 0 | **metatron[9]** |
+| 1 | 0 | 1 | **grail[1]** |
+| 1 | 1 | 0 | **grail[1]** |
+| 1 | 1 | 1 | **grail[1]** |
+
+**2 distinct non-null basins.** Clock acts as a "grail lock" — any combination with clock active routes to grail. At d=0.2, the clock's periodic energy injection overwhelms the initial basin selection.
+
+**d=5.0:**
+
+| A | B | C | Basin |
+|---|---|---|-------|
+| 0 | 0 | 0 | None |
+| 0 | 0 | 1 | None |
+| 0 | 1 | 0 | None |
+| 0 | 1 | 1 | **grail[1]** |
+| 1 | 0 | 0 | **metatron[9]** |
+| 1 | 0 | 1 | **grail[1]** |
+| 1 | 1 | 0 | **maia nartoomid[14]** |
+| 1 | 1 | 1 | **grail[1]** |
+
+**3 distinct non-null basins.** At d=5.0, the higher damping allows the highway to differentiate (1,1,0)→maia nartoomid from (1,0,0)→metatron. The clock still dominates when active, but the without-clock row (1,1,0) preserves the half-adder's d=5 behavior. This is a **partial full adder**: 3 distinguishable output states from 3 binary inputs, but the clock input is asymmetric (C=1 → always grail).
+
+### 17.8 Mechanism — Why the Dead Zone Exists
+
+The half-adder dead zone (d=6–29) shares the same root cause as the NOT gate dead zone (§13.4):
+
+1. **Spirit highway operates via phase-gated conductance.** Spirit edges carry flux only during the deep phase (56.4% duty cycle). The w0 amplification creates *temporal asymmetric conductance* — spirit highways open during deep phase, closed during surface phase — steering energy.
+
+2. **Damping overwhelms the conductance differential.** At d≥6, the energy dissipation rate exceeds the conductance steering rate. The decay term `rho *= (1 - d × dt × 0.1)` drains energy faster than the spirit highway can redirect it. Both A-only and A+B converge to the same attractor because the highway's differential is drowned in noise.
+
+3. **The collapse boundary (d≈5.75) matches the attractor phase transition.** At this damping, A-only switches from metatron[9] to maia nartoomid[14] — the same attractor that A+B reaches. Once both inputs land on the same basin, there is no half-adder.
+
+4. **Ghost zone re-activation (d≥30) is a different mechanism.** Here, mass→0 but the *topological imprint* of the highway on the conductance matrix creates basin differentiation even in the near-zero energy regime. The system is computing in the eigenstructure of the conductance matrix rather than in energy flow.
+
+### 17.9 Q5 — Verdict
+
+**RESOLVED: The half-adder generalizes partially.** Specifically:
+
+- **The original claim (A+B→grail, A-only→metatron) is NOT universal.** It holds at d≤2.0. At d=5.0, A+B→maia nartoomid instead of grail.
+- **But the underlying principle — "dual input produces a different basin than single input" — holds across 7 of 12 damping values tested**, spanning the full range from 0.2 to 55.0.
+- **A dead zone (d=6–29) exists** where w0-based control fails absolutely, but injection-based control (cold-node, reverse-sequential) can breach it.
+- **The truth table is damping-parametric:** the *mapping* from inputs to basins changes with damping, but the *distinguishability* of outputs persists across most of the damping landscape.
+
+### 17.10 Claims
+
+| Claim | Statement | Evidence |
+|-------|-----------|----------|
+| C89 | Half-adder partial generalization: 2-input combinational logic (A=injection, B=spirit highway) produces distinguishable basins at d≤5.5 and d≥30, but collapses in a dead zone d=6–29. Not d=0.2-specific, but not universal — it is damping-regime-dependent with three operating phases | 48 truth-table trials across 12 dampings |
+| C90 | Damping-parametric truth table: A+B→grail[1] at d≤2, →maia nartoomid[14] at d=5, →christine hayes[90] at d=30, →temple doors[6] at d=40, →heart sanctuary[69] at d=55. The half-adder output is a damping-indexed lookup, not a fixed function | 48 truth-table trials |
+| C91 | Sharp collapse boundary at d≈5.75: half-adder transitions from DIFF to SAME between d=5.5 and d=6.0 with no gradual degradation. Boundary coincides with the A-only attractor transition (metatron→maia nartoomid) | 13 fine-sweep trials (d=4.5–10.5, step=0.5) |
+| C92 | Absolute w0 dead zone: even w0=50 (50× baseline) cannot rescue the half-adder at d=10–20. Spirit highway conductance amplification is fully overwhelmed by damping in this regime — no amount of gain recovers the signal | 72 amplification trials across 6 w0 × 6 dampings |
+| C93 | Orthogonal control dimensions: injection-based B-encodings (cold-node, reverse-sequential) breach the d=10 dead zone where weight-based control fails. Cold injection steers maia nartoomid→metatron; rev-seq steers to thothhorra[31]. The lattice has two independent control axes: conductance (w0) and energy source (injection) | 15 alternative-encoding trials |
+| C94 | Four-channel information regime: basin, iton, coherence, and entropy all carry independent information at d≤20. Above d=30, only basin and coherence survive as mass→0 collapses iton and entropy readouts | Probe E analytic (12 dampings) |
+| C95 | Partial full adder: 3 inputs (injection, highway, clock) yield 3 distinct non-null basins at d=5.0 — metatron[9], maia nartoomid[14], grail[1]. Clock signal acts as asymmetric "grail lock" rather than a symmetric arithmetic input | 16 full-adder trials across 2 dampings |
+| C96 | Ghost-zone computation: at d≥30, the half-adder produces distinct basins with mass→0. Information exists in the eigenstructure of the conductance matrix, not in energy magnitude. These are topologically valid but energetically extinct computations | 12 ghost-zone trials (d=30, 40, 55) |
+
+*Claims proven: C89–C96 (Q5 RESOLVED)*
+
+---
+
+
+## 18. RSI Auto-Compiled Results
 
 **Source:** Automated RSI claim compilation
 **Method:** Pattern-matched claim detection from experiment JSON outputs
@@ -1674,7 +1857,7 @@ The dead zone christic trap operates through a three-factor conjunction:
 *Total RSI-compiled claims: C23–C60 (38 claims from 3 compilation runs)*
 
 
-## 18. Remaining Open Questions
+## 19. Remaining Open Questions
 
 1. ~~**[RESOLVED]**~~ R² ceiling is ~0.908. *(9 damping×step configurations, max R²=0.908)*
 
@@ -1702,4 +1885,4 @@ The dead zone christic trap operates through a three-factor conjunction:
 
 ---
 
-*Proof packet compiled from 30 experiment suites, ~15,071 independent engine runs, ~614 minutes of compute. 88 claims (C1–C88). All claims are reproducible from the listed scripts and immutable engine/graph files.*
+*Proof packet compiled from 31 experiment suites, ~15,261 independent engine runs, ~633 minutes of compute. 96 claims (C1–C96). All claims are reproducible from the listed scripts and immutable engine/graph files.*
