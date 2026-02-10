@@ -2261,9 +2261,7 @@ def dynamic_symmetry_breaking(budget: BudgetTracker) -> dict:
             engine_asym = make_engine(raw_nodes, raw_edges, d)
             for lbl in gnodes[:3]:
                 engine_asym.inject(lbl, 50.0)
-            engine_asym.run(STEPS)
-            rho_snap = [[n_obj["rho"] for n_obj in engine_asym.physics.nodes]]
-            analysis_asym = analyze_trial(engine_asym, rho_snap)
+            analysis_asym = run_and_analyze(engine_asym)
             trials += 1
             results_list.append({
                 "damping": d,
@@ -2396,9 +2394,7 @@ def dynamic_stochastic_injection(budget: BudgetTracker) -> dict:
                 engine.inject(lbl, amt)
                 injected.append({"node": lbl, "amount": round(amt, 1)})
 
-            engine.run(STEPS)
-            rho_snap = [[n_obj["rho"] for n_obj in engine.physics.nodes]]
-            analysis = analyze_trial(engine, rho_snap)
+            analysis = run_and_analyze(engine)
             trials += 1
             results_list.append({
                 "damping": d, "trial": trial_i,
@@ -2757,6 +2753,7 @@ def main():
         log("=" * 70)
 
         phase2_cycle = 0
+        consecutive_empty = 0
         # --- Experiment dedup: track which (type, config_hash) combos were run ---
         executed_experiments: set[str] = set()
 
@@ -2835,6 +2832,9 @@ def main():
                     except Exception:
                         pass
 
+                    consecutive_empty += 1
+                    log(f"  [DEDUP] Consecutive empty: {consecutive_empty}/10")
+
                     # NOVELTY INJECTION: force genome diversity for next cycle
                     try:
                         from rsi_engine import _load_genome as _lg, _save_genome as _sg
@@ -2852,11 +2852,14 @@ def main():
                     except Exception as e:
                         log(f"  [WARNING] Novelty injection failed: {e}")
 
-                    # Extended patience: allow up to 8 empty cycles before quitting
-                    if phase2_cycle > 8 and skipped == len(planned_types) - 1:
-                        log(f"  [DEDUP] Extended plateau — ending Phase 2.")
+                    # Exit only after 10 consecutive empty cycles
+                    if consecutive_empty >= 10:
+                        log(f"  [DEDUP] Extended plateau ({consecutive_empty} "
+                            f"consecutive empty) — ending Phase 2.")
                         break
                     continue
+
+                consecutive_empty = 0  # Reset: we have new experiments
 
                 for exp_type, dedup_key in new_experiments:
                     if budget.exhausted():
