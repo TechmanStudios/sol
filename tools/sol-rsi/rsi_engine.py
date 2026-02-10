@@ -48,6 +48,7 @@ import argparse
 import hashlib
 import json
 import math
+import random
 import re
 import sys
 import time
@@ -56,6 +57,17 @@ from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+# Gen-2 frontier experiment types — injected when original frontier is exhausted
+_GEN2_FRONTIER_TYPES = [
+    "multi_damping_sweep",      # Simultaneous multi-zone exploration
+    "phase_space_mapping",      # Grid search over damping × injection energy
+    "perturbation_analysis",    # Small perturbations from known basins
+    "symmetry_breaking",        # Asymmetric injection patterns
+    "resonance_hunting",        # Fine-grained sweep for transition points
+    "boundary_cartography",     # Map boundaries between basins precisely
+    "stochastic_injection",     # Random injection amounts/targets
+]
 
 # Lazy import for claim compiler (same package)
 def _get_compiler():
@@ -687,21 +699,36 @@ def mutate_genome(genome: dict, reflection: ReflectionReport) -> dict:
         enabled.append(reflection.frontier_pick)
         mutations.append(f"FRONTIER PROMOTED: {reflection.frontier_pick}")
 
+    # --- (C2) Frontier regeneration when exhausted ---
+    if not frontier:
+        gen2_candidates = [t for t in _GEN2_FRONTIER_TYPES if t not in enabled]
+        if gen2_candidates:
+            genome.setdefault("experiment_types", {})["scope_frontier"] = gen2_candidates
+            frontier = gen2_candidates  # update local ref
+            mutations.append(
+                f"FRONTIER REGENERATED: {len(gen2_candidates)} Gen-2 types: "
+                f"{gen2_candidates}"
+            )
+
     # --- (D) Adjust exploration/mutation rates ---
     if reflection.is_plateauing:
         old_er = genome.get("exploration_rate", 0.2)
-        genome["exploration_rate"] = min(0.5, old_er + 0.05)
+        genome["exploration_rate"] = min(0.8, old_er + 0.10)
         old_mr = genome.get("mutation_rate", 0.15)
-        genome["mutation_rate"] = min(0.3, old_mr + 0.03)
+        genome["mutation_rate"] = min(0.5, old_mr + 0.05)
         mutations.append(
             f"PLATEAU RESPONSE: exploration_rate {old_er:.2f}->{genome['exploration_rate']:.2f}, "
             f"mutation_rate {old_mr:.2f}->{genome['mutation_rate']:.2f}"
         )
-    elif reflection.is_improving and genome.get("mutation_rate", 0.15) > 0.1:
-        # Stabilize when improving
-        old_mr = genome["mutation_rate"]
-        genome["mutation_rate"] = max(0.08, old_mr - 0.02)
-        mutations.append(f"IMPROVING: mutation_rate {old_mr:.2f}->{genome['mutation_rate']:.2f}")
+    elif reflection.is_improving:
+        # Reward improvement: maintain current rates to preserve diversity.
+        # (Previous stabilization reflex reduced mutation_rate on improvement,
+        #  killing exploration at exactly the wrong moment.)
+        mutations.append(
+            f"IMPROVING: rates preserved "
+            f"(mutation={genome.get('mutation_rate', 0.15):.2f}, "
+            f"exploration={genome.get('exploration_rate', 0.2):.2f})"
+        )
 
     # Log mutations
     genome["last_cycle"] = reflection.cycle_id
@@ -802,15 +829,21 @@ def generate_plan(
                 "strategy": "Fine-grained sweep targeting least-understood behavior",
             })
 
-    # --- Template-preference-driven experiments ---
+    # --- Template-preference-driven experiments (weighted random) ---
     prefs = genome.get("template_preferences", {})
-    top_templates = sorted(prefs.items(), key=lambda x: x[1], reverse=True)[:3]
-    for tmpl, weight in top_templates:
-        if weight > 0.7 and tmpl not in ("parameter_sweep",):
+    already_planned = {e["type"] for e in plan.experiments}
+    eligible = [(tmpl, w) for tmpl, w in prefs.items()
+                if tmpl not in already_planned and w > 0.3]
+    if eligible:
+        labels_list = [t for t, _ in eligible]
+        weights = [w for _, w in eligible]
+        n_picks = min(3, len(eligible))
+        picks = random.choices(labels_list, weights=weights, k=n_picks)
+        for tmpl in dict.fromkeys(picks):   # deduplicate, preserve order
             plan.experiments.append({
                 "type": tmpl,
-                "priority": "LOW",
-                "description": f"Template '{tmpl}' (weight={weight:.2f})",
+                "priority": "MEDIUM",
+                "description": f"Template '{tmpl}' (weight={prefs[tmpl]:.2f})",
                 "strategy": f"Apply {tmpl} template to highest-priority gap",
             })
 
@@ -844,6 +877,21 @@ def generate_plan(
                 ),
                 "source_file": lead.get("file", ""),
             })
+
+    # --- Wildcard: ensure at least one type not already in plan ---
+    all_enabled = genome.get("experiment_types", {}).get("enabled", [])
+    frontier_types = genome.get("experiment_types", {}).get("scope_frontier", [])
+    all_types = all_enabled + frontier_types
+    already_in_plan = {e["type"] for e in plan.experiments}
+    wildcards = [t for t in all_types if t not in already_in_plan]
+    if wildcards:
+        wild = random.choice(wildcards)
+        plan.experiments.append({
+            "type": wild,
+            "priority": "LOW",
+            "description": f"Wildcard exploration: '{wild}'",
+            "strategy": "Random selection to maintain diversity",
+        })
 
     # Configure cortex
     if mode == "cron":

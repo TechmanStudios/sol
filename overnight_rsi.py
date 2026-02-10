@@ -2110,11 +2110,322 @@ def dynamic_replication(genome: dict, budget: BudgetTracker):
     }
 
 
+# ===================================================================
+# GEN-2 FRONTIER EXPERIMENT GENERATORS
+# ===================================================================
+
+def dynamic_multi_damping_sweep(budget: BudgetTracker) -> dict:
+    """Sweep multiple damping zones simultaneously with cross-zone comparison."""
+    log(f"  [DYNAMIC] Multi-damping sweep: comparing zones")
+    raw_nodes, raw_edges = load_default_graph()
+    labels = get_labels(raw_nodes)
+    results_list = []
+    trials = 0
+
+    zone_centers = random.sample([2.0, 8.0, 15.0, 25.0, 40.0, 55.0, 70.0, 80.0],
+                                 min(4, 8))
+    for center in zone_centers:
+        if budget.exhausted():
+            break
+        for offset in [-2.0, -1.0, 0.0, 1.0, 2.0]:
+            d = max(0.01, center + offset)
+            engine = make_engine(raw_nodes, raw_edges, d)
+            apply_standard_injection(engine)
+            analysis = run_and_analyze(engine)
+            trials += 1
+            results_list.append({
+                "zone_center": center, "damping": round(d, 2),
+                "basin": format_basin(analysis["dominant_basin"], labels),
+                "iton": round(analysis["iton_score"], 3),
+                "coherence": round(analysis["coherence"], 3),
+            })
+
+    budget.add_trials(trials)
+    return {"type": "multi_damping_sweep", "results": results_list, "trials": trials}
+
+
+def dynamic_phase_space_mapping(budget: BudgetTracker) -> dict:
+    """Map damping x injection energy phase space."""
+    log(f"  [DYNAMIC] Phase space mapping: damping x injection")
+    raw_nodes, raw_edges = load_default_graph()
+    labels = get_labels(raw_nodes)
+    results_list = []
+    trials = 0
+
+    dampings = [0.5, 2.0, 5.0, 10.0, 15.0, 20.0, 30.0, 50.0]
+    injection_scales = [0.1, 0.5, 1.0, 2.0, 5.0]
+
+    for d in dampings:
+        if budget.exhausted():
+            break
+        for scale in injection_scales:
+            if budget.exhausted():
+                break
+            engine = make_engine(raw_nodes, raw_edges, d)
+            for lbl, amt in STANDARD_INJECTIONS:
+                engine.inject(lbl, amt * scale)
+            engine.run(STEPS)
+            m = engine.compute_metrics()
+            rho_snap = [[n["rho"] for n in engine.physics.nodes]]
+            analysis = analyze_trial(engine, rho_snap)
+            trials += 1
+            results_list.append({
+                "damping": d, "injection_scale": scale,
+                "basin": format_basin(m["rhoMaxId"], labels),
+                "iton": round(analysis["iton_score"], 3),
+                "coherence": round(analysis["coherence"], 3),
+                "rhoMax": round(m["rhoMax"], 4),
+            })
+
+    budget.add_trials(trials)
+    return {"type": "phase_space_mapping", "results": results_list, "trials": trials}
+
+
+def dynamic_perturbation_analysis(budget: BudgetTracker) -> dict:
+    """Small perturbations from known interesting dampings to test stability."""
+    log(f"  [DYNAMIC] Perturbation analysis: basin stability")
+    raw_nodes, raw_edges = load_default_graph()
+    labels = get_labels(raw_nodes)
+    results_list = []
+    trials = 0
+
+    interesting = [0.2, 5.0, 10.0, 12.0, 15.0, 20.0, 25.0]
+
+    for base_d in interesting:
+        if budget.exhausted():
+            break
+        engine_base = make_engine(raw_nodes, raw_edges, base_d)
+        apply_standard_injection(engine_base)
+        analysis_base = run_and_analyze(engine_base)
+        base_basin = analysis_base["dominant_basin"]
+        trials += 1
+
+        perturb_results = []
+        for delta in [0.01, 0.05, 0.1, 0.5, 1.0]:
+            for sign in [1, -1]:
+                if budget.exhausted():
+                    break
+                perturbed_d = max(0.01, base_d + sign * delta)
+                engine_p = make_engine(raw_nodes, raw_edges, perturbed_d)
+                apply_standard_injection(engine_p)
+                analysis_p = run_and_analyze(engine_p)
+                trials += 1
+                perturb_results.append({
+                    "delta": round(sign * delta, 3),
+                    "damping": round(perturbed_d, 3),
+                    "basin": format_basin(analysis_p["dominant_basin"], labels),
+                    "basin_changed": analysis_p["dominant_basin"] != base_basin,
+                    "iton": round(analysis_p["iton_score"], 3),
+                })
+
+        stability = (sum(1 for p in perturb_results if not p["basin_changed"])
+                      / max(1, len(perturb_results)))
+        results_list.append({
+            "base_damping": base_d,
+            "base_basin": format_basin(base_basin, labels),
+            "perturbations": perturb_results,
+            "stability": round(stability, 3),
+        })
+
+    budget.add_trials(trials)
+    return {"type": "perturbation_analysis", "results": results_list, "trials": trials}
+
+
+def dynamic_symmetry_breaking(budget: BudgetTracker) -> dict:
+    """Test asymmetric injection patterns to discover new basins."""
+    log(f"  [DYNAMIC] Symmetry breaking: asymmetric injections")
+    raw_nodes, raw_edges = load_default_graph()
+    labels = get_labels(raw_nodes)
+    groups = get_groups(raw_nodes)
+    results_list = []
+    trials = 0
+
+    node_by_group: dict[str, list[str]] = {}
+    for n in raw_nodes:
+        g = groups.get(n.get("label", ""), "other")
+        node_by_group.setdefault(g, []).append(n.get("label", ""))
+
+    test_dampings = [0.2, 5.0, 10.0, 15.0]
+
+    for d in test_dampings:
+        if budget.exhausted():
+            break
+        engine_sym = make_engine(raw_nodes, raw_edges, d)
+        apply_standard_injection(engine_sym)
+        analysis_sym = run_and_analyze(engine_sym)
+        trials += 1
+
+        for group_name, gnodes in list(node_by_group.items())[:5]:
+            if budget.exhausted():
+                break
+            engine_asym = make_engine(raw_nodes, raw_edges, d)
+            for lbl in gnodes[:3]:
+                engine_asym.inject(lbl, 50.0)
+            engine_asym.run(STEPS)
+            rho_snap = [[n_obj["rho"] for n_obj in engine_asym.physics.nodes]]
+            analysis_asym = analyze_trial(engine_asym, rho_snap)
+            trials += 1
+            results_list.append({
+                "damping": d,
+                "injection_group": group_name,
+                "n_injected": min(3, len(gnodes)),
+                "sym_basin": format_basin(analysis_sym["dominant_basin"], labels),
+                "asym_basin": format_basin(analysis_asym["dominant_basin"], labels),
+                "basin_shifted": (analysis_sym["dominant_basin"]
+                                  != analysis_asym["dominant_basin"]),
+                "iton": round(analysis_asym["iton_score"], 3),
+            })
+
+    budget.add_trials(trials)
+    return {"type": "symmetry_breaking", "results": results_list, "trials": trials}
+
+
+def dynamic_resonance_hunting(budget: BudgetTracker) -> dict:
+    """Ultra-fine sweep to find resonance/transition points."""
+    log(f"  [DYNAMIC] Resonance hunting: fine-grained transition search")
+    raw_nodes, raw_edges = load_default_graph()
+    labels = get_labels(raw_nodes)
+    results_list = []
+    trials = 0
+
+    # Coarse scan
+    coarse_basins: dict[int, int] = {}
+    for d_int in range(0, 85, 5):
+        if budget.exhausted():
+            break
+        d_val = max(0.1, float(d_int))
+        engine = make_engine(raw_nodes, raw_edges, d_val)
+        apply_standard_injection(engine)
+        analysis = run_and_analyze(engine)
+        coarse_basins[d_int] = analysis["dominant_basin"]
+        trials += 1
+
+    # Find transition zones
+    transitions = []
+    sorted_ds = sorted(coarse_basins.keys())
+    for i in range(len(sorted_ds) - 1):
+        d1, d2 = sorted_ds[i], sorted_ds[i + 1]
+        if coarse_basins[d1] != coarse_basins[d2]:
+            transitions.append((float(d1), float(d2)))
+
+    # Fine sweep transitions
+    for d_lo, d_hi in transitions[:4]:
+        if budget.exhausted():
+            break
+        step = (d_hi - d_lo) / 20.0
+        d = d_lo
+        while d <= d_hi and not budget.exhausted():
+            engine = make_engine(raw_nodes, raw_edges, d)
+            apply_standard_injection(engine)
+            analysis = run_and_analyze(engine)
+            trials += 1
+            results_list.append({
+                "damping": round(d, 3),
+                "basin": format_basin(analysis["dominant_basin"], labels),
+                "iton": round(analysis["iton_score"], 3),
+                "coherence": round(analysis["coherence"], 3),
+                "transition_zone": f"{d_lo}-{d_hi}",
+            })
+            d += step
+
+    budget.add_trials(trials)
+    return {
+        "type": "resonance_hunting",
+        "transitions_found": len(transitions),
+        "results": results_list,
+        "trials": trials,
+    }
+
+
+def dynamic_boundary_cartography(budget: BudgetTracker) -> dict:
+    """Map basin boundaries in damping x edge-w0 space."""
+    log(f"  [DYNAMIC] Boundary cartography: basin boundary mapping")
+    raw_nodes, raw_edges = load_default_graph()
+    labels = get_labels(raw_nodes)
+    results_list = []
+    trials = 0
+
+    dampings = [0.5, 2.0, 5.0, 8.0, 10.0, 12.0, 15.0, 20.0, 30.0, 50.0, 70.0]
+    w0_values = [1, 3, 5, 10, 20, 50]
+
+    for w0_val in w0_values:
+        if budget.exhausted():
+            break
+        mod_edges, _ = set_edge_weights(raw_edges, raw_nodes, lambda e, g: w0_val)
+        for d in dampings:
+            if budget.exhausted():
+                break
+            engine = make_engine(raw_nodes, mod_edges, d)
+            apply_standard_injection(engine)
+            analysis = run_and_analyze(engine)
+            trials += 1
+            results_list.append({
+                "damping": d, "w0": w0_val,
+                "basin": format_basin(analysis["dominant_basin"], labels),
+                "iton": round(analysis["iton_score"], 3),
+                "coherence": round(analysis["coherence"], 3),
+            })
+
+    budget.add_trials(trials)
+    return {"type": "boundary_cartography", "results": results_list, "trials": trials}
+
+
+def dynamic_stochastic_injection(budget: BudgetTracker) -> dict:
+    """Random injection patterns to discover unexpected basins."""
+    log(f"  [DYNAMIC] Stochastic injection: random patterns")
+    raw_nodes, raw_edges = load_default_graph()
+    labels = get_labels(raw_nodes)
+    node_labels = [n.get("label", f"node_{i}") for i, n in enumerate(raw_nodes)]
+    results_list = []
+    trials = 0
+
+    test_dampings = [0.2, 5.0, 10.0, 15.0, 20.0]
+
+    for d in test_dampings:
+        if budget.exhausted():
+            break
+        for trial_i in range(10):
+            if budget.exhausted():
+                break
+            engine = make_engine(raw_nodes, raw_edges, d)
+            n_inject = random.randint(3, 7)
+            targets = random.sample(node_labels, min(n_inject, len(node_labels)))
+            injected = []
+            for lbl in targets:
+                amt = random.uniform(5.0, 100.0)
+                engine.inject(lbl, amt)
+                injected.append({"node": lbl, "amount": round(amt, 1)})
+
+            engine.run(STEPS)
+            rho_snap = [[n_obj["rho"] for n_obj in engine.physics.nodes]]
+            analysis = analyze_trial(engine, rho_snap)
+            trials += 1
+            results_list.append({
+                "damping": d, "trial": trial_i,
+                "n_injected": n_inject,
+                "injections": injected,
+                "basin": format_basin(analysis["dominant_basin"], labels),
+                "iton": round(analysis["iton_score"], 3),
+                "coherence": round(analysis["coherence"], 3),
+            })
+
+    budget.add_trials(trials)
+    return {"type": "stochastic_injection", "results": results_list, "trials": trials}
+
+
 # Map frontier category names to experiment generators
 FRONTIER_GENERATORS = {
     "information_theoretic": dynamic_entropy_measurement,
     "capacity_measurement": dynamic_capacity_test,
     "error_correction": dynamic_error_resilience,
+    # Gen-2 frontier types
+    "multi_damping_sweep": dynamic_multi_damping_sweep,
+    "phase_space_mapping": dynamic_phase_space_mapping,
+    "perturbation_analysis": dynamic_perturbation_analysis,
+    "symmetry_breaking": dynamic_symmetry_breaking,
+    "resonance_hunting": dynamic_resonance_hunting,
+    "boundary_cartography": dynamic_boundary_cartography,
+    "stochastic_injection": dynamic_stochastic_injection,
 }
 
 
@@ -2455,9 +2766,18 @@ def main():
             static_types = {"logic_gate", "clock_signal", "raw_lead_followup",
                             "cascade_pipeline", "replication",
                             "information_theoretic", "capacity_measurement",
-                            "error_correction"}
+                            "error_correction", "perturbation_analysis",
+                            "symmetry_breaking"}
             if exp_type in static_types:
                 return exp_type
+
+            # Randomized generators: include a cycle counter so they can
+            # re-run with different random seeds each iteration
+            randomized_types = {"stochastic_injection", "multi_damping_sweep",
+                                "resonance_hunting", "boundary_cartography",
+                                "phase_space_mapping"}
+            if exp_type in randomized_types:
+                return f"{exp_type}_iter{phase2_cycle}"
 
             # parameter_sweep varies by genome priority zones
             if exp_type == "parameter_sweep":
@@ -2506,19 +2826,35 @@ def main():
                     log(f"  [DEDUP] Skipped {skipped} already-run experiments")
 
                 if not new_experiments:
-                    log(f"  [DEDUP] All planned experiments already run — "
-                        f"forcing compilation and re-evaluation")
-                    # Force a compile to pick up new findings, then re-evaluate
+                    log(f"  [DEDUP] All planned experiments already run")
+                    # Force compile to pick up new findings
                     try:
                         sys.path.insert(0, str(Path(__file__).resolve().parent / "tools" / "sol-rsi"))
                         from claim_compiler import compile_results as _compile
                         _compile(data_dirs=[_OUTPUT_DIR], update_proof_packet_flag=True, verbose=False)
                     except Exception:
                         pass
-                    # After compile, the next RSI cycle will see updated fitness
-                    # Break out if we've gone 3+ cycles with nothing new
-                    if phase2_cycle > 3 and skipped == len(planned_types) - 1:
-                        log(f"  [DEDUP] Plateau — all experiments exhausted. Ending Phase 2.")
+
+                    # NOVELTY INJECTION: force genome diversity for next cycle
+                    try:
+                        from rsi_engine import _load_genome as _lg, _save_genome as _sg
+                        g = _lg()
+                        prefs = g.get("template_preferences", {})
+                        for cat in prefs:
+                            prefs[cat] = max(0.1, min(2.0,
+                                prefs[cat] + random.uniform(-0.4, 0.4)))
+                        g["exploration_rate"] = min(0.9,
+                            g.get("exploration_rate", 0.2) + 0.15)
+                        g["mutation_rate"] = min(0.5,
+                            g.get("mutation_rate", 0.15) + 0.10)
+                        _sg(g)
+                        log(f"  [NOVELTY] Injected diversity into genome")
+                    except Exception as e:
+                        log(f"  [WARNING] Novelty injection failed: {e}")
+
+                    # Extended patience: allow up to 8 empty cycles before quitting
+                    if phase2_cycle > 8 and skipped == len(planned_types) - 1:
+                        log(f"  [DEDUP] Extended plateau — ending Phase 2.")
                         break
                     continue
 
