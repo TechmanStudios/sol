@@ -1722,7 +1722,8 @@ def _deduplicate_claims(claims: list[PendingClaim]) -> list[PendingClaim]:
         if "patterns" in details:
             key_parts.append(f"n_patterns={len(details['patterns'])}")
         if "configs" in details:
-            key_parts.append(f"n_configs={len(details['configs'])}")
+            v = details["configs"]
+            key_parts.append(f"n_configs={len(v) if isinstance(v, (list, dict)) else v}")
         if "order_dependent" in details:
             key_parts.append(f"order_dep={details['order_dependent']}")
         if "avg_low_iton" in details:
