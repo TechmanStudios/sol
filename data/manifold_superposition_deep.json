@@ -1,0 +1,142 @@
+{
+  "experiment": "manifold_superposition_deep_probe",
+  "date": "2026-02-10 12:41",
+  "elapsed_s": 831.3,
+  "results": {
+    "probe_a_deep": [
+      {
+        "damping": 0.2,
+        "decision_step": 429,
+        "lead_changes": 3,
+        "min_margin": 3.6138965277932942e-06,
+        "final_basin": "numis'om[7]",
+        "unique_basins": 4,
+        "commitment_velocity": 0.0003887702894734015
+      },
+      {
+        "damping": 1.0,
+        "decision_step": 430,
+        "lead_changes": 4,
+        "min_margin": 0.001707190013274026,
+        "final_basin": "spirit heart[67]",
+        "unique_basins": 5,
+        "commitment_velocity": 0.001989889574678502
+      },
+      {
+        "damping": 2.0,
+        "decision_step": 436,
+        "lead_changes": 5,
+        "min_margin": 0.0014512704938488997,
+        "final_basin": "numis'om[7]",
+        "unique_basins": 5,
+        "commitment_velocity": 0.00041065746538360566
+      },
+      {
+        "damping": 5.0,
+        "decision_step": 497,
+        "lead_changes": 20,
+        "min_margin": 0.00032297353695602256,
+        "final_basin": "simeon[98]",
+        "unique_basins": 13,
+        "commitment_velocity": -0.0047142669620338275
+      },
+      {
+        "damping": 10.0,
+        "decision_step": 498,
+        "lead_changes": 10,
+        "min_margin": 4.265214576590231e-07,
+        "final_basin": "christine hayes[90]",
+        "unique_basins": 5,
+        "commitment_velocity": 1.8336570942338758e-05
+      },
+      {
+        "damping": 15.0,
+        "decision_step": 497,
+        "lead_changes": 12,
+        "min_margin": 8.041786901562605e-07,
+        "final_basin": "christine hayes[90]",
+        "unique_basins": 6,
+        "commitment_velocity": 3.5566483724985753e-07
+      },
+      {
+        "damping": 25.0,
+        "decision_step": 496,
+        "lead_changes": 27,
+        "min_margin": 4.73162185804814e-09,
+        "final_basin": "christic[22]",
+        "unique_basins": 8,
+        "commitment_velocity": 4.5222123303691576e-08
+      },
+      {
+        "damping": 40.0,
+        "decision_step": 496,
+        "lead_changes": 37,
+        "min_margin": 1.151113476974477e-09,
+        "final_basin": "christic[22]",
+        "unique_basins": 9,
+        "commitment_velocity": 1.1354336286430496e-09
+      }
+    ],
+    "probe_b_deep": {
+      "min_hhi": 0.00753749621178127,
+      "max_contenders_10": 140
+    },
+    "probe_c_deep": {
+      "bridge": {
+        "decision_step": 487,
+        "lead_changes": 14,
+        "unique_visited": 9
+      },
+      "spirit": {
+        "decision_step": 497,
+        "lead_changes": 17,
+        "unique_visited": 9
+      },
+      "tech": {
+        "decision_step": 0,
+        "lead_changes": 0,
+        "unique_visited": 1
+      }
+    },
+    "probe_d_deep": {
+      "total_flips": 187
+    },
+    "probe_e_deep": {
+      "gap_basins": {
+        "1": "melchizedek[126]",
+        "2": "melchizedek[126]",
+        "3": "melchizedek[126]",
+        "4": "thothhorra[31]",
+        "5": "thothhorra[31]",
+        "6": "thothhorra[31]",
+        "7": "thothhorra[31]",
+        "8": "thothhorra[31]",
+        "9": "thothhorra[31]",
+        "10": "thothhorra[31]"
+      },
+      "unique_basins": 2
+    },
+    "probe_f_deep": {
+      "damping_values": [
+        0.2,
+        1.0,
+        2.0,
+        5.0,
+        10.0,
+        15.0,
+        25.0,
+        40.0
+      ],
+      "final_entropies": {
+        "0.2": 0.9878630069437653,
+        "1.0": 0.9896156867996921,
+        "2.0": 0.9906051311850678,
+        "5.0": 0.9924993672082341,
+        "10.0": 0.8710170919731524,
+        "15.0": 0.7343114156220953,
+        "25.0": 0.5770334475094355,
+        "40.0": 0.45887606916194573
+      }
+    }
+  }
+}

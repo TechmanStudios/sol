@@ -1,0 +1,112 @@
+{
+  "experiment": "manifold_superposition_probe",
+  "date": "2026-02-10 11:55",
+  "elapsed_s": 158.5,
+  "results": {
+    "timeline": {
+      "decision_step": 497,
+      "lead_changes": 20,
+      "final_basin": "simeon[98]",
+      "min_margin": 0.00032297353695602256
+    },
+    "dual_peaks": {
+      "count": 489,
+      "peak_ratio": 0.999677026463044
+    },
+    "regional": {
+      "bridge": {
+        "size": 121,
+        "decision_step": 487,
+        "lead_changes": 14,
+        "final_leader": "simeon[98]"
+      },
+      "spirit": {
+        "size": 18,
+        "decision_step": 497,
+        "lead_changes": 17,
+        "final_leader": "christic[22]"
+      },
+      "tech": {
+        "size": 1,
+        "decision_step": 0,
+        "lead_changes": 0,
+        "final_leader": "light codes[23]"
+      }
+    },
+    "sensitivity": [
+      {
+        "step": 0,
+        "changed": false
+      },
+      {
+        "step": 1,
+        "changed": false
+      },
+      {
+        "step": 2,
+        "changed": false
+      },
+      {
+        "step": 3,
+        "changed": false
+      },
+      {
+        "step": 4,
+        "changed": false
+      },
+      {
+        "step": 5,
+        "changed": false
+      },
+      {
+        "step": 8,
+        "changed": false
+      },
+      {
+        "step": 10,
+        "changed": false
+      },
+      {
+        "step": 15,
+        "changed": false
+      },
+      {
+        "step": 20,
+        "changed": false
+      },
+      {
+        "step": 30,
+        "changed": false
+      },
+      {
+        "step": 50,
+        "changed": false
+      },
+      {
+        "step": 75,
+        "changed": false
+      },
+      {
+        "step": 100,
+        "changed": false
+      },
+      {
+        "step": 150,
+        "changed": false
+      },
+      {
+        "step": 200,
+        "changed": false
+      },
+      {
+        "step": 300,
+        "changed": false
+      }
+    ],
+    "entropy_peak": {
+      "step": 468,
+      "entropy": 0.9926290273821695,
+      "top5_share": 0.04165176799653585
+    }
+  }
+}

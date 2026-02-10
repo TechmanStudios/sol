@@ -17,9 +17,9 @@ solKnowledge/proof_packets/
 
 | Domain | Packet | Claims | Open Qs | Trials | Compute (min) | Suites | Last Updated |
 |--------|--------|-------:|--------:|-------:|---------------:|-------:|--------------|
-| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 66 | 3 | 14,335 | 589 | 70 | 2026-02-10 |
+| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 78 | 3 | 14,835 | 606 | 72 | 2026-02-10 |
 
-**Totals:** 66 claims | 3 open questions | 14,335 trials | 589 min compute
+**Totals:** 78 claims | 3 open questions | 14,835 trials | 606 min compute
 
 ## Global Claim Index
 
@@ -93,6 +93,18 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | C64 | phonon_faraday | Onset delay sensitivity: 6 basins from 12 delays, first transition at delay 10→20 |
 | C65 | phonon_faraday | Injection ordering encodes basin: 4 basins from 9 temporal orderings |
 | C66 | phonon_faraday | Temporal sensitivity regime-dependent: d=0.2 gap-invariant, d=5.0 has 11 transitions |
+| C67 | phonon_faraday | Decision latency universally late (step 429–498): lattice holds potential ≥85.8% of runtime |
+| C68 | phonon_faraday | Decision volatility non-monotonic: d=5.0 most exploratory (13 basins), d=40 most volatile (37 changes) |
+| C69 | phonon_faraday | HHI reaches 95% uniformity (0.00754 vs 0.00714); 124-way superposition sustained 150+ steps, irreversible |
+| C70 | phonon_faraday | 489/500 steps (97.8%) exhibit dual-peak conditions — system lives in multi-node parity |
+| C71 | phonon_faraday | Regional settlement desynchrony: tech=step 0, bridge=step 487, spirit=step 497 (497-step spread) |
+| C72 | phonon_faraday | Spirit group kingmaker: 18 nodes (12.1% energy) match global leader 77.6% of time vs bridge 22.4% |
+| C73 | phonon_faraday | Perturbation reaches 22 basins (15.7% of nodes); peak sensitivity at step 350 (superposition maximum) |
+| C74 | phonon_faraday | Spirit targets produce most flips (12/13); tech targets produce zero flips at any amplitude |
+| C75 | phonon_faraday | KL-divergence gap=3 vs 4 peaks at step 272 then reconverges — basin information is transient |
+| C76 | phonon_faraday | Gap parameter has single binary phase transition at gap=3→4: 2 basins across 10 gaps |
+| C77 | phonon_faraday | Entropy plateau at d=5.0 spans 235 steps (47% of simulation) at H=0.976 |
+| C78 | phonon_faraday | High damping entropy inversion: d≥25 peaks then declines 40–54%; speed/depth inversely related |
 
 ## Open Questions
 
