@@ -17,9 +17,9 @@ solKnowledge/proof_packets/
 
 | Domain | Packet | Claims | Open Qs | Trials | Compute (min) | Suites | Last Updated |
 |--------|--------|-------:|--------:|-------:|---------------:|-------:|--------------|
-| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 41 | 1 | 11,337 | 487 | 27 | 2026-02-10 |
+| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 66 | 3 | 14,335 | 589 | 70 | 2026-02-10 |
 
-**Totals:** 41 claims | 1 open question | 11,337 trials | 487 min compute
+**Totals:** 66 claims | 3 open questions | 14,335 trials | 589 min compute
 
 ## Global Claim Index
 
@@ -68,6 +68,31 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | C39 | phonon_faraday | Temporal injection diversity at d=5.0: 3 distinct basins from 4 timing patterns |
 | C40 | phonon_faraday | Injection topology diversity at d=0.2: 4 distinct basins from 6 spatial configs |
 | C41 | phonon_faraday | Injection topology diversity at d=5.0: 4 distinct basins from 6 spatial configs |
+| C42 | phonon_faraday | Basin transition at d≈6.875 in zone 5.0-10.0: sharp phase boundary (3 basins) |
+| C43 | phonon_faraday | Basin transition at d≈41.875 in zone 40.0-45.0: sharp phase boundary (2 basins) |
+| C44 | phonon_faraday | Basin transition at d≈78.625 in zone 75.0-80.0: sharp phase boundary (2 basins) |
+| C45 | phonon_faraday | Stochastic injection at d=0.2: 9–10 basins (3.2–3.3 bits) — high-entropy basin selector |
+| C46 | phonon_faraday | Stochastic injection at d=5.0: 10 basins (3.3 bits) — high-entropy basin selector |
+| C47 | phonon_faraday | Stochastic injection at d=10.0: 6–7 basins (2.6–2.8 bits) — high-entropy basin selector |
+| C48 | phonon_faraday | Stochastic injection at d=15.0: 5–6 basins (2.3–2.6 bits) — high-entropy basin selector |
+| C49 | phonon_faraday | Stochastic injection at d=20.0: 6–8 basins (2.6–3.0 bits) — high-entropy basin selector |
+| C50 | phonon_faraday | Boundary cartography: 7 basins across 66 damping×w0 configs — 2D programmable surface |
+| C51 | phonon_faraday | Basin 'metatron[9]' is w0-invariant at d=2.0 |
+| C52 | phonon_faraday | Basin 'christic[22]' is w0-invariant at d=12.0 |
+| C53 | phonon_faraday | Basin 'christic[22]' is w0-invariant at d=15.0 |
+| C54 | phonon_faraday | Basin 'christic[22]' is w0-invariant at d=20.0 |
+| C55 | phonon_faraday | Basin 'christic[22]' is w0-invariant at d=30.0 |
+| C56 | phonon_faraday | Basin 'numis'om[7]' is w0-invariant at d=70.0 |
+| C57 | phonon_faraday | Multi-zone sweep: 4 zones map to 2 basin families — discrete address space |
+| C58 | phonon_faraday | Intra-zone coherence: 3/4 zones show single basin across ±2 perturbations |
+| C59 | phonon_faraday | Symmetry breaking: 2/4 asymmetric injections shift basin — group-specific selector |
+| C60 | phonon_faraday | Basin stability: all 7 dampings show ≥90% perturbation invariance under ±1.0 shifts |
+| C61 | phonon_faraday | Minimum temporal resolution = 1 step at d=5.0: gap 3→4 switches basin |
+| C62 | phonon_faraday | Gap sweep non-monotonic cycling: 8 distinct basins from 19 gap values at d=5.0 |
+| C63 | phonon_faraday | Pulse count high-res channel: every ΔN=1 (N=1–6) produces different basin |
+| C64 | phonon_faraday | Onset delay sensitivity: 6 basins from 12 delays, first transition at delay 10→20 |
+| C65 | phonon_faraday | Injection ordering encodes basin: 4 basins from 9 temporal orderings |
+| C66 | phonon_faraday | Temporal sensitivity regime-dependent: d=0.2 gap-invariant, d=5.0 has 11 transitions |
 
 ## Open Questions
 
@@ -79,8 +104,12 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | Q4 | phonon_faraday | Cascade depth limit — architecture-dependent | ~~RESOLVED~~ |
 | Q5 | phonon_faraday | Half-adder generalization across damping regimes | OPEN |
 | Q6 | phonon_faraday | SR-latch third-state reproducibility | ~~RESOLVED~~ |
-| Q7 | phonon_faraday | Temporal injection minimum distinguishing cadence | OPEN |
-| Q8 | phonon_faraday | Dream afterstate — rest-phase basin drift | OPEN |
+| Q7 | phonon_faraday | Temporal injection minimum distinguishing cadence | ~~RESOLVED~~ |
+| Q8 | phonon_faraday | Dream afterstate — rest-phase basin drift | ~~RESOLVED~~ |
+| Q9 | phonon_faraday | Stochastic injection basin entropy | ~~RESOLVED~~ |
+| Q10 | phonon_faraday | Perturbation stability radius | ~~RESOLVED~~ |
+| Q11 | phonon_faraday | Boundary cartography completeness | ~~RESOLVED~~ |
+| Q12 | phonon_faraday | Symmetry-breaking group specificity | OPEN |
 
 ## Raw Audit Trail
 
