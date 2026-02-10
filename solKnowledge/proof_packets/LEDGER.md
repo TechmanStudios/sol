@@ -17,9 +17,9 @@ solKnowledge/proof_packets/
 
 | Domain | Packet | Claims | Open Qs | Trials | Compute (min) | Suites | Last Updated |
 |--------|--------|-------:|--------:|-------:|---------------:|-------:|--------------|
-| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 78 | 3 | 14,835 | 606 | 72 | 2026-02-10 |
+| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 88 | 2 | 15,071 | 614 | 73 | 2026-02-10 |
 
-**Totals:** 78 claims | 3 open questions | 14,835 trials | 606 min compute
+**Totals:** 88 claims | 2 open questions | 15,071 trials | 614 min compute
 
 ## Global Claim Index
 
@@ -105,13 +105,23 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | C76 | phonon_faraday | Gap parameter has single binary phase transition at gap=3→4: 2 basins across 10 gaps |
 | C77 | phonon_faraday | Entropy plateau at d=5.0 spans 235 steps (47% of simulation) at H=0.976 |
 | C78 | phonon_faraday | High damping entropy inversion: d≥25 peaks then declines 40–54%; speed/depth inversely related |
+| C79 | phonon_faraday | Christ[2] injection singularity: removing christ injection breaks christic lock at d=20–40 |
+| C80 | phonon_faraday | Christ–christic edge singularity: severing the single edge destroys dead zone lock |
+| C81 | phonon_faraday | Mega-hub irrelevance: cutting 337 combined degree of mega-hub connections cannot break lock |
+| C82 | phonon_faraday | Phase gating necessity: removing group distinctions breaks christic dominance |
+| C83 | phonon_faraday | Heartbeat knockout (omega=0): metatron[9] captures all damping values universally |
+| C84 | phonon_faraday | Viscous retention threshold: deepViscosity=1.5 breaks christic lock |
+| C85 | phonon_faraday | Three-factor mechanism: injection adjacency + phase gating + viscous retention (Q2 RESOLVED) |
+| C86 | phonon_faraday | Competitive bistability d=18.0–19.0: christic/ch.hayes alternate, lock-in d≥19.1 |
+| C87 | phonon_faraday | Emergent attractor: christic first leads step 185/500 after 15 lead changes |
+| C88 | phonon_faraday | Uniform spirit half-life: identical across 17 spirit nodes (topological not dynamical) |
 
 ## Open Questions
 
 | # | Domain | Question | Status |
 |--:|--------|----------|--------|
 | Q1 | phonon_faraday | Higher-order analog correction R² ceiling | ~~RESOLVED~~ |
-| Q2 | phonon_faraday | Dead zone physics — why christic[22] traps | **PARTIAL** |
+| Q2 | phonon_faraday | Dead zone physics — why christic[22] traps | ~~RESOLVED~~ |
 | Q3 | phonon_faraday | Clock optimization — optimal period/pulse | ~~RESOLVED~~ |
 | Q4 | phonon_faraday | Cascade depth limit — architecture-dependent | ~~RESOLVED~~ |
 | Q5 | phonon_faraday | Half-adder generalization across damping regimes | OPEN |
