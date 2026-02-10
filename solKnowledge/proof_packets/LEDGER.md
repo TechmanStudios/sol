@@ -17,9 +17,9 @@ solKnowledge/proof_packets/
 
 | Domain | Packet | Claims | Open Qs | Trials | Compute (min) | Suites | Last Updated |
 |--------|--------|-------:|--------:|-------:|---------------:|-------:|--------------|
-| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 37 | 1 | 11,020 | 487 | 22 | 2026-02-10 |
+| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 41 | 1 | 11,337 | 487 | 27 | 2026-02-10 |
 
-**Totals:** 37 claims | 5 open questions | 11,020 trials | 487 min compute
+**Totals:** 41 claims | 1 open question | 11,337 trials | 487 min compute
 
 ## Global Claim Index
 
@@ -64,6 +64,10 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | C35 | phonon_faraday | NAND gate (cascaded NOT+AND) functional at d=0.2 |
 | C36 | phonon_faraday | NAND gate (cascaded NOT+AND) functional at d=5.0 |
 | C37 | phonon_faraday | Basin control energy threshold: below E=50 dominant basin shifts |
+| C38 | phonon_faraday | SR-latch third-state behavior: simultaneous input → simeon[98], sequential → numis'om[7] |
+| C39 | phonon_faraday | Temporal injection diversity at d=5.0: 3 distinct basins from 4 timing patterns |
+| C40 | phonon_faraday | Injection topology diversity at d=0.2: 4 distinct basins from 6 spatial configs |
+| C41 | phonon_faraday | Injection topology diversity at d=5.0: 4 distinct basins from 6 spatial configs |
 
 ## Open Questions
 
@@ -74,7 +78,7 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | Q3 | phonon_faraday | Clock optimization — optimal period/pulse | ~~RESOLVED~~ |
 | Q4 | phonon_faraday | Cascade depth limit — architecture-dependent | ~~RESOLVED~~ |
 | Q5 | phonon_faraday | Half-adder generalization across damping regimes | OPEN |
-| Q6 | phonon_faraday | SR-latch third-state reproducibility | OPEN |
+| Q6 | phonon_faraday | SR-latch third-state reproducibility | ~~RESOLVED~~ |
 | Q7 | phonon_faraday | Temporal injection minimum distinguishing cadence | OPEN |
 | Q8 | phonon_faraday | Dream afterstate — rest-phase basin drift | OPEN |
 
