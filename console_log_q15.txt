@@ -1,0 +1,112 @@
+[09:41:35] ======================================================================
+[09:41:35] SOL OVERNIGHT RSI — Q13-Q15 DEEP INVESTIGATION
+[09:41:35] ======================================================================
+[09:41:35] Budget: 4.0h (14400s)
+[09:41:35] Output: G:\docs\TechmanStudios\sol\data\overnight_rsi_q13_q15\20260211_144135
+[09:41:35] Start:  2026-02-11T14:41:35.765986+00:00
+[09:41:35] 
+[09:41:35] Graph loaded: 140 nodes, 845 edges
+[09:41:35] 
+[09:41:35] 
+======================================================================
+[09:41:35] SUITE 3 — Q15: IDENTITY GAP BRIDGING
+[09:41:35] ======================================================================
+[09:41:35] 
+  Baseline: measuring identity at d=5, 7, 10 for 40 sample nodes...
+[09:42:52]     d=5.0: self-attraction = 32.5%
+[09:44:09]     d=7.0: self-attraction = 7.5%
+[09:45:25]     d=10.0: self-attraction = 0.0%
+[09:45:25] 
+  Probe 3A: Parameter tuning sweep (c_press, dt)...
+[09:45:25]     Sweeping c_press...
+[09:49:39]       c_press=0.01, d=5.0: self=90.0% (delta=+57.5%)
+[09:53:48]       c_press=0.01, d=7.0: self=87.5% (delta=+80.0%)
+[09:57:52]       c_press=0.01, d=10.0: self=77.5% (delta=+77.5%)
+[10:02:14]       c_press=0.05, d=5.0: self=57.5% (delta=+25.0%)
+[10:06:32]       c_press=0.05, d=7.0: self=22.5% (delta=+15.0%)
+[10:10:42]       c_press=0.05, d=10.0: self=10.0% (delta=+10.0%)
+[10:11:58]       c_press=0.1, d=5.0: self=32.5% (delta=+0.0%)
+[10:13:14]       c_press=0.1, d=7.0: self=7.5% (delta=+0.0%)
+[10:14:30]       c_press=0.1, d=10.0: self=0.0% (delta=+0.0%)
+[10:15:46]       c_press=0.2, d=5.0: self=15.0% (delta=-17.5%)
+[10:17:01]       c_press=0.2, d=7.0: self=0.0% (delta=-7.5%)
+[10:18:17]       c_press=0.2, d=10.0: self=0.0% (delta=+0.0%)
+[10:19:33]       c_press=0.5, d=5.0: self=0.0% (delta=-32.5%)
+[10:20:49]       c_press=0.5, d=7.0: self=0.0% (delta=-7.5%)
+[10:22:05]       c_press=0.5, d=10.0: self=0.0% (delta=+0.0%)
+[10:23:19]       c_press=1.0, d=5.0: self=2.5% (delta=-30.0%)
+[10:24:34]       c_press=1.0, d=7.0: self=0.0% (delta=-7.5%)
+[10:25:48]       c_press=1.0, d=10.0: self=0.0% (delta=+0.0%)
+[10:25:48]     Sweeping dt...
+[10:27:04]       dt=0.06, d=5.0: self=87.5% (delta=+55.0%)
+[10:28:20]       dt=0.06, d=7.0: self=77.5% (delta=+70.0%)
+[10:29:35]       dt=0.06, d=10.0: self=65.0% (delta=+65.0%)
+[10:30:51]       dt=0.12, d=5.0: self=32.5% (delta=+0.0%)
+[10:32:07]       dt=0.12, d=7.0: self=7.5% (delta=+0.0%)
+[10:33:23]       dt=0.12, d=10.0: self=0.0% (delta=+0.0%)
+[10:34:39]       dt=0.24, d=5.0: self=35.0% (delta=+2.5%)
+[10:35:55]       dt=0.24, d=7.0: self=10.0% (delta=+2.5%)
+[10:37:11]       dt=0.24, d=10.0: self=35.0% (delta=+35.0%)
+[10:38:27]       dt=0.48, d=5.0: self=37.5% (delta=+5.0%)
+[10:39:43]       dt=0.48, d=7.0: self=22.5% (delta=+15.0%)
+[10:40:59]       dt=0.48, d=10.0: self=40.0% (delta=+40.0%)
+[10:40:59]     Best parameter intervention: c_press=0.01, d=7.0 -> delta=+80.0%
+[10:40:59]   Saved q15_param_tuning.json (6.1 KB)
+[10:40:59] 
+  Probe 3B: Multi-injection defense...
+[10:42:22]     d=5.0: multi-inject self=42.5% (delta=+10.0%)
+[10:43:44]     d=7.0: multi-inject self=0.0% (delta=-7.5%)
+[10:45:07]     d=10.0: multi-inject self=0.0% (delta=+0.0%)
+[10:45:07]   Saved q15_multi_inject.json (0.5 KB)
+[10:45:07] 
+  Probe 3C: Topology surgery...
+[10:45:07]     Strategy: self-loop reinforcement (w0=2.0)...
+[10:46:34]       d=5.0: self-loop self=32.5% (delta=+0.0%)
+[10:48:01]       d=7.0: self-loop self=7.5% (delta=+0.0%)
+[10:49:27]       d=10.0: self-loop self=0.0% (delta=+0.0%)
+[10:49:27]     Strategy: low-degree edge boosting (w0 *= 3.0 for deg<=3)...
+[10:50:43]       d=5.0: low-deg boost self=32.5% (delta=+0.0%)
+[10:51:59]       d=7.0: low-deg boost self=7.5% (delta=+0.0%)
+[10:53:15]       d=10.0: low-deg boost self=0.0% (delta=+0.0%)
+[10:53:15]     Strategy: global w0 doubling...
+[10:54:31]       d=5.0: global w0 2x self=22.5% (delta=-10.0%)
+[10:55:47]       d=7.0: global w0 2x self=0.0% (delta=-7.5%)
+[10:57:03]       d=10.0: global w0 2x self=0.0% (delta=+0.0%)
+[10:57:03]     Strategy: global w0 halving (reduce transport)...
+[10:58:19]       d=5.0: global w0 0.5x self=72.5% (delta=+40.0%)
+[10:59:35]       d=7.0: global w0 0.5x self=55.0% (delta=+47.5%)
+[11:00:51]       d=10.0: global w0 0.5x self=7.5% (delta=+7.5%)
+[11:00:51]     Best surgery: global_w0_half at d=7.0 -> delta=+47.5%
+[11:00:51]   Saved q15_topology_surgery.json (2.3 KB)
+[11:00:51] 
+  Probe 3D: Injection magnitude sweep at d=5-10...
+[11:02:07]       inj=10.0, d=5.0: self=5.0%
+[11:03:23]       inj=10.0, d=7.0: self=0.0%
+[11:04:39]       inj=10.0, d=10.0: self=0.0%
+[11:05:55]       inj=25.0, d=5.0: self=17.5%
+[11:07:11]       inj=25.0, d=7.0: self=0.0%
+[11:08:27]       inj=25.0, d=10.0: self=0.0%
+[11:09:42]       inj=50.0, d=5.0: self=32.5%
+[11:10:58]       inj=50.0, d=7.0: self=7.5%
+[11:12:14]       inj=50.0, d=10.0: self=0.0%
+[11:13:30]       inj=100.0, d=5.0: self=60.0%
+[11:14:46]       inj=100.0, d=7.0: self=17.5%
+[11:16:02]       inj=100.0, d=10.0: self=2.5%
+[11:17:18]       inj=200.0, d=5.0: self=80.0%
+[11:18:34]       inj=200.0, d=7.0: self=52.5%
+[11:19:50]       inj=200.0, d=10.0: self=2.5%
+[11:21:06]       inj=500.0, d=5.0: self=90.0%
+[11:22:22]       inj=500.0, d=7.0: self=77.5%
+[11:23:38]       inj=500.0, d=10.0: self=10.0%
+[11:24:54]       inj=1000.0, d=5.0: self=95.0%
+[11:26:10]       inj=1000.0, d=7.0: self=85.0%
+[11:27:26]       inj=1000.0, d=10.0: self=22.5%
+[11:27:26]   Saved q15_injection_sweep.json (2.7 KB)
+[11:27:26] 
+  Probe 3E: Jeans growth with pre-stabilization...
+[11:28:05]       defense=none, d=5.0: synths=0, self=5.0%
+[11:28:43]       defense=none, d=7.0: synths=0, self=10.0%
+[11:29:21]       defense=none, d=10.0: synths=0, self=0.0%
+[11:29:59]       defense=pre_inject, d=5.0: synths=5, self=5.0%
+[11:30:37]       defense=pre_inject, d=7.0: synths=5, self=10.0%
+[11:31:16]       defense=pre_inject, d=10.0: synths=5, self=0.0%

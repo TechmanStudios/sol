@@ -17,9 +17,10 @@ solKnowledge/proof_packets/
 
 | Domain | Packet | Claims | Open Qs | Trials | Compute (min) | Suites | Last Updated |
 |--------|--------|-------:|--------:|-------:|---------------:|-------:|--------------|
-| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 104 | 0 | 15,606 | 645 | 76 | 2026-02-11 |
+| jeans_telekinetic | [jeans_telekinetic.md](domains/jeans_telekinetic.md) | 37 | 0 | 8,640 | 0 | 0 | 2026-02-11 |
+| phonon_faraday | [phonon_faraday.md](domains/phonon_faraday.md) | 131 | 0 | 22,431 | 704 | 432 | 2026-02-11 |
 
-**Totals:** 104 claims | 0 open questions | 15,606 trials | 645 min compute
+**Totals:** 168 claims | 0 open questions | 31,071 trials | 704 min compute
 
 ## Global Claim Index
 
@@ -131,6 +132,36 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | C102 | phonon_faraday | Energy-stable group mapping: 9/12 combos stable across 6× energy range |
 | C103 | phonon_faraday | 20-basin address space (4.3 bits) via injection group selection |
 | C104 | phonon_faraday | Cross-group novelty: 2 mixture-only basins via constructive interference |
+| C105 | jeans_telekinetic | Jcrit phase transition at 1/c_press = 10: universal collapse below, selective above |
+| C106 | jeans_telekinetic | Jcrit plateau saturation 15-50: strategy-invariant above threshold (except drizzle at 50) |
+| C107 | jeans_telekinetic | Drizzle delayed collapse at Jcrit=50: only above-threshold condition with first_collapse > 0 |
+| C108 | jeans_telekinetic | Strategy > Threshold: injection strategy determines topology; Jcrit determines existence |
+| C109 | jeans_telekinetic | Entropy as cosmology index: 0.514-0.971 range cleanly separates rich from sparse cosmologies |
+| C110 | jeans_telekinetic | Cluster spray mass retention: 5 simultaneous stars retain most mass (331.89 rho, 27% advantage) |
+| C111 | jeans_telekinetic | Dual-regime computational identity: physics-dominated at low d, topology-dominated at high d |
+| C112 | jeans_telekinetic | Normalization reveals physics shield: raw vs normalized divergence proves synth nodes inherit parent role |
+| C113 | jeans_telekinetic | Extreme growth destroys identity at d=5.0: 0% stability for both raw and normalized (140 synths) |
+| C114 | jeans_telekinetic | High damping shields extreme growth: 95% normalized stability despite doubling graph (140 synths) |
+| C115 | jeans_telekinetic | Synth basin monopole: synth nodes capture 89.3% of basin assignments at extreme/d=5.0 |
+| C116 | jeans_telekinetic | Basin entropy diverges with growth: increases at d=5 (more diversity), decreases at d=20 (consolidation) |
+| C117 | jeans_telekinetic | Jaccard distance confirms binary stability: >0.9 (stable) or <0.15 (destroyed), no intermediate |
+| C118 | jeans_telekinetic | Three damping regimes: Physics Shield (d=0.1-7), Collapse Zone (d=12-30), Frozen (d>=50) |
+| C119 | jeans_telekinetic | Asymmetric sigmoid transition: sharp onset (d=7->12) vs gradual frozen recovery (d=30->100) |
+| C120 | jeans_telekinetic | Christ[2] basin monopole at d=20: 27.1% capture (38x above uniform expectation) |
+| C121 | jeans_telekinetic | Synth monopole damping-tunable: 0% to 82.5% basin capture via damping knob alone |
+| C122 | jeans_telekinetic | Extreme growth lowers stability cliff: d=12 for extreme vs d=15 for mild/medium |
+| C123 | jeans_telekinetic | Two critical slowing peaks: d=5 pre-transition (441 steps) and d=20 post-collapse (449 steps) |
+| C124 | jeans_telekinetic | Transient-dominated basin identity: 0% rho remaining at d>=7 yet 95-97% self-attraction |
+| C125 | jeans_telekinetic | Universal flickering: 100% of nodes flicker at all dampings (d=1-15), zero rock-solid nodes |
+| C126 | jeans_telekinetic | d=5.0 critical flicker maximum: maximizes all instability metrics simultaneously |
+| C127 | jeans_telekinetic | Christine Hayes[90] seismograph: top flickerer at d=1 (19), d=3 (45), d=5 (50 transitions) |
+| C128 | jeans_telekinetic | Transition highway at d=5: directed cycle thothhorra->christine->christ->thothhorra |
+| C129 | jeans_telekinetic | Self-attraction phase transition between d=5 and d=7: 5.7% -> 37.1% sharp jump |
+| C130 | jeans_telekinetic | Frozen regime bifurcation: Hot Frozen (d=20-75, 1-hop neighbor) vs Dead Frozen (d=100, paralysis) |
+| C131 | jeans_telekinetic | Hot Frozen basins topologically determined: loch[13] captures 8.6% by highest degree |
+| C132 | jeans_telekinetic | Frozen regime injection-invariant: 200x energy range (10-2000 rho) produces identical basins |
+| C133 | jeans_telekinetic | Energy zero kill curve: d=20->93 steps, d=50->41, d=75->21, d=100->1 (quasi-linear) |
+| C134 | jeans_telekinetic | Basin inversion sandwich: transport->shield->neighbor-capture->death (four-phase non-monotonic) |
 
 ## Open Questions
 
@@ -148,6 +179,9 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 | Q10 | phonon_faraday | Perturbation stability radius | ~~RESOLVED~~ |
 | Q11 | phonon_faraday | Boundary cartography completeness | ~~RESOLVED~~ |
 | Q12 | phonon_faraday | Symmetry-breaking group specificity | ~~RESOLVED~~ |
+| Q13 | jeans_telekinetic | d=5 flickering mechanism: what structural property determines heavy flickerers? | OPEN |
+| Q14 | jeans_telekinetic | Hot Frozen basin determinism: can d=50 basins be predicted from adjacency matrix alone? | OPEN |
+| Q15 | jeans_telekinetic | Identity gap bridging: can any intervention close the d=5-10 identity gap? | OPEN |
 
 ## Raw Audit Trail
 
@@ -173,4 +207,4 @@ Claims are globally unique (C1, C2, ...) regardless of domain.
 
 ---
 
-*Maintained by claim_compiler.py and rsi_engine.py. Last regenerated: 2026-02-10.*
+*Maintained by claim_compiler.py and rsi_engine.py. Last regenerated: 2026-02-11.*

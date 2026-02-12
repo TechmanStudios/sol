@@ -277,20 +277,102 @@ def scan_knowledge() -> list[Gap]:
             metadata={"param": param, "range": suggested_range},
         ))
 
+    # --- Gap Type 7: Open questions from proof packets (Phase 4) ---
+    # Parse open questions and create high-priority gaps so the cortex
+    # directly targets them instead of waiting for random selection.
+    oq_gaps = _scan_open_questions()
+    gaps.extend(oq_gaps)
+
     return gaps
+
+
+def _scan_open_questions() -> list[Gap]:
+    """Scan proof packets for open questions and convert to gaps.
+
+    Open questions in domain packets and raw proof packets represent
+    specific, already-identified research threads.  Turning them into
+    priority-1 gaps ensures the cortex directly designs experiments
+    to address them, closing the question → experiment → answer cycle.
+    """
+    questions: list[Gap] = []
+    seen_qs: set[str] = set()  # dedup by first 80 chars
+
+    # Scan domain packets
+    _domains = _PROOF_PACKETS / "domains"
+    scan_dirs: list[Path] = []
+    if _domains.is_dir():
+        scan_dirs.append(_domains)
+    if _PROOF_PACKETS.is_dir():
+        scan_dirs.append(_PROOF_PACKETS)
+
+    for sdir in scan_dirs:
+        for pp_path in sorted(sdir.glob("*.md")):
+            try:
+                text = pp_path.read_text(encoding="utf-8")
+            except Exception:
+                continue
+
+            in_q_section = False
+            for line in text.split("\n"):
+                if "Remaining Open Questions" in line or "Open Questions" in line:
+                    in_q_section = True
+                    continue
+                if in_q_section:
+                    stripped = line.strip()
+                    # End of section
+                    if stripped.startswith("---") or (
+                        stripped.startswith("#") and "Open" not in stripped
+                    ):
+                        break
+                    # Numbered item
+                    if stripped and stripped[0].isdigit() and "." in stripped[:4]:
+                        if "[RESOLVED]" in stripped:
+                            continue
+                        # Remove number prefix
+                        q_text = re.sub(r'^\d+\.\s*', '', stripped)
+                        q_key = q_text[:80].lower()
+                        if q_key in seen_qs:
+                            continue
+                        seen_qs.add(q_key)
+
+                        # Infer parameter from question text
+                        param = None
+                        for p in ("damping", "c_press", "dt", "psi",
+                                  "w0", "injection", "topology", "entropy"):
+                            if p.lower() in q_text.lower():
+                                param = p
+                                break
+
+                        questions.append(Gap(
+                            gap_type="open_question",
+                            priority=1,  # highest priority
+                            description=f"Open Q: {q_text[:150]}",
+                            suggested_action=(
+                                f"Design an experiment to answer: {q_text[:120]}"
+                            ),
+                            metadata={
+                                "source": pp_path.name,
+                                "question": q_text,
+                                "param": param,
+                            },
+                        ))
+
+    return questions
 
 
 def rank_gaps(gaps: list[Gap]) -> list[Gap]:
     """Rank gaps by priority (ascending = most important first).
-    Within same priority, order: unpromoted > headless_baseline > weak_evidence > unfalsified > replication > unexplored.
+    Within same priority, order: open_question > unpromoted > headless_baseline >
+    weak_evidence > unfalsified > replication > unexplored.
     """
     type_order = {
-        "unpromoted": 0,
-        "headless_baseline": 1,
-        "weak_evidence": 2,
-        "unfalsified": 3,
-        "replication": 4,
-        "unexplored_param": 5,
+        "open_question": 0,
+        "unpromoted": 1,
+        "headless_baseline": 2,
+        "weak_evidence": 3,
+        "unfalsified": 4,
+        "replication": 5,
+        "unexplored_param": 6,
     }
     return sorted(gaps, key=lambda g: (g.priority, type_order.get(g.gap_type, 99)))
 

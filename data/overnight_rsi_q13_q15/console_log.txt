@@ -1,0 +1,89 @@
+[02:58:37] ======================================================================
+[02:58:37] SOL OVERNIGHT RSI — Q13-Q15 DEEP INVESTIGATION
+[02:58:37] ======================================================================
+[02:58:37] Budget: 7.0h (25200s)
+[02:58:37] Output: G:\docs\TechmanStudios\sol\data\overnight_rsi_q13_q15\20260211_075837
+[02:58:37] Start:  2026-02-11T07:58:37.531504+00:00
+[02:58:37] 
+[02:58:37] Graph loaded: 140 nodes, 845 edges
+[02:58:37] 
+[02:58:37] ======================================================================
+[02:58:37] SUITE 1 — Q13: FLICKERING MECHANISM
+[02:58:37] ======================================================================
+[02:58:37] 
+  Probe 1A: Computing structural metrics for all 140 nodes...
+[02:58:37]     Centrality computation: 0.1s
+[02:58:37]   Probe 1A: Running d=5 flicker probes for all 140 nodes...
+[02:59:23]     [20/140] 45.6s, ~274s remaining
+[03:00:08]     [40/140] 91.1s, ~228s remaining
+[03:00:54]     [60/140] 136.5s, ~182s remaining
+[03:01:39]     [80/140] 181.8s, ~136s remaining
+[03:02:24]     [100/140] 227.2s, ~91s remaining
+[03:03:10]     [120/140] 272.6s, ~45s remaining
+[03:03:55]     [140/140] 318.0s, ~0s remaining
+[03:03:55]   Probe 1A: Computing correlations...
+[03:03:55]   Probe 1A: Best predictor of flickering: eigenvector_vs_flicker (r=0.6031)
+[03:03:55]     eigenvector_vs_flicker: r = 0.6031
+[03:03:55]     degree_vs_flicker: r = 0.4775
+[03:03:55]     betweenness_vs_flicker: r = 0.3427
+[03:03:55]     clustering_vs_flicker: r = -0.3106
+[03:03:55]   Saved q13_structural_census.json (38.1 KB)
+[03:03:55] 
+  Probe 1B: Basin boundary analysis...
+[03:03:55]     Computing basin membership for 1-hop and 2-hop neighborhoods...
+[03:03:55]   Probe 1B: Best boundary predictor: basins_1hop_vs_flicker (r=0.5053)
+[03:03:55]     Boundary nodes (120): mean flicker = 16.54
+[03:03:55]     Interior nodes (20): mean flicker = 10.95
+[03:03:55]   Saved q13_basin_boundary.json (52.0 KB)
+[03:03:55] 
+  Probe 1C: Christine Hayes [90] deep dive...
+[03:04:11]     Christine Hayes: degree=70 (rank 4), betweenness=0.052160 (rank 5), neighbor basins=48
+[03:04:11]   Saved q13_christine_hayes.json (10.3 KB)
+[03:04:11] 
+  Probe 1D: Building predictive model...
+[03:04:11]     Top 2 predictors: eigenvector_vs_flicker (r=0.6031), basins_1hop_vs_flicker (r=0.5053)
+[03:04:11]   Saved q13_predictive_model.json (4.4 KB)
+[03:04:11] 
+  Suite Q13 complete: 334.0s, 147 trials so far
+[03:04:11] 
+======================================================================
+[03:04:11] SUITE 2 — Q14: HOT FROZEN BASIN DETERMINISM
+[03:04:11] ======================================================================
+[03:04:11] 
+  Probe 2A: Static conductance matrix analysis...
+[03:04:11]   Running d=50 basin probes for all 140 nodes...
+[03:04:26]     [40/140] 15.2s
+[03:04:41]     [80/140] 30.3s
+[03:04:57]     [120/140] 45.5s
+[03:05:04]     [140/140] 53.1s
+[03:05:04]   Probe 2A: Static conductance prediction accuracy: 5/140 = 3.6%
+[03:05:04]   Saved q14_conductance_prediction.json (14.2 KB)
+[03:05:04] 
+  Probe 2B: Phase-gated prediction...
+[03:05:04]     Phase at t=0.12: cos=0.9838, surface_active=True, deep_active=False
+[03:05:04]   Probe 2B: Phase-gated prediction accuracy: 3/140 = 2.1%
+[03:05:04]     Improvement over static: -1.4%
+[03:05:04]   Saved q14_phase_gated.json (0.2 KB)
+[03:05:04] 
+  Probe 2C: Multi-hop prediction (2-hop relay)...
+[03:05:04]   Probe 2C: Multi-hop prediction accuracy: 6/140 = 4.3%
+[03:05:04]   Saved q14_multihop.json (0.1 KB)
+[03:05:04] 
+  Probe 2D: Testing prediction model at d=30 and d=75...
+[03:05:57]     d=30.0: static prediction accuracy = 1/140 = 0.7%
+[03:06:50]     d=75.0: static prediction accuracy = 4/140 = 2.9%
+[03:06:50]   Saved q14_accuracy.json (0.3 KB)
+[03:06:50] 
+  Suite Q14 complete: 159.3s, 567 trials so far
+[03:06:50] 
+======================================================================
+[03:06:50] SUITE 3 — Q15: IDENTITY GAP BRIDGING
+[03:06:50] ======================================================================
+[03:06:50] 
+  Baseline: measuring identity at d=5, 7, 10 for 40 sample nodes...
+[03:08:06]     d=5.0: self-attraction = 32.5%
+[03:09:22]     d=7.0: self-attraction = 7.5%
+[03:10:37]     d=10.0: self-attraction = 0.0%
+[03:10:37] 
+  Probe 3A: Parameter tuning sweep (c_press, dt)...
+[03:10:37]     Sweeping c_press...

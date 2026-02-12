@@ -76,3 +76,315 @@ Additional proof packets were promoted by tying claim-ledger items to on-disk CS
   - Question: At what value of damping does the system behavior qualitatively change?
   - Claim: CL-3 | Sanity: PASS
   - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+## Cortex Session: CX-20260211-171412 (consolidated 2026-02-11)
+
+- [PP-2026-02-11-cortex-CX-20260211-171412-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-171412-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-171412-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-171412-h-002-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-171412-h-003-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-171412-h-003-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-171412-h-004-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-171412-h-004-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-4 | Sanity: PASS
+  - Gap: CL-4 (Supported): Node 82 acts like a dominant ρ reservoir near failure/afterstates (rhoMaxId) — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-171412-h-005-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-171412-h-005-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-6 | Sanity: PASS
+  - Gap: CL-6 (Robust): End-phase latch primitive = lastInjected at dream stop selects start basin — no proof packet found
+
+## Cortex Session: CX-20260211-185612 (consolidated 2026-02-11)
+
+- [PP-2026-02-11-cortex-CX-20260211-185612-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-185612-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-185612-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-185612-h-002-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-185612-h-003-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-185612-h-003-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-185612-h-004-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-185612-h-004-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-4 | Sanity: PASS
+  - Gap: CL-4 (Supported): Node 82 acts like a dominant ρ reservoir near failure/afterstates (rhoMaxId) — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-185612-h-005-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-185612-h-005-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-6 | Sanity: PASS
+  - Gap: CL-6 (Robust): End-phase latch primitive = lastInjected at dream stop selects start basin — no proof packet found
+
+## Cortex Session: CX-20260211-190125 (consolidated 2026-02-11)
+
+- [PP-2026-02-11-cortex-CX-20260211-190125-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-190125-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-190125-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-190125-h-002-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-190125-h-003-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-190125-h-003-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-190125-h-004-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-190125-h-004-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-4 | Sanity: PASS
+  - Gap: CL-4 (Supported): Node 82 acts like a dominant ρ reservoir near failure/afterstates (rhoMaxId) — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-190125-h-005-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-190125-h-005-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-6 | Sanity: PASS
+  - Gap: CL-6 (Robust): End-phase latch primitive = lastInjected at dream stop selects start basin — no proof packet found
+
+## Cortex Session: CX-20260211-190808 (consolidated 2026-02-11)
+
+- [PP-2026-02-11-cortex-CX-20260211-190808-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-190808-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-190808-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-190808-h-002-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-190808-h-003-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-190808-h-003-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-190808-h-004-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-190808-h-004-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-4 | Sanity: PASS
+  - Gap: CL-4 (Supported): Node 82 acts like a dominant ρ reservoir near failure/afterstates (rhoMaxId) — no proof packet found
+
+- [PP-2026-02-11-cortex-CX-20260211-190808-h-005-damping.md](solKnowledge/proof_packets/PP-2026-02-11-cortex-CX-20260211-190808-h-005-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-6 | Sanity: PASS
+  - Gap: CL-6 (Robust): End-phase latch primitive = lastInjected at dream stop selects start basin — no proof packet found
+
+## Cortex Session: CX-20260212-023605 (consolidated 2026-02-12)
+
+- [PP-2026-02-12-cortex-CX-20260212-023605-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-023605-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-023605-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-023605-h-002-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-023605-h-003-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-023605-h-003-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-023605-h-004-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-023605-h-004-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-4 | Sanity: PASS
+  - Gap: CL-4 (Supported): Node 82 acts like a dominant ρ reservoir near failure/afterstates (rhoMaxId) — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-023605-h-005-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-023605-h-005-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-6 | Sanity: PASS
+  - Gap: CL-6 (Robust): End-phase latch primitive = lastInjected at dream stop selects start basin — no proof packet found
+
+## Cortex Session: CX-20260212-031340 (consolidated 2026-02-12)
+
+- [PP-2026-02-12-cortex-CX-20260212-031340-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-031340-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-031340-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-031340-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-031340-h-003-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-031340-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-031340-h-004-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-031340-h-004-None.md)
+  - Question: Do different injection targets produce distinct basin formations?
+  - Claim: CL-4 | Sanity: PASS
+  - Gap: CL-4 (Supported): Node 82 acts like a dominant ρ reservoir near failure/afterstates (rhoMaxId) — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-031340-h-005-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-031340-h-005-None.md)
+  - Question: What are the canonical metric outputs for standard injection protocols?
+  - Claim: CL-6 | Sanity: PASS
+  - Gap: CL-6 (Robust): End-phase latch primitive = lastInjected at dream stop selects start basin — no proof packet found
+
+## Cortex Session: CX-20260212-032105 (consolidated 2026-02-12)
+
+- [PP-2026-02-12-cortex-CX-20260212-032105-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-032105-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-032105-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-032105-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-032105-h-003-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-032105-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-032105-h-004-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-032105-h-004-None.md)
+  - Question: Do different injection targets produce distinct basin formations?
+  - Claim: CL-4 | Sanity: PASS
+  - Gap: CL-4 (Supported): Node 82 acts like a dominant ρ reservoir near failure/afterstates (rhoMaxId) — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-032105-h-005-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-032105-h-005-None.md)
+  - Question: What are the canonical metric outputs for standard injection protocols?
+  - Claim: CL-6 | Sanity: PASS
+  - Gap: CL-6 (Robust): End-phase latch primitive = lastInjected at dream stop selects start basin — no proof packet found
+
+## Cortex Session: CX-20260212-032759 (consolidated 2026-02-12)
+
+- [PP-2026-02-12-cortex-CX-20260212-032759-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-032759-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-032759-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-032759-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-032759-h-003-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-032759-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-032759-h-004-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-032759-h-004-None.md)
+  - Question: Do different injection targets produce distinct basin formations?
+  - Claim: CL-4 | Sanity: PASS
+  - Gap: CL-4 (Supported): Node 82 acts like a dominant ρ reservoir near failure/afterstates (rhoMaxId) — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-032759-h-005-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-032759-h-005-None.md)
+  - Question: What are the canonical metric outputs for standard injection protocols?
+  - Claim: CL-6 | Sanity: PASS
+  - Gap: CL-6 (Robust): End-phase latch primitive = lastInjected at dream stop selects start basin — no proof packet found
+
+## Cortex Session: CX-20260212-033330 (consolidated 2026-02-12)
+
+- [PP-2026-02-12-cortex-CX-20260212-033330-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-033330-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-033330-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-033330-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-033330-h-003-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-033330-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-033330-h-004-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-033330-h-004-None.md)
+  - Question: Do different injection targets produce distinct basin formations?
+  - Claim: CL-4 | Sanity: PASS
+  - Gap: CL-4 (Supported): Node 82 acts like a dominant ρ reservoir near failure/afterstates (rhoMaxId) — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-033330-h-005-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-033330-h-005-None.md)
+  - Question: What are the canonical metric outputs for standard injection protocols?
+  - Claim: CL-6 | Sanity: PASS
+  - Gap: CL-6 (Robust): End-phase latch primitive = lastInjected at dream stop selects start basin — no proof packet found
+
+## Cortex Session: CX-20260212-034732 (consolidated 2026-02-12)
+
+- [PP-2026-02-12-cortex-CX-20260212-034732-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-034732-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-034732-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-034732-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-034732-h-003-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-034732-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-034732-h-004-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-034732-h-004-None.md)
+  - Question: Do different injection targets produce distinct basin formations?
+  - Claim: CL-4 | Sanity: PASS
+  - Gap: CL-4 (Supported): Node 82 acts like a dominant ρ reservoir near failure/afterstates (rhoMaxId) — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-034732-h-005-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-034732-h-005-None.md)
+  - Question: What are the canonical metric outputs for standard injection protocols?
+  - Claim: CL-6 | Sanity: PASS
+  - Gap: CL-6 (Robust): End-phase latch primitive = lastInjected at dream stop selects start basin — no proof packet found
+
+## Cortex Session: CX-20260212-052151 (consolidated 2026-02-12)
+
+- [PP-2026-02-12-cortex-CX-20260212-052151-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-052151-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does the turbulent regime (damping 0–10) contain any internal micro-transitions detectable only at higher resolution or with alternative observables?
+
+- [PP-2026-02-12-cortex-CX-20260212-052151-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-052151-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: How do flux and mass decay rates scale with damping within the turbulent regime, and are these rates topology-dependent?
+
+- [PP-2026-02-12-cortex-CX-20260212-052151-h-003-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-052151-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does the monotonic decline in entropy and flux observed in the low-damping regime persist up to the transition zone (damping 10–15), or does it platea
+
+- [PP-2026-02-12-cortex-CX-20260212-052151-h-004-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-052151-h-004-None.md)
+  - Question: Do different injection targets produce distinct basin formations?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: What specific topological features of the 140-node graph modulate the rate of flux decline under small damping increases?
+
+- [PP-2026-02-12-cortex-CX-20260212-052151-h-005-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-052151-h-005-None.md)
+  - Question: What are the canonical metric outputs for standard injection protocols?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-052151-h-006-dt.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-052151-h-006-dt.md)
+  - Question: Does dt compress time-to-failure in headless sol-core as it does in the dashboard?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-052151-h-007-psi_diffusion.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-052151-h-007-psi_diffusion.md)
+  - Question: How does psi_diffusion affect entropy distribution and basin selection?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+- [PP-2026-02-12-cortex-CX-20260212-052151-h-008-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-052151-h-008-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-4 | Sanity: PASS
+  - Gap: CL-4 (Supported): Node 82 acts like a dominant ρ reservoir near failure/afterstates (rhoMaxId) — no proof packet found

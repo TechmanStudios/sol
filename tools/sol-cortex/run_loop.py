@@ -277,7 +277,9 @@ class CortexSession:
             hypothesis_counter += 1
             h_id = f"H-{hypothesis_counter:03d}"
             try:
-                hypothesis = generate_hypothesis(gap_dict, h_id)
+                hypothesis = generate_hypothesis(
+                    gap_dict, h_id, prior_hypotheses=self.hypotheses
+                )
             except Exception as e:
                 self._log("hypothesis_error", gap_id=gap_id, error=str(e))
                 self.completed_gaps.add(gap_id)

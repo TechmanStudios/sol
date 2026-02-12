@@ -1,3 +1,6 @@
+# Secrets
+.env
+
 # Python
 __pycache__/
 *.pyc
@@ -45,3 +48,8 @@ solData/testResults/cogload_replications/
 
 # Backup archives
 backUps/
+
+# Personal access tokens
+*.token.txt
+.github/*token*
+.github/*access*

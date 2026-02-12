@@ -39,6 +39,11 @@ on:
         options:
           - "false"
           - "true"
+      budget_dollars:
+        description: "Maximum LLM spend in USD (0 = unlimited)"
+        required: false
+        default: "1.0"
+        type: string
 
   # Weekly schedule: Sunday 03:00 UTC (before cortex Mon 06:00)
   schedule:
@@ -81,7 +86,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install numpy
+          pip install numpy openai
 
       - name: Verify engine integrity
         run: |
@@ -104,13 +109,16 @@ jobs:
           echo "Graph integrity verified."
 
       - name: Run RSI cycle
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_MODELS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           MODE="${{ github.event.inputs.mode || 'cron' }}"
           CYCLES="${{ github.event.inputs.cycles || '1' }}"
           BUDGET="${{ github.event.inputs.budget_hours || '2' }}"
+          BUDGET_DOLLARS="${{ github.event.inputs.budget_dollars || '1.0' }}"
           DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
 
-          ARGS="--mode $MODE --cycles $CYCLES --budget-hours $BUDGET"
+          ARGS="--mode $MODE --cycles $CYCLES --budget-hours $BUDGET --budget-dollars $BUDGET_DOLLARS"
           if [ "$DRY_RUN" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi

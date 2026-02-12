@@ -1,0 +1,213 @@
+{
+  "all_correlations": {
+    "degree_vs_flicker": 0.4775122658976294,
+    "betweenness_vs_flicker": 0.3426926774944499,
+    "clustering_vs_flicker": -0.3105770816006401,
+    "eigenvector_vs_flicker": 0.6031297529307871,
+    "basins_1hop_vs_flicker": 0.5053311422493153,
+    "basins_2hop_vs_flicker": 0.0932513563000713,
+    "basins_combined_vs_flicker": 0.32203476310124635,
+    "is_boundary_vs_flicker": 0.2660457172500374
+  },
+  "sorted_by_strength": [
+    [
+      "eigenvector_vs_flicker",
+      0.6031297529307871
+    ],
+    [
+      "basins_1hop_vs_flicker",
+      0.5053311422493153
+    ],
+    [
+      "degree_vs_flicker",
+      0.4775122658976294
+    ],
+    [
+      "betweenness_vs_flicker",
+      0.3426926774944499
+    ],
+    [
+      "basins_combined_vs_flicker",
+      0.32203476310124635
+    ],
+    [
+      "clustering_vs_flicker",
+      -0.3105770816006401
+    ],
+    [
+      "is_boundary_vs_flicker",
+      0.2660457172500374
+    ],
+    [
+      "basins_2hop_vs_flicker",
+      0.0932513563000713
+    ]
+  ],
+  "heavy_flickerer_threshold": 10,
+  "n_heavy": 100,
+  "n_total": 140,
+  "top_10_flickerers": [
+    {
+      "id": 90,
+      "label": "christine hayes",
+      "transitions": 50,
+      "degree": 70,
+      "betweenness": 0.05216,
+      "group": "spirit"
+    },
+    {
+      "id": 79,
+      "label": "par",
+      "transitions": 38,
+      "degree": 108,
+      "betweenness": 0.23628,
+      "group": "bridge"
+    },
+    {
+      "id": 87,
+      "label": "crystals",
+      "transitions": 32,
+      "degree": 7,
+      "betweenness": 2.2e-05,
+      "group": "bridge"
+    },
+    {
+      "id": 104,
+      "label": "church",
+      "transitions": 31,
+      "degree": 69,
+      "betweenness": 0.050387,
+      "group": "bridge"
+    },
+    {
+      "id": 52,
+      "label": "temple of",
+      "transitions": 30,
+      "degree": 7,
+      "betweenness": 7.6e-05,
+      "group": "spirit"
+    },
+    {
+      "id": 82,
+      "label": "johannine grove",
+      "transitions": 30,
+      "degree": 118,
+      "betweenness": 0.310471,
+      "group": "bridge"
+    },
+    {
+      "id": 89,
+      "label": "mystery school",
+      "transitions": 30,
+      "degree": 111,
+      "betweenness": 0.192821,
+      "group": "bridge"
+    },
+    {
+      "id": 38,
+      "label": "mystery",
+      "transitions": 27,
+      "degree": 7,
+      "betweenness": 4e-06,
+      "group": "bridge"
+    },
+    {
+      "id": 110,
+      "label": "forms",
+      "transitions": 27,
+      "degree": 7,
+      "betweenness": 0.000263,
+      "group": "bridge"
+    },
+    {
+      "id": 135,
+      "label": "moon",
+      "transitions": 27,
+      "degree": 7,
+      "betweenness": 0.000286,
+      "group": "bridge"
+    }
+  ],
+  "bottom_10_flickerers": [
+    {
+      "id": 45,
+      "label": "crystal skulls",
+      "transitions": 7,
+      "degree": 10,
+      "betweenness": 0.003358,
+      "group": "bridge"
+    },
+    {
+      "id": 56,
+      "label": "skulls",
+      "transitions": 7,
+      "degree": 10,
+      "betweenness": 0.003358,
+      "group": "bridge"
+    },
+    {
+      "id": 83,
+      "label": "rose",
+      "transitions": 7,
+      "degree": 8,
+      "betweenness": 7.6e-05,
+      "group": "bridge"
+    },
+    {
+      "id": 128,
+      "label": "stone",
+      "transitions": 7,
+      "degree": 10,
+      "betweenness": 0.009719,
+      "group": "bridge"
+    },
+    {
+      "id": 129,
+      "label": "dweller crystal",
+      "transitions": 7,
+      "degree": 17,
+      "betweenness": 0.018213,
+      "group": "bridge"
+    },
+    {
+      "id": 119,
+      "label": "kyi",
+      "transitions": 6,
+      "degree": 7,
+      "betweenness": 0.000661,
+      "group": "bridge"
+    },
+    {
+      "id": 17,
+      "label": "star lineages",
+      "transitions": 5,
+      "degree": 10,
+      "betweenness": 0.000119,
+      "group": "bridge"
+    },
+    {
+      "id": 27,
+      "label": "activation rite",
+      "transitions": 3,
+      "degree": 11,
+      "betweenness": 0.016259,
+      "group": "bridge"
+    },
+    {
+      "id": 77,
+      "label": "temporal alchemy",
+      "transitions": 3,
+      "degree": 11,
+      "betweenness": 0.016259,
+      "group": "bridge"
+    },
+    {
+      "id": 81,
+      "label": "alchemy star",
+      "transitions": 3,
+      "degree": 11,
+      "betweenness": 0.016259,
+      "group": "bridge"
+    }
+  ]
+}

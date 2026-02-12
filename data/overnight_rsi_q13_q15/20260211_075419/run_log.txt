@@ -1,0 +1,45 @@
+[02:54:19] ======================================================================
+[02:54:19] SOL OVERNIGHT RSI — Q13-Q15 DEEP INVESTIGATION
+[02:54:19] ======================================================================
+[02:54:19] Budget: 0.1h (180s)
+[02:54:19] Output: G:\docs\TechmanStudios\sol\data\overnight_rsi_q13_q15\20260211_075419
+[02:54:19] Start:  2026-02-11T07:54:19.094848+00:00
+[02:54:19] 
+[02:54:19] Graph loaded: 140 nodes, 845 edges
+[02:54:19] 
+[02:54:19] ======================================================================
+[02:54:19] SUITE 1 — Q13: FLICKERING MECHANISM
+[02:54:19] ======================================================================
+[02:54:19] 
+  Probe 1A: Computing structural metrics for all 140 nodes...
+[02:54:19]     Centrality computation: 0.1s
+[02:54:19]   Probe 1A: Running d=5 flicker probes for all 140 nodes...
+[02:55:05]     [20/140] 45.8s, ~275s remaining
+[02:55:50]     [40/140] 91.8s, ~229s remaining
+[02:56:36]     [60/140] 137.7s, ~184s remaining
+[02:57:20]   ⚠ Budget exhausted during Q13 Probe 1A
+[02:57:20]   Probe 1A: Computing correlations...
+[02:57:20]   Probe 1A: Best predictor of flickering: eigenvector_vs_flicker (r=0.5405)
+[02:57:20]     eigenvector_vs_flicker: r = 0.5405
+[02:57:20]     degree_vs_flicker: r = 0.3946
+[02:57:20]     betweenness_vs_flicker: r = 0.3275
+[02:57:20]     clustering_vs_flicker: r = -0.1336
+[02:57:20]   Saved q13_structural_census.json (21.6 KB)
+[02:57:20] 
+  Suite Q13 complete: 181.4s, 79 trials so far
+[02:57:20] 
+⚠ Budget exhausted before Suite 2: Q14: Hot Frozen Determinism
+[02:57:20] 
+======================================================================
+[02:57:20] GENERATING REPORT
+[02:57:20] ======================================================================
+[02:57:20]   Report saved: G:\docs\TechmanStudios\sol\data\overnight_rsi_q13_q15\20260211_075419\overnight_report.md
+[02:57:20] 
+[02:57:20] ======================================================================
+[02:57:20] OVERNIGHT RSI COMPLETE
+[02:57:20] ======================================================================
+[02:57:20] Total runtime: 181.4s (0.05h)
+[02:57:20] Total trials:  79
+[02:57:20] Budget used:   100.0%
+[02:57:20] Output:        G:\docs\TechmanStudios\sol\data\overnight_rsi_q13_q15\20260211_075419
+[02:57:20] End:           2026-02-11T07:57:20.507098+00:00

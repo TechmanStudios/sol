@@ -200,6 +200,140 @@ def _generate_proof_packet(session_id: str, hypothesis: dict,
 
 
 # ---------------------------------------------------------------------------
+# LLM-Enhanced Consolidation
+# ---------------------------------------------------------------------------
+
+def _llm_enhance_proof_packet(
+    pp_content: str,
+    hypothesis: dict,
+    run_bundle_md: str,
+    sanity: dict,
+    session_id: str,
+) -> str:
+    """
+    Use LLM to add richer mechanistic analysis to a proof packet.
+
+    If LLM is unavailable, returns the original content unchanged.
+    """
+    try:
+        _llm_dir = str(_THIS_DIR.parent / "sol-llm")
+        if _llm_dir not in sys.path:
+            sys.path.insert(0, _llm_dir)
+        from client import SolLLM
+        from prompts import PromptLibrary
+    except ImportError:
+        return pp_content
+
+    if not SolLLM.is_available():
+        return pp_content
+
+    try:
+        llm = SolLLM()
+
+        # Read existing domain packet for context
+        domain_summary = ""
+        domain_packet = _PROOF_PACKETS_DIR / "domains" / "phonon_faraday.md"
+        if domain_packet.exists():
+            text = domain_packet.read_text(encoding="utf-8")
+            # Take first 2000 chars as summary
+            domain_summary = text[:2000]
+
+        # Build session findings from the hypothesis + sanity
+        session_findings = [{
+            "hypothesis_id": hypothesis.get("id", ""),
+            "question": hypothesis.get("question", ""),
+            "knob": hypothesis.get("knob", ""),
+            "template": hypothesis.get("template", ""),
+            "sanity_passed": sanity.get("sanity_passed", False),
+            "anomalies": sanity.get("anomalies", []),
+            "run_bundle_excerpt": run_bundle_md[:3000],
+        }]
+
+        sys_prompt, user_prompt = PromptLibrary.consolidation(
+            session_findings=session_findings,
+            raw_proof_packets=[pp_content],
+            domain_packet_summary=domain_summary,
+        )
+        response = llm.complete_json(
+            user_prompt, system=sys_prompt, task="consolidation"
+        )
+        if not response.parsed:
+            return pp_content
+
+        enrichment = response.parsed
+
+        # Inject the LLM analysis section before the Promotion Checklist
+        analysis_lines = [
+            "",
+            "## LLM Analysis",
+            "",
+        ]
+
+        # New experiment sections from LLM
+        for sec in enrichment.get("new_experiment_sections", []):
+            analysis_lines.append(f"### {sec.get('title', 'Analysis')}")
+            analysis_lines.append("")
+            analysis_lines.append(sec.get("content", ""))
+            analysis_lines.append("")
+
+        # Claim updates
+        claim_updates = enrichment.get("claim_updates", [])
+        if claim_updates:
+            analysis_lines.append("### Claim Implications")
+            analysis_lines.append("")
+            for cu in claim_updates:
+                action = cu.get("action", "note")
+                claim_id = cu.get("claim_id", "new")
+                text = cu.get("text", "")
+                analysis_lines.append(f"- **[{action.upper()}]** {claim_id}: {text}")
+            analysis_lines.append("")
+
+        # Question updates
+        q_updates = enrichment.get("question_updates", [])
+        if q_updates:
+            analysis_lines.append("### Open Question Updates")
+            analysis_lines.append("")
+            for qu in q_updates:
+                qn = qu.get("question_number", "?")
+                status = qu.get("status", "unknown")
+                evidence = qu.get("evidence", "")
+                analysis_lines.append(f"- **Q{qn}** [{status}]: {evidence}")
+            analysis_lines.append("")
+
+        # New open questions from LLM  --  written in the format
+        # that _count_open_questions() in rsi_engine.py parses:
+        #   ## Remaining Open Questions
+        #   1. Question text
+        new_questions = enrichment.get("new_questions", [])
+        if new_questions:
+            analysis_lines.append("## Remaining Open Questions")
+            analysis_lines.append("")
+            for idx, q in enumerate(new_questions, 1):
+                q_text = q if isinstance(q, str) else q.get("text", str(q))
+                analysis_lines.append(f"{idx}. {q_text}")
+            analysis_lines.append("")
+
+        analysis_block = "\n".join(analysis_lines)
+
+        # Insert before "## Promotion Checklist"
+        insert_marker = "## Promotion Checklist"
+        if insert_marker in pp_content:
+            pp_content = pp_content.replace(
+                insert_marker,
+                analysis_block + "\n" + insert_marker,
+            )
+        else:
+            # Append at end
+            pp_content += "\n" + analysis_block
+
+        return pp_content
+
+    except Exception as e:
+        print(f"  [LLM WARN] Proof packet enhancement failed: {e}")
+        return pp_content
+
+
+# ---------------------------------------------------------------------------
 # Session Consolidation
 # ---------------------------------------------------------------------------
 
@@ -260,6 +394,11 @@ def consolidate_session(session_dir: Path) -> dict:
 
         # Generate candidate proof packet
         pp_content, pp_name = _generate_proof_packet(session_id, hyp, run_bundle_md, sanity)
+
+        # LLM-enhance the proof packet (additive — skips if unavailable)
+        pp_content = _llm_enhance_proof_packet(
+            pp_content, hyp, run_bundle_md, sanity, session_id
+        )
 
         pp_path = _PROOF_PACKETS_DIR / f"{pp_name}.md"
         _write_markdown(pp_path, pp_content)

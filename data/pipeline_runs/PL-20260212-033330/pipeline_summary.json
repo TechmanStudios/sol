@@ -1,0 +1,137 @@
+{
+  "run_id": "PL-20260212-033330",
+  "completed_at": "2026-02-12T03:44:49.886676+00:00",
+  "stages_passed": 4,
+  "stages_failed": 0,
+  "stages_skipped": 1,
+  "total_elapsed_sec": 679.25,
+  "core_immutability": "PASS",
+  "pipeline_verdict": "PASS",
+  "stages": {
+    "smoke": {
+      "stage": "smoke",
+      "status": "passed",
+      "started_at": "2026-02-12T03:33:30.624117+00:00",
+      "completed_at": "2026-02-12T03:33:30.665711+00:00",
+      "elapsed_sec": 0.04,
+      "output": {
+        "engine_ok": true,
+        "nodes": 140,
+        "mass": 49.67,
+        "entropy": 0.0279,
+        "maxRho": 48.86,
+        "core_sha256": "b9800d5313886818c7c1980829e1ca5da7d63d9e2218e36c020df80db19b06fb"
+      },
+      "error": null
+    },
+    "cortex": {
+      "stage": "cortex",
+      "status": "passed",
+      "started_at": "2026-02-12T03:33:30.665711+00:00",
+      "completed_at": "2026-02-12T03:34:37.315654+00:00",
+      "elapsed_sec": 66.65,
+      "output": {
+        "session_id": "CX-20260212-033330",
+        "session_dir": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260212-033330",
+        "protocols_run": 5,
+        "total_steps": 17000,
+        "hypotheses": 5,
+        "gaps_addressed": [
+          "unpromoted:CL-1",
+          "unpromoted:CL-2",
+          "unpromoted:CL-4",
+          "unpromoted:CL-6",
+          "unpromoted:CL-3"
+        ],
+        "sanity_results": [
+          {
+            "hypothesis": "H-001",
+            "series": "h-001",
+            "sanity_passed": true,
+            "anomalies": []
+          },
+          {
+            "hypothesis": "H-002",
+            "series": "h-002",
+            "sanity_passed": true,
+            "anomalies": []
+          },
+          {
+            "hypothesis": "H-003",
+            "series": "h-003",
+            "sanity_passed": true,
+            "anomalies": []
+          },
+          {
+            "hypothesis": "H-004",
+            "series": "h-004",
+            "sanity_passed": true,
+            "anomalies": []
+          },
+          {
+            "hypothesis": "H-005",
+            "series": "h-005",
+            "sanity_passed": true,
+            "anomalies": []
+          }
+        ],
+        "dry_run": false
+      },
+      "error": null
+    },
+    "consolidate": {
+      "stage": "consolidate",
+      "status": "passed",
+      "started_at": "2026-02-12T03:34:37.316657+00:00",
+      "completed_at": "2026-02-12T03:41:46.901226+00:00",
+      "elapsed_sec": 429.58,
+      "output": {
+        "session_id": "CX-20260212-033330",
+        "consolidated_at": "2026-02-12T03:41:46.868196+00:00",
+        "protocols_run": 5,
+        "total_steps": 17000,
+        "hypotheses_processed": 5,
+        "proof_packets_generated": [
+          "PP-2026-02-12-cortex-CX-20260212-033330-h-001-damping",
+          "PP-2026-02-12-cortex-CX-20260212-033330-h-002-damping",
+          "PP-2026-02-12-cortex-CX-20260212-033330-h-003-None",
+          "PP-2026-02-12-cortex-CX-20260212-033330-h-004-None",
+          "PP-2026-02-12-cortex-CX-20260212-033330-h-005-None"
+        ],
+        "status": "consolidated"
+      },
+      "error": null
+    },
+    "hippocampus": {
+      "stage": "hippocampus",
+      "status": "passed",
+      "started_at": "2026-02-12T03:41:46.902227+00:00",
+      "completed_at": "2026-02-12T03:44:49.885674+00:00",
+      "elapsed_sec": 182.98,
+      "output": {
+        "dream_session_id": "DS-20260212-034146",
+        "sessions_replayed": 5,
+        "replays_run": 25,
+        "basins_discovered": 3,
+        "basins_reinforced": 0,
+        "basins_decayed": 9,
+        "memory_nodes": 10,
+        "memory_edges": 57,
+        "dry_run": false
+      },
+      "error": null
+    },
+    "evolve": {
+      "stage": "evolve",
+      "status": "skipped",
+      "started_at": "2026-02-12T03:44:49.885674+00:00",
+      "completed_at": "2026-02-12T03:44:49.885674+00:00",
+      "elapsed_sec": 0.0,
+      "output": {
+        "status": "skipped",
+        "reason": "no evolve candidates specified"
+      },
+      "error": null
+    }
+  }
+}

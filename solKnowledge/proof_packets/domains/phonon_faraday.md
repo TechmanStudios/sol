@@ -5,8 +5,8 @@
 **Engine version:** sol_engine.py (918 lines, SHA256: `5316e4fd...562eef`)  
 **Graph version:** default_graph.json (SHA256: `b9800d53...b06fb`)  
 **Immutability:** Both files UNMODIFIED throughout all experiments  
-**Total compute:** ~36,336 seconds (~606 minutes) across 72 experiment suites  
-**Total trials:** ~14,835 independent engine runs  
+**Total compute:** ~42,256 seconds (~704 minutes) across 432 experiment suites  
+**Total trials:** ~22,431 independent engine runs  
 **Total claims:** 78 (C1–C78)  
 
 ---
@@ -202,6 +202,7 @@ Four sub-experiments characterizing the energy landscape:
 5. **Half-adder generalization** — Does the 2-input combinational logic (A+B→grail, A-only→metatron) hold across damping regimes, or is it specific to d=0.2?
 6. ~~**[RESOLVED]**~~ SR-latch third state IS reproducible: 'simeon[98]' consistently appears on simultaneous input at 1 dampings *(4 SR-latch tests, 1 third-state events)*
 7. **Temporal injection sensitivity** — Different burst patterns (5×30, ramp, oscillating, single-shot) route to different basins at d=5.0. What is the minimum temporal difference that produces a distinct basin?
+   > **[PARTIAL]** Temporal sensitivity confirmed at 1 dampings (d=[5.0]). Minimum distinguishing cadence not yet quantified *(3 burst-pattern tests)*
    > **[PARTIAL]** Temporal sensitivity confirmed at 1 dampings (d=[5.0]). Minimum distinguishing cadence not yet quantified *(3 burst-pattern tests)*
    > **[PARTIAL]** Temporal sensitivity confirmed at 1 dampings (d=[5.0]). Minimum distinguishing cadence not yet quantified *(3 burst-pattern tests)*
    > **[PARTIAL]** Temporal sensitivity confirmed at 1 dampings (d=[5.0]). Minimum distinguishing cadence not yet quantified *(3 burst-pattern tests)*
@@ -593,6 +594,7 @@ The SOL lattice is a **single-frequency, phase-coupled, topology-routed informat
 
 1. ~~**[RESOLVED]**~~ R² ceiling is ~0.908 with current terms. Multivariate regression with psi_diff, delta_p², rho_sum, and w0 does not reach 0.99 — the 6% residual appears structural rather than correctable by linear terms *(9 damping×step configurations, max R²=0.908)*
 2. **Stable plateau (d = 7 to 75):** All 140 modes alive, coherence > 0.99, energy concentrates on injection nodes. The heartbeat acts as a bandpass filter.
+   > **[PARTIAL]** christic[22] has degree 8, spirit group, avg neighbor degree 58.5. In dead zone only 2-3/140 nodes route to it. The dead zone is not an energy deficit — w0 up to 1000 still routes to christic[22]. Cold and clock injection can override basin selection *(Structural analysis + w0 sweep + injection diversity probe)*
 3. ~~**[RESOLVED]**~~ Optimal clock: period=75, pulse_frac=0.05, avg_iton=0.718 at d=10.0. The ~2× heartbeat period (75 steps vs 35-step heartbeat) is the optimal resonance, not 3× as hypothesized *(72 period×pulse×damping configurations swept)*
 
 ### 9.3 The Dual Nature of the System
@@ -1173,9 +1175,9 @@ Per-edge measurement: predicted_flux = conductance × tension × delta_p vs actu
 | d=55.0 | R²=0.885 | R²=-0.007 | R²=-0.007 | R²=0.000 | R²=0.000 |
 
 **Key findings:**
-1. **In the active regime (d≤5.0, steps 50-200), R² = 0.93–0.94.** The linear conductance model explains 93–94% of flux variance. This is an exceptionally strong hardware validation — a switched-capacitor or OTA-based implementation would faithfully reproduce SOL dynamics.
+1. ~~**[RESOLVED]**~~ R² ceiling is ~0.908 with current terms. Multivariate regression with psi_diff, delta_p², rho_sum, and w0 does not reach 0.99 — the 6% residual appears structural rather than correctable by linear terms *(9 damping×step configurations, max R²=0.908)*
 2. **Early transients (step 10) show R² = 0.76–0.89. ~~**[RESOLVED]**~~ Stochastic injection addresses 26 distinct basins (3.3 bits at d=0.2). Diversity peaks at low damping and collapses at high damping *(50 random injection trials across 5 dampings)*
-4. **Negative R² values (d≥5.0, step≥200) indicate regime transition.** When energy is actively decaying to zero, the simple linear model fails because the damping-driven decay interacts nonlinearly with the conductance updates.
+4. ~~**[RESOLVED]**~~ NOT-chains preserve alternation through 6 stages. The cascade depth limit is architecture-dependent: injection pipelines immediately collapse, NOT-chain inversions are indefinitely faithful *(12 cascade tests)*
 5. **The full model (including tension) consistently outperforms the simple model (conductance × delta_p alone).** The tension parameter (surface tension=1.2, deep viscosity=0.8) captures real phase-dependent conductance variation.
 
 **Hardware implications:** At d≤5.0 during active transport, a linear conductance array (OTA or switched-cap) would reproduce 94% of SOL's dynamics. The remaining 6% comes from higher-order effects (psi coupling, conductance gamma, diode gain modulation) that would require additional analog circuitry or digital correction. This confirms that a mixed-signal hardware implementation is feasible with high fidelity.
@@ -1304,7 +1306,7 @@ Step-by-step sweep of gap=3→5, zooming into the first transition found in Prob
 > The temporal information channel has three independent axes:
 > 1. **Inter-pulse gap** — 8 basins from 19 gap values (Probe A)
 > 2. **Pulse count** — 7 basins from 11 counts, ΔN=1 resolution (Probe B)
-> 3. **Injection ordering** — 4 basins from 9 orderings (Probe D)
+> 3. ~~**[RESOLVED]**~~ Optimal clock: period=75, pulse_frac=0.05, avg_iton=0.718 at d=10.0. The ~2× heartbeat period (75 steps vs 35-step heartbeat) is the optimal resonance, not 3× as hypothesized *(72 period×pulse×damping configurations swept)*
 >
 > Combined, these temporal degrees of freedom provide at least log₂(8 × 7 × 4) = 7.8 bits of temporal addressing — far exceeding the ~4.9 bits of spatial injection diversity (C28).
 
@@ -1988,6 +1990,7 @@ The "standard attractor" is an artifact of the standard injection formula, not a
 | C102 | Energy-stable group mapping: 9/12 group×damping combinations maintain the same basin across 6× energy range (50→300). Topology of injection (which nodes) dominates over injection amplitude (how much energy) | 36 scaling trials |
 | C103 | 20-basin address space: 12 injection groups across 9 dampings access 20 unique basins, expanding the attractor address space from the standard injection's 3 basins (metatron, christic, numis'om) to 20 — a 2.7× increase in information capacity (2.6 bits → 4.3 bits) | 108 group×damping trials |
 | C104 | Cross-group novelty: 16/18 cross-group 50/50 mixtures shift basins, with 2 producing destinations (merkabah[48], christine hayes[90]) unreachable by either pure constituent. Cross-group mixing creates novel basins through constructive interference of pressure landscapes | 18 cross-mixture trials |
+| C105 | Multi-zone sweep: 4 damping zones map to 3 distinct basin families — the damping parameter creates a discrete address space of attractors, not a smooth gradient | 20 trials across 4 zones |
 
 *Claims proven: C97–C104 (Q12 — FINAL OPEN QUESTION — RESOLVED)*
 
@@ -2026,7 +2029,34 @@ The "standard attractor" is an artifact of the standard injection formula, not a
 *Total RSI-compiled claims: C23–C60 (38 claims from 3 compilation runs)*
 
 
-## 20. Remaining Open Questions
+
+## 20. RSI Auto-Compiled Results (2026-02-11)
+
+**Source:** Automated RSI claim compilation
+**Method:** Pattern-matched claim detection from experiment JSON outputs
+**Compilation date:** 2026-02-11
+
+### Claims Compiled
+
+- **C105:** Multi-zone sweep: 4 damping zones map to 3 distinct basin families — the damping parameter creates a discrete address space of attractors, not a smooth gradient
+
+### Open Question Updates
+
+- **Q1 [ANSWERED]:** R² ceiling is ~0.908 with current terms. Multivariate regression with psi_diff, delta_p², rho_sum, and w0 does not reach 0.99 — the 6% residual appears structural rather than correctable by linear terms
+- **Q2 [PARTIALLY ANSWERED]:** christic[22] has degree 8, spirit group, avg neighbor degree 58.5. In dead zone only 2-3/140 nodes route to it. The dead zone is not an energy deficit — w0 up to 1000 still routes to christic[22]. Cold and clock injection can override basin selection
+- **Q3 [ANSWERED]:** Optimal clock: period=75, pulse_frac=0.05, avg_iton=0.718 at d=10.0. The ~2× heartbeat period (75 steps vs 35-step heartbeat) is the optimal resonance, not 3× as hypothesized
+- **Q4 [ANSWERED]:** NOT-chains preserve alternation through 6 stages. The cascade depth limit is architecture-dependent: injection pipelines immediately collapse, NOT-chain inversions are indefinitely faithful
+- **Q6 [ANSWERED]:** SR-latch third state IS reproducible: 'simeon[98]' consistently appears on simultaneous input at 1 dampings
+- **Q7 [PARTIALLY ANSWERED]:** Temporal sensitivity confirmed at 1 dampings (d=[5.0]). Minimum distinguishing cadence not yet quantified
+- **Q8 [ANSWERED]:** Dream afterstate confirmed: basin shifts during rest phase at 5 dampings (d=[0.2, 1.0, 4.0, 10.0, 20.0]). Stable at 0 dampings
+- **Q11 [ANSWERED]:** Basin map is 66/66 complete (11 dampings × 6 w0 values). No unmapped pockets — the phase space is fully tiled
+- **Q10 [ANSWERED]:** No basin switch within ±1.0 damping at any of 7 test points (d=[0.2, 5.0, 10.0, 12.0, 15.0, 20.0, 25.0]). The stability radius exceeds 1.0 everywhere tested
+- **Q11 [ANSWERED]:** Basin map is 66/66 complete (11 dampings × 6 w0 values). No unmapped pockets — the phase space is fully tiled
+
+*Claims proven: C105*
+
+
+## 21. Remaining Open Questions
 
 All 12 open questions have been resolved.
 
@@ -2056,4 +2086,4 @@ All 12 open questions have been resolved.
 
 ---
 
-*Proof packet compiled from 33 experiment suites, ~15,606 independent engine runs, ~645 minutes of compute. 104 claims (C1–C104). All 12 open questions RESOLVED. All claims are reproducible from the listed scripts and immutable engine/graph files.*
+*Proof packet compiled from 34 experiment suites, ~23,202 independent engine runs, ~743 minutes of compute. 104 claims (C1–C104). All 12 open questions RESOLVED. All claims are reproducible from the listed scripts and immutable engine/graph files.*

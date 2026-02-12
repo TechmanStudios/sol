@@ -1,0 +1,144 @@
+{
+  "baseline": {
+    "5.0": {
+      "self_attract_pct": 32.5,
+      "n_probes": 40
+    },
+    "7.0": {
+      "self_attract_pct": 7.5,
+      "n_probes": 40
+    },
+    "10.0": {
+      "self_attract_pct": 0.0,
+      "n_probes": 40
+    }
+  },
+  "results": [
+    {
+      "injection": 10.0,
+      "damping": 5.0,
+      "self_attract_pct": 5.0,
+      "delta": -27.5
+    },
+    {
+      "injection": 10.0,
+      "damping": 7.0,
+      "self_attract_pct": 0.0,
+      "delta": -7.5
+    },
+    {
+      "injection": 10.0,
+      "damping": 10.0,
+      "self_attract_pct": 0.0,
+      "delta": 0.0
+    },
+    {
+      "injection": 25.0,
+      "damping": 5.0,
+      "self_attract_pct": 17.5,
+      "delta": -15.0
+    },
+    {
+      "injection": 25.0,
+      "damping": 7.0,
+      "self_attract_pct": 0.0,
+      "delta": -7.5
+    },
+    {
+      "injection": 25.0,
+      "damping": 10.0,
+      "self_attract_pct": 0.0,
+      "delta": 0.0
+    },
+    {
+      "injection": 50.0,
+      "damping": 5.0,
+      "self_attract_pct": 32.5,
+      "delta": 0.0
+    },
+    {
+      "injection": 50.0,
+      "damping": 7.0,
+      "self_attract_pct": 7.5,
+      "delta": 0.0
+    },
+    {
+      "injection": 50.0,
+      "damping": 10.0,
+      "self_attract_pct": 0.0,
+      "delta": 0.0
+    },
+    {
+      "injection": 100.0,
+      "damping": 5.0,
+      "self_attract_pct": 60.0,
+      "delta": 27.5
+    },
+    {
+      "injection": 100.0,
+      "damping": 7.0,
+      "self_attract_pct": 17.5,
+      "delta": 10.0
+    },
+    {
+      "injection": 100.0,
+      "damping": 10.0,
+      "self_attract_pct": 2.5,
+      "delta": 2.5
+    },
+    {
+      "injection": 200.0,
+      "damping": 5.0,
+      "self_attract_pct": 80.0,
+      "delta": 47.5
+    },
+    {
+      "injection": 200.0,
+      "damping": 7.0,
+      "self_attract_pct": 52.5,
+      "delta": 45.0
+    },
+    {
+      "injection": 200.0,
+      "damping": 10.0,
+      "self_attract_pct": 2.5,
+      "delta": 2.5
+    },
+    {
+      "injection": 500.0,
+      "damping": 5.0,
+      "self_attract_pct": 90.0,
+      "delta": 57.5
+    },
+    {
+      "injection": 500.0,
+      "damping": 7.0,
+      "self_attract_pct": 77.5,
+      "delta": 70.0
+    },
+    {
+      "injection": 500.0,
+      "damping": 10.0,
+      "self_attract_pct": 10.0,
+      "delta": 10.0
+    },
+    {
+      "injection": 1000.0,
+      "damping": 5.0,
+      "self_attract_pct": 95.0,
+      "delta": 62.5
+    },
+    {
+      "injection": 1000.0,
+      "damping": 7.0,
+      "self_attract_pct": 85.0,
+      "delta": 77.5
+    },
+    {
+      "injection": 1000.0,
+      "damping": 10.0,
+      "self_attract_pct": 22.5,
+      "delta": 22.5
+    }
+  ]
+}

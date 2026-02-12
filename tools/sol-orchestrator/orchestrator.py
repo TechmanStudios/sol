@@ -588,5 +588,19 @@ def main():
     sys.exit(0 if verdict == "PASS" else 1)
 
 
+# ---------------------------------------------------------------------------
+# Public API — used by sol-rsi execute_plan()
+# ---------------------------------------------------------------------------
+
+def run_pipeline(config: PipelineConfig | None = None) -> dict:
+    """Convenience function to run a full pipeline and return the summary.
+
+    This is the entry point used by the RSI engine's execution bridge
+    (``from orchestrator import PipelineConfig, run_pipeline``).
+    """
+    runner = PipelineRunner(config)
+    return runner.run()
+
+
 if __name__ == "__main__":
     main()

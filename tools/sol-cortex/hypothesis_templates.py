@@ -222,6 +222,7 @@ def select_template(gap: dict) -> str:
         "unpromoted": "threshold_scan",
         "weak_evidence": "replication",
         "unfalsified": "threshold_scan",
+        "open_question": "threshold_scan",
     }
     
     # Special cases based on metadata
@@ -235,14 +236,159 @@ def select_template(gap: dict) -> str:
     return mapping.get(gap_type, "parameter_sweep")
 
 
-def generate_hypothesis(gap: dict, hypothesis_id: str = "H-auto") -> Hypothesis:
-    """Generate a hypothesis from a gap using the best-matching template."""
-    template_name = select_template(gap)
+def generate_hypothesis(
+    gap: dict,
+    hypothesis_id: str = "H-auto",
+    prior_hypotheses: list[dict] | None = None,
+) -> Hypothesis:
+    """Generate a hypothesis from a gap using the best-matching template.
+
+    If the LLM is available, uses LLM-powered generation for richer,
+    more creative hypotheses grounded in existing knowledge.  Falls back
+    to static templates when the LLM is unavailable or fails.
+
+    Args:
+        gap: Knowledge gap dict.
+        hypothesis_id: ID to assign (e.g. "H-001").
+        prior_hypotheses: Previously generated hypotheses this session,
+            passed to the LLM to enforce diversity.
+    """
+    # Try LLM-augmented path first
+    llm_hyp = _try_llm_hypothesis(gap, hypothesis_id, prior_hypotheses)
+    if llm_hyp is not None:
+        return llm_hyp
+
+    # Fallback: static template — pick one that hasn't been used yet
+    template_name = _select_diverse_template(gap, prior_hypotheses)
     template_fn = TEMPLATES.get(template_name, {}).get("fn")
     if not template_fn:
         template_fn = TEMPLATES["parameter_sweep"]["fn"]
-    
+
     return template_fn(gap, id=hypothesis_id)
+
+
+def _select_diverse_template(gap: dict, prior_hypotheses: list[dict] | None = None) -> str:
+    """Select a template that hasn't been used yet this session."""
+    preferred = select_template(gap)
+    if not prior_hypotheses:
+        return preferred
+
+    used_templates = {h.get("template", "") for h in prior_hypotheses}
+    # If preferred template already used, rotate through alternatives
+    if preferred not in used_templates:
+        return preferred
+
+    all_templates = list(TEMPLATES.keys())
+    for t in all_templates:
+        if t not in used_templates:
+            return t
+    # All templates used — fall back to preferred
+    return preferred
+
+
+def _try_llm_hypothesis(
+    gap: dict,
+    hypothesis_id: str,
+    prior_hypotheses: list[dict] | None = None,
+) -> Hypothesis | None:
+    """Attempt LLM-powered hypothesis generation. Returns None on failure."""
+    try:
+        import sys
+        _llm_dir = str(Path(__file__).parent.parent / "sol-llm")
+        if _llm_dir not in sys.path:
+            sys.path.insert(0, _llm_dir)
+
+        from client import SolLLM
+        if not SolLLM.is_available():
+            return None
+
+        from prompts import PromptLibrary
+
+        # Assemble knowledge context from proof packets
+        knowledge_ctx = _gather_knowledge_context(gap)
+
+        # Get available template catalog for the LLM
+        template_catalog = list_templates()
+
+        system, user = PromptLibrary.hypothesis(
+            gap=gap,
+            knowledge_context=knowledge_ctx,
+            prior_hypotheses=prior_hypotheses or [],
+            available_templates=template_catalog,
+        )
+
+        llm = SolLLM(verbose=True)
+        response = llm.complete_json(user, system=system, task="hypothesis")
+
+        if not response.success or not response.parsed:
+            return None
+
+        data = response.parsed
+
+        # Convert LLM output to Hypothesis dataclass
+        return Hypothesis(
+            id=hypothesis_id,
+            template=f"llm_{select_template(gap)}",
+            question=data.get("question", "LLM-generated hypothesis"),
+            knob=data.get("knob"),
+            knob_values=data.get("knob_values", []),
+            injection=data.get("injection", {"label": "grail", "amount": 50}),
+            steps=data.get("steps", 200),
+            reps=data.get("reps", 3),
+            falsifiers=data.get("falsifiers", []),
+            notes=f"LLM-generated | Rationale: {data.get('rationale', 'N/A')[:200]}",
+            source_gap=gap,
+        )
+
+    except Exception:
+        # Any failure — silently fall back to template
+        return None
+
+
+def _gather_knowledge_context(gap: dict, max_chars: int = 3000) -> str:
+    """Pull relevant knowledge context for LLM hypothesis generation."""
+    from pathlib import Path
+
+    sol_root = Path(__file__).parent.parent.parent
+    pp_dir = sol_root / "solKnowledge" / "proof_packets"
+    domains_dir = pp_dir / "domains"
+
+    context_parts = []
+    claim_id = gap.get("claim_id", "")
+    desc_lower = gap.get("description", "").lower()
+
+    # Search both domains/ and root proof_packets/
+    search_dirs = []
+    if domains_dir.is_dir():
+        search_dirs.append(domains_dir)
+    if pp_dir.is_dir():
+        search_dirs.append(pp_dir)
+
+    for search_dir in search_dirs:
+        for packet in sorted(search_dir.glob("*.md")):
+            try:
+                text = packet.read_text(encoding="utf-8")
+                # If gap references a specific claim, find that section
+                if claim_id and claim_id in text:
+                    lines = text.split("\n")
+                    for i, line in enumerate(lines):
+                        if claim_id in line:
+                            start = max(0, i - 2)
+                            end = min(len(lines), i + 5)
+                            context_parts.append(
+                                f"[{packet.name}]\n"
+                                + "\n".join(lines[start:end])
+                            )
+                            break
+                # Also match on keywords from gap description
+                elif any(kw in text.lower() for kw in desc_lower.split()[:5] if len(kw) > 4):
+                    header = "\n".join(text.split("\n")[:15])
+                    context_parts.append(f"[{packet.name}]\n{header}")
+            except Exception:
+                pass
+
+    result = "\n---\n".join(context_parts)
+    return result[:max_chars]
 
 
 def list_templates() -> list[dict]:

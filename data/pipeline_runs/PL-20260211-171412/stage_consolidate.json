@@ -1,0 +1,23 @@
+{
+  "stage": "consolidate",
+  "status": "passed",
+  "started_at": "2026-02-11T17:18:06.333718+00:00",
+  "completed_at": "2026-02-11T17:18:06.503886+00:00",
+  "elapsed_sec": 0.17,
+  "output": {
+    "session_id": "CX-20260211-171412",
+    "consolidated_at": "2026-02-11T17:18:06.434317+00:00",
+    "protocols_run": 5,
+    "total_steps": 60000,
+    "hypotheses_processed": 5,
+    "proof_packets_generated": [
+      "PP-2026-02-11-cortex-CX-20260211-171412-h-001-damping",
+      "PP-2026-02-11-cortex-CX-20260211-171412-h-002-damping",
+      "PP-2026-02-11-cortex-CX-20260211-171412-h-003-damping",
+      "PP-2026-02-11-cortex-CX-20260211-171412-h-004-damping",
+      "PP-2026-02-11-cortex-CX-20260211-171412-h-005-damping"
+    ],
+    "status": "consolidated"
+  },
+  "error": null
+}

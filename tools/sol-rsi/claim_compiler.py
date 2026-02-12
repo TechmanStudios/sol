@@ -1233,6 +1233,164 @@ def run_detectors(data: dict, source: str) -> list[PendingClaim]:
 
 
 # ---------------------------------------------------------------------------
+# LLM-Augmented Claim Extraction
+# ---------------------------------------------------------------------------
+
+def _llm_interpret_and_draft(
+    data: dict,
+    source: str,
+    detector_claims: list[PendingClaim],
+    existing_claims_summary: str = "",
+) -> list[PendingClaim]:
+    """
+    Use LLM to interpret experiment results and draft additional claims
+    beyond what the hard-coded pattern detectors found.
+
+    This is purely ADDITIVE — if the LLM is unavailable or errors, the
+    existing detector claims are returned unchanged.
+
+    Args:
+        data: Parsed experiment JSON
+        source: Source filename
+        detector_claims: Claims already found by run_detectors()
+        existing_claims_summary: Text summary of current claim table
+
+    Returns:
+        List of additional PendingClaim objects (LLM-generated only)
+    """
+    try:
+        import sys
+        _llm_dir = str(_THIS_DIR.parent / "sol-llm")
+        if _llm_dir not in sys.path:
+            sys.path.insert(0, _llm_dir)
+        from client import SolLLM
+        from prompts import PromptLibrary
+    except ImportError:
+        return []  # sol-llm not installed — degrade silently
+
+    if not SolLLM.is_available():
+        return []  # No API key — degrade silently
+
+    # Prepare knowledge context: summarize what detectors already found
+    detector_summary = ""
+    if detector_claims:
+        lines = [f"- [{c.pattern}] {c.text}" for c in detector_claims[:10]]
+        detector_summary = (
+            "The following claims were already extracted by pattern detectors:\n"
+            + "\n".join(lines)
+        )
+
+    # --- Step 1: Interpret the experiment results ---
+    try:
+        llm = SolLLM()
+
+        # Build hypothesis context from experiment data if available
+        hypothesis = None
+        if data.get("hypothesis"):
+            hypothesis = data["hypothesis"]
+        elif data.get("question"):
+            hypothesis = {"question": data["question"]}
+
+        sys_prompt, user_prompt = PromptLibrary.interpretation(
+            experiment_data=data,
+            hypothesis=hypothesis,
+            knowledge_context=detector_summary,
+        )
+        interp_response = llm.complete_json(
+            user_prompt, system=sys_prompt, task="interpretation"
+        )
+        if not interp_response.parsed:
+            return []
+        interpretation = interp_response.parsed
+
+    except Exception:
+        return []  # Interpretation failed — fall back to detectors only
+
+    # --- Step 2: Draft formal claims from the interpretation ---
+    try:
+        sys_prompt, user_prompt = PromptLibrary.claim_draft(
+            interpretation=interpretation,
+            experiment_source=source,
+            existing_claims=existing_claims_summary,
+            trial_count=data.get("trials", 0),
+        )
+        draft_response = llm.complete_json(
+            user_prompt, system=sys_prompt, task="claim_draft"
+        )
+        if not draft_response.parsed:
+            return []
+        draft = draft_response.parsed
+
+    except Exception:
+        return []  # Drafting failed — fall back to detectors only
+
+    # --- Step 3: Convert LLM draft claims to PendingClaim objects ---
+    llm_claims: list[PendingClaim] = []
+    raw_claims = draft.get("claims", [])
+    if not isinstance(raw_claims, list):
+        return []
+
+    for rc in raw_claims:
+        if not isinstance(rc, dict):
+            continue
+        claim_text = rc.get("claim_text", "").strip()
+        if not claim_text:
+            continue
+
+        # Skip low-confidence LLM claims
+        confidence = float(rc.get("confidence", 0))
+        if confidence < 0.5:
+            continue
+
+        pattern = rc.get("pattern", "LLM_INTERPRETED")
+        if pattern == "NOVEL":
+            pattern = "LLM_INTERPRETED"
+
+        llm_claims.append(PendingClaim(
+            claim_id="",
+            text=claim_text,
+            evidence=rc.get("evidence", "LLM-interpreted"),
+            source_file=source,
+            pattern=pattern,
+            confidence=confidence,
+            trials=data.get("trials", 0),
+            details={
+                "llm_generated": True,
+                "llm_pattern": rc.get("pattern", ""),
+                "parameters": rc.get("parameters", {}),
+                "interpretation_summary": interpretation.get("summary", ""),
+            },
+        ))
+
+    return llm_claims
+
+
+def _get_existing_claims_summary() -> str:
+    """Read the current claim table from the domain packet for dedup context."""
+    packet = _get_domain_packet()
+    if not packet.exists():
+        return ""
+    try:
+        text = packet.read_text(encoding="utf-8")
+        # Extract claim table rows
+        lines = []
+        in_table = False
+        for line in text.split("\n"):
+            if re.match(r'^\|\s*ID\s*\|', line):
+                in_table = True
+                lines.append(line)
+                continue
+            if in_table:
+                if line.strip().startswith("|"):
+                    lines.append(line)
+                else:
+                    break
+        return "\n".join(lines[-30:]) if lines else ""  # Last 30 rows max
+    except Exception:
+        return ""
+
+
+# ---------------------------------------------------------------------------
 # 3. Open Question Resolver
 # ---------------------------------------------------------------------------
 
@@ -2174,6 +2332,18 @@ def compile_results(
             found_claims = run_detectors(data, fpath.name)
             all_claims.extend(found_claims)
 
+            # LLM-augmented claim extraction (additive — skipped if unavailable)
+            if not hasattr(compile_results, "_llm_claims_summary"):
+                compile_results._llm_claims_summary = _get_existing_claims_summary()
+            llm_extra = _llm_interpret_and_draft(
+                data, fpath.name, found_claims,
+                existing_claims_summary=compile_results._llm_claims_summary,
+            )
+            if llm_extra:
+                all_claims.extend(llm_extra)
+                if verbose:
+                    print(f"    [LLM] +{len(llm_extra)} additional claims from LLM interpretation")
+
             # Mark as compiled only if we're actually updating
             if update_proof_packet_flag:
                 mark_compiled(fkey, len(found_claims), trials)
@@ -2192,6 +2362,10 @@ def compile_results(
 
     result.total_trials_added = total_trials
     result.compute_seconds_added = total_seconds
+
+    # Clean up LLM summary cache
+    if hasattr(compile_results, "_llm_claims_summary"):
+        del compile_results._llm_claims_summary
 
     # Check open questions
     result.question_updates = check_open_questions(suite_results)
@@ -2314,6 +2488,10 @@ def _deduplicate_claims(claims: list[PendingClaim]) -> list[PendingClaim]:
             key_parts.append(f"nw0={details['n_w0']}")
         if "bits" in details:
             key_parts.append(f"bits={details['bits']}")
+        # LLM-generated claim dedup — use the claim text hash
+        if details.get("llm_generated"):
+            # Use first 60 chars of claim text as key (LLM claims are unique by text)
+            key_parts.append(f"llm_text={claim.text[:60]}")
 
         key = "|".join(key_parts)
         if key not in seen:
