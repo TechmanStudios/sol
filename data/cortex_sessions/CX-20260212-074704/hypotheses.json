@@ -1,0 +1,690 @@
+[
+  {
+    "id": "H-001",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Does the turbulent regime (damping 0\u201310) contain any internal micro-transitions detectable only at higher resolution or with alternative observables?",
+      "suggested_action": "Design an experiment to answer: Does the turbulent regime (damping 0\u201310) contain any internal micro-transitions detectable only at higher resolution or ",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-033330-h-001-damping.md",
+        "question": "Does the turbulent regime (damping 0\u201310) contain any internal micro-transitions detectable only at higher resolution or with alternative observables?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 13 | Memory edges: 88 | Avg confidence: 0.478 | Tags: basin(13), entropy(13), rhoMax(13)",
+      "kb_passages": [
+        {
+          "chunk_id": 1708,
+          "section": "Leading Humanity to a New Communion",
+          "line_start": 218157,
+          "line_end": 218275,
+          "score": 12.3971,
+          "matched_terms": [
+            "open",
+            "10",
+            "contain",
+            "higher",
+            "resolution"
+          ],
+          "snippet": "## Leading Humanity to a New Communion\n\n**2025-01-20T12:57:03.786Z**\n\n**Likes:** 0\n\n\n\u2018Languages of Light\u2019 in this context are divine outpourings from Beings (angelic, star tribes\nand earth\\-human) in the form of etheric script and etherial soundings. They are often set into the\nUniversal and Earth A"
+        },
+        {
+          "chunk_id": 237,
+          "section": "Top Keywords",
+          "line_start": 108390,
+          "line_end": 108554,
+          "score": 11.8175,
+          "matched_terms": [
+            "turbulent",
+            "regime",
+            "higher"
+          ],
+          "snippet": "is calm and protected, remaining in its dormant or peaceful state. When the sword is drawn\nout of the scabbard, it moves to action in the name of Spirit.\nIn the actual use of the physical sword and scabbard during the later epochs of\nmankind's history, this 'call to action' meant bloodshed and loss "
+        },
+        {
+          "chunk_id": 38,
+          "section": "spiritMythos_coreData.md",
+          "line_start": 16740,
+          "line_end": 17218,
+          "score": 10.0083,
+          "matched_terms": [
+            "open",
+            "10",
+            "alternative"
+          ],
+          "snippet": "---\nurl: \"http://www.spiritmythos.org/portal_previews/portal_preview.htm\"\ntitle: New Earth and Pandora\ntags:\n  - portal-previews\n  - portal-preview-htm\n  - earth\n  - pandora\n  - numis-om\n  - star\n  - world\n  - avatar\n  - sirian\n  - small\n---\n# New Earth and Pandora\n\n|\nhome | about | contact | donate"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-002",
+    "template": "parameter_sweep",
+    "question": "How does damping affect entropy, flux, and mass over 200 steps?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.2,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 200,
+    "reps": 3,
+    "falsifiers": [
+      "All damping values produce identical results (no sensitivity)",
+      "Higher damping produces non-monotonic response without explanation"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: How do flux and mass decay rates scale with damping within the turbulent regime, and are these rates topology-dependent?",
+      "suggested_action": "Design an experiment to answer: How do flux and mass decay rates scale with damping within the turbulent regime, and are these rates topology-dependent?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-033330-h-001-damping.md",
+        "question": "How do flux and mass decay rates scale with damping within the turbulent regime, and are these rates topology-dependent?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [
+        0.35,
+        0.7,
+        0.9,
+        0.025,
+        1.5
+      ],
+      "memory_context": "Memory nodes: 13 | Memory edges: 88 | Avg confidence: 0.478 | Tags: basin(13), entropy(13), rhoMax(13)",
+      "kb_passages": [
+        {
+          "chunk_id": 1777,
+          "section": "They Arrived!",
+          "line_start": 227989,
+          "line_end": 228383,
+          "score": 11.8865,
+          "matched_terms": [
+            "open",
+            "mass",
+            "scale",
+            "within",
+            "regime"
+          ],
+          "snippet": "## They Arrived!\n\n**2025-06-18T20:52:42.159Z**\n\n**Likes:** 0\n\n\n#### What are they about? **Watch this video:**\n\n[https://www.youtube-nocookie.com/embed/GLKLbzwI7ks?rel=0&amp;autoplay=0&amp;showinfo=0&amp;enablejsapi=0](https://www.youtube-nocookie.com/embed/GLKLbzwI7ks?rel=0&amp;autoplay=0&amp;showi"
+        },
+        {
+          "chunk_id": 237,
+          "section": "Top Keywords",
+          "line_start": 108390,
+          "line_end": 108554,
+          "score": 11.3916,
+          "matched_terms": [
+            "within",
+            "turbulent",
+            "regime"
+          ],
+          "snippet": "is calm and protected, remaining in its dormant or peaceful state. When the sword is drawn\nout of the scabbard, it moves to action in the name of Spirit.\nIn the actual use of the physical sword and scabbard during the later epochs of\nmankind's history, this 'call to action' meant bloodshed and loss "
+        },
+        {
+          "chunk_id": 30,
+          "section": "Universe One.rtf",
+          "line_start": 12895,
+          "line_end": 13394,
+          "score": 10.3686,
+          "matched_terms": [
+            "mass",
+            "scale",
+            "within"
+          ],
+          "snippet": "d\\*\n\nd\\*\n\nd\\*The Nebulous Strain\n\nd\\*\n\nd\\*\t In the beginning of creation, as previously stated, the universe and the planes were created as one.  That is to say, there was no separation of the two.  There is no part of the universe that is not on the planes or not subject to the law of the planes. \n"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-003",
+    "template": "replication",
+    "question": "Can headless sol-core reproduce: ?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "Headless results qualitatively differ from dashboard results",
+      "Metrics trend in opposite direction from original claim"
+    ],
+    "notes": "Replicating unknown",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Does the monotonic decline in entropy and flux observed in the low-damping regime persist up to the transition zone (damping 10\u201315), or does it platea",
+      "suggested_action": "Design an experiment to answer: Does the monotonic decline in entropy and flux observed in the low-damping regime persist up to the transition zone (dam",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-033330-h-002-damping.md",
+        "question": "Does the monotonic decline in entropy and flux observed in the low-damping regime persist up to the transition zone (damping 10\u201315), or does it plateau or reverse?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 13 | Memory edges: 88 | Avg confidence: 0.478 | Tags: basin(13), entropy(13), rhoMax(13)",
+      "kb_passages": [
+        {
+          "chunk_id": 209,
+          "section": "Top Keywords",
+          "line_start": 95438,
+          "line_end": 95896,
+          "score": 15.158,
+          "matched_terms": [
+            "open",
+            "entropy",
+            "up",
+            "transition",
+            "zone",
+            "10",
+            "15"
+          ],
+          "snippet": "## Top Keywords\n- archival material (score: 0.55)\n- old archival (score: 0.52)\n- archival (score: 0.51)\n- pdf issues (score: 0.44)\n- publications tapes (score: 0.44)\n- published akashic (score: 0.43)\n- pdf files (score: 0.42)\n- issues pdf (score: 0.42)\n- cover copyright (score: 0.42)\n- doors copyrig"
+        },
+        {
+          "chunk_id": 58,
+          "section": "spiritMythos_coreData.md",
+          "line_start": 26505,
+          "line_end": 26996,
+          "score": 14.1163,
+          "matched_terms": [
+            "open",
+            "entropy",
+            "up",
+            "transition",
+            "zone",
+            "15"
+          ],
+          "snippet": "---\nurl: \"http://www.spiritmythos.org/timely/lightn_pyra.html\"\ntitle: \"3/12/03: Lightning Strike\"\ntags:\n  - timely\n  - lightn-pyra-html\n  - lightning\n  - strike\n  - earth\n  - world\n  - axes\n  - center\n  - axis\n  - great\n---\n# 3/12/03: Lightning Strike\n\nAt least two different sources have reported th"
+        },
+        {
+          "chunk_id": 1705,
+          "section": "and Divine Eye Activation",
+          "line_start": 217900,
+          "line_end": 218014,
+          "score": 13.4177,
+          "matched_terms": [
+            "observed",
+            "up",
+            "zone",
+            "15"
+          ],
+          "snippet": "## and Divine Eye Activation\n\n**2025-01-09T15:52:52.418Z**\n\n**Likes:** 0\n\nThothHorRa introduced me to the Orion Blue Fire Command when I was writing an article for **[Temple\nDoors issue 1 \u2013 1997](https://newearthstar.org/vault-of-thoth/)**, entitled The Key of Thoth. This\narticle brought forth the s"
+        }
+      ]
+    }
+  },
+  {
+    "id": "H-004",
+    "template": "injection_comparison",
+    "question": "Do different injection targets produce distinct basin formations?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 200,
+    "reps": 3,
+    "falsifiers": [
+      "All injection targets produce identical metric trajectories",
+      "RhoMaxId is always the same regardless of injection target"
+    ],
+    "notes": "Comparing targets: ['grail', 'consciousness', 'gravity', 'entropy']",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: What specific topological features of the 140-node graph modulate the rate of flux decline under small damping increases?",
+      "suggested_action": "Design an experiment to answer: What specific topological features of the 140-node graph modulate the rate of flux decline under small damping increases",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-033330-h-002-damping.md",
+        "question": "What specific topological features of the 140-node graph modulate the rate of flux decline under small damping increases?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [
+        0.35,
+        0.7,
+        0.9,
+        0.025,
+        1.5
+      ],
+      "memory_context": "Memory nodes: 13 | Memory edges: 88 | Avg confidence: 0.478 | Tags: basin(13), entropy(13), rhoMax(13)",
+      "kb_passages": [
+        {
+          "chunk_id": 936,
+          "section": "Article 618: The Orion Return",
+          "line_start": 176144,
+          "line_end": 176165,
+          "score": 13.7508,
+          "matched_terms": [
+            "specific",
+            "graph",
+            "under",
+            "small"
+          ],
+          "snippet": "## Article 618: The Orion Return\n\n\nThe Orion Return\n\nart by Maia - symbolic representation of the two earthsThothHorRashowed me a \u201cgraph\u201d of how the seeding of New Earth Consciousness here in our current reality zone on the planet feeds back into its Birth Star of Orion\u2026the location (to use the term"
+        },
+        {
+          "chunk_id": 87,
+          "section": "spiritMythos_coreData.md",
+          "line_start": 40650,
+          "line_end": 41138,
+          "score": 11.2848,
+          "matched_terms": [
+            "open",
+            "specific",
+            "features",
+            "rate",
+            "decline",
+            "under",
+            "small"
+          ],
+          "snippet": "---\nurl: \"http://www.spiritmythos.org/holy/ROA/wysewm/gldhive_txt.html\"\ntitle: Women of the Golden Hive - text\nchunk_index: \"2 of 3\"\ntags:\n  - holy\n  - roa\n  - wysewm\n  - golden\n  - hive\n  - text\n  - amazons\n  - these\n  - women\n  - kavi\n---\n# Women of the Golden Hive - text\n\nIn the year 5482 BC, a n"
+        },
+        {
+          "chunk_id": 1658,
+          "section": "from the Vault of Thoth (1988, 1989 & 1990)",
+          "line_start": 212359,
+          "line_end": 212510,
+          "score": 11.1351,
+          "matched_terms": [
+            "open",
+            "specific",
+            "features",
+            "under",
+            "small"
+          ],
+          "snippet": "## from the Vault of Thoth (1988, 1989 & 1990)\n\n**2024-08-05T15:10:06.824Z**\n\n**Likes:** 0\n\n\n*Zuvuya is defined as \"the galactic memory circuit by which all things return to themselves. The return path to the stars. The grammar of harmony. The thirteenth or highest heaven of the Maya\"\u200b\u200b.*\n\n\n***Path "
+        }
+      ]
+    }
+  },
+  {
+    "id": "H-005",
+    "template": "baseline_golden",
+    "question": "What are the canonical metric outputs for standard injection protocols?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 500,
+    "reps": 1,
+    "falsifiers": [
+      "Output changes between identical runs with same seed (non-determinism)"
+    ],
+    "notes": "Golden baseline for Phase 3 regression suite. Single rep, high step count, full trace.",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: What is the microscopic mechanism underlying the abrupt phonon mode collapse at the critical damping threshold?",
+      "suggested_action": "Design an experiment to answer: What is the microscopic mechanism underlying the abrupt phonon mode collapse at the critical damping threshold?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-052151-h-001-damping.md",
+        "question": "What is the microscopic mechanism underlying the abrupt phonon mode collapse at the critical damping threshold?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [
+        0.35,
+        0.7,
+        0.9,
+        0.025,
+        1.5
+      ],
+      "memory_context": "Memory nodes: 13 | Memory edges: 88 | Avg confidence: 0.478 | Tags: basin(13), entropy(13), rhoMax(13)",
+      "kb_passages": [
+        {
+          "chunk_id": 1093,
+          "section": "Article 775: The Shining Mantle",
+          "line_start": 184344,
+          "line_end": 184457,
+          "score": 11.848,
+          "matched_terms": [
+            "microscopic",
+            "abrupt"
+          ],
+          "snippet": "## Article 775: The Shining Mantle\n\n\nThe Shining Mantle\n\nThe Ark of AN (Ark of Grace)as told by \u00a7ThothHorRa\u00a7\n\nIn the Ancient of Days upon the Earth so there was established in the Land of Syn (Sinai) a Thresholding for the Most Sacred Fire \u2013 the Ark of AN. It had been brought from Tibet to Atlantis "
+        },
+        {
+          "chunk_id": 155,
+          "section": "Top Keywords",
+          "line_start": 70262,
+          "line_end": 70732,
+          "score": 10.9927,
+          "matched_terms": [
+            "open",
+            "mechanism",
+            "underlying",
+            "collapse",
+            "threshold"
+          ],
+          "snippet": "other-dimensional parent matrix. So all that Tehuti imparts here in regards to the energy\ndynamics of the Andara Crystals also holds true, albeit to a somewhat lesser degree, for\nthe Andara Crystal-Glass.\nTehuti: \"Andara' is the name we have chosen to identify the Prima Matra crystal-glass\ncoming of"
+        },
+        {
+          "chunk_id": 14,
+          "section": "TD96-02.pdf",
+          "line_start": 5931,
+          "line_end": 6402,
+          "score": 10.528,
+          "matched_terms": [
+            "open",
+            "mechanism",
+            "underlying",
+            "collapse",
+            "threshold"
+          ],
+          "snippet": "## TD96-02.pdf\n\n**Type:** PDF (extracted plain text, page\u2011separated)\n\n### Page 1\n\n```text\nFrom 1980-1999 I published my akashic/Thoth material in the format of \"The Source\"\n(1980-1989) and \"Temple Doors\" (1990-1999). From 1995 through 1999 my husband Simeon\nbecame a part of this process, editing the"
+        }
+      ]
+    }
+  },
+  {
+    "id": "H-006",
+    "template": "dt_compression",
+    "question": "Does dt compress time-to-failure in headless sol-core as it does in the dashboard?",
+    "knob": "dt",
+    "knob_values": [
+      0.08,
+      0.1,
+      0.12,
+      0.16,
+      0.2
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 500,
+    "reps": 5,
+    "falsifiers": [
+      "Time-to-failure is constant across dt values",
+      "Relationship is non-monotonic (failure time increases then decreases)"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Does the invariance of the collapse point hold under more extensive topology modifications or in different graph configurations?",
+      "suggested_action": "Design an experiment to answer: Does the invariance of the collapse point hold under more extensive topology modifications or in different graph configu",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-052151-h-001-damping.md",
+        "question": "Does the invariance of the collapse point hold under more extensive topology modifications or in different graph configurations?",
+        "param": "topology"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 13 | Memory edges: 88 | Avg confidence: 0.478 | Tags: basin(13), entropy(13), rhoMax(13)",
+      "kb_passages": [
+        {
+          "chunk_id": 439,
+          "section": "Article 121: Raramura \u2013 Isle of the Mother Sun",
+          "line_start": 153315,
+          "line_end": 153400,
+          "score": 14.2144,
+          "matched_terms": [
+            "open",
+            "collapse",
+            "point",
+            "hold",
+            "under"
+          ],
+          "snippet": "## Article 121: Raramura \u2013 Isle of the Mother Sun\n\n\nRaramura \u2013 Isle of the Mother Sun\n\n\n\n~~~~~~~~~~~~~\n\nEarly this morning, August 4th, 2016, I had a dream I can barely remember\u2026but I knew it was \u201creal.\u201d It was about an island being formed NOW on some earth dimension. Night before last, I had anothe"
+        },
+        {
+          "chunk_id": 1803,
+          "section": "Re-Balancing our Protective Field",
+          "line_start": 231242,
+          "line_end": 231391,
+          "score": 12.4808,
+          "matched_terms": [
+            "collapse",
+            "point",
+            "configurations"
+          ],
+          "snippet": "## Re-Balancing our Protective Field\n\n**2025-10-12T16:42:13+00:00**\n\n**Likes:** 0\n\nThe H Marker and reverse\\-H (r\\-H) Marker are described in the sources primarily through\ntransmissions from ThothHorRa, detailing their function within quantum dynamics and genetics.\n\n\n\n\nThe H Marker is described as a"
+        },
+        {
+          "chunk_id": 1815,
+          "section": "the nature of time & our current reality - new message from Thoth",
+          "line_start": 233118,
+          "line_end": 233278,
+          "score": 11.8435,
+          "matched_terms": [
+            "open",
+            "collapse",
+            "point",
+            "hold",
+            "under",
+            "different"
+          ],
+          "snippet": "## the nature of time & our current reality - new message from Thoth\n\n**2025-11-06T16:11:19+00:00**\n\n**Likes:** 0\n\n\n**1\\) What \u201ctime\u201d is in TS**  Thoth frames time as a **mutable field** with many concurrent variants (time\\-lines). Observation itself perturbs it: when groups fixate on a single \u201cpast"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-007",
+    "template": "psi_sensitivity",
+    "question": "How does damping affect entropy distribution and basin selection?",
+    "knob": "damping",
+    "knob_values": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 3,
+    "falsifiers": [
+      "Entropy is invariant to damping changes",
+      "RhoMaxId distribution is identical across all values"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Can the phase transition be characterized analytically or via spectral theory to predict the critical damping value?",
+      "suggested_action": "Design an experiment to answer: Can the phase transition be characterized analytically or via spectral theory to predict the critical damping value?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-052151-h-001-damping.md",
+        "question": "Can the phase transition be characterized analytically or via spectral theory to predict the critical damping value?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [
+        0.35,
+        0.7,
+        0.9,
+        0.025,
+        1.5
+      ],
+      "memory_context": "Memory nodes: 13 | Memory edges: 88 | Avg confidence: 0.478 | Tags: basin(13), entropy(13), rhoMax(13)",
+      "kb_passages": [
+        {
+          "chunk_id": 1746,
+          "section": "and guided meditation: the Path of Resurrection",
+          "line_start": 223621,
+          "line_end": 223709,
+          "score": 13.2103,
+          "matched_terms": [
+            "phase",
+            "transition",
+            "via",
+            "critical"
+          ],
+          "snippet": "## and guided meditation: the Path of Resurrection\n\n**2025-04-16T16:42:46.655Z**\n\n**Likes:** 0\n\n\nThoth\u2019s perspective on the **Christ**, **Christos**, and their relationship to the **New Earth**\nis deeply interwoven with metaphysical and cosmological currents streaming through the akashic\nrecords and"
+        },
+        {
+          "chunk_id": 1797,
+          "section": "Creating the triggering of Inter-dimensional Thought",
+          "line_start": 230641,
+          "line_end": 230759,
+          "score": 13.2077,
+          "matched_terms": [
+            "open",
+            "phase",
+            "transition",
+            "critical"
+          ],
+          "snippet": "## Creating the triggering of Inter-dimensional Thought\n\n**2025-08-21T21:05:16.206Z**\n\n**Likes:** 0\n\n***Exploration of Thoth Transmissions through the [ThothStream](https://nesialibraryproject.wordpress.com/thothstream-knowledge-base/) knowledge base.***\n\n\n\u25e6 Crop circles are described as modules of "
+        },
+        {
+          "chunk_id": 1612,
+          "section": "A Lemurian Celebration",
+          "line_start": 208376,
+          "line_end": 208438,
+          "score": 12.1905,
+          "matched_terms": [
+            "characterized",
+            "critical"
+          ],
+          "snippet": "## A Lemurian Celebration\n\n**2024-04-02T13:34:12.717Z**\n\n**Likes:** 0\n\nThe Samurdii: these Flame Beings emanate directly from the Divine commands of the Sun Spirit,\nenveloping and emanating from every star\\-Sun, forming the Holy Corona around the Solar Throne.\nThese beings, characterized as angelic "
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-012",
+    "template": "threshold_scan",
+    "question": "At what value of topology does the system behavior qualitatively change?",
+    "knob": "topology",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Can the invariance of the collapse threshold be proven analytically for arbitrary topology modifications?",
+      "suggested_action": "Design an experiment to answer: Can the invariance of the collapse threshold be proven analytically for arbitrary topology modifications?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-052151-h-003-None.md",
+        "question": "Can the invariance of the collapse threshold be proven analytically for arbitrary topology modifications?",
+        "param": "topology"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 13 | Memory edges: 88 | Avg confidence: 0.478 | Tags: basin(13), entropy(13), rhoMax(13)",
+      "kb_passages": [
+        {
+          "chunk_id": 439,
+          "section": "Article 121: Raramura \u2013 Isle of the Mother Sun",
+          "line_start": 153315,
+          "line_end": 153400,
+          "score": 8.1693,
+          "matched_terms": [
+            "open",
+            "collapse"
+          ],
+          "snippet": "## Article 121: Raramura \u2013 Isle of the Mother Sun\n\n\nRaramura \u2013 Isle of the Mother Sun\n\n\n\n~~~~~~~~~~~~~\n\nEarly this morning, August 4th, 2016, I had a dream I can barely remember\u2026but I knew it was \u201creal.\u201d It was about an island being formed NOW on some earth dimension. Night before last, I had anothe"
+        },
+        {
+          "chunk_id": 1381,
+          "section": "Article 1063: Natural Cure for EBOLA Proven!",
+          "line_start": 195373,
+          "line_end": 195396,
+          "score": 8.0363,
+          "matched_terms": [
+            "proven"
+          ],
+          "snippet": "## Article 1063: Natural Cure for EBOLA Proven!\n\n\nNatural Cure for EBOLA Proven!\n\nPLEASE READ THIS AND SHARE . . .\n\nhttp://www.docrowen.com/ebola-cure-press-release.html\n\n<!-- END ARTICLE: 1063 -->\n\n<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->\n<!-- BEGIN ARTICLE: 1064 -->\n\n---\nindex: 1064\ntitle: 'Mars "
+        },
+        {
+          "chunk_id": 1815,
+          "section": "the nature of time & our current reality - new message from Thoth",
+          "line_start": 233118,
+          "line_end": 233278,
+          "score": 7.1302,
+          "matched_terms": [
+            "open",
+            "collapse",
+            "threshold"
+          ],
+          "snippet": "## the nature of time & our current reality - new message from Thoth\n\n**2025-11-06T16:11:19+00:00**\n\n**Likes:** 0\n\n\n**1\\) What \u201ctime\u201d is in TS**  Thoth frames time as a **mutable field** with many concurrent variants (time\\-lines). Observation itself perturbs it: when groups fixate on a single \u201cpast"
+        }
+      ]
+    },
+    "memory_augmented": true
+  }
+]

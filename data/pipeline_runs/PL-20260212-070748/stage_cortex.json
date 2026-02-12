@@ -1,0 +1,80 @@
+{
+  "stage": "cortex",
+  "status": "passed",
+  "started_at": "2026-02-12T07:07:48.673415+00:00",
+  "completed_at": "2026-02-12T07:10:49.185400+00:00",
+  "elapsed_sec": 180.51,
+  "output": {
+    "session_id": "CX-20260212-070748",
+    "session_dir": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260212-070748",
+    "protocols_run": 8,
+    "total_steps": 46000,
+    "hypotheses": 8,
+    "gaps_addressed": [
+      "open_question:Open Q: Does the invariance of the colla",
+      "open_question:Open Q: How do these phase transitions i",
+      "open_question:Open Q: What specific physical or interf",
+      "open_question:Open Q: What specific topological featur",
+      "open_question:Open Q: How do flux and mass decay rates",
+      "open_question:Open Q: What is the microscopic mechanis",
+      "open_question:Open Q: Does the turbulent regime (dampi",
+      "open_question:Open Q: Does the monotonic decline in en",
+      "open_question:Open Q: What are the underlying nonlinea",
+      "open_question:Open Q: Can the phase transition be char",
+      "open_question:Open Q: Can the universal collapse thres",
+      "open_question:Open Q: Can the invariance of the collap"
+    ],
+    "sanity_results": [
+      {
+        "hypothesis": "H-001",
+        "series": "h-001",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-002",
+        "series": "h-002",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-003",
+        "series": "h-003",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-004",
+        "series": "h-004",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-005",
+        "series": "h-005",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-006",
+        "series": "h-006",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-007",
+        "series": "h-007",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-012",
+        "series": "h-012",
+        "sanity_passed": true,
+        "anomalies": []
+      }
+    ],
+    "dry_run": false
+  },
+  "error": null
+}

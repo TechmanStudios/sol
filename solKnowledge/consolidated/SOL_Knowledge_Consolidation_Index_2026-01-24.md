@@ -388,3 +388,129 @@ Additional proof packets were promoted by tying claim-ledger items to on-disk CS
   - Question: At what value of damping does the system behavior qualitatively change?
   - Claim: CL-4 | Sanity: PASS
   - Gap: CL-4 (Supported): Node 82 acts like a dominant ρ reservoir near failure/afterstates (rhoMaxId) — no proof packet found
+
+## Cortex Session: CX-20260212-070748 (consolidated 2026-02-12)
+
+- [PP-2026-02-12-cortex-CX-20260212-070748-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-070748-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does the turbulent regime (damping 0–10) contain any internal micro-transitions detectable only at higher resolution or with alternative observables?
+
+- [PP-2026-02-12-cortex-CX-20260212-070748-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-070748-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: How do flux and mass decay rates scale with damping within the turbulent regime, and are these rates topology-dependent?
+
+- [PP-2026-02-12-cortex-CX-20260212-070748-h-003-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-070748-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does the monotonic decline in entropy and flux observed in the low-damping regime persist up to the transition zone (damping 10–15), or does it platea
+
+- [PP-2026-02-12-cortex-CX-20260212-070748-h-004-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-070748-h-004-None.md)
+  - Question: Do different injection targets produce distinct basin formations?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: What specific topological features of the 140-node graph modulate the rate of flux decline under small damping increases?
+
+- [PP-2026-02-12-cortex-CX-20260212-070748-h-005-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-070748-h-005-None.md)
+  - Question: What are the canonical metric outputs for standard injection protocols?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: What is the microscopic mechanism underlying the abrupt phonon mode collapse at the critical damping threshold?
+
+- [PP-2026-02-12-cortex-CX-20260212-070748-h-006-dt.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-070748-h-006-dt.md)
+  - Question: Does dt compress time-to-failure in headless sol-core as it does in the dashboard?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does the invariance of the collapse point hold under more extensive topology modifications or in different graph configurations?
+
+- [PP-2026-02-12-cortex-CX-20260212-070748-h-007-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-070748-h-007-damping.md)
+  - Question: How does damping affect entropy distribution and basin selection?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Can the phase transition be characterized analytically or via spectral theory to predict the critical damping value?
+
+- [PP-2026-02-12-cortex-CX-20260212-070748-h-012-topology.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-070748-h-012-topology.md)
+  - Question: At what value of topology does the system behavior qualitatively change?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Can the invariance of the collapse threshold be proven analytically for arbitrary topology modifications?
+
+## Cortex Session: CX-20260212-074704 (consolidated 2026-02-12)
+
+- [PP-2026-02-12-cortex-CX-20260212-074704-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-074704-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does the turbulent regime (damping 0–10) contain any internal micro-transitions detectable only at higher resolution or with alternative observables?
+
+- [PP-2026-02-12-cortex-CX-20260212-074704-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-074704-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: How do flux and mass decay rates scale with damping within the turbulent regime, and are these rates topology-dependent?
+
+- [PP-2026-02-12-cortex-CX-20260212-074704-h-003-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-074704-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does the monotonic decline in entropy and flux observed in the low-damping regime persist up to the transition zone (damping 10–15), or does it platea
+
+- [PP-2026-02-12-cortex-CX-20260212-074704-h-004-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-074704-h-004-None.md)
+  - Question: Do different injection targets produce distinct basin formations?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: What specific topological features of the 140-node graph modulate the rate of flux decline under small damping increases?
+
+- [PP-2026-02-12-cortex-CX-20260212-074704-h-005-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-074704-h-005-None.md)
+  - Question: What are the canonical metric outputs for standard injection protocols?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: What is the microscopic mechanism underlying the abrupt phonon mode collapse at the critical damping threshold?
+
+- [PP-2026-02-12-cortex-CX-20260212-074704-h-006-dt.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-074704-h-006-dt.md)
+  - Question: Does dt compress time-to-failure in headless sol-core as it does in the dashboard?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does the invariance of the collapse point hold under more extensive topology modifications or in different graph configurations?
+
+- [PP-2026-02-12-cortex-CX-20260212-074704-h-007-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-074704-h-007-damping.md)
+  - Question: How does damping affect entropy distribution and basin selection?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Can the phase transition be characterized analytically or via spectral theory to predict the critical damping value?
+
+- [PP-2026-02-12-cortex-CX-20260212-074704-h-012-topology.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-074704-h-012-topology.md)
+  - Question: At what value of topology does the system behavior qualitatively change?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Can the invariance of the collapse threshold be proven analytically for arbitrary topology modifications?
+
+## Cortex Session: CX-20260212-082639 (consolidated 2026-02-12)
+
+- [PP-2026-02-12-cortex-CX-20260212-082639-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-082639-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does the turbulent regime (damping 0–10) contain any internal micro-transitions detectable only at higher resolution or with alternative observables?
+
+- [PP-2026-02-12-cortex-CX-20260212-082639-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-082639-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: How do flux and mass decay rates scale with damping within the turbulent regime, and are these rates topology-dependent?
+
+- [PP-2026-02-12-cortex-CX-20260212-082639-h-003-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-082639-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does the monotonic decline in entropy and flux observed in the low-damping regime persist up to the transition zone (damping 10–15), or does it platea
+
+- [PP-2026-02-12-cortex-CX-20260212-082639-h-004-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-082639-h-004-None.md)
+  - Question: Do different injection targets produce distinct basin formations?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: What specific topological features of the 140-node graph modulate the rate of flux decline under small damping increases?
+
+- [PP-2026-02-12-cortex-CX-20260212-082639-h-005-None.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-082639-h-005-None.md)
+  - Question: What are the canonical metric outputs for standard injection protocols?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: What is the microscopic mechanism underlying the abrupt phonon mode collapse at the critical damping threshold?
+
+- [PP-2026-02-12-cortex-CX-20260212-082639-h-006-dt.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-082639-h-006-dt.md)
+  - Question: Does dt compress time-to-failure in headless sol-core as it does in the dashboard?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does the invariance of the collapse point hold under more extensive topology modifications or in different graph configurations?
+
+- [PP-2026-02-12-cortex-CX-20260212-082639-h-007-damping.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-082639-h-007-damping.md)
+  - Question: How does damping affect entropy distribution and basin selection?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Can the phase transition be characterized analytically or via spectral theory to predict the critical damping value?
+
+- [PP-2026-02-12-cortex-CX-20260212-082639-h-012-topology.md](solKnowledge/proof_packets/PP-2026-02-12-cortex-CX-20260212-082639-h-012-topology.md)
+  - Question: At what value of topology does the system behavior qualitatively change?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Can the invariance of the collapse threshold be proven analytically for arbitrary topology modifications?

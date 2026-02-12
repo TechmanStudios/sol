@@ -226,8 +226,8 @@ def select_template(gap: dict) -> str:
     }
     
     # Special cases based on metadata
-    meta = gap.get("metadata", {})
-    param = meta.get("param", "")
+    meta = gap.get("metadata") or {}
+    param = meta.get("param") or ""
     if param == "dt":
         return "dt_compression"
     if "psi" in param.lower():
@@ -354,8 +354,8 @@ def _gather_knowledge_context(gap: dict, max_chars: int = 3000) -> str:
     domains_dir = pp_dir / "domains"
 
     context_parts = []
-    claim_id = gap.get("claim_id", "")
-    desc_lower = gap.get("description", "").lower()
+    claim_id = gap.get("claim_id") or ""
+    desc_lower = (gap.get("description") or "").lower()
 
     # Search both domains/ and root proof_packets/
     search_dirs = []
