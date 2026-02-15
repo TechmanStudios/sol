@@ -110,7 +110,7 @@ jobs:
 
       - name: Run RSI cycle
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_MODELS_TOKEN || secrets.GITHUB_TOKEN }}
+          MODAL_API_KEY: ${{ secrets.MODAL_API_KEY }}
         run: |
           MODE="${{ github.event.inputs.mode || 'cron' }}"
           CYCLES="${{ github.event.inputs.cycles || '1' }}"
