@@ -32,13 +32,6 @@ Use this prompt when you need to update SOL's LLM model configuration — e.g. w
 ## Examples
 
 ```bash
-# User says "switch SOL to Modal GLM-5"
-python tools/sol-llm/update_models.py add-provider modal_glm5 --endpoint https://api.us-west-2.modal.direct/v1 --env-var MODAL_API_KEY
-python tools/sol-llm/update_models.py set primary zai-org/GLM-5-FP8 --provider modal_glm5 --name "GLM-5 FP8"
-python tools/sol-llm/update_models.py set fallback zai-org/GLM-5-FP8 --provider modal_glm5 --name "GLM-5 FP8"
-python tools/sol-llm/update_models.py set reasoning zai-org/GLM-5-FP8 --provider modal_glm5 --name "GLM-5 FP8" --reasoning False
-python tools/sol-llm/update_models.py test
-
 # User says "I got Claude 4.6 credits"
 python tools/sol-llm/update_models.py add-provider anthropic --endpoint https://api.anthropic.com --env-var ANTHROPIC_API_KEY
 python tools/sol-llm/update_models.py set primary claude-4.6 --provider anthropic --name "Claude 4.6"
@@ -62,5 +55,4 @@ All model config lives in `tools/sol-llm/models.json`. The CLI tool edits this f
 - Reasoning models (o-series, gpt-5 non-chat) are auto-detected and use `max_completion_tokens` instead of `max_tokens`, and skip `temperature`.
 - The `scan` command tries ~50 model IDs against the API. Run it periodically to discover new models.
 - All swaps are logged in `models.json → history` for audit and rollback.
-- Multiple providers are supported (Modal, Anthropic, Google, OpenAI direct). Each uses its own env var for the API key.
-- If your provider allows only one concurrent request, keep one SOL run using LLM at a time (client-side single-flight lock is enabled).
+- Multiple providers are supported (GitHub Models, Anthropic, Google, OpenAI direct). Each uses its own env var for the API key.

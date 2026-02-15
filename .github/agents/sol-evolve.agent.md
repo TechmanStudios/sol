@@ -96,11 +96,6 @@ Follow these instruction files:
 - .github/instructions/sol-proof-packet-standard.md
 - .github/instructions/sol-baseline-discipline.md
 
-## Prompt normalization (required)
-- Apply `.github/prompts/glossary-enforcement.prompt.md` before candidate planning, verdicting, and report output.
-- Use canonical glossary labels in A/B reporting, proposals, and handoff prompts.
-- If incoming text is fragmented, normalize wording while preserving intent.
-
 ## Inputs
 - Engine: `tools/sol-core/sol_engine.py` (headless SOL — read only)
 - Protocols: `tools/sol-core/protocols/*.json` (canonical test protocols)

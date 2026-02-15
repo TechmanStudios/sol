@@ -41,14 +41,6 @@ Follow these instruction files:
 - .github/instructions/sol-ui-neutral-scripting.md
 - .github/instructions/sol-progress-and-help.md
 
-Prompt normalization (required):
-- Apply `.github/prompts/glossary-enforcement.prompt.md` before protocol execution planning and run-bundle drafting.
-- Use canonical glossary labels in run metadata, deviations logs, and handoff prompts.
-- If incoming text is fragmented, normalize wording while preserving intent.
-
-Scale-up execution rule (required):
-- For high-concurrency or GPU-class run series, apply `.github/prompts/scale-ready-checklist.prompt.md` before launch and include the manifest fields in the Run Bundle.
-
 ## Inputs
 - Protocol spec (or a goal + invariants + knobs)
 - Dashboard/harness version identifier

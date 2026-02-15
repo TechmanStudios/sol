@@ -2,6 +2,12 @@
   "_comment": "SOL LLM Model Configuration — edit this file to swap models/keys/providers",
   "_updated": "2026-02-12T2",
   "providers": {
+    "github": {
+      "name": "GitHub Models",
+      "endpoint": "https://models.inference.ai.azure.com",
+      "env_var": "GITHUB_TOKEN",
+      "sdk": "openai"
+    },
     "anthropic": {
       "name": "Anthropic (Claude)",
       "endpoint": "https://api.anthropic.com",
@@ -19,41 +25,35 @@
       "endpoint": "https://api.openai.com/v1",
       "env_var": "OPENAI_API_KEY",
       "sdk": "openai"
-    },
-    "modal_glm5": {
-      "name": "Modal GLM-5",
-      "endpoint": "https://api.us-west-2.modal.direct/v1",
-      "env_var": "MODAL_API_KEY",
-      "sdk": "openai"
     }
   },
   "slots": {
     "primary": {
-      "id": "zai-org/GLM-5-FP8",
-      "name": "GLM-5 FP8",
-      "provider": "modal_glm5",
+      "id": "Meta-Llama-3.1-405B-Instruct",
+      "name": "Llama 3.1 405B",
+      "provider": "github",
       "context_window": 128000,
       "cost_per_1k_input": 0.0,
       "cost_per_1k_output": 0.0,
       "is_reasoning": false
     },
     "fallback": {
-      "id": "zai-org/GLM-5-FP8",
-      "name": "GLM-5 FP8",
-      "provider": "modal_glm5",
+      "id": "Mistral-large-2411",
+      "name": "Mistral Large 2411",
+      "provider": "github",
       "context_window": 128000,
       "cost_per_1k_input": 0.0,
       "cost_per_1k_output": 0.0,
       "is_reasoning": false
     },
     "reasoning": {
-      "id": "zai-org/GLM-5-FP8",
-      "name": "GLM-5 FP8",
-      "provider": "modal_glm5",
-      "context_window": 128000,
+      "id": "DeepSeek-R1-0528",
+      "name": "DeepSeek R1 0528",
+      "provider": "github",
+      "context_window": 163840,
       "cost_per_1k_input": 0.0,
       "cost_per_1k_output": 0.0,
-      "is_reasoning": false
+      "is_reasoning": true
     }
   },
   "budget": {
@@ -63,10 +63,7 @@
     "max_cost_per_day_usd": 10.0,
     "max_retries": 2,
     "retry_delay_sec": 5.0,
-    "retry_jitter_sec": 1.0,
-    "timeout_sec": 75,
-    "request_timeout_sec": 75,
-    "lock_timeout_sec": 30
+    "timeout_sec": 120
   },
   "temperatures": {
     "hypothesis": 0.7,
@@ -77,8 +74,38 @@
   },
   "model_catalog": {
     "_comment": "Known models per provider. 'update_models.py --scan' refreshes this.",
-    "modal_glm5": [
-      "zai-org/GLM-5-FP8"
+    "github": [
+      "gpt-5",
+      "gpt-5-chat",
+      "gpt-5-mini",
+      "gpt-5-nano",
+      "gpt-4.1",
+      "gpt-4.1-mini",
+      "gpt-4.1-nano",
+      "gpt-4o",
+      "gpt-4o-mini",
+      "o1",
+      "o1-mini",
+      "o1-preview",
+      "o3",
+      "o3-mini",
+      "o4-mini",
+      "Grok-3",
+      "Grok-3-Mini",
+      "DeepSeek-R1",
+      "DeepSeek-R1-0528",
+      "MAI-DS-R1",
+      "Meta-Llama-3.1-405B-Instruct",
+      "Llama-3.3-70B-Instruct",
+      "Llama-4-Scout-17B-16E-Instruct",
+      "Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "Mistral-large-2411",
+      "Mistral-small-2503",
+      "Codestral-2501",
+      "Mistral-Nemo",
+      "Phi-4",
+      "Cohere-command-r-plus-08-2024",
+      "Cohere-command-r-08-2024"
     ]
   },
   "history": [
@@ -87,14 +114,14 @@
       "slot": "primary",
       "from": "gpt-4.1",
       "to": "gpt-5-chat",
-      "reason": "GPT-5 family available"
+      "reason": "GPT-5 family available on GitHub Models"
     },
     {
       "date": "2026-02-10",
       "slot": "fallback",
       "from": "gpt-4.1-mini",
       "to": "gpt-5-nano",
-      "reason": "GPT-5 family available"
+      "reason": "GPT-5 family available on GitHub Models"
     },
     {
       "date": "2026-02-10",
@@ -136,7 +163,7 @@
       "slot": "reasoning",
       "from": "o3",
       "to": "DeepSeek-R1-0528",
-      "reason": "higher rate limits and strong reasoning"
+      "reason": "higher rate limits, strong reasoning, free on GitHub Models"
     },
     {
       "date": "2026-02-12",
@@ -151,27 +178,6 @@
       "from": "gpt-4.1-nano",
       "to": "Mistral-large-2411",
       "reason": "max throughput: 150 req/day low-tier, separate rate pool"
-    },
-    {
-      "date": "2026-02-13",
-      "slot": "primary",
-      "from": "Meta-Llama-3.1-405B-Instruct",
-      "to": "zai-org/GLM-5-FP8",
-      "reason": "switch to Modal GLM-5 free R&D window"
-    },
-    {
-      "date": "2026-02-13",
-      "slot": "fallback",
-      "from": "Mistral-large-2411",
-      "to": "zai-org/GLM-5-FP8",
-      "reason": "align fallback with Modal GLM-5"
-    },
-    {
-      "date": "2026-02-13",
-      "slot": "reasoning",
-      "from": "DeepSeek-R1-0528",
-      "to": "zai-org/GLM-5-FP8",
-      "reason": "unify reasoning path on Modal GLM-5"
     }
   ]
 }

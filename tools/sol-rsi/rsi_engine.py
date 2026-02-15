@@ -91,7 +91,6 @@ _CHECKPOINT_FILE = _RSI_DIR / "_rsi_state.json"
 _HEARTBEAT_FILE = _RSI_DIR / "heartbeat.json"
 _COST_LEDGER = _RSI_DIR / "llm_cost_ledger.jsonl"
 _OUTCOME_LEDGER = _RSI_DIR / "outcome_ledger.jsonl"
-_RUN_LOCK_FILE = _RSI_DIR / "rsi_engine.lock"
 _PROOF_PACKETS_DIR = _SOL_ROOT / "solKnowledge" / "proof_packets"
 _DOMAINS_DIR = _PROOF_PACKETS_DIR / "domains"
 _RAW_PACKETS_DIR = _PROOF_PACKETS_DIR / "raw"
@@ -102,19 +101,6 @@ _CORTEX_DIR = _SOL_ROOT / "tools" / "sol-cortex"
 _HIPPO_DIR = _SOL_ROOT / "tools" / "sol-hippocampus"
 _EVOLVE_DIR = _SOL_ROOT / "tools" / "sol-evolve"
 _ORCHESTRATOR_DIR = _SOL_ROOT / "tools" / "sol-orchestrator"
-
-
-# LLM runtime overrides (set from CLI in main)
-_LLM_BUDGET_OVERRIDES: dict[str, Any] = {}
-_LLM_OVERRIDE_ENV_MAP: dict[str, str] = {
-    "max_tokens_per_call": "SOL_LLM_MAX_TOKENS",
-    "max_retries": "SOL_LLM_MAX_RETRIES",
-    "retry_delay_sec": "SOL_LLM_RETRY_DELAY_SEC",
-    "retry_jitter_sec": "SOL_LLM_RETRY_JITTER_SEC",
-    "timeout_sec": "SOL_LLM_TIMEOUT_SEC",
-    "request_timeout_sec": "SOL_LLM_REQUEST_TIMEOUT_SEC",
-    "lock_timeout_sec": "SOL_LLM_LOCK_TIMEOUT_SEC",
-}
 
 
 # ---------------------------------------------------------------------------
@@ -189,59 +175,6 @@ def _write_heartbeat(cycle_id: int, status: str, extra: dict | None = None):
         json.dump(hb, f, indent=2)
 
 
-def _pid_exists(pid: int) -> bool:
-    """Best-effort check whether a PID is alive."""
-    if pid <= 0:
-        return False
-    try:
-        os.kill(pid, 0)
-    except OSError:
-        return False
-    except Exception:
-        return False
-    return True
-
-
-def _acquire_run_lock(stale_after_sec: float = 8 * 3600) -> None:
-    """Ensure only one RSI engine process runs at a time."""
-    _RSI_DIR.mkdir(parents=True, exist_ok=True)
-
-    if _RUN_LOCK_FILE.exists():
-        stale = False
-        lock_pid = 0
-        try:
-            text = _RUN_LOCK_FILE.read_text(encoding="utf-8")
-            for line in text.splitlines():
-                if line.startswith("pid="):
-                    lock_pid = int(line.split("=", 1)[1].strip())
-                    break
-        except Exception:
-            pass
-
-        try:
-            age_sec = time.time() - _RUN_LOCK_FILE.stat().st_mtime
-            stale = age_sec > stale_after_sec
-        except OSError:
-            stale = True
-
-        if lock_pid and _pid_exists(lock_pid) and not stale:
-            raise RuntimeError(
-                f"Another RSI engine process is already running (pid={lock_pid})."
-            )
-
-        _RUN_LOCK_FILE.unlink(missing_ok=True)
-
-    fd = os.open(str(_RUN_LOCK_FILE), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-    with os.fdopen(fd, "w", encoding="utf-8") as f:
-        f.write(f"pid={os.getpid()}\n")
-        f.write(f"ts={datetime.now(timezone.utc).isoformat()}\n")
-
-
-def _release_run_lock() -> None:
-    """Release singleton run lock."""
-    _RUN_LOCK_FILE.unlink(missing_ok=True)
-
-
 # ---------------------------------------------------------------------------
 # Cost ceiling helpers
 # ---------------------------------------------------------------------------
@@ -267,109 +200,6 @@ def _load_session_cost() -> float:
     except OSError:
         pass
     return total
-
-
-def _parse_utc_timestamp(value: str) -> datetime | None:
-    if not value:
-        return None
-    text = value.strip()
-    if text.endswith("Z"):
-        text = text[:-1] + "+00:00"
-    try:
-        return datetime.fromisoformat(text)
-    except ValueError:
-        return None
-
-
-def _count_timeout_like_failures_since(started_at_utc: str) -> tuple[int, int]:
-    """Return (timeout_like_failures, total_failures) since a cycle start timestamp."""
-    started_at = _parse_utc_timestamp(started_at_utc)
-    if started_at is None or not _COST_LEDGER.exists():
-        return 0, 0
-
-    timeout_like = 0
-    total_failures = 0
-    timeout_tokens = (
-        "timeout",
-        "timed out",
-        "apitimeouterror",
-        "502",
-        "503",
-        "504",
-        "gateway",
-    )
-    exclude_tokens = (
-        "single-flight llm lock",
-        "waiting for single-flight llm lock",
-    )
-
-    try:
-        with open(_COST_LEDGER, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    entry = json.loads(line)
-                except json.JSONDecodeError:
-                    continue
-
-                ts = _parse_utc_timestamp(str(entry.get("timestamp", "")))
-                if ts is None or ts < started_at:
-                    continue
-
-                if bool(entry.get("success", False)):
-                    continue
-
-                total_failures += 1
-                error_text = str(entry.get("error", "")).lower()
-                if any(token in error_text for token in exclude_tokens):
-                    continue
-                if any(token in error_text for token in timeout_tokens):
-                    timeout_like += 1
-    except OSError:
-        return 0, 0
-
-    return timeout_like, total_failures
-
-
-def _maybe_autotune_llm_cap(
-    started_at_utc: str,
-    enabled: bool,
-    floor_sec: float,
-    step_sec: float,
-    fail_threshold: int,
-) -> None:
-    """Step down request timeout cap when timeout/gateway failures are detected."""
-    if not enabled:
-        return
-
-    timeout_like, total_failures = _count_timeout_like_failures_since(started_at_utc)
-    if timeout_like < max(1, int(fail_threshold)):
-        return
-
-    current_cap = float(
-        _LLM_BUDGET_OVERRIDES.get(
-            "request_timeout_sec",
-            _LLM_BUDGET_OVERRIDES.get("timeout_sec", 0.0),
-        )
-    )
-    if current_cap <= 0:
-        return
-
-    new_cap = max(float(floor_sec), current_cap - float(step_sec))
-    if new_cap >= current_cap:
-        return
-
-    tuned = dict(_LLM_BUDGET_OVERRIDES)
-    tuned["timeout_sec"] = new_cap
-    tuned["request_timeout_sec"] = new_cap
-    _set_llm_budget_overrides(tuned)
-    print(
-        "\n  [LLM AUTOTUNE] "
-        f"timeout-like failures={timeout_like}/{total_failures} since cycle start; "
-        f"lowering request cap {current_cap:.1f}s -> {new_cap:.1f}s"
-    )
 
 
 # ---------------------------------------------------------------------------
@@ -460,46 +290,39 @@ def _load_outcome_history(last_n: int = 20) -> list[dict]:
 
 def _compute_cooldown(cycles_remaining: int) -> float:
     """
-    Compute short inter-cycle cooldown for Modal/GLM5 runtime.
+    Compute how many seconds to wait before the next cycle so we don't
+    burn through the daily rate limit too fast.
 
-    Legacy GitHub-model pacing used long waits (up to 1800s). For current
-    provider behavior we keep cooldowns short and adaptive to recent errors
-    so persistent loops continue smoothly.
+    Strategy: spread remaining daily calls evenly across remaining cycles,
+    with a floor of 60s (to respect per-minute limits) and a cap of 1800s.
     """
+    # If no more cycles, no wait
     if cycles_remaining <= 0:
         return 0.0
 
-    # Base cooldown to avoid immediate burst between cycles.
-    cooldown = 20.0
-
-    # If recent failures show pressure, increase slightly for recovery.
+    # Read today's cost ledger to estimate calls already made
+    calls_today = 0
     if _COST_LEDGER.exists():
-        recent_errors: list[str] = []
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         try:
             with open(_COST_LEDGER, "r", encoding="utf-8") as f:
                 for line in f:
-                    line = line.strip()
-                    if not line:
-                        continue
-                    try:
-                        entry = json.loads(line)
-                    except json.JSONDecodeError:
-                        continue
-                    if not bool(entry.get("success", False)):
-                        recent_errors.append(str(entry.get("error", "")).lower())
+                    if today in line:
+                        calls_today += 1
         except OSError:
-            recent_errors = []
+            pass
 
-        tail = recent_errors[-8:]
-        if any("rate" in err and "429" in err for err in tail):
-            cooldown = 45.0
-        elif any("timeout" in err or "502" in err or "503" in err or "504" in err for err in tail):
-            cooldown = 35.0
-        elif any("single-flight" in err for err in tail):
-            cooldown = 40.0
+    calls_remaining_today = max(1, _DAILY_CALL_LIMIT - calls_today)
+    calls_needed = cycles_remaining * _CALLS_PER_CYCLE
 
-    # Clamp to a compact operational range (no long legacy waits).
-    return max(10.0, min(90.0, cooldown))
+    if calls_needed <= calls_remaining_today:
+        # Enough budget — just respect per-minute limit
+        return max(60.0, 30.0 * _CALLS_PER_CYCLE)  # ~2.5 min between cycles
+    else:
+        # Spread remaining calls across 24h from now
+        seconds_per_call = 86400 / max(1, _DAILY_CALL_LIMIT)
+        cooldown = seconds_per_call * _CALLS_PER_CYCLE
+        return min(1800.0, max(60.0, cooldown))
 
 
 # ===================================================================
@@ -985,7 +808,7 @@ def _try_llm_reflection(
             raw_leads=raw_leads[:5] if raw_leads else None,
         )
 
-        llm = _get_llm_client(verbose=True)
+        llm = SolLLM(verbose=True)
         response = llm.complete_json(user, system=system, task="reflection")
 
         if response.success and response.parsed:
@@ -1603,25 +1426,6 @@ def _inject_path_lazy(directory: Path):
         sys.path.insert(0, d)
 
 
-def _get_llm_client(verbose: bool = True):
-    """Construct SolLLM with optional runtime budget overrides."""
-    _inject_path_lazy(_SOL_ROOT / "tools" / "sol-llm")
-    from client import SolLLM
-    budget = _LLM_BUDGET_OVERRIDES if _LLM_BUDGET_OVERRIDES else None
-    return SolLLM(verbose=verbose, budget=budget)
-
-
-def _set_llm_budget_overrides(overrides: dict[str, Any] | None):
-    """Set process-wide LLM budget overrides for RSI LLM calls."""
-    global _LLM_BUDGET_OVERRIDES
-    _LLM_BUDGET_OVERRIDES = dict(overrides or {})
-    for env_name in _LLM_OVERRIDE_ENV_MAP.values():
-        os.environ.pop(env_name, None)
-    for budget_key, env_name in _LLM_OVERRIDE_ENV_MAP.items():
-        if budget_key in _LLM_BUDGET_OVERRIDES:
-            os.environ[env_name] = str(_LLM_BUDGET_OVERRIDES[budget_key])
-
-
 # ===================================================================
 # 7. PERSISTENCE / LOGGING
 # ===================================================================
@@ -1727,7 +1531,7 @@ def _try_cross_experiment_synthesis(cycle_id: int) -> dict | None:
             claim_ledger_excerpt=claim_excerpt,
         )
 
-        llm = _get_llm_client(verbose=True)
+        llm = SolLLM(verbose=True)
         response = llm.complete_json(user, system=system, task="synthesis")
 
         if response.success and response.parsed:
@@ -1871,11 +1675,7 @@ def run_rsi(
     cycles: int = 1,
     budget_hours: float = 0.0,
     budget_dollars: float = 0.0,
-    dry_run: bool = False,
-    llm_autotune: bool = False,
-    llm_autotune_floor_sec: float = 95.0,
-    llm_autotune_step_sec: float = 5.0,
-    llm_autotune_fail_threshold: int = 2,
+    dry_run: bool = False
 ):
     """
     Run the RSI engine for N cycles or until budget exhausted.
@@ -1936,7 +1736,6 @@ def run_rsi(
         })
 
         # --- Execute cycle ---
-        cycle_started_utc = datetime.now(timezone.utc).isoformat()
         try:
             fitness = rsi_cycle(cycle_id, mode=mode, dry_run=dry_run)
             results.append(fitness)
@@ -1945,26 +1744,11 @@ def run_rsi(
             import traceback
             traceback.print_exc()
             _write_heartbeat(cycle_id, "error", {"error": str(e)})
-            _maybe_autotune_llm_cap(
-                started_at_utc=cycle_started_utc,
-                enabled=llm_autotune,
-                floor_sec=llm_autotune_floor_sec,
-                step_sec=llm_autotune_step_sec,
-                fail_threshold=llm_autotune_fail_threshold,
-            )
             if mode != "persistent":
                 raise
             # In persistent mode, log the error and continue
             print("  [RECOVER] Persistent mode — continuing to next cycle...")
             continue
-
-        _maybe_autotune_llm_cap(
-            started_at_utc=cycle_started_utc,
-            enabled=llm_autotune,
-            floor_sec=llm_autotune_floor_sec,
-            step_sec=llm_autotune_step_sec,
-            fail_threshold=llm_autotune_fail_threshold,
-        )
 
         # --- Checkpoint ---
         if mode == "persistent":
@@ -2090,28 +1874,6 @@ Examples:
                         help="Evaluate and plan only, don't execute")
     parser.add_argument("--status", action="store_true",
                         help="Print current RSI status and exit")
-    parser.add_argument("--safe-llm", action="store_true",
-                        help="Use conservative LLM settings to reduce long-running request failures")
-    parser.add_argument("--edge-llm", action="store_true",
-                        help="Use near-limit LLM settings for maximum throughput under 2-minute gateway cap")
-    parser.add_argument("--edge-plus-llm", action="store_true",
-                        help="Use an aggressive near-limit profile to probe highest stable throughput ceiling")
-    parser.add_argument("--llm-max-tokens", type=int, default=0,
-                        help="Override max LLM output tokens per call (0 = default)")
-    parser.add_argument("--llm-timeout-sec", type=float, default=0.0,
-                        help="Override LLM request timeout seconds (0 = default)")
-    parser.add_argument("--llm-retries", type=int, default=-1,
-                        help="Override retry count for LLM calls (-1 = default)")
-    parser.add_argument("--llm-hard-cap-sec", type=float, default=0.0,
-                        help="Hard cap per LLM request in seconds (0 = preset/default)")
-    parser.add_argument("--llm-autotune", action="store_true",
-                        help="Auto-step timeout cap down on repeated timeout/gateway failures")
-    parser.add_argument("--llm-autotune-floor-sec", type=float, default=95.0,
-                        help="Minimum timeout cap when --llm-autotune is enabled")
-    parser.add_argument("--llm-autotune-step-sec", type=float, default=5.0,
-                        help="Step-down amount in seconds per autotune adjustment")
-    parser.add_argument("--llm-autotune-fail-threshold", type=int, default=2,
-                        help="Timeout-like failures per cycle needed to trigger autotune")
 
     args = parser.parse_args()
 
@@ -2119,71 +1881,13 @@ Examples:
         print_status()
         return
 
-    llm_overrides: dict[str, Any] = {}
-    if args.safe_llm:
-        llm_overrides.update({
-            "max_tokens_per_call": 768,
-            "timeout_sec": 60,
-            "request_timeout_sec": 60,
-            "lock_timeout_sec": 20,
-            "max_retries": 1,
-            "retry_delay_sec": 2.0,
-            "retry_jitter_sec": 0.5,
-        })
-    if args.edge_llm:
-        llm_overrides.update({
-            "max_tokens_per_call": 1536,
-            "timeout_sec": 105,
-            "request_timeout_sec": 105,
-            "lock_timeout_sec": 30,
-            "max_retries": 1,
-            "retry_delay_sec": 2.0,
-            "retry_jitter_sec": 0.5,
-        })
-    if args.edge_plus_llm:
-        llm_overrides.update({
-            "max_tokens_per_call": 1664,
-            "timeout_sec": 110,
-            "request_timeout_sec": 110,
-            "lock_timeout_sec": 30,
-            "max_retries": 1,
-            "retry_delay_sec": 2.0,
-            "retry_jitter_sec": 0.5,
-        })
-    if args.llm_max_tokens > 0:
-        llm_overrides["max_tokens_per_call"] = args.llm_max_tokens
-    if args.llm_timeout_sec > 0:
-        llm_overrides["timeout_sec"] = args.llm_timeout_sec
-        llm_overrides["request_timeout_sec"] = args.llm_timeout_sec
-    if args.llm_retries >= 0:
-        llm_overrides["max_retries"] = args.llm_retries
-    if args.llm_hard_cap_sec > 0:
-        hard_cap = float(args.llm_hard_cap_sec)
-        llm_overrides["timeout_sec"] = hard_cap
-        llm_overrides["request_timeout_sec"] = hard_cap
-
-    _set_llm_budget_overrides(llm_overrides)
-    if llm_overrides:
-        print(f"\n  [LLM PROFILE] Runtime overrides active: {llm_overrides}")
-
-    lock_acquired = False
-    try:
-        _acquire_run_lock()
-        lock_acquired = True
-        run_rsi(
-            mode=args.mode,
-            cycles=args.cycles,
-            budget_hours=args.budget_hours,
-            budget_dollars=args.budget_dollars,
-            dry_run=args.dry_run,
-            llm_autotune=args.llm_autotune,
-            llm_autotune_floor_sec=args.llm_autotune_floor_sec,
-            llm_autotune_step_sec=args.llm_autotune_step_sec,
-            llm_autotune_fail_threshold=args.llm_autotune_fail_threshold,
-        )
-    finally:
-        if lock_acquired:
-            _release_run_lock()
+    run_rsi(
+        mode=args.mode,
+        cycles=args.cycles,
+        budget_hours=args.budget_hours,
+        budget_dollars=args.budget_dollars,
+        dry_run=args.dry_run,
+    )
 
 
 if __name__ == "__main__":

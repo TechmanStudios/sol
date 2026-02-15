@@ -56,14 +56,6 @@ Follow these instruction files:
 - .github/instructions/sol-progress-and-help.md
 - .github/instructions/sol-consolidation-standards.md
 
-Prompt normalization (required):
-- Apply `.github/prompts/glossary-enforcement.prompt.md` before protocol design or analysis.
-- Use canonical glossary labels in run plans, claims, and proof packet wording.
-- If input text is fragmented, normalize wording while preserving original intent.
-
-Scale-up planning rule (required):
-- When designing high-parallel, GPU-class, or provider-throughput experiments, apply `.github/prompts/scale-ready-checklist.prompt.md` before finalizing protocol and controls.
-
 ## Ideal inputs
 - One-sentence question
 - Invariants (dt/damp/pressC/capLawHash/baselineMode)

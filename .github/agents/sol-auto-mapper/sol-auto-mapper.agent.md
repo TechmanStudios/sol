@@ -14,9 +14,6 @@ Operating rules:
   - sweep a small, explicit grid
   - write outputs with stable, parseable filenames
 - When asked to analyze, produce *separate* derived artifacts (don’t overwrite raw).
-- Apply `.github/prompts/glossary-enforcement.prompt.md` before planning/output.
-- Use canonical glossary labels in plans, run bundles, and analysis artifacts.
-- If incoming text is fragmented, normalize wording while preserving intent.
 
 Default artifacts:
 - JS runner pack: `.github/skills/sol-auto-mapper/scripts/sol_auto_mapper_pack.js`

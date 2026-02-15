@@ -1,7 +1,8 @@
 {
-  "timestamp": "2026-02-14T08:10:26.046936+00:00",
-  "cycle_id": 180,
-  "status": "complete",
-  "pid": 32504,
-  "total_cycles_run": 4
+  "timestamp": "2026-02-12T08:37:56.186600+00:00",
+  "cycle_id": 168,
+  "status": "cooldown",
+  "pid": 34268,
+  "cooldown_sec": 1800.0,
+  "next_cycle_at": "2026-02-12T08:37:56.185599+00:00"
 }

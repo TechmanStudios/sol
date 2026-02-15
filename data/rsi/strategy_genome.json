@@ -1,23 +1,23 @@
 {
   "version": 1,
   "created": "2026-02-09T05:17:20.475980+00:00",
-  "last_cycle": 183,
+  "last_cycle": 168,
   "fitness_weights": {
-    "claim_density": 0.1753449700482432,
-    "question_ratio": 0.3859357357343076,
-    "coverage_score": 0.1753449700482432,
-    "productivity": 0.26337432416920586
+    "claim_density": 0.2221217619789222,
+    "question_ratio": 0.2221217619789222,
+    "coverage_score": 0.2221217619789222,
+    "productivity": 0.33363471406323336
   },
   "template_preferences": {
     "parameter_sweep": 0.1,
-    "replication": 0.8235901196976394,
-    "topology_surgery": 0.47843949999999996,
-    "injection_protocol": 1.4350324707806152,
+    "replication": 0.1,
+    "topology_surgery": 2.0,
+    "injection_protocol": 1.1653066374472818,
     "logic_gate": 0.1,
-    "clock_signal": 0.740207862305915,
-    "cascade_pipeline": 0.9782012499999999,
-    "isa_program": 0.22178463191985023,
-    "analog_fidelity": 0.7523332873641493
+    "clock_signal": 0.7639571699982226,
+    "cascade_pipeline": 2.0,
+    "isa_program": 0.23019963191985024,
+    "analog_fidelity": 0.2956142026678337
   },
   "parameter_focus": {
     "damping_range": [
@@ -102,9 +102,247 @@
     ],
     "scope_frontier": []
   },
-  "mutation_rate": 0.39999999999999997,
+  "mutation_rate": 0.2,
   "exploration_rate": 0.8,
   "history": [
+    {
+      "cycle": 121,
+      "timestamp": "2026-02-10T08:03:48.415695+00:00",
+      "mutations": [
+        "template_pref[replication]: 1.30 -> 1.36",
+        "template_pref[topology_surgery]: 0.76 -> 0.68",
+        "template_pref[clock_signal]: 0.53 -> 0.46",
+        "template_pref[cascade_pipeline]: 1.53 -> 1.57",
+        "template_pref[isa_program]: 0.78 -> 0.97",
+        "FRONTIER PROMOTED: boundary_cartography",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 122,
+      "timestamp": "2026-02-10T08:07:21.378440+00:00",
+      "mutations": [
+        "template_pref[replication]: 1.36 -> 1.54",
+        "template_pref[injection_protocol]: 2.00 -> 1.98",
+        "template_pref[logic_gate]: 1.20 -> 1.34",
+        "template_pref[clock_signal]: 0.46 -> 0.62",
+        "FRONTIER PROMOTED: resonance_hunting",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 123,
+      "timestamp": "2026-02-10T08:10:50.813864+00:00",
+      "mutations": [
+        "template_pref[replication]: 1.54 -> 1.50",
+        "template_pref[topology_surgery]: 0.68 -> 0.73",
+        "template_pref[logic_gate]: 1.34 -> 1.27",
+        "template_pref[cascade_pipeline]: 1.57 -> 1.73",
+        "template_pref[isa_program]: 0.97 -> 1.07",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 124,
+      "timestamp": "2026-02-10T08:11:27.020498+00:00",
+      "mutations": [
+        "template_pref[replication]: 1.50 -> 1.56",
+        "template_pref[injection_protocol]: 1.98 -> 2.00",
+        "template_pref[logic_gate]: 1.27 -> 1.25",
+        "template_pref[isa_program]: 1.07 -> 1.25",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 125,
+      "timestamp": "2026-02-10T08:11:27.354317+00:00",
+      "mutations": [
+        "template_pref[replication]: 1.93 -> 1.96",
+        "template_pref[topology_surgery]: 0.96 -> 0.98",
+        "template_pref[clock_signal]: 0.67 -> 0.86",
+        "template_pref[isa_program]: 1.32 -> 1.30",
+        "template_pref[analog_fidelity]: 0.13 -> 0.10",
+        "PLATEAU RESPONSE: exploration_rate 0.90->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 126,
+      "timestamp": "2026-02-10T08:11:27.429895+00:00",
+      "mutations": [
+        "template_pref[replication]: 1.76 -> 1.59",
+        "template_pref[topology_surgery]: 1.32 -> 1.39",
+        "template_pref[injection_protocol]: 2.00 -> 1.94",
+        "template_pref[logic_gate]: 1.46 -> 1.55",
+        "template_pref[clock_signal]: 0.64 -> 0.50",
+        "template_pref[cascade_pipeline]: 1.75 -> 1.91",
+        "PLATEAU RESPONSE: exploration_rate 0.90->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 127,
+      "timestamp": "2026-02-10T08:11:27.495955+00:00",
+      "mutations": [
+        "template_pref[parameter_sweep]: 0.39 -> 0.20",
+        "template_pref[injection_protocol]: 1.57 -> 1.42",
+        "template_pref[clock_signal]: 0.66 -> 0.67",
+        "template_pref[cascade_pipeline]: 2.00 -> 1.92",
+        "template_pref[analog_fidelity]: 0.10 -> 0.12",
+        "PLATEAU RESPONSE: exploration_rate 0.90->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 128,
+      "timestamp": "2026-02-10T08:11:27.559518+00:00",
+      "mutations": [
+        "template_pref[parameter_sweep]: 0.44 -> 0.41",
+        "template_pref[replication]: 1.58 -> 1.45",
+        "template_pref[logic_gate]: 1.35 -> 1.52",
+        "template_pref[isa_program]: 0.93 -> 0.85",
+        "template_pref[analog_fidelity]: 0.10 -> 0.28",
+        "PLATEAU RESPONSE: exploration_rate 0.90->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 129,
+      "timestamp": "2026-02-10T08:11:46.061746+00:00",
+      "mutations": [
+        "template_pref[injection_protocol]: 1.75 -> 1.83",
+        "template_pref[isa_program]: 0.85 -> 0.71",
+        "template_pref[analog_fidelity]: 0.28 -> 0.41",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 130,
+      "timestamp": "2026-02-10T08:12:21.994599+00:00",
+      "mutations": [
+        "template_pref[replication]: 1.45 -> 1.29",
+        "template_pref[topology_surgery]: 2.00 -> 1.82",
+        "template_pref[logic_gate]: 1.52 -> 1.45",
+        "template_pref[clock_signal]: 0.56 -> 0.63",
+        "template_pref[isa_program]: 0.71 -> 0.82",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 131,
+      "timestamp": "2026-02-10T08:15:08.773595+00:00",
+      "mutations": [
+        "template_pref[parameter_sweep]: 0.41 -> 0.21",
+        "template_pref[topology_surgery]: 1.82 -> 1.76",
+        "template_pref[cascade_pipeline]: 1.56 -> 1.74",
+        "template_pref[isa_program]: 0.82 -> 0.88",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 132,
+      "timestamp": "2026-02-10T08:16:56.379032+00:00",
+      "mutations": [
+        "template_pref[parameter_sweep]: 0.21 -> 0.40",
+        "template_pref[replication]: 1.29 -> 1.36",
+        "template_pref[logic_gate]: 1.45 -> 1.25",
+        "template_pref[clock_signal]: 0.63 -> 0.58",
+        "template_pref[cascade_pipeline]: 1.74 -> 1.86",
+        "template_pref[analog_fidelity]: 0.41 -> 0.23",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 133,
+      "timestamp": "2026-02-10T08:21:50.579033+00:00",
+      "mutations": [
+        "template_pref[topology_surgery]: 1.76 -> 1.77",
+        "template_pref[injection_protocol]: 1.83 -> 2.00",
+        "template_pref[clock_signal]: 0.58 -> 0.60",
+        "template_pref[isa_program]: 0.88 -> 0.98",
+        "template_pref[analog_fidelity]: 0.23 -> 0.43",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 134,
+      "timestamp": "2026-02-10T08:21:50.745201+00:00",
+      "mutations": [
+        "template_pref[logic_gate]: 1.18 -> 1.37",
+        "template_pref[cascade_pipeline]: 1.50 -> 1.64",
+        "template_pref[isa_program]: 0.86 -> 0.97",
+        "template_pref[analog_fidelity]: 0.15 -> 0.12",
+        "PLATEAU RESPONSE: exploration_rate 0.90->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 135,
+      "timestamp": "2026-02-10T08:24:11.179075+00:00",
+      "mutations": [
+        "template_pref[parameter_sweep]: 0.35 -> 0.48",
+        "template_pref[replication]: 1.18 -> 1.13",
+        "template_pref[cascade_pipeline]: 1.64 -> 1.56",
+        "template_pref[isa_program]: 0.97 -> 1.12",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 136,
+      "timestamp": "2026-02-10T08:24:11.275670+00:00",
+      "mutations": [
+        "template_pref[parameter_sweep]: 0.59 -> 0.51",
+        "template_pref[replication]: 0.81 -> 0.74",
+        "template_pref[topology_surgery]: 1.61 -> 1.79",
+        "template_pref[injection_protocol]: 2.00 -> 2.00",
+        "template_pref[clock_signal]: 1.15 -> 1.27",
+        "template_pref[isa_program]: 1.00 -> 0.83",
+        "template_pref[analog_fidelity]: 0.10 -> 0.26",
+        "PLATEAU RESPONSE: exploration_rate 0.90->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 137,
+      "timestamp": "2026-02-10T08:25:59.504780+00:00",
+      "mutations": [
+        "template_pref[injection_protocol]: 2.00 -> 2.00",
+        "template_pref[clock_signal]: 1.27 -> 1.11",
+        "template_pref[isa_program]: 0.83 -> 0.92",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 138,
+      "timestamp": "2026-02-10T08:25:59.603377+00:00",
+      "mutations": [
+        "template_pref[replication]: 0.65 -> 0.50",
+        "template_pref[isa_program]: 0.71 -> 0.74",
+        "PLATEAU RESPONSE: exploration_rate 0.90->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 139,
+      "timestamp": "2026-02-10T08:25:59.679953+00:00",
+      "mutations": [
+        "template_pref[cascade_pipeline]: 1.66 -> 1.49",
+        "template_pref[analog_fidelity]: 0.25 -> 0.44",
+        "PLATEAU RESPONSE: exploration_rate 0.90->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
     {
       "cycle": 140,
       "timestamp": "2026-02-10T08:26:35.747485+00:00",
@@ -491,166 +729,6 @@
         "LLM_DIM template_pref[logic_gate]: 1.46 -> 0.10",
         "LLM_RATE mutation_rate: 0.30 -> 0.20",
         "LLM_RATE exploration_rate: 0.80 -> 0.80"
-      ],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 169,
-      "timestamp": "2026-02-13T20:10:42.697661+00:00",
-      "mutations": [
-        "REWARD template_pref[injection_protocol]: 1.17 -> 1.15 (avg_reward=-0.24)"
-      ],
-      "fitness_delta": -7.193789143931241
-    },
-    {
-      "cycle": 170,
-      "timestamp": "2026-02-13T20:35:41.960041+00:00",
-      "mutations": [
-        "FITNESS_WEIGHT boosted 'question_ratio': 0.22 -> 0.24"
-      ],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 171,
-      "timestamp": "2026-02-13T21:00:52.153198+00:00",
-      "mutations": [],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 172,
-      "timestamp": "2026-02-13T22:24:57.907764+00:00",
-      "mutations": [
-        "template_pref[analog_fidelity]: 0.30 -> 0.23"
-      ],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 172,
-      "timestamp": "2026-02-13T23:10:14.907495+00:00",
-      "mutations": [
-        "LLM_BOOST template_pref[replication]: 0.10 -> 0.80",
-        "LLM_BOOST template_pref[analog_fidelity]: 0.23 -> 0.63",
-        "LLM_BOOST template_pref[injection_protocol]: 1.15 -> 1.45",
-        "LLM_DIM template_pref[topology_surgery]: 2.00 -> 0.50",
-        "LLM_DIM template_pref[parameter_sweep]: 0.10 -> 0.10",
-        "LLM_DIM template_pref[cascade_pipeline]: 1.99 -> 0.99",
-        "LLM_RATE mutation_rate: 0.20 -> 0.15",
-        "LLM_RATE exploration_rate: 0.80 -> 0.35"
-      ],
-      "fitness_delta": -0.11711885631018504
-    },
-    {
-      "cycle": 172,
-      "timestamp": "2026-02-14T00:15:19.521806+00:00",
-      "mutations": [
-        "template_pref[analog_fidelity]: 0.63 -> 0.68"
-      ],
-      "fitness_delta": -0.23123466502266865
-    },
-    {
-      "cycle": 172,
-      "timestamp": "2026-02-14T00:18:26.489364+00:00",
-      "mutations": [
-        "template_pref[analog_fidelity]: 0.68 -> 0.73"
-      ],
-      "fitness_delta": -0.23123466502266865
-    },
-    {
-      "cycle": 172,
-      "timestamp": "2026-02-14T00:20:20.687920+00:00",
-      "mutations": [],
-      "fitness_delta": -0.23123466502266865
-    },
-    {
-      "cycle": 172,
-      "timestamp": "2026-02-14T00:31:09.072543+00:00",
-      "mutations": [],
-      "fitness_delta": -0.23123466502266865
-    },
-    {
-      "cycle": 173,
-      "timestamp": "2026-02-14T02:22:42.079443+00:00",
-      "mutations": [
-        "FITNESS_WEIGHT boosted 'question_ratio': 0.24 -> 0.27"
-      ],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 173,
-      "timestamp": "2026-02-14T02:29:19.020696+00:00",
-      "mutations": [
-        "FITNESS_WEIGHT boosted 'question_ratio': 0.27 -> 0.29"
-      ],
-      "fitness_delta": -0.9168817004372016
-    },
-    {
-      "cycle": 174,
-      "timestamp": "2026-02-14T02:33:56.262694+00:00",
-      "mutations": [
-        "PLATEAU RESPONSE: exploration_rate 0.35->0.45, mutation_rate 0.15->0.20"
-      ],
-      "fitness_delta": -0.8901764081914507
-    },
-    {
-      "cycle": 175,
-      "timestamp": "2026-02-14T03:24:45.078735+00:00",
-      "mutations": [
-        "REWARD template_pref[analog_fidelity]: 0.73 -> 0.76 (avg_reward=+0.00)",
-        "PLATEAU RESPONSE: exploration_rate 0.45->0.55, mutation_rate 0.20->0.25"
-      ],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 176,
-      "timestamp": "2026-02-14T04:05:06.913069+00:00",
-      "mutations": [
-        "PLATEAU RESPONSE: exploration_rate 0.55->0.65, mutation_rate 0.25->0.30",
-        "FITNESS_WEIGHT boosted 'question_ratio': 0.29 -> 0.31"
-      ],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 177,
-      "timestamp": "2026-02-14T04:31:09.057974+00:00",
-      "mutations": [
-        "PLATEAU RESPONSE: exploration_rate 0.65->0.75, mutation_rate 0.30->0.35",
-        "FITNESS_WEIGHT boosted 'question_ratio': 0.31 -> 0.33"
-      ],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 178,
-      "timestamp": "2026-02-14T05:21:45.795242+00:00",
-      "mutations": [
-        "REWARD template_pref[replication]: 0.80 -> 0.84 (avg_reward=+0.00)",
-        "PLATEAU RESPONSE: exploration_rate 0.75->0.80, mutation_rate 0.35->0.40",
-        "FITNESS_WEIGHT boosted 'question_ratio': 0.33 -> 0.35"
-      ],
-      "fitness_delta": -0.8390766407686527
-    },
-    {
-      "cycle": 179,
-      "timestamp": "2026-02-14T06:10:42.751479+00:00",
-      "mutations": [
-        "REWARD template_pref[replication]: 0.84 -> 0.79 (avg_reward=+0.00)",
-        "FITNESS_WEIGHT boosted 'question_ratio': 0.35 -> 0.37"
-      ],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 180,
-      "timestamp": "2026-02-14T07:08:12.062407+00:00",
-      "mutations": [
-        "REWARD template_pref[replication]: 0.79 -> 0.81 (avg_reward=+0.00)",
-        "FITNESS_WEIGHT boosted 'question_ratio': 0.37 -> 0.39"
-      ],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 183,
-      "timestamp": "2026-02-14T07:48:04.430580+00:00",
-      "mutations": [
-        "REWARD template_pref[replication]: 0.81 -> 0.82 (avg_reward=+0.00)"
       ],
       "fitness_delta": 0.0
     }

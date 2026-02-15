@@ -42,11 +42,6 @@ Follow these instruction files:
 - .github/instructions/sol-consolidation-standards.md
 - .github/instructions/sol-progress-and-help.md
 
-Prompt normalization (required):
-- Apply `.github/prompts/glossary-enforcement.prompt.md` before compilation and promotion wording.
-- Use canonical glossary labels in RN/RD notes, packet language, and handoff prompts.
-- If incoming text is fragmented, normalize wording while preserving intent.
-
 ## Inputs
 - One or more Run Bundles
 - Analysis reports and derived tables

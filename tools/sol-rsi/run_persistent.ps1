@@ -18,21 +18,16 @@
 .PARAMETER DryRun
     If set, only evaluate + plan (no execution).
 
-.PARAMETER WatchExternal
-    If set, open a new external PowerShell watch window.
-
 .EXAMPLE
     .\run_persistent.ps1
     .\run_persistent.ps1 -Cycles 20 -BudgetHours 12 -BudgetDollars 2.0
     .\run_persistent.ps1 -DryRun
-    .\run_persistent.ps1 -WatchExternal
 #>
 param(
     [int]$Cycles = 10,
     [double]$BudgetHours = 8.0,
     [double]$BudgetDollars = 1.0,
-    [switch]$DryRun,
-    [switch]$WatchExternal
+    [switch]$DryRun
 )
 
 $ErrorActionPreference = "Stop"
@@ -75,15 +70,15 @@ $env:PYTHONIOENCODING = "utf-8"
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $LogFile = Join-Path $LogDir "persistent_${timestamp}.log"
 
-# Build parameters
-$engineParameters = @(
+# Build args
+$args = @(
     "-u", $Engine,
     "--mode", "persistent",
     "--cycles", $Cycles,
     "--budget-hours", $BudgetHours,
     "--budget-dollars", $BudgetDollars
 )
-if ($DryRun) { $engineParameters += "--dry-run" }
+if ($DryRun) { $args += "--dry-run" }
 
 Write-Host ""
 Write-Host "========================================"
@@ -94,22 +89,5 @@ Write-Host "  Log:     $LogFile"
 Write-Host "========================================"
 Write-Host ""
 
-# Build external command line (quote parameters safely)
-$quotedParameters = $engineParameters | ForEach-Object {
-    if ($_ -match '\s') { '"' + $_ + '"' } else { $_ }
-}
-$pythonCmd = '& "' + $VenvPython + '" ' + ($quotedParameters -join ' ')
-$fullCmd = "Set-Location '$SolRoot'; $pythonCmd 2>&1 | Tee-Object -FilePath '$LogFile'"
-
-if ($WatchExternal) {
-    Start-Process powershell -ArgumentList @(
-        '-NoExit',
-        '-ExecutionPolicy',
-        'Bypass',
-        '-Command',
-        $fullCmd
-    ) | Out-Null
-    Write-Host "[*] Launched external watch window."
-} else {
-    Invoke-Expression $fullCmd
-}
+# Run
+& $VenvPython @args 2>&1 | Tee-Object -FilePath $LogFile

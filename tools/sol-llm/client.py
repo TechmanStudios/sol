@@ -3,8 +3,10 @@ SOL LLM — Client
 ==================
 Unified LLM client for the SOL RSI pipeline.
 
-Uses OpenAI-compatible endpoints configured in models.json
-(for example GitHub Models, OpenAI direct, or Modal GLM-5).
+Uses GitHub Models API (OpenAI-compatible endpoint) with:
+  - Primary:   GPT-5 Chat
+  - Fallback:  GPT-5 Nano (reasoning model)
+  - Reasoning: OpenAI o3
 
 Features:
   - Automatic fallback on primary failure
@@ -34,8 +36,6 @@ from __future__ import annotations
 import json
 import os
 import time
-import random
-import threading
 from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -43,14 +43,14 @@ from typing import Any
 
 try:
     from .config import (
-        PROVIDERS,
+        GITHUB_MODELS_ENDPOINT,
         MODELS,
         DEFAULT_BUDGET,
         TASK_TEMPERATURES,
     )
 except ImportError:
     from config import (
-        PROVIDERS,
+        GITHUB_MODELS_ENDPOINT,
         MODELS,
         DEFAULT_BUDGET,
         TASK_TEMPERATURES,
@@ -62,7 +62,7 @@ except ImportError:
 # ---------------------------------------------------------------------------
 
 def _load_dotenv():
-    """Load .env from SOL root for provider API keys if needed."""
+    """Load .env from SOL root if GITHUB_TOKEN is not already set."""
     if os.environ.get("GITHUB_TOKEN") or os.environ.get("GITHUB_MODELS_TOKEN"):
         return  # already configured
     env_path = Path(__file__).resolve().parent.parent.parent / ".env"
@@ -79,29 +79,6 @@ def _load_dotenv():
                 os.environ[key] = val
 
 _load_dotenv()
-
-
-def _env_budget_overrides() -> dict[str, Any]:
-    """Read optional runtime budget overrides from environment variables."""
-    env_to_key: dict[str, tuple[str, type]] = {
-        "SOL_LLM_MAX_TOKENS": ("max_tokens_per_call", int),
-        "SOL_LLM_MAX_RETRIES": ("max_retries", int),
-        "SOL_LLM_RETRY_DELAY_SEC": ("retry_delay_sec", float),
-        "SOL_LLM_RETRY_JITTER_SEC": ("retry_jitter_sec", float),
-        "SOL_LLM_TIMEOUT_SEC": ("timeout_sec", float),
-        "SOL_LLM_REQUEST_TIMEOUT_SEC": ("request_timeout_sec", float),
-        "SOL_LLM_LOCK_TIMEOUT_SEC": ("lock_timeout_sec", float),
-    }
-    overrides: dict[str, Any] = {}
-    for env_name, (budget_key, cast_type) in env_to_key.items():
-        raw = os.environ.get(env_name)
-        if raw is None or raw == "":
-            continue
-        try:
-            overrides[budget_key] = cast_type(raw)
-        except (TypeError, ValueError):
-            continue
-    return overrides
 
 
 # ---------------------------------------------------------------------------
@@ -133,8 +110,6 @@ class LLMResponse:
 
 _SOL_ROOT = Path(__file__).resolve().parent.parent.parent
 _COST_LEDGER = _SOL_ROOT / "data" / "rsi" / "llm_cost_ledger.jsonl"
-_REQUEST_LOCK = _SOL_ROOT / "data" / "rsi" / "llm_request.lock"
-_LOCK_GUARD = threading.Lock()
 
 
 def _log_cost(response: LLMResponse):
@@ -150,7 +125,6 @@ def _log_cost(response: LLMResponse):
         "cost_usd": response.cost_usd,
         "latency_sec": response.latency_sec,
         "success": response.success,
-        "error": response.error,
     }
     with open(_COST_LEDGER, "a", encoding="utf-8") as f:
         f.write(json.dumps(entry) + "\n")
@@ -175,190 +149,6 @@ def load_daily_cost() -> float:
     return total
 
 
-def _acquire_single_flight_lock(timeout_sec: float, stale_after_sec: float = 300.0) -> None:
-    """Acquire a process-wide + cross-process lock for one in-flight LLM request."""
-    start = time.time()
-    poll_sec = 0.2
-    _REQUEST_LOCK.parent.mkdir(parents=True, exist_ok=True)
-
-    while True:
-        try:
-            with _LOCK_GUARD:
-                fd = os.open(str(_REQUEST_LOCK), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-                with os.fdopen(fd, "w", encoding="utf-8") as f:
-                    f.write(f"pid={os.getpid()}\n")
-                    f.write(f"ts={datetime.now(timezone.utc).isoformat()}\n")
-            return
-        except FileExistsError:
-            try:
-                age_sec = time.time() - _REQUEST_LOCK.stat().st_mtime
-                if age_sec > stale_after_sec:
-                    _REQUEST_LOCK.unlink(missing_ok=True)
-                    continue
-            except FileNotFoundError:
-                continue
-
-            if (time.time() - start) >= timeout_sec:
-                raise TimeoutError(
-                    f"Timed out waiting for single-flight LLM lock after {timeout_sec:.1f}s"
-                )
-            time.sleep(poll_sec)
-
-
-def _release_single_flight_lock() -> None:
-    """Release single-flight lock if held."""
-    with _LOCK_GUARD:
-        _REQUEST_LOCK.unlink(missing_ok=True)
-
-
-def _extract_message_text(message: Any) -> str:
-    """Extract text from OpenAI-compatible chat message variants."""
-    content = getattr(message, "content", None)
-    if isinstance(content, str) and content.strip():
-        return content
-    if isinstance(content, list):
-        parts: list[str] = []
-        for item in content:
-            if isinstance(item, dict):
-                text = item.get("text")
-                if isinstance(text, str) and text:
-                    parts.append(text)
-        if parts:
-            return "\n".join(parts)
-
-    reasoning = getattr(message, "reasoning_content", None)
-    if isinstance(reasoning, str) and reasoning.strip():
-        return reasoning
-    return ""
-
-
-def _strip_markdown_fence(text: str) -> str:
-    """Strip a top-level markdown code fence if present."""
-    stripped = text.strip()
-    if not stripped.startswith("```"):
-        return stripped
-    lines = stripped.splitlines()
-    if len(lines) < 2:
-        return stripped
-    if lines[-1].strip() == "```":
-        return "\n".join(lines[1:-1]).strip()
-    return stripped
-
-
-def _extract_fenced_json_block(text: str) -> str | None:
-    """Extract JSON from a fenced markdown block if one exists."""
-    raw = text
-    fence = "```"
-    idx = 0
-    while True:
-        start = raw.find(fence, idx)
-        if start < 0:
-            return None
-        lang_end = raw.find("\n", start)
-        if lang_end < 0:
-            return None
-        header = raw[start + 3:lang_end].strip().lower()
-        end = raw.find(fence, lang_end + 1)
-        if end < 0:
-            return None
-        body = raw[lang_end + 1:end].strip()
-        if header in {"", "json", "jsonc", "javascript", "js"} and body:
-            if body.startswith("{") or body.startswith("["):
-                return body
-        idx = end + 3
-
-
-def _extract_first_balanced_json(text: str) -> str | None:
-    """Extract the first balanced JSON object/array from free-form text."""
-    starts: list[tuple[int, str, str]] = []
-    obj_idx = text.find("{")
-    arr_idx = text.find("[")
-    if obj_idx >= 0:
-        starts.append((obj_idx, "{", "}"))
-    if arr_idx >= 0:
-        starts.append((arr_idx, "[", "]"))
-    if not starts:
-        return None
-
-    starts.sort(key=lambda t: t[0])
-    for start, opener, closer in starts:
-        depth = 0
-        in_string = False
-        escaped = False
-        for pos in range(start, len(text)):
-            ch = text[pos]
-            if in_string:
-                if escaped:
-                    escaped = False
-                elif ch == "\\":
-                    escaped = True
-                elif ch == '"':
-                    in_string = False
-                continue
-
-            if ch == '"':
-                in_string = True
-            elif ch == opener:
-                depth += 1
-            elif ch == closer:
-                depth -= 1
-                if depth == 0:
-                    return text[start:pos + 1]
-    return None
-
-
-def _parse_json_from_text(content: str) -> tuple[dict | list | None, str | None]:
-    """Parse JSON from strict or hybrid markdown/text response."""
-    text = content.strip()
-    if not text:
-        return None, "empty response"
-
-    candidates: list[str] = []
-    candidates.append(text)
-
-    unfenced = _strip_markdown_fence(text)
-    if unfenced not in candidates:
-        candidates.append(unfenced)
-
-    fenced = _extract_fenced_json_block(text)
-    if fenced and fenced not in candidates:
-        candidates.append(fenced)
-
-    balanced = _extract_first_balanced_json(text)
-    if balanced and balanced not in candidates:
-        candidates.append(balanced)
-
-    last_error: str | None = None
-    for candidate in candidates:
-        try:
-            parsed = json.loads(candidate)
-            if isinstance(parsed, (dict, list)):
-                return parsed, None
-            last_error = "JSON root is not object/array"
-        except json.JSONDecodeError as exc:
-            last_error = str(exc)
-
-    return None, f"JSON parse failed: {last_error or 'unknown parse error'}"
-
-
-def _is_retryable_error(error: str | None) -> bool:
-    """Return True for transient transport/provider errors worth retrying."""
-    if not error:
-        return False
-    text = error.lower()
-    retryable_tokens = [
-        "timeout",
-        "timed out",
-        "502",
-        "503",
-        "504",
-        "connection",
-        "rate limit",
-        "temporarily unavailable",
-    ]
-    return any(token in text for token in retryable_tokens)
-
-
 # ---------------------------------------------------------------------------
 # Client
 # ---------------------------------------------------------------------------
@@ -376,8 +166,7 @@ class SolLLM:
         budget: dict | None = None,
         verbose: bool = True,
     ):
-        env_overrides = _env_budget_overrides()
-        self.budget = {**DEFAULT_BUDGET, **env_overrides, **(budget or {})}
+        self.budget = {**DEFAULT_BUDGET, **(budget or {})}
         self.verbose = verbose
 
         # Cumulative tracking for this session
@@ -386,6 +175,18 @@ class SolLLM:
         self.session_tokens_in = 0
         self.session_tokens_out = 0
 
+        # Resolve API key — check multiple env var names
+        self.api_key = (
+            os.environ.get("GITHUB_TOKEN")
+            or os.environ.get("GITHUB_MODELS_TOKEN")
+            or os.environ.get("GH_TOKEN")
+        )
+        if not self.api_key:
+            raise EnvironmentError(
+                "No GitHub token found. Set GITHUB_TOKEN environment variable "
+                "with a fine-grained PAT that has GitHub Models API access."
+            )
+
         # Lazy-import openai to avoid top-level dependency
         try:
             from openai import OpenAI
@@ -393,45 +194,11 @@ class SolLLM:
             raise ImportError(
                 "openai package required: pip install openai"
             )
-        self._openai_cls = OpenAI
-        self._provider_clients: dict[str, Any] = {}
 
-    @staticmethod
-    def _resolve_api_key(provider_cfg: dict) -> str | None:
-        """Resolve API key from provider env var."""
-        env_var = provider_cfg.get("env_var", "MODAL_API_KEY")
-        return os.environ.get(env_var)
-
-    def _get_client_for_provider(self, provider_key: str):
-        """Get or create OpenAI-compatible client for provider."""
-        if provider_key in self._provider_clients:
-            return self._provider_clients[provider_key]
-
-        provider_cfg = PROVIDERS.get(provider_key)
-        if not provider_cfg:
-            raise KeyError(f"Unknown provider '{provider_key}' in model config")
-
-        api_key = self._resolve_api_key(provider_cfg)
-        if not api_key:
-            env_var = provider_cfg.get("env_var", "API_KEY")
-            raise EnvironmentError(
-                f"Missing API key for provider '{provider_key}'. Set {env_var}."
-            )
-
-        request_timeout = float(
-            self.budget.get(
-                "request_timeout_sec",
-                self.budget.get("timeout_sec", 75),
-            )
+        self._client = OpenAI(
+            base_url=GITHUB_MODELS_ENDPOINT,
+            api_key=self.api_key,
         )
-
-        client = self._openai_cls(
-            base_url=provider_cfg["endpoint"],
-            api_key=api_key,
-            timeout=request_timeout,
-        )
-        self._provider_clients[provider_key] = client
-        return client
 
     # ------------------------------------------------------------------
     # Budget checks
@@ -464,7 +231,6 @@ class SolLLM:
         model_cfg = MODELS[model_key]
         model_id = model_cfg["id"]
         is_reasoning = model_cfg.get("is_reasoning", False)
-        provider_key = model_cfg.get("provider", "modal_glm5")
 
         response = LLMResponse(
             model=model_id,
@@ -488,22 +254,9 @@ class SolLLM:
                 if json_mode:
                     kwargs["response_format"] = {"type": "json_object"}
 
-            client = self._get_client_for_provider(provider_key)
+            result = self._client.chat.completions.create(**kwargs)
 
-            lock_timeout = float(
-                self.budget.get(
-                    "lock_timeout_sec",
-                    self.budget.get("timeout_sec", 30),
-                )
-            )
-            stale_timeout = max(lock_timeout * 2.0, 300.0)
-            _acquire_single_flight_lock(timeout_sec=lock_timeout, stale_after_sec=stale_timeout)
-            try:
-                result = client.chat.completions.create(**kwargs)
-            finally:
-                _release_single_flight_lock()
-
-            response.content = _extract_message_text(result.choices[0].message)
+            response.content = result.choices[0].message.content or ""
             response.input_tokens = getattr(result.usage, "prompt_tokens", 0)
             response.output_tokens = getattr(result.usage, "completion_tokens", 0)
             response.success = True
@@ -512,9 +265,7 @@ class SolLLM:
             response.success = False
             response.error = f"{type(e).__name__}: {e}"
             if self.verbose:
-                print(
-                    f"    [LLM] {model_key} ({provider_key}/{model_id}) error: {response.error}"
-                )
+                print(f"    [LLM] {model_key} ({model_id}) error: {response.error}")
 
         response.latency_sec = round(time.time() - t0, 2)
 
@@ -610,23 +361,9 @@ class SolLLM:
                 "Return ONLY valid JSON, no markdown fencing."
             )
 
-        strict_system = (system or "") + schema_instruction
-        if not strict_system.strip():
-            strict_system = "Respond with valid JSON only. No markdown fencing."
-
-        hybrid_instruction = (
-            "\n\nHYBRID FORMAT MODE:\n"
-            "- You may include a brief markdown explanation.\n"
-            "- Include exactly one fenced ```json block with the final payload.\n"
-            "- The JSON block must be valid and self-contained.\n"
-            "- If unsure, return only the JSON block."
-        )
-        hybrid_system = (system or "") + schema_instruction + hybrid_instruction
-        if not hybrid_system.strip():
-            hybrid_system = (
-                "Return markdown optionally, but always include exactly one fenced "
-                "```json block containing valid JSON."
-            )
+        full_system = (system or "") + schema_instruction
+        if not full_system.strip():
+            full_system = "Respond with valid JSON only. No markdown fencing."
 
         ok, reason = self._check_budget()
         if not ok:
@@ -639,48 +376,35 @@ class SolLLM:
         temp = temperature if temperature is not None else TASK_TEMPERATURES.get(task, 0.4)
         max_tok = max_tokens or self.budget["max_tokens_per_call"]
 
-        strict_messages = [
-            {"role": "system", "content": strict_system},
-            {"role": "user", "content": prompt},
-        ]
-        hybrid_messages = [
-            {"role": "system", "content": hybrid_system},
+        messages = [
+            {"role": "system", "content": full_system},
             {"role": "user", "content": prompt},
         ]
 
-        def _attempt_parse(
-            messages: list[dict],
-            model_key: str,
-            *,
-            json_mode: bool,
-            label: str,
-        ) -> LLMResponse:
-            attempt = self._try_with_retries(messages, model_key, max_tok, temp, json_mode=json_mode)
-            if not attempt.success:
-                return attempt
-            parsed, parse_error = _parse_json_from_text(attempt.content)
-            if parsed is not None:
-                attempt.parsed = parsed
-                return attempt
-            attempt.success = False
-            attempt.error = parse_error
-            if self.verbose and parse_error:
-                print(f"    [LLM] {label} parse error: {parse_error}")
-            return attempt
-
-        response = _attempt_parse(strict_messages, "primary", json_mode=True, label="primary strict")
-
+        # Try primary with JSON mode
+        response = self._try_with_retries(messages, "primary", max_tok, temp, json_mode=True)
         if not response.success:
             if self.verbose:
-                print("    [LLM] Primary strict JSON failed, trying fallback strict...")
-            response = _attempt_parse(strict_messages, "fallback", json_mode=True, label="fallback strict")
-
-        if not response.success:
-            if self.verbose:
-                print("    [LLM] Strict JSON failed, trying hybrid markdown+JSON...")
-            response = _attempt_parse(hybrid_messages, "fallback", json_mode=False, label="fallback hybrid")
+                print(f"    [LLM] Primary JSON failed, trying fallback...")
+            response = self._try_with_retries(messages, "fallback", max_tok, temp, json_mode=True)
 
         response.task = task
+
+        # Parse JSON from response
+        if response.success and response.content:
+            try:
+                # Strip markdown fencing if model included it anyway
+                text = response.content.strip()
+                if text.startswith("```"):
+                    text = text.split("\n", 1)[1] if "\n" in text else text[3:]
+                    if text.endswith("```"):
+                        text = text[:-3]
+                response.parsed = json.loads(text)
+            except json.JSONDecodeError as e:
+                response.parsed = None
+                response.error = f"JSON parse failed: {e}"
+                if self.verbose:
+                    print(f"    [LLM] JSON parse error: {e}")
 
         # Track & log
         self.session_calls += 1
@@ -707,23 +431,17 @@ class SolLLM:
         """Try a model with retries."""
         max_retries = self.budget["max_retries"]
         delay = self.budget["retry_delay_sec"]
-        jitter = float(self.budget.get("retry_jitter_sec", 1.0))
 
         last_response = LLMResponse(success=False, error="no attempts made")
         for attempt in range(max_retries + 1):
             if attempt > 0:
-                sleep_sec = delay + random.uniform(0.0, max(0.0, jitter))
                 if self.verbose:
-                    print(
-                        f"    [LLM] Retry {attempt}/{max_retries} after {sleep_sec:.1f}s..."
-                    )
-                time.sleep(sleep_sec)
+                    print(f"    [LLM] Retry {attempt}/{max_retries} after {delay}s...")
+                time.sleep(delay)
                 delay *= 2  # Exponential backoff
 
             response = self._call_model(messages, model_key, max_tokens, temperature, json_mode)
             if response.success:
-                return response
-            if attempt < max_retries and not _is_retryable_error(response.error):
                 return response
             last_response = response
 
@@ -748,12 +466,9 @@ class SolLLM:
 
     @staticmethod
     def is_available() -> bool:
-        """Check if any configured model provider has a usable API key."""
-        for model_cfg in MODELS.values():
-            provider_key = model_cfg.get("provider", "modal_glm5")
-            provider_cfg = PROVIDERS.get(provider_key, {})
-            env_var = provider_cfg.get("env_var", "MODAL_API_KEY")
-            key = os.environ.get(env_var)
-            if key:
-                return True
-        return False
+        """Check if an LLM client can be created (API key present)."""
+        return bool(
+            os.environ.get("GITHUB_TOKEN")
+            or os.environ.get("GITHUB_MODELS_TOKEN")
+            or os.environ.get("GH_TOKEN")
+        )

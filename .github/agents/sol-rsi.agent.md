@@ -108,4 +108,3 @@ The fitness score (0–100) is computed from domain packet analysis:
 - Respect guardrails.json limits
 - In interactive mode, present the plan and wait — do not auto-execute
 - In cron/persistent mode, execute via orchestrator API
-- Apply `.github/prompts/glossary-enforcement.prompt.md` before planning/output to enforce canonical terminology and repair fragmented wording without changing intent

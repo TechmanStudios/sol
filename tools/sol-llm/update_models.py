@@ -29,26 +29,6 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 _DIR = Path(__file__).resolve().parent
 _MODELS_JSON = _DIR / "models.json"
-_SOL_ROOT = _DIR.parent.parent
-
-
-def _load_dotenv() -> None:
-    """Load .env from SOL root for API keys if not already set in process env."""
-    env_path = _SOL_ROOT / ".env"
-    if not env_path.exists():
-        return
-    with open(env_path, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("#") or "=" not in line:
-                continue
-            key, _, val = line.partition("=")
-            key, val = key.strip(), val.strip()
-            if key and val and key not in os.environ:
-                os.environ[key] = val
-
-
-_load_dotenv()
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -71,8 +51,11 @@ def _save(cfg: dict) -> None:
 
 def _get_api_key(provider_cfg: dict) -> str | None:
     """Resolve API key for a provider from env vars."""
-    env_var = provider_cfg.get("env_var", "MODAL_API_KEY")
-    return os.environ.get(env_var)
+    env_var = provider_cfg.get("env_var", "GITHUB_TOKEN")
+    key = os.environ.get(env_var)
+    if not key and env_var == "GITHUB_TOKEN":
+        key = os.environ.get("GITHUB_MODELS_TOKEN") or os.environ.get("GH_TOKEN")
+    return key
 
 
 def _make_client(provider_cfg: dict, api_key: str):
@@ -82,26 +65,6 @@ def _make_client(provider_cfg: dict, api_key: str):
         base_url=provider_cfg["endpoint"],
         api_key=api_key,
     )
-
-
-def _extract_text(message) -> str:
-    """Extract text from OpenAI-compatible message variants."""
-    content = getattr(message, "content", None)
-    if isinstance(content, str) and content.strip():
-        return content
-    if isinstance(content, list):
-        parts = []
-        for item in content:
-            if isinstance(item, dict):
-                text = item.get("text")
-                if isinstance(text, str) and text:
-                    parts.append(text)
-        if parts:
-            return "\n".join(parts)
-    reasoning = getattr(message, "reasoning_content", None)
-    if isinstance(reasoning, str) and reasoning.strip():
-        return reasoning
-    return ""
 
 
 # ---------------------------------------------------------------------------
@@ -118,7 +81,7 @@ def cmd_show(cfg: dict, _args) -> None:
     print("╠══════════════════════════════════════════════════════════════╣")
 
     for slot_name, slot in slots.items():
-        provider_key = slot.get("provider", "modal_glm5")
+        provider_key = slot.get("provider", "github")
         provider = providers.get(provider_key, {})
         env_var = provider.get("env_var", "?")
         has_key = "✓" if _get_api_key(provider) else "✗"
@@ -141,7 +104,7 @@ def cmd_set(cfg: dict, args) -> None:
     """Swap a model slot to a new model ID."""
     slot = args.slot
     model_id = args.model_id
-    provider = args.provider or cfg["slots"].get(slot, {}).get("provider", "modal_glm5")
+    provider = args.provider or cfg["slots"].get(slot, {}).get("provider", "github")
     reasoning = args.reasoning
 
     if slot not in cfg.get("slots", {}):
@@ -186,7 +149,7 @@ def cmd_set(cfg: dict, args) -> None:
 
 
 def cmd_scan(cfg: dict, _args) -> None:
-    """Scan configured provider APIs for available models."""
+    """Scan GitHub Models API for all available models."""
     providers = cfg.get("providers", {})
     catalog = cfg.get("model_catalog", {})
 
@@ -283,7 +246,7 @@ def cmd_test(cfg: dict, _args) -> None:
 
     all_ok = True
     for slot_name, slot in slots.items():
-        provider_key = slot.get("provider", "modal_glm5")
+        provider_key = slot.get("provider", "github")
         provider_cfg = providers.get(provider_key, {})
         model_id = slot["id"]
         is_reasoning = slot.get("is_reasoning", False)
@@ -310,7 +273,7 @@ def cmd_test(cfg: dict, _args) -> None:
 
             result = client.chat.completions.create(**kwargs)
             elapsed = time.time() - t0
-            content = _extract_text(result.choices[0].message).strip()[:50]
+            content = (result.choices[0].message.content or "").strip()[:50]
             tokens = getattr(result.usage, "total_tokens", 0)
 
             print(f"  ✓ {slot_name.upper():10s} ({model_id}) — {elapsed:.1f}s, "
