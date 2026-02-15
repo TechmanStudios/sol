@@ -63,6 +63,8 @@ Use when you want small, testable code edits applied precisely.
 Use when you want explicit agent composition / workflow orchestration aligned to this repo’s structure conventions (instructions/prompts/skills), or when you’re building/maintaining the SOL workflow framework itself.
 - Keywords/phrases: “structure manager”, “orchestrate agents”, “which prompt file”, “which skill”, “update the kit graph”, “workflow template”, “governance”.
 - Typical outputs: routing decisions, prompt/skill selections, structured workflows.
+- Scale-up cues: “parallel infra”, “GPU migration”, “many simultaneous calls”, “throughput scaling”, “scale-ready checklist”.
+- Required behavior on scale-up cues: apply `.github/prompts/scale-ready-checklist.prompt.md` and then route to `sol-lab-master` or `sol-experiment-runner` as appropriate.
 
 ### Plan
 Use when you want a multi-step plan before implementation (especially for ambiguous or multi-phase work).

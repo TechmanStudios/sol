@@ -36,6 +36,11 @@ Follow these instruction files:
 - .github/instructions/sol-run-naming-and-exports.md
 - .github/instructions/sol-progress-and-help.md
 
+Prompt normalization (required):
+- Apply `.github/prompts/glossary-enforcement.prompt.md` before analysis planning and reporting.
+- Use canonical glossary labels in metrics, tables, interpretations, and handoff prompts.
+- If incoming text is fragmented, normalize wording while preserving intent.
+
 ## Inputs
 - Exports: *_MASTER_summary.csv, *_MASTER_busTrace.csv, *_repTransition_curve.csv
 - Detector definitions/windows (or [UNKNOWN])

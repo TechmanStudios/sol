@@ -78,6 +78,7 @@ Pipeline runs are saved to `data/pipeline_runs/PL-{timestamp}/`:
 4. **Evolve is optional**: Only runs if `--evolve-candidates` is specified.
 5. **Memory is additive**: Hippocampus stage only adds/reinforces/decays memory nodes.
    Memory node IDs  >= 1000.  Core graph is never touched.
+6. **Prompt normalization**: Apply `.github/prompts/glossary-enforcement.prompt.md` before stage planning or report output; use canonical glossary labels and normalize fragmented wording without changing intent.
 
 ## Handoffs
 

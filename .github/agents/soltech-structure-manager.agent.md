@@ -41,3 +41,11 @@ Responsibilities:
 - Write derived artifacts (notes, consolidations, proof packets) into solKnowledge/.
 - Choose the appropriate subagent for specialized tasks.
 - Keep changes small and reversible.
+
+Prompt normalization (required):
+- Apply `.github/prompts/glossary-enforcement.prompt.md` before task-specific reasoning.
+- Use canonical glossary terms in outputs and handoff prompts.
+- If incoming text is fragmented, normalize grammar while preserving intent.
+
+Scale-up planning rule (required):
+- For any request involving high-parallel/GPU migration, many simultaneous calls, or throughput benchmarking, apply `.github/prompts/scale-ready-checklist.prompt.md` before routing or implementation.

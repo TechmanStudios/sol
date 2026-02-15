@@ -415,4 +415,60 @@ The Open Source Environment is where this evolves in public:
 
 ---
 
+## 7. Practical Operations (VS Code Default + External Watch Option)
+
+For SOL testing and experiments, the default operational pattern is:
+
+1. launch inside **VS Code Terminal** (new tab),
+2. keep logs visible in that VS Code terminal tab,
+3. use external watch windows only when explicitly requested,
+4. avoid overlapping duplicate runs.
+
+### 7.1 Standard RSI launch (VS Code terminal default)
+
+Use the RSI launcher (runs inline in the current VS Code terminal by default):
+
+```powershell
+tools/sol-rsi/run_persistent.ps1 -Cycles 6 -BudgetHours 6
+```
+
+Optional (open external watch window):
+
+```powershell
+tools/sol-rsi/run_persistent.ps1 -Cycles 6 -BudgetHours 6 -WatchExternal
+```
+
+From VS Code Tasks:
+
+- `RSI: Persistent (VS Code Tab)` → default run in VS Code terminal tab
+- `RSI: Persistent (External Watch)` → starts an external PowerShell watch window
+
+### 7.2 Generic external launcher (any Sol experiment)
+
+Use the generic launcher to run any command in a separate external window:
+
+```powershell
+tools/launch_external_experiment.ps1 -Command "tools/sol-rsi/run_persistent.ps1 -Cycles 6 -BudgetHours 6"
+```
+
+Example for a one-off RSI cycle:
+
+```powershell
+tools/launch_external_experiment.ps1 -Command "G:/docs/TechmanStudios/sol/.venv/Scripts/python.exe tools/sol-rsi/rsi_engine.py --mode cron --cycles 1 --safe-llm"
+```
+
+### 7.3 Access model (external window vs VS Code Copilot)
+
+External PowerShell experiments run as normal local processes and have:
+
+- the same file-system access as your user account,
+- access to `.env`/environment variables available to that process,
+- access to all repo files and scripts under this workspace.
+
+They do **not** have Copilot chat/tool context (for example, no direct access to the internal terminal-session IDs or chat memory).
+
+Operationally: they can run the same Sol code, but they are not the Copilot runtime itself.
+
+---
+
 *End of README_SOL*

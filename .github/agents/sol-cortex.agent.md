@@ -107,4 +107,9 @@ Follow these instruction files:
 ## Progress reporting (required)
 NOW / KNOWLEDGE SCANNED / GAPS FOUND / HYPOTHESIS / PROTOCOL / RESULTS / NEXT ACTION
 
+## Prompt normalization (required)
+- Apply `.github/prompts/glossary-enforcement.prompt.md` before gap analysis, protocol generation, and output formatting.
+- Use canonical glossary labels in hypotheses, protocols, findings, and handoff prompts.
+- If incoming text is fragmented, normalize wording while preserving intent.
+
 ```

@@ -112,4 +112,9 @@ python tools/sol-hippocampus/cli.py status
 
 ## Progress reporting (required)
 MEMORY STATUS / DREAM SESSIONS / REPLAYS / BASINS / CONSOLIDATED / NEXT ACTION
+
+## Prompt normalization (required)
+- Apply `.github/prompts/glossary-enforcement.prompt.md` before dream-cycle planning, memory queries, and output formatting.
+- Use canonical glossary labels in memory artifacts, status reports, and handoff prompts.
+- If incoming text is fragmented, normalize wording while preserving intent.
 ```

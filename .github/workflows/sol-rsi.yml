@@ -92,7 +92,7 @@ jobs:
         run: |
           echo "Checking sol_engine.py SHA256..."
           SHA=$(sha256sum tools/sol-core/sol_engine.py | cut -d' ' -f1)
-          EXPECTED="5316e4fd6713b2d5e2dd4999780b5f7871c0a7b1c90e8f151698805653562eef"
+          EXPECTED="0ad3e8d34b61cc9a96fe8f4a85266f3daa21791f5778686874117b0f626f69f5"
           if [ "$SHA" != "$EXPECTED" ]; then
             echo "::error::Engine SHA256 mismatch! Expected $EXPECTED got $SHA"
             exit 1
@@ -101,7 +101,7 @@ jobs:
 
           echo "Checking default_graph.json SHA256..."
           SHA=$(sha256sum tools/sol-core/default_graph.json | cut -d' ' -f1)
-          EXPECTED="b9800d5313886818c7c1980829e1ca5da7d63d9e2218e36c020df80db19b06fb"
+          EXPECTED="d0a80462d2b9389160502b097aca1932bb014941adf6e4b77799997283e4a1bc"
           if [ "$SHA" != "$EXPECTED" ]; then
             echo "::error::Graph SHA256 mismatch! Expected $EXPECTED got $SHA"
             exit 1

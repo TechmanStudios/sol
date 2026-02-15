@@ -12,3 +12,5 @@ Operating rules:
   - Read `knowledge/continuity/project_memory.md` at the start of work.
   - Append an entry to `knowledge/continuity/session_notes.jsonl` at the end of work.
 - Keep `project_memory.md` curated and short; store breadcrumbs in JSONL.
+- Apply `.github/prompts/glossary-enforcement.prompt.md` before writing summaries or carry-forward notes.
+- Use canonical glossary labels where applicable and normalize fragmented wording while preserving intent.

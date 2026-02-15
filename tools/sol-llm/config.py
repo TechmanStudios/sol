@@ -33,20 +33,16 @@ def _save_json_config(cfg: dict) -> None:
 _CFG = _load_json_config()
 
 # ---------------------------------------------------------------------------
-# GitHub Models API endpoint
+# Provider registry
 # ---------------------------------------------------------------------------
 _providers = _CFG.get("providers", {})
-_github_provider = _providers.get("github", {})
-GITHUB_MODELS_ENDPOINT = _github_provider.get(
-    "endpoint", "https://models.inference.ai.azure.com"
-)
 
 # All providers (for multi-provider support in client.py)
 PROVIDERS = _providers or {
-    "github": {
-        "name": "GitHub Models",
-        "endpoint": "https://models.inference.ai.azure.com",
-        "env_var": "GITHUB_TOKEN",
+    "modal_glm5": {
+        "name": "Modal GLM-5",
+        "endpoint": "https://api.us-west-2.modal.direct/v1",
+        "env_var": "MODAL_API_KEY",
         "sdk": "openai",
     }
 }
@@ -63,7 +59,7 @@ if _json_slots:
             "id": slot_data["id"],
             "name": slot_data.get("name", slot_data["id"]),
             "role": slot_name,
-            "provider": slot_data.get("provider", "github"),
+            "provider": slot_data.get("provider", "modal_glm5"),
             "context_window": slot_data.get("context_window", 128_000),
             "cost_per_1k_input": slot_data.get("cost_per_1k_input", 0.001),
             "cost_per_1k_output": slot_data.get("cost_per_1k_output", 0.003),
@@ -73,34 +69,34 @@ else:
     # Hardcoded fallback if models.json is missing
     MODELS = {
         "primary": {
-            "id": "gpt-5-chat",
-            "name": "GPT-5 Chat",
+            "id": "zai-org/GLM-5-FP8",
+            "name": "GLM-5 FP8",
             "role": "primary",
-            "provider": "github",
-            "context_window": 1_047_576,
-            "cost_per_1k_input": 0.005,
-            "cost_per_1k_output": 0.015,
+            "provider": "modal_glm5",
+            "context_window": 128_000,
+            "cost_per_1k_input": 0.0,
+            "cost_per_1k_output": 0.0,
             "is_reasoning": False,
         },
         "fallback": {
-            "id": "gpt-5-nano",
-            "name": "GPT-5 Nano",
+            "id": "zai-org/GLM-5-FP8",
+            "name": "GLM-5 FP8",
             "role": "fallback",
-            "provider": "github",
-            "context_window": 1_047_576,
-            "cost_per_1k_input": 0.0004,
-            "cost_per_1k_output": 0.0016,
-            "is_reasoning": True,
+            "provider": "modal_glm5",
+            "context_window": 128_000,
+            "cost_per_1k_input": 0.0,
+            "cost_per_1k_output": 0.0,
+            "is_reasoning": False,
         },
         "reasoning": {
-            "id": "o3",
-            "name": "OpenAI o3",
+            "id": "zai-org/GLM-5-FP8",
+            "name": "GLM-5 FP8",
             "role": "reasoning",
-            "provider": "github",
-            "context_window": 200_000,
-            "cost_per_1k_input": 0.002,
-            "cost_per_1k_output": 0.008,
-            "is_reasoning": True,
+            "provider": "modal_glm5",
+            "context_window": 128_000,
+            "cost_per_1k_input": 0.0,
+            "cost_per_1k_output": 0.0,
+            "is_reasoning": False,
         },
     }
 
@@ -114,7 +110,10 @@ DEFAULT_BUDGET = _CFG.get("budget", {
     "max_cost_per_day_usd": 10.00,
     "max_retries": 2,
     "retry_delay_sec": 5.0,
-    "timeout_sec": 120,
+    "retry_jitter_sec": 1.0,
+    "timeout_sec": 75,
+    "request_timeout_sec": 75,
+    "lock_timeout_sec": 30,
 })
 
 # ---------------------------------------------------------------------------
