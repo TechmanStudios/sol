@@ -1,7 +1,7 @@
 {
   "version": 1,
   "created": "2026-02-09T05:17:20.475980+00:00",
-  "last_cycle": 168,
+  "last_cycle": 169,
   "fitness_weights": {
     "claim_density": 0.2221217619789222,
     "question_ratio": 0.2221217619789222,
@@ -105,20 +105,6 @@
   "mutation_rate": 0.2,
   "exploration_rate": 0.8,
   "history": [
-    {
-      "cycle": 121,
-      "timestamp": "2026-02-10T08:03:48.415695+00:00",
-      "mutations": [
-        "template_pref[replication]: 1.30 -> 1.36",
-        "template_pref[topology_surgery]: 0.76 -> 0.68",
-        "template_pref[clock_signal]: 0.53 -> 0.46",
-        "template_pref[cascade_pipeline]: 1.53 -> 1.57",
-        "template_pref[isa_program]: 0.78 -> 0.97",
-        "FRONTIER PROMOTED: boundary_cartography",
-        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
-      ],
-      "fitness_delta": 0.0
-    },
     {
       "cycle": 122,
       "timestamp": "2026-02-10T08:07:21.378440+00:00",
@@ -731,6 +717,12 @@
         "LLM_RATE exploration_rate: 0.80 -> 0.80"
       ],
       "fitness_delta": 0.0
+    },
+    {
+      "cycle": 169,
+      "timestamp": "2026-02-15T19:34:20.715961+00:00",
+      "mutations": [],
+      "fitness_delta": -7.193789143931241
     }
   ],
   "synthesis_insights": {
