@@ -1,7 +1,7 @@
 {
   "version": 1,
   "created": "2026-02-09T05:17:20.475980+00:00",
-  "last_cycle": 169,
+  "last_cycle": 173,
   "fitness_weights": {
     "claim_density": 0.2221217619789222,
     "question_ratio": 0.2221217619789222,
@@ -10,11 +10,11 @@
   },
   "template_preferences": {
     "parameter_sweep": 0.1,
-    "replication": 0.1,
-    "topology_surgery": 2.0,
+    "replication": 0.19153515754343653,
+    "topology_surgery": 1.99622375,
     "injection_protocol": 1.1653066374472818,
     "logic_gate": 0.1,
-    "clock_signal": 0.7639571699982226,
+    "clock_signal": 0.7566446699982226,
     "cascade_pipeline": 2.0,
     "isa_program": 0.23019963191985024,
     "analog_fidelity": 0.2956142026678337
@@ -102,60 +102,9 @@
     ],
     "scope_frontier": []
   },
-  "mutation_rate": 0.2,
+  "mutation_rate": 0.25,
   "exploration_rate": 0.8,
   "history": [
-    {
-      "cycle": 122,
-      "timestamp": "2026-02-10T08:07:21.378440+00:00",
-      "mutations": [
-        "template_pref[replication]: 1.36 -> 1.54",
-        "template_pref[injection_protocol]: 2.00 -> 1.98",
-        "template_pref[logic_gate]: 1.20 -> 1.34",
-        "template_pref[clock_signal]: 0.46 -> 0.62",
-        "FRONTIER PROMOTED: resonance_hunting",
-        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
-      ],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 123,
-      "timestamp": "2026-02-10T08:10:50.813864+00:00",
-      "mutations": [
-        "template_pref[replication]: 1.54 -> 1.50",
-        "template_pref[topology_surgery]: 0.68 -> 0.73",
-        "template_pref[logic_gate]: 1.34 -> 1.27",
-        "template_pref[cascade_pipeline]: 1.57 -> 1.73",
-        "template_pref[isa_program]: 0.97 -> 1.07",
-        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
-      ],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 124,
-      "timestamp": "2026-02-10T08:11:27.020498+00:00",
-      "mutations": [
-        "template_pref[replication]: 1.50 -> 1.56",
-        "template_pref[injection_protocol]: 1.98 -> 2.00",
-        "template_pref[logic_gate]: 1.27 -> 1.25",
-        "template_pref[isa_program]: 1.07 -> 1.25",
-        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
-      ],
-      "fitness_delta": 0.0
-    },
-    {
-      "cycle": 125,
-      "timestamp": "2026-02-10T08:11:27.354317+00:00",
-      "mutations": [
-        "template_pref[replication]: 1.93 -> 1.96",
-        "template_pref[topology_surgery]: 0.96 -> 0.98",
-        "template_pref[clock_signal]: 0.67 -> 0.86",
-        "template_pref[isa_program]: 1.32 -> 1.30",
-        "template_pref[analog_fidelity]: 0.13 -> 0.10",
-        "PLATEAU RESPONSE: exploration_rate 0.90->0.80, mutation_rate 0.50->0.50"
-      ],
-      "fitness_delta": 0.0
-    },
     {
       "cycle": 126,
       "timestamp": "2026-02-10T08:11:27.429895+00:00",
@@ -723,6 +672,35 @@
       "timestamp": "2026-02-15T19:34:20.715961+00:00",
       "mutations": [],
       "fitness_delta": -7.193789143931241
+    },
+    {
+      "cycle": 170,
+      "timestamp": "2026-02-15T21:18:30.893488+00:00",
+      "mutations": [],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 171,
+      "timestamp": "2026-02-15T21:48:30.948034+00:00",
+      "mutations": [],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 172,
+      "timestamp": "2026-02-15T22:18:30.974911+00:00",
+      "mutations": [
+        "template_pref[replication]: 0.10 -> 0.12"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 173,
+      "timestamp": "2026-02-15T22:48:31.003536+00:00",
+      "mutations": [
+        "template_pref[replication]: 0.12 -> 0.19",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.20->0.25"
+      ],
+      "fitness_delta": 0.0
     }
   ],
   "synthesis_insights": {
