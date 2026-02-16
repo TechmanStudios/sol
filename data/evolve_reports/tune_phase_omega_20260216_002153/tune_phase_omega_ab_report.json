@@ -1,0 +1,1907 @@
+{
+  "candidate": {
+    "name": "tune_phase_omega",
+    "description": "Increase lighthouse frequency from 0.15 to 0.25",
+    "hypothesis": "Faster oscillation should create more frequent surface/deep exchange, potentially improving mixing.",
+    "change_type": "param_tune",
+    "target": "phase_cfg",
+    "parameters": {
+      "phase_cfg.omega": 0.25
+    },
+    "expected_improvements": [
+      "More even mass distribution",
+      "Faster convergence"
+    ],
+    "acceptable_regressions": [
+      "May reduce phase-gated separation effects"
+    ],
+    "sacred_math_impact": "none"
+  },
+  "overall_verdict": "PASS",
+  "elapsed_sec": 3.9,
+  "protocols": {
+    "single_inject_baseline": {
+      "status": "COMPLETE",
+      "conditions": {
+        "baseline": {
+          "verdict": {
+            "verdict": "PASS",
+            "reason": "Candidate produces results within tolerance of golden",
+            "total_checks": 25,
+            "within_tolerance": 25,
+            "regressions": 0,
+            "improvements": 0,
+            "rhoMaxId_mismatches": 0,
+            "regression_rate": "0.0%",
+            "improvement_rate": "0.0%"
+          },
+          "comparisons": [
+            {
+              "step": 1,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.00101488,
+                  "candidate": 0.00101488,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 0.3945293,
+                  "candidate": 0.3945293,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 49.88,
+                  "candidate": 49.88,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 49.85638505,
+                  "candidate": 49.85638505,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 1,
+                  "candidate": 1,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 76,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.32143512,
+                  "candidate": 0.32419153,
+                  "abs_delta": 0.00275641,
+                  "rel_delta": "+0.8575%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "improved"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.56169496,
+                  "candidate": 6.54092939,
+                  "abs_delta": -0.02076558,
+                  "rel_delta": "-0.3165%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 46.90605135,
+                  "candidate": 47.0216259,
+                  "abs_delta": 0.11557455,
+                  "rel_delta": "+0.2464%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 36.34991894,
+                  "candidate": 36.34961952,
+                  "abs_delta": -0.00029942,
+                  "rel_delta": "-0.0008%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 24,
+                  "candidate": 24,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 151,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.61843858,
+                  "candidate": 0.61814806,
+                  "abs_delta": -0.00029053,
+                  "rel_delta": "-0.0470%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 7.11617282,
+                  "candidate": 7.09449915,
+                  "abs_delta": -0.02167367,
+                  "rel_delta": "-0.3046%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 42.16908444,
+                  "candidate": 42.14817982,
+                  "abs_delta": -0.02090462,
+                  "rel_delta": "-0.0496%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 21.38716173,
+                  "candidate": 21.38662142,
+                  "abs_delta": -0.00054031,
+                  "rel_delta": "-0.0025%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 114,
+                  "candidate": 114,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 226,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.88090361,
+                  "candidate": 0.8808486,
+                  "abs_delta": -5.501e-05,
+                  "rel_delta": "-0.0062%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.33363652,
+                  "candidate": 6.31809731,
+                  "abs_delta": -0.0155392,
+                  "rel_delta": "-0.2453%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 36.16614981,
+                  "candidate": 36.1465946,
+                  "abs_delta": -0.01955521,
+                  "rel_delta": "-0.0541%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 7.37020129,
+                  "candidate": 7.36907969,
+                  "abs_delta": -0.0011216,
+                  "rel_delta": "-0.0152%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 128,
+                  "candidate": 128,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 300,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.98573523,
+                  "candidate": 0.98559386,
+                  "abs_delta": -0.00014137,
+                  "rel_delta": "-0.0143%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 1.31103289,
+                  "candidate": 1.31236954,
+                  "abs_delta": 0.00133665,
+                  "rel_delta": "+0.1020%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 29.99209909,
+                  "candidate": 29.86208192,
+                  "abs_delta": -0.13001717,
+                  "rel_delta": "-0.4335%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 0.38200282,
+                  "candidate": 0.38113467,
+                  "abs_delta": -0.00086815,
+                  "rel_delta": "-0.2273%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 127,
+                  "candidate": 127,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 132,
+              "rhoMaxId_candidate": 132,
+              "all_within_tolerance": true
+            }
+          ]
+        }
+      }
+    },
+    "damping_sweep_smoke": {
+      "status": "COMPLETE",
+      "conditions": {
+        "damping=0.05": {
+          "verdict": {
+            "verdict": "PASS",
+            "reason": "Candidate produces results within tolerance of golden",
+            "total_checks": 25,
+            "within_tolerance": 25,
+            "regressions": 0,
+            "improvements": 0,
+            "rhoMaxId_mismatches": 0,
+            "regression_rate": "0.0%",
+            "improvement_rate": "0.0%"
+          },
+          "comparisons": [
+            {
+              "step": 1,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.00101488,
+                  "candidate": 0.00101488,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 0.3945293,
+                  "candidate": 0.3945293,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 49.97,
+                  "candidate": 49.97,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 49.94634245,
+                  "candidate": 49.94634245,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 1,
+                  "candidate": 1,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 51,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.2208662,
+                  "candidate": 0.2205833,
+                  "abs_delta": -0.0002829,
+                  "rel_delta": "-0.1281%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.39009754,
+                  "candidate": 6.39406895,
+                  "abs_delta": 0.00397142,
+                  "rel_delta": "+0.0621%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 49.32731697,
+                  "candidate": 49.31658587,
+                  "abs_delta": -0.0107311,
+                  "rel_delta": "-0.0218%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 42.09431176,
+                  "candidate": 42.09411185,
+                  "abs_delta": -0.00019991,
+                  "rel_delta": "-0.0005%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 6,
+                  "candidate": 6,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 101,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.43734541,
+                  "candidate": 0.43703318,
+                  "abs_delta": -0.00031223,
+                  "rel_delta": "-0.0714%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 7.02085208,
+                  "candidate": 7.0235577,
+                  "abs_delta": 0.00270561,
+                  "rel_delta": "+0.0385%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 48.2747031,
+                  "candidate": 48.25513492,
+                  "abs_delta": -0.01956818,
+                  "rel_delta": "-0.0405%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 32.71342451,
+                  "candidate": 32.71309854,
+                  "abs_delta": -0.00032597,
+                  "rel_delta": "-0.0010%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 95,
+                  "candidate": 95,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 151,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.63210697,
+                  "candidate": 0.63177563,
+                  "abs_delta": -0.00033134,
+                  "rel_delta": "-0.0524%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 7.29914471,
+                  "candidate": 7.27829162,
+                  "abs_delta": -0.02085309,
+                  "rel_delta": "-0.2857%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 46.71290757,
+                  "candidate": 46.68444455,
+                  "abs_delta": -0.02846302,
+                  "rel_delta": "-0.0609%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 23.06322334,
+                  "candidate": 23.06255781,
+                  "abs_delta": -0.00066552,
+                  "rel_delta": "-0.0029%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 120,
+                  "candidate": 120,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 200,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.80475579,
+                  "candidate": 0.80355106,
+                  "abs_delta": -0.00120474,
+                  "rel_delta": "-0.1497%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.96614442,
+                  "candidate": 6.99551327,
+                  "abs_delta": 0.02936885,
+                  "rel_delta": "+0.4216%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 45.25550512,
+                  "candidate": 45.07577405,
+                  "abs_delta": -0.17973107,
+                  "rel_delta": "-0.3971%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 13.73750694,
+                  "candidate": 13.73657751,
+                  "abs_delta": -0.00092943,
+                  "rel_delta": "-0.0068%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 128,
+                  "candidate": 128,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            }
+          ]
+        },
+        "damping=0.1": {
+          "verdict": {
+            "verdict": "PASS",
+            "reason": "Candidate produces results within tolerance of golden",
+            "total_checks": 25,
+            "within_tolerance": 25,
+            "regressions": 0,
+            "improvements": 0,
+            "rhoMaxId_mismatches": 0,
+            "regression_rate": "0.0%",
+            "improvement_rate": "0.0%"
+          },
+          "comparisons": [
+            {
+              "step": 1,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.00101488,
+                  "candidate": 0.00101488,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 0.3945293,
+                  "candidate": 0.3945293,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 49.94,
+                  "candidate": 49.94,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 49.91635665,
+                  "candidate": 49.91635665,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 1,
+                  "candidate": 1,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 51,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.219588,
+                  "candidate": 0.21931188,
+                  "abs_delta": -0.00027612,
+                  "rel_delta": "-0.1257%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.36971166,
+                  "candidate": 6.37361888,
+                  "abs_delta": 0.00390721,
+                  "rel_delta": "+0.0613%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 48.95088229,
+                  "candidate": 48.9405471,
+                  "abs_delta": -0.01033519,
+                  "rel_delta": "-0.0211%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 41.82039559,
+                  "candidate": 41.8201988,
+                  "abs_delta": -0.0001968,
+                  "rel_delta": "-0.0005%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 6,
+                  "candidate": 6,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 101,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.43365208,
+                  "candidate": 0.43335568,
+                  "abs_delta": -0.00029641,
+                  "rel_delta": "-0.0684%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.97933217,
+                  "candidate": 6.98180683,
+                  "abs_delta": 0.00247466,
+                  "rel_delta": "+0.0355%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 47.37648053,
+                  "candidate": 47.35836036,
+                  "abs_delta": -0.01812017,
+                  "rel_delta": "-0.0382%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 32.257312,
+                  "candidate": 32.25700131,
+                  "abs_delta": -0.0003107,
+                  "rel_delta": "-0.0010%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 91,
+                  "candidate": 89,
+                  "abs_delta": -2,
+                  "rel_delta": "-2.1978%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "regressed"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 151,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.62741853,
+                  "candidate": 0.62710089,
+                  "abs_delta": -0.00031764,
+                  "rel_delta": "-0.0506%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 7.23747567,
+                  "candidate": 7.21640136,
+                  "abs_delta": -0.02107431,
+                  "rel_delta": "-0.2912%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 45.13353262,
+                  "candidate": 45.10780103,
+                  "abs_delta": -0.02573159,
+                  "rel_delta": "-0.0570%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 22.49285465,
+                  "candidate": 22.49223339,
+                  "abs_delta": -0.00062127,
+                  "rel_delta": "-0.0028%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 118,
+                  "candidate": 117,
+                  "abs_delta": -1,
+                  "rel_delta": "-0.8475%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 200,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.80223128,
+                  "candidate": 0.80099828,
+                  "abs_delta": -0.001233,
+                  "rel_delta": "-0.1537%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.87761329,
+                  "candidate": 6.90593038,
+                  "abs_delta": 0.02831709,
+                  "rel_delta": "+0.4117%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 42.86228757,
+                  "candidate": 42.69082375,
+                  "abs_delta": -0.17146382,
+                  "rel_delta": "-0.4000%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 13.13140296,
+                  "candidate": 13.13056254,
+                  "abs_delta": -0.00084042,
+                  "rel_delta": "-0.0064%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 128,
+                  "candidate": 128,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            }
+          ]
+        },
+        "damping=0.2": {
+          "verdict": {
+            "verdict": "PASS",
+            "reason": "Candidate produces results within tolerance of golden",
+            "total_checks": 25,
+            "within_tolerance": 25,
+            "regressions": 0,
+            "improvements": 0,
+            "rhoMaxId_mismatches": 0,
+            "regression_rate": "0.0%",
+            "improvement_rate": "0.0%"
+          },
+          "comparisons": [
+            {
+              "step": 1,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.00101488,
+                  "candidate": 0.00101488,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 0.3945293,
+                  "candidate": 0.3945293,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 49.88,
+                  "candidate": 49.88,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 49.85638505,
+                  "candidate": 49.85638505,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 1,
+                  "candidate": 1,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 51,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.21707423,
+                  "candidate": 0.21681112,
+                  "abs_delta": -0.00026312,
+                  "rel_delta": "-0.1212%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.32936567,
+                  "candidate": 6.3331492,
+                  "abs_delta": 0.00378353,
+                  "rel_delta": "+0.0598%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 48.20843816,
+                  "candidate": 48.19885143,
+                  "abs_delta": -0.00958672,
+                  "rel_delta": "-0.0199%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 41.27755402,
+                  "candidate": 41.27736332,
+                  "abs_delta": -0.0001907,
+                  "rel_delta": "-0.0005%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 5,
+                  "candidate": 5,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 101,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.42647346,
+                  "candidate": 0.42620808,
+                  "abs_delta": -0.00026538,
+                  "rel_delta": "-0.0622%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.8977938,
+                  "candidate": 6.89999026,
+                  "abs_delta": 0.00219647,
+                  "rel_delta": "+0.0318%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 45.64422706,
+                  "candidate": 45.62876746,
+                  "abs_delta": -0.0154596,
+                  "rel_delta": "-0.0339%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 31.36219936,
+                  "candidate": 31.36191742,
+                  "abs_delta": -0.00028194,
+                  "rel_delta": "-0.0009%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 80,
+                  "candidate": 80,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 151,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.61843858,
+                  "candidate": 0.61814806,
+                  "abs_delta": -0.00029053,
+                  "rel_delta": "-0.0470%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 7.11617282,
+                  "candidate": 7.09449915,
+                  "abs_delta": -0.02167367,
+                  "rel_delta": "-0.3046%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 42.16908444,
+                  "candidate": 42.14817982,
+                  "abs_delta": -0.02090462,
+                  "rel_delta": "-0.0496%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 21.38716173,
+                  "candidate": 21.38662142,
+                  "abs_delta": -0.00054031,
+                  "rel_delta": "-0.0025%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 114,
+                  "candidate": 114,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 200,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.79786382,
+                  "candidate": 0.79657465,
+                  "abs_delta": -0.00128917,
+                  "rel_delta": "-0.1616%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.70068876,
+                  "candidate": 6.72688268,
+                  "abs_delta": 0.02619393,
+                  "rel_delta": "+0.3909%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 38.49971547,
+                  "candidate": 38.34317398,
+                  "abs_delta": -0.15654149,
+                  "rel_delta": "-0.4066%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 11.97705022,
+                  "candidate": 11.97636854,
+                  "abs_delta": -0.00068169,
+                  "rel_delta": "-0.0057%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 128,
+                  "candidate": 127,
+                  "abs_delta": -1,
+                  "rel_delta": "-0.7812%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            }
+          ]
+        },
+        "damping=0.5": {
+          "verdict": {
+            "verdict": "PASS",
+            "reason": "Candidate produces results within tolerance of golden",
+            "total_checks": 25,
+            "within_tolerance": 25,
+            "regressions": 0,
+            "improvements": 0,
+            "rhoMaxId_mismatches": 0,
+            "regression_rate": "0.0%",
+            "improvement_rate": "0.0%"
+          },
+          "comparisons": [
+            {
+              "step": 1,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.00101488,
+                  "candidate": 0.00101488,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 0.3945293,
+                  "candidate": 0.3945293,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 49.7,
+                  "candidate": 49.7,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 49.67647027,
+                  "candidate": 49.67647027,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 1,
+                  "candidate": 1,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 51,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.20986565,
+                  "candidate": 0.20963721,
+                  "abs_delta": -0.00022844,
+                  "rel_delta": "-0.1089%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.21159996,
+                  "candidate": 6.21508321,
+                  "abs_delta": 0.00348325,
+                  "rel_delta": "+0.0561%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 46.06129424,
+                  "candidate": 46.05363373,
+                  "abs_delta": -0.00766051,
+                  "rel_delta": "-0.0166%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 39.68826299,
+                  "candidate": 39.68808956,
+                  "abs_delta": -0.00017343,
+                  "rel_delta": "-0.0004%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 5,
+                  "candidate": 5,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 101,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.40658054,
+                  "candidate": 0.40640318,
+                  "abs_delta": -0.00017736,
+                  "rel_delta": "-0.0436%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.66547984,
+                  "candidate": 6.66675073,
+                  "abs_delta": 0.00127089,
+                  "rel_delta": "+0.0191%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 40.91293411,
+                  "candidate": 40.90385942,
+                  "abs_delta": -0.00907469,
+                  "rel_delta": "-0.0222%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 28.80892308,
+                  "candidate": 28.80871453,
+                  "abs_delta": -0.00020855,
+                  "rel_delta": "-0.0007%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 39,
+                  "candidate": 39,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 151,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.59480541,
+                  "candidate": 0.59459164,
+                  "abs_delta": -0.00021377,
+                  "rel_delta": "-0.0359%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.76520784,
+                  "candidate": 6.74204793,
+                  "abs_delta": -0.02315991,
+                  "rel_delta": "-0.3423%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 34.60190123,
+                  "candidate": 34.59142052,
+                  "abs_delta": -0.01048071,
+                  "rel_delta": "-0.0303%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 18.33489711,
+                  "candidate": 18.33454807,
+                  "abs_delta": -0.00034905,
+                  "rel_delta": "-0.0019%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 98,
+                  "candidate": 98,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 200,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.79073224,
+                  "candidate": 0.78928065,
+                  "abs_delta": -0.00145159,
+                  "rel_delta": "-0.1836%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.1673004,
+                  "candidate": 6.18813162,
+                  "abs_delta": 0.02083121,
+                  "rel_delta": "+0.3378%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 28.14159342,
+                  "candidate": 28.01976118,
+                  "abs_delta": -0.12183224,
+                  "rel_delta": "-0.4329%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 8.94170304,
+                  "candidate": 8.94137045,
+                  "abs_delta": -0.00033259,
+                  "rel_delta": "-0.0037%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 110,
+                  "candidate": 110,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            }
+          ]
+        }
+      }
+    },
+    "dual_inject_timing": {
+      "status": "COMPLETE",
+      "conditions": {
+        "baseline": {
+          "verdict": {
+            "verdict": "PASS",
+            "reason": "Candidate produces results within tolerance of golden",
+            "total_checks": 25,
+            "within_tolerance": 25,
+            "regressions": 0,
+            "improvements": 0,
+            "rhoMaxId_mismatches": 0,
+            "regression_rate": "0.0%",
+            "improvement_rate": "0.0%"
+          },
+          "comparisons": [
+            {
+              "step": 1,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.00101488,
+                  "candidate": 0.00101488,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 0.3945293,
+                  "candidate": 0.3945293,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 49.88,
+                  "candidate": 49.88,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 49.85638505,
+                  "candidate": 49.85638505,
+                  "abs_delta": 0.0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 1,
+                  "candidate": 1,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 76,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.32143512,
+                  "candidate": 0.32419153,
+                  "abs_delta": 0.00275641,
+                  "rel_delta": "+0.8575%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "improved"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.56169496,
+                  "candidate": 6.54092939,
+                  "abs_delta": -0.02076558,
+                  "rel_delta": "-0.3165%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 46.90605135,
+                  "candidate": 47.0216259,
+                  "abs_delta": 0.11557455,
+                  "rel_delta": "+0.2464%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 36.34991894,
+                  "candidate": 36.34961952,
+                  "abs_delta": -0.00029942,
+                  "rel_delta": "-0.0008%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 24,
+                  "candidate": 24,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 151,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.61843858,
+                  "candidate": 0.61814806,
+                  "abs_delta": -0.00029053,
+                  "rel_delta": "-0.0470%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 7.11617282,
+                  "candidate": 7.09449915,
+                  "abs_delta": -0.02167367,
+                  "rel_delta": "-0.3046%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 42.16908444,
+                  "candidate": 42.14817982,
+                  "abs_delta": -0.02090462,
+                  "rel_delta": "-0.0496%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 21.38716173,
+                  "candidate": 21.38662142,
+                  "abs_delta": -0.00054031,
+                  "rel_delta": "-0.0025%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 114,
+                  "candidate": 114,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 226,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.88090361,
+                  "candidate": 0.8808486,
+                  "abs_delta": -5.501e-05,
+                  "rel_delta": "-0.0062%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 6.33363652,
+                  "candidate": 6.31809731,
+                  "abs_delta": -0.0155392,
+                  "rel_delta": "-0.2453%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 36.16614981,
+                  "candidate": 36.1465946,
+                  "abs_delta": -0.01955521,
+                  "rel_delta": "-0.0541%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 7.37020129,
+                  "candidate": 7.36907969,
+                  "abs_delta": -0.0011216,
+                  "rel_delta": "-0.0152%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 128,
+                  "candidate": 128,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 1,
+              "rhoMaxId_candidate": 1,
+              "all_within_tolerance": true
+            },
+            {
+              "step": 300,
+              "metrics": [
+                {
+                  "metric": "entropy",
+                  "golden": 0.98573523,
+                  "candidate": 0.98559386,
+                  "abs_delta": -0.00014137,
+                  "rel_delta": "-0.0143%",
+                  "tolerance": "5.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "totalFlux",
+                  "golden": 1.31103289,
+                  "candidate": 1.31236954,
+                  "abs_delta": 0.00133665,
+                  "rel_delta": "+0.1020%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "mass",
+                  "golden": 29.99209909,
+                  "candidate": 29.86208192,
+                  "abs_delta": -0.13001717,
+                  "rel_delta": "-0.4335%",
+                  "tolerance": "2.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "maxRho",
+                  "golden": 0.38200282,
+                  "candidate": 0.38113467,
+                  "abs_delta": -0.00086815,
+                  "rel_delta": "-0.2273%",
+                  "tolerance": "10.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                },
+                {
+                  "metric": "activeCount",
+                  "golden": 127,
+                  "candidate": 127,
+                  "abs_delta": 0,
+                  "rel_delta": "+0.0000%",
+                  "tolerance": "15.00%",
+                  "within_tolerance": true,
+                  "direction": "unchanged"
+                }
+              ],
+              "rhoMaxId_match": true,
+              "rhoMaxId_golden": 132,
+              "rhoMaxId_candidate": 132,
+              "all_within_tolerance": true
+            }
+          ]
+        }
+      }
+    }
+  },
+  "per_condition_verdicts": [
+    "PASS",
+    "PASS",
+    "PASS",
+    "PASS",
+    "PASS",
+    "PASS"
+  ]
+}
