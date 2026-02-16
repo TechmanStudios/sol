@@ -52,6 +52,13 @@ Outputs:
 - `data/sol_self_train/gen_###/diagnostics/baseline_<task_id>.json` — baseline per-task protocol snapshot
 - `data/sol_self_train/gen_###/diagnostics/candidate_<task_id>.json` — candidate per-task protocol snapshot
 
+Canonical synchronized root:
+
+- `data/sol_self_train_runs/local-desktop/<mode>/<run_stamp>/...`
+- `data/sol_self_train_runs/github-actions/<mode>/<github_run_id>/...`
+
+All self-train workflows commit their run outputs back to the repo, so a local `git pull` brings phone-triggered runs into the same canonical tree.
+
 ## Task-level controls
 
 Per task (`self_train/config/tasks.json`), optional fields in `payload`:

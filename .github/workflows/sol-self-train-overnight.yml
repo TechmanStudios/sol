@@ -7,6 +7,9 @@ concurrency:
   group: sol-self-train-overnight-${{ github.ref }}
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
   self-train-overnight:
     runs-on: ubuntu-latest
@@ -24,13 +27,31 @@ jobs:
       - name: Run overnight self-train preset
         id: train
         run: |
-          OUT_DIR="data/sol_self_train_runs/overnight/${{ github.run_id }}"
-          python tools/sol-evolve/self_train_loop.py \
+          python tools/sol-evolve/self_train_run.py \
             --config "tools/sol-evolve/self_train/config/self_train_config.json" \
             --generations "3" \
             --mode "overnight" \
-            --out-dir "$OUT_DIR"
+            --source "github-actions" \
+            --run-id "${{ github.run_id }}" \
+            --out-root "data/sol_self_train_runs"
+          OUT_DIR="data/sol_self_train_runs/github-actions/overnight/${{ github.run_id }}"
           echo "out_dir=$OUT_DIR" >> $GITHUB_OUTPUT
+
+      - name: Commit synced run outputs
+        run: |
+          git config user.name "sol-self-train[bot]"
+          git config user.email "sol-self-train@users.noreply.github.com"
+          git add "${{ steps.train.outputs.out_dir }}" || true
+          if git diff --cached --quiet; then
+            echo "No run outputs to commit"
+            exit 0
+          fi
+          git commit -m "self-train: mode=overnight run=${{ github.run_id }}"
+          for attempt in 1 2 3; do
+            if git push; then break; fi
+            echo "Push attempt $attempt failed, rebasing..."
+            git pull --rebase
+          done
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
