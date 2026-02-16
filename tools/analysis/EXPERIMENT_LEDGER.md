@@ -14,6 +14,21 @@ This engine builds a generalized ledger index across experiments using a normali
 - `data/experiment_ledger/index.json` — aggregate index for pipeline consumers
 - `data/experiment_ledger/ledger.md` — human-readable summary
 
+## Local-only generated data
+
+These run-output folders are intentionally local-only (git-ignored) and should not be committed:
+
+- `data/sol_self_train/`
+- `data/sol_self_train_fast_task_launch_smoke/`
+- `data/sol_self_train_mode_fast_smoke/`
+- `data/sol_self_train_mode_full_smoke/`
+- `data/sol_self_train_mode_overnight_smoke/`
+- `data/sol_self_train_phase2_smoke/`
+- `data/sol_self_train_real_smoke/`
+- `data/sol_self_train_runs/`
+- `data/sol_self_train_smoke/`
+- `data/sol_self_train_task_launch_smoke/`
+
 ## Run
 
 ```powershell
