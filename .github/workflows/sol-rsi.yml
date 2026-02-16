@@ -134,7 +134,12 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "RSI cycle $(date +%Y%m%d-%H%M%S): fitness update"
-            git push
+            # Retry push with rebase to handle concurrent workflow commits
+            for attempt in 1 2 3; do
+              if git push; then break; fi
+              echo "Push attempt $attempt failed, rebasing..."
+              git pull --rebase
+            done
           fi
 
       - name: Print status

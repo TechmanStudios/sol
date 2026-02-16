@@ -166,7 +166,12 @@ jobs:
           else
             TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
             git commit -m "hippocampus: ${{ needs.check-trigger.outputs.command }} cycle @ $TIMESTAMP"
-            git push
+            # Retry push with rebase to handle concurrent workflow commits
+            for attempt in 1 2 3; do
+              if git push; then break; fi
+              echo "Push attempt $attempt failed, rebasing..."
+              git pull --rebase
+            done
           fi
 
       - name: Upload dream artifacts

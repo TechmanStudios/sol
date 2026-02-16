@@ -163,7 +163,12 @@ jobs:
           Protocols run: $(jq -r '.protocols_run' $SESSION_DIR/summary.json 2>/dev/null || echo '?')
           Total steps: $(jq -r '.total_steps' $SESSION_DIR/summary.json 2>/dev/null || echo '?')
           Gaps addressed: $(jq -r '.gaps_addressed | length' $SESSION_DIR/summary.json 2>/dev/null || echo '?')"
-            git push
+            # Retry push with rebase to handle concurrent workflow commits
+            for attempt in 1 2 3; do
+              if git push; then break; fi
+              echo "Push attempt $attempt failed, rebasing..."
+              git pull --rebase
+            done
           fi
 
       - name: Comment on issue (if triggered by issue)

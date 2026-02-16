@@ -177,7 +177,12 @@ jobs:
           Run: #${{ github.run_number }}
           Candidate: $CANDIDATE
           Verdict: $VERDICT"
-            git push
+            # Retry push with rebase to handle concurrent workflow commits
+            for attempt in 1 2 3; do
+              if git push; then break; fi
+              echo "Push attempt $attempt failed, rebasing..."
+              git pull --rebase
+            done
           fi
 
       - name: Comment on issue (if triggered by issue)
