@@ -70,6 +70,16 @@ Artifacts:
 - `data/sol_self_train_runs/_ledger/self_train_ledger.json`
 - `data/sol_self_train_runs/_ledger/self_train_ledger.md`
 
+Generalized engine ledger:
+
+```powershell
+python tools/analysis/experiment_ledger.py
+```
+
+- `data/experiment_ledger/records.jsonl`
+- `data/experiment_ledger/index.json`
+- `data/experiment_ledger/ledger.md`
+
 ## Task-level controls
 
 Per task (`self_train/config/tasks.json`), optional fields in `payload`:

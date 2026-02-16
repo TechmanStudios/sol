@@ -37,11 +37,25 @@ jobs:
           OUT_DIR="data/sol_self_train_runs/github-actions/overnight/${{ github.run_id }}"
           echo "out_dir=$OUT_DIR" >> $GITHUB_OUTPUT
 
+      - name: Update self-train ledger
+        run: |
+          python tools/sol-evolve/self_train_consolidate.py \
+            --root "data/sol_self_train_runs" \
+            --out-dir "data/sol_self_train_runs/_ledger"
+
+      - name: Update global experiment ledger
+        run: |
+          python tools/analysis/experiment_ledger.py \
+            --self-train-root "data/sol_self_train_runs" \
+            --out-dir "data/experiment_ledger"
+
       - name: Commit synced run outputs
         run: |
           git config user.name "sol-self-train[bot]"
           git config user.email "sol-self-train@users.noreply.github.com"
           git add "${{ steps.train.outputs.out_dir }}" || true
+          git add "data/sol_self_train_runs/_ledger" || true
+          git add "data/experiment_ledger" || true
           if git diff --cached --quiet; then
             echo "No run outputs to commit"
             exit 0
