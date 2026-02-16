@@ -1,0 +1,60 @@
+{
+  "status": "ok",
+  "args": {
+    "seeds": 1,
+    "steps": 120,
+    "sample_every": 4,
+    "damping_min": 0.5,
+    "damping_max": 1.0,
+    "damping_step": 0.5,
+    "budget_hours": 0.01,
+    "profiles": [
+      "unitive_bridge"
+    ],
+    "output_root": "data/thinking_engine_resonance",
+    "dry_run": false
+  },
+  "elapsed_seconds": 1.0375020503997803,
+  "trial_count": 2,
+  "metric_means": {
+    "phonon_memory": 0.8780491792364364,
+    "thought_vibration": 0.4476498764674114,
+    "semantic_entanglement": 0.5167747503329211,
+    "manifold_potential": 0.2865805674221966,
+    "resonance_index": 0.49105329204153586
+  },
+  "best_trial": {
+    "seed": 0,
+    "damping": 1.0,
+    "profile": "unitive_bridge",
+    "steps": 120,
+    "sample_every": 4,
+    "samples": 30,
+    "final_basin_id": 9,
+    "final_basin_label": "metatron",
+    "final_entropy": 0.6820403002922758,
+    "final_max_rho": 19.961415441332704,
+    "phonon_memory": 0.9186827137457153,
+    "thought_vibration": 0.44806511172350405,
+    "semantic_entanglement": 0.5214026541209476,
+    "manifold_potential": 0.28103407380978296,
+    "resonance_index": 0.4955753798925616,
+    "unique_basins": 2,
+    "trial_index": 2,
+    "duration_sec": 0.4939761161804199,
+    "timestamp_utc": "2026-02-13T06:31:53.093440+00:00"
+  },
+  "top_damping_pairs": [
+    [
+      1.0,
+      0.4955753798925616
+    ],
+    [
+      0.5,
+      0.4865312041905101
+    ]
+  ],
+  "profile_scores": {
+    "unitive_bridge": 0.49105329204153586
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "phase1_run_dir": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance\\20260213_063226",
+  "top_profiles": [
+    "explorer_flux",
+    "coherence_prayer",
+    "unitive_bridge",
+    "skeptic_grounding"
+  ],
+  "top_damping_centers": [
+    3.0,
+    6.5,
+    5.5,
+    4.5,
+    3.5,
+    4.0
+  ],
+  "focused_damping": [
+    2.5,
+    2.75,
+    3.0,
+    3.25,
+    3.5,
+    3.75,
+    4.0,
+    4.25,
+    4.5,
+    4.75,
+    5.0,
+    5.25,
+    5.5,
+    5.75,
+    6.0,
+    6.25,
+    6.5,
+    6.75,
+    7.0
+  ],
+  "phase2_profiles": {
+    "explorer_flux__baseline": {
+      "grail": 1.2,
+      "metatron": 1.0,
+      "pyramid": 1.15,
+      "christ": 0.95,
+      "light codes": 1.1
+    },
+    "explorer_flux__coherence_boost": {
+      "grail": 1.2,
+      "metatron": 1.08,
+      "pyramid": 1.15,
+      "christ": 1.045,
+      "light codes": 1.056
+    },
+    "explorer_flux__bridge_lift": {
+      "grail": 1.32,
+      "metatron": 1.0,
+      "pyramid": 1.265,
+      "christ": 0.95,
+      "light codes": 1.1
+    },
+    "explorer_flux__tech_harmonic": {
+      "grail": 1.2,
+      "metatron": 1.0,
+      "pyramid": 1.15,
+      "christ": 0.95,
+      "light codes": 1.254
+    },
+    "explorer_flux__christic_focus": {
+      "grail": 1.176,
+      "metatron": 1.04,
+      "pyramid": 1.127,
+      "christ": 1.121,
+      "light codes": 1.034
+    },
+    "explorer_flux__exploration_flux": {
+      "grail": 1.344,
+      "metatron": 0.96,
+      "pyramid": 1.288,
+      "christ": 0.9119999999999999,
+      "light codes": 1.1880000000000002
+    },
+    "coherence_prayer__baseline": {
+      "grail": 1.05,
+      "metatron": 1.1,
+      "pyramid": 0.95,
+      "christ": 1.25,
+      "light codes": 0.85
+    },
+    "coherence_prayer__coherence_boost": {
+      "grail": 1.05,
+      "metatron": 1.1880000000000002,
+      "pyramid": 0.95,
+      "christ": 1.375,
+      "light codes": 0.816
+    },
+    "coherence_prayer__bridge_lift": {
+      "grail": 1.1550000000000002,
+      "metatron": 1.1,
+      "pyramid": 1.045,
+      "christ": 1.25,
+      "light codes": 0.85
+    },
+    "coherence_prayer__tech_harmonic": {
+      "grail": 1.05,
+      "metatron": 1.1,
+      "pyramid": 0.95,
+      "christ": 1.25,
+      "light codes": 0.9689999999999999
+    },
+    "coherence_prayer__christic_focus": {
+      "grail": 1.029,
+      "metatron": 1.1440000000000001,
+      "pyramid": 0.9309999999999999,
+      "christ": 1.4749999999999999,
+      "light codes": 0.7989999999999999
+    },
+    "coherence_prayer__exploration_flux": {
+      "grail": 1.1760000000000002,
+      "metatron": 1.056,
+      "pyramid": 1.064,
+      "christ": 1.2,
+      "light codes": 0.918
+    },
+    "unitive_bridge__baseline": {
+      "grail": 1.1,
+      "metatron": 1.05,
+      "pyramid": 1.05,
+      "christ": 1.1,
+      "light codes": 1.05
+    },
+    "unitive_bridge__coherence_boost": {
+      "grail": 1.1,
+      "metatron": 1.1340000000000001,
+      "pyramid": 1.05,
+      "christ": 1.2100000000000002,
+      "light codes": 1.008
+    },
+    "unitive_bridge__bridge_lift": {
+      "grail": 1.2100000000000002,
+      "metatron": 1.05,
+      "pyramid": 1.1550000000000002,
+      "christ": 1.1,
+      "light codes": 1.05
+    },
+    "unitive_bridge__tech_harmonic": {
+      "grail": 1.1,
+      "metatron": 1.05,
+      "pyramid": 1.05,
+      "christ": 1.1,
+      "light codes": 1.1969999999999998
+    },
+    "unitive_bridge__christic_focus": {
+      "grail": 1.078,
+      "metatron": 1.092,
+      "pyramid": 1.029,
+      "christ": 1.298,
+      "light codes": 0.987
+    },
+    "unitive_bridge__exploration_flux": {
+      "grail": 1.2320000000000002,
+      "metatron": 1.008,
+      "pyramid": 1.1760000000000002,
+      "christ": 1.056,
+      "light codes": 1.1340000000000001
+    },
+    "skeptic_grounding__baseline": {
+      "grail": 0.95,
+      "metatron": 0.9,
+      "pyramid": 1.1,
+      "christ": 0.9,
+      "light codes": 1.2
+    },
+    "skeptic_grounding__coherence_boost": {
+      "grail": 0.95,
+      "metatron": 0.9720000000000001,
+      "pyramid": 1.1,
+      "christ": 0.9900000000000001,
+      "light codes": 1.152
+    },
+    "skeptic_grounding__bridge_lift": {
+      "grail": 1.045,
+      "metatron": 0.9,
+      "pyramid": 1.2100000000000002,
+      "christ": 0.9,
+      "light codes": 1.2
+    },
+    "skeptic_grounding__tech_harmonic": {
+      "grail": 0.95,
+      "metatron": 0.9,
+      "pyramid": 1.1,
+      "christ": 0.9,
+      "light codes": 1.3679999999999999
+    },
+    "skeptic_grounding__christic_focus": {
+      "grail": 0.9309999999999999,
+      "metatron": 0.936,
+      "pyramid": 1.078,
+      "christ": 1.062,
+      "light codes": 1.128
+    },
+    "skeptic_grounding__exploration_flux": {
+      "grail": 1.064,
+      "metatron": 0.864,
+      "pyramid": 1.2320000000000002,
+      "christ": 0.864,
+      "light codes": 1.296
+    }
+  },
+  "args": {
+    "phase1_root": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance",
+    "phase1_run_dir": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance\\20260213_063226",
+    "top_damping_count": 6,
+    "top_profile_count": 4,
+    "focus_window": 0.5,
+    "focus_step": 0.25,
+    "damping_min": 0.25,
+    "damping_max": 22.0,
+    "seeds": 1,
+    "steps": 3600,
+    "sample_every": 4,
+    "budget_hours": 6.0,
+    "output_root": "data/thinking_engine_resonance_phase2",
+    "dry_run": false
+  }
+}

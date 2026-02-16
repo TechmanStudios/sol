@@ -1,0 +1,318 @@
+{
+  "status": "ok",
+  "phase1_run_dir": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance\\20260213_063226",
+  "elapsed_seconds": 6886.050228834152,
+  "trial_count": 456,
+  "metric_means": {
+    "resonance_index": 0.6003372777225955,
+    "phonon_memory": 0.9999845425572303,
+    "thought_vibration": 0.48918007192919505,
+    "semantic_entanglement": 0.9495685007327654,
+    "manifold_potential": 0.28401741325197266
+  },
+  "best_trial": {
+    "seed": 0,
+    "damping": 5.5,
+    "profile": "coherence_prayer__baseline",
+    "steps": 3600,
+    "sample_every": 4,
+    "samples": 900,
+    "final_basin_id": 22,
+    "final_basin_label": "christic",
+    "final_entropy": 0.9851318293998186,
+    "final_max_rho": 7.584434623061164e-103,
+    "phonon_memory": 0.9999849043356028,
+    "thought_vibration": 0.49455669851866724,
+    "semantic_entanglement": 0.957226825355078,
+    "manifold_potential": 0.48864807528486076,
+    "resonance_index": 0.693513862396753,
+    "unique_basins": 20,
+    "trial_index": 13,
+    "duration_sec": 15.009355068206787,
+    "timestamp_utc": "2026-02-13T15:31:13.888660+00:00"
+  },
+  "phase1_reference": {
+    "mean_resonance": 0.6144517804353012,
+    "best_resonance": 0.6986138289111846,
+    "delta_mean_resonance": -0.014114502712705757,
+    "delta_best_resonance": -0.005099966514431675
+  },
+  "profile_ranking": [
+    {
+      "profile": "skeptic_grounding__coherence_boost",
+      "mean_resonance": 0.6095700254681108,
+      "best_resonance": 0.6837170868731562,
+      "n": 19
+    },
+    {
+      "profile": "unitive_bridge__tech_harmonic",
+      "mean_resonance": 0.606590807791261,
+      "best_resonance": 0.6812069175638461,
+      "n": 19
+    },
+    {
+      "profile": "coherence_prayer__exploration_flux",
+      "mean_resonance": 0.6063120005631302,
+      "best_resonance": 0.6917746605236794,
+      "n": 19
+    },
+    {
+      "profile": "explorer_flux__coherence_boost",
+      "mean_resonance": 0.6045408687711522,
+      "best_resonance": 0.6880251787331625,
+      "n": 19
+    },
+    {
+      "profile": "unitive_bridge__baseline",
+      "mean_resonance": 0.6037662366464673,
+      "best_resonance": 0.6832055682155046,
+      "n": 19
+    },
+    {
+      "profile": "coherence_prayer__christic_focus",
+      "mean_resonance": 0.6037644912459903,
+      "best_resonance": 0.6790482197370495,
+      "n": 19
+    },
+    {
+      "profile": "coherence_prayer__baseline",
+      "mean_resonance": 0.6032111840808276,
+      "best_resonance": 0.693513862396753,
+      "n": 19
+    },
+    {
+      "profile": "explorer_flux__baseline",
+      "mean_resonance": 0.6029945585126476,
+      "best_resonance": 0.6845870454292848,
+      "n": 19
+    },
+    {
+      "profile": "explorer_flux__christic_focus",
+      "mean_resonance": 0.6029278037671385,
+      "best_resonance": 0.676306623697955,
+      "n": 19
+    },
+    {
+      "profile": "skeptic_grounding__christic_focus",
+      "mean_resonance": 0.6002650950013936,
+      "best_resonance": 0.6371316114526575,
+      "n": 19
+    },
+    {
+      "profile": "skeptic_grounding__bridge_lift",
+      "mean_resonance": 0.5998455507174177,
+      "best_resonance": 0.6840028595554286,
+      "n": 19
+    },
+    {
+      "profile": "coherence_prayer__tech_harmonic",
+      "mean_resonance": 0.5998407136559655,
+      "best_resonance": 0.6876476111962248,
+      "n": 19
+    },
+    {
+      "profile": "unitive_bridge__coherence_boost",
+      "mean_resonance": 0.59943452990397,
+      "best_resonance": 0.6357020810329749,
+      "n": 19
+    },
+    {
+      "profile": "coherence_prayer__coherence_boost",
+      "mean_resonance": 0.5993683092463205,
+      "best_resonance": 0.6852456475916678,
+      "n": 19
+    },
+    {
+      "profile": "skeptic_grounding__baseline",
+      "mean_resonance": 0.5988540033210203,
+      "best_resonance": 0.6393856573780642,
+      "n": 19
+    },
+    {
+      "profile": "coherence_prayer__bridge_lift",
+      "mean_resonance": 0.5984601679183347,
+      "best_resonance": 0.6363753381244192,
+      "n": 19
+    },
+    {
+      "profile": "unitive_bridge__bridge_lift",
+      "mean_resonance": 0.5979270293994782,
+      "best_resonance": 0.6361985188491274,
+      "n": 19
+    },
+    {
+      "profile": "unitive_bridge__exploration_flux",
+      "mean_resonance": 0.5976511992121942,
+      "best_resonance": 0.6870409193987438,
+      "n": 19
+    },
+    {
+      "profile": "skeptic_grounding__exploration_flux",
+      "mean_resonance": 0.5975393337673508,
+      "best_resonance": 0.681376851903575,
+      "n": 19
+    },
+    {
+      "profile": "explorer_flux__tech_harmonic",
+      "mean_resonance": 0.5973459908480968,
+      "best_resonance": 0.6341584526319356,
+      "n": 19
+    },
+    {
+      "profile": "explorer_flux__exploration_flux",
+      "mean_resonance": 0.5960497047532651,
+      "best_resonance": 0.6848096809955246,
+      "n": 19
+    },
+    {
+      "profile": "skeptic_grounding__tech_harmonic",
+      "mean_resonance": 0.5953959421422567,
+      "best_resonance": 0.6396536919190342,
+      "n": 19
+    },
+    {
+      "profile": "unitive_bridge__christic_focus",
+      "mean_resonance": 0.5939959281861911,
+      "best_resonance": 0.6341332422427718,
+      "n": 19
+    },
+    {
+      "profile": "explorer_flux__bridge_lift",
+      "mean_resonance": 0.5924431904223122,
+      "best_resonance": 0.6338214319897564,
+      "n": 19
+    }
+  ],
+  "damping_ranking": [
+    {
+      "damping": 6.5,
+      "mean_resonance": 0.6283374762596485,
+      "best_resonance": 0.6382975120588706,
+      "n": 24
+    },
+    {
+      "damping": 4.5,
+      "mean_resonance": 0.6149398899263107,
+      "best_resonance": 0.6870409193987438,
+      "n": 24
+    },
+    {
+      "damping": 2.5,
+      "mean_resonance": 0.6113076882027427,
+      "best_resonance": 0.6261314116513417,
+      "n": 24
+    },
+    {
+      "damping": 4.75,
+      "mean_resonance": 0.6110693090036055,
+      "best_resonance": 0.6880251787331625,
+      "n": 24
+    },
+    {
+      "damping": 3.0,
+      "mean_resonance": 0.6069474936975451,
+      "best_resonance": 0.6743735025042246,
+      "n": 24
+    },
+    {
+      "damping": 4.25,
+      "mean_resonance": 0.6060004470953281,
+      "best_resonance": 0.6790482197370495,
+      "n": 24
+    },
+    {
+      "damping": 6.75,
+      "mean_resonance": 0.6054274987762389,
+      "best_resonance": 0.6396536919190342,
+      "n": 24
+    },
+    {
+      "damping": 5.5,
+      "mean_resonance": 0.605246072104958,
+      "best_resonance": 0.693513862396753,
+      "n": 24
+    },
+    {
+      "damping": 2.75,
+      "mean_resonance": 0.6051312431260542,
+      "best_resonance": 0.6193479868344708,
+      "n": 24
+    },
+    {
+      "damping": 4.0,
+      "mean_resonance": 0.6022425761744911,
+      "best_resonance": 0.6216345469530986,
+      "n": 24
+    },
+    {
+      "damping": 3.25,
+      "mean_resonance": 0.600722890879146,
+      "best_resonance": 0.6730598097127356,
+      "n": 24
+    },
+    {
+      "damping": 5.25,
+      "mean_resonance": 0.6003236193022888,
+      "best_resonance": 0.6908085362205082,
+      "n": 24
+    },
+    {
+      "damping": 3.5,
+      "mean_resonance": 0.5984917273794046,
+      "best_resonance": 0.676306623697955,
+      "n": 24
+    },
+    {
+      "damping": 5.75,
+      "mean_resonance": 0.5932945799814674,
+      "best_resonance": 0.6832055682155046,
+      "n": 24
+    },
+    {
+      "damping": 3.75,
+      "mean_resonance": 0.5930004405071881,
+      "best_resonance": 0.6137676353812295,
+      "n": 24
+    },
+    {
+      "damping": 5.0,
+      "mean_resonance": 0.5906837366122625,
+      "best_resonance": 0.6093793803463575,
+      "n": 24
+    },
+    {
+      "damping": 6.25,
+      "mean_resonance": 0.579695568953789,
+      "best_resonance": 0.6372671729167849,
+      "n": 24
+    },
+    {
+      "damping": 6.0,
+      "mean_resonance": 0.5772229056217157,
+      "best_resonance": 0.5931408987318139,
+      "n": 24
+    },
+    {
+      "damping": 7.0,
+      "mean_resonance": 0.5763231131251304,
+      "best_resonance": 0.6392348507519771,
+      "n": 24
+    }
+  ],
+  "args": {
+    "phase1_root": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance",
+    "phase1_run_dir": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance\\20260213_063226",
+    "top_damping_count": 6,
+    "top_profile_count": 4,
+    "focus_window": 0.5,
+    "focus_step": 0.25,
+    "damping_min": 0.25,
+    "damping_max": 22.0,
+    "seeds": 1,
+    "steps": 3600,
+    "sample_every": 4,
+    "budget_hours": 6.0,
+    "output_root": "data/thinking_engine_resonance_phase2",
+    "dry_run": false
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "run_id": "PL-20260214-003109",
+  "completed_at": "2026-02-14T00:59:40.761904+00:00",
+  "stages_passed": 4,
+  "stages_failed": 0,
+  "stages_skipped": 1,
+  "total_elapsed_sec": 1711.68,
+  "core_immutability": "PASS",
+  "pipeline_verdict": "PASS",
+  "stages": {
+    "smoke": {
+      "stage": "smoke",
+      "status": "passed",
+      "started_at": "2026-02-14T00:31:09.078549+00:00",
+      "completed_at": "2026-02-14T00:31:09.120588+00:00",
+      "elapsed_sec": 0.04,
+      "output": {
+        "engine_ok": true,
+        "nodes": 140,
+        "mass": 49.67,
+        "entropy": 0.0279,
+        "maxRho": 48.86,
+        "core_sha256": "b9800d5313886818c7c1980829e1ca5da7d63d9e2218e36c020df80db19b06fb"
+      },
+      "error": null
+    },
+    "cortex": {
+      "stage": "cortex",
+      "status": "passed",
+      "started_at": "2026-02-14T00:31:09.121589+00:00",
+      "completed_at": "2026-02-14T00:34:07.212457+00:00",
+      "elapsed_sec": 178.09,
+      "output": {
+        "session_id": "CX-20260214-003109",
+        "session_dir": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260214-003109",
+        "protocols_run": 8,
+        "total_steps": 46000,
+        "hypotheses": 8,
+        "gaps_addressed": [
+          "open_question:Open Q: Does basin migration (RhoMaxNode",
+          "open_question:Open Q: What happens in the unexplored g",
+          "open_question:Open Q: Is the truncated replication tar",
+          "open_question:Open Q: Do consciousness, gravity, and e",
+          "open_question:Open Q: Do dashboard results match these",
+          "open_question:Open Q: Are the decay rate differences t",
+          "open_question:Open Q: At what timescale does damping s",
+          "open_question:Open Q: Is the node-1 basin specific to "
+        ],
+        "sanity_results": [
+          {
+            "hypothesis": "H-001",
+            "series": "h-001",
+            "sanity_passed": true,
+            "anomalies": []
+          },
+          {
+            "hypothesis": "H-002",
+            "series": "h-002",
+            "sanity_passed": true,
+            "anomalies": []
+          },
+          {
+            "hypothesis": "H-003",
+            "series": "h-003",
+            "sanity_passed": true,
+            "anomalies": []
+          },
+          {
+            "hypothesis": "H-004",
+            "series": "h-004",
+            "sanity_passed": true,
+            "anomalies": []
+          },
+          {
+            "hypothesis": "H-005",
+            "series": "h-005",
+            "sanity_passed": true,
+            "anomalies": []
+          },
+          {
+            "hypothesis": "H-006",
+            "series": "h-006",
+            "sanity_passed": true,
+            "anomalies": []
+          },
+          {
+            "hypothesis": "H-007",
+            "series": "h-007",
+            "sanity_passed": true,
+            "anomalies": []
+          },
+          {
+            "hypothesis": "H-008",
+            "series": "h-008",
+            "sanity_passed": true,
+            "anomalies": []
+          }
+        ],
+        "dry_run": false
+      },
+      "error": null
+    },
+    "consolidate": {
+      "stage": "consolidate",
+      "status": "passed",
+      "started_at": "2026-02-14T00:34:07.212457+00:00",
+      "completed_at": "2026-02-14T00:55:01.155582+00:00",
+      "elapsed_sec": 1253.94,
+      "output": {
+        "session_id": "CX-20260214-003109",
+        "consolidated_at": "2026-02-14T00:55:01.095020+00:00",
+        "protocols_run": 8,
+        "total_steps": 46000,
+        "hypotheses_processed": 8,
+        "proof_packets_generated": [
+          "PP-2026-02-14-cortex-CX-20260214-003109-h-001-damping",
+          "PP-2026-02-14-cortex-CX-20260214-003109-h-002-damping",
+          "PP-2026-02-14-cortex-CX-20260214-003109-h-003-None",
+          "PP-2026-02-14-cortex-CX-20260214-003109-h-004-None",
+          "PP-2026-02-14-cortex-CX-20260214-003109-h-005-None",
+          "PP-2026-02-14-cortex-CX-20260214-003109-h-006-dt",
+          "PP-2026-02-14-cortex-CX-20260214-003109-h-007-injection",
+          "PP-2026-02-14-cortex-CX-20260214-003109-h-008-injection"
+        ],
+        "status": "consolidated"
+      },
+      "error": null
+    },
+    "hippocampus": {
+      "stage": "hippocampus",
+      "status": "passed",
+      "started_at": "2026-02-14T00:55:01.155582+00:00",
+      "completed_at": "2026-02-14T00:59:40.760903+00:00",
+      "elapsed_sec": 279.61,
+      "output": {
+        "dream_session_id": "DS-20260214-005501",
+        "sessions_replayed": 5,
+        "replays_run": 34,
+        "basins_discovered": 5,
+        "basins_reinforced": 0,
+        "basins_decayed": 19,
+        "memory_nodes": 20,
+        "memory_edges": 137,
+        "dry_run": false
+      },
+      "error": null
+    },
+    "evolve": {
+      "stage": "evolve",
+      "status": "skipped",
+      "started_at": "2026-02-14T00:59:40.760903+00:00",
+      "completed_at": "2026-02-14T00:59:40.760903+00:00",
+      "elapsed_sec": 0.0,
+      "output": {
+        "status": "skipped",
+        "reason": "no evolve candidates specified"
+      },
+      "error": null
+    }
+  }
+}

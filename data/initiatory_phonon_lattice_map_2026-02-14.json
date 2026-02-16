@@ -1,0 +1,577 @@
+{
+  "timestamp": "2026-02-14T19:25:29",
+  "protocol": {
+    "type": "initiatory_phonon_lattice_map",
+    "source_script": "basin_phonon_sweep.py",
+    "damping_samples": [
+      0.2,
+      1.0,
+      3.5,
+      5.0,
+      10.0,
+      20.0,
+      40.0,
+      55.0,
+      75.0,
+      79.5,
+      83.0,
+      83.5
+    ],
+    "steps_per_trial": 1000,
+    "dt": 0.12,
+    "c_press": 0.1,
+    "injection_pattern": [
+      {
+        "label": "grail",
+        "amount": 40.0
+      },
+      {
+        "label": "metatron",
+        "amount": 35.0
+      },
+      {
+        "label": "pyramid",
+        "amount": 30.0
+      },
+      {
+        "label": "christ",
+        "amount": 25.0
+      },
+      {
+        "label": "light codes",
+        "amount": 20.0
+      }
+    ]
+  },
+  "runtime_sec": 52.98,
+  "records": [
+    {
+      "damping": 0.2,
+      "final_basin": 14,
+      "final_basin_label": "maia nartoomid",
+      "n_phonon_modes": 140,
+      "phase_coherence": 0.9650176316226678,
+      "heartbeat_power_ratio": 0.03494268859363396,
+      "dominant_freq": 0.008333333333333333,
+      "spectral_entropy": 0.20557404263144866,
+      "final_entropy": 0.9969925246995686,
+      "final_maxrho": 0.20896479528511835,
+      "top_oscillators": [
+        {
+          "node_id": 31,
+          "label": "thothhorra",
+          "group": "spirit",
+          "amp": 0.10538082952570518
+        },
+        {
+          "node_id": 138,
+          "label": "thothhorra khandr",
+          "group": "spirit",
+          "amp": 0.09985227312095604
+        },
+        {
+          "node_id": 119,
+          "label": "kyi",
+          "group": "bridge",
+          "amp": 0.09251545880288438
+        },
+        {
+          "node_id": 131,
+          "label": "non profitset",
+          "group": "bridge",
+          "amp": 0.09105439085442686
+        },
+        {
+          "node_id": 115,
+          "label": "please support",
+          "group": "bridge",
+          "amp": 0.09105439085442686
+        }
+      ]
+    },
+    {
+      "damping": 1.0,
+      "final_basin": 5,
+      "final_basin_label": "earth star",
+      "n_phonon_modes": 140,
+      "phase_coherence": 0.9792420700539575,
+      "heartbeat_power_ratio": 0.04876325875960856,
+      "dominant_freq": 0.008333333333333333,
+      "spectral_entropy": 0.27263217595022526,
+      "final_entropy": 0.9972494877743145,
+      "final_maxrho": 5.094468435928472e-05,
+      "top_oscillators": [
+        {
+          "node_id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "amp": 0.22919597616447712
+        },
+        {
+          "node_id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "amp": 0.19231263808170063
+        },
+        {
+          "node_id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "amp": 0.16504093839325312
+        },
+        {
+          "node_id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "amp": 0.15899815065857278
+        },
+        {
+          "node_id": 31,
+          "label": "thothhorra",
+          "group": "spirit",
+          "amp": 0.15716432654807533
+        }
+      ]
+    },
+    {
+      "damping": 3.5,
+      "final_basin": 89,
+      "final_basin_label": "mystery school",
+      "n_phonon_modes": 140,
+      "phase_coherence": 0.9923051090042276,
+      "heartbeat_power_ratio": 0.10288807684880516,
+      "dominant_freq": 0.008333333333333333,
+      "spectral_entropy": 0.39724993277542303,
+      "final_entropy": 0.9979115041276371,
+      "final_maxrho": 1.8592531114265965e-16,
+      "top_oscillators": [
+        {
+          "node_id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "amp": 0.7519324555050346
+        },
+        {
+          "node_id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "amp": 0.6328531132634013
+        },
+        {
+          "node_id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "amp": 0.5498147862775226
+        },
+        {
+          "node_id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "amp": 0.429714197914304
+        },
+        {
+          "node_id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "amp": 0.42040475880542566
+        }
+      ]
+    },
+    {
+      "damping": 5.0,
+      "final_basin": 29,
+      "final_basin_label": "pyramid",
+      "n_phonon_modes": 140,
+      "phase_coherence": 0.9947834720249118,
+      "heartbeat_power_ratio": 0.13237679144209072,
+      "dominant_freq": 0.008333333333333333,
+      "spectral_entropy": 0.4383599427526622,
+      "final_entropy": 0.072830933072843,
+      "final_maxrho": 9.815713353390976e-20,
+      "top_oscillators": [
+        {
+          "node_id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "amp": 0.8530783730645081
+        },
+        {
+          "node_id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "amp": 0.6992783722362365
+        },
+        {
+          "node_id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "amp": 0.6932906549803659
+        },
+        {
+          "node_id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "amp": 0.6337046063240465
+        },
+        {
+          "node_id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "amp": 0.5985588730506102
+        }
+      ]
+    },
+    {
+      "damping": 10.0,
+      "final_basin": 29,
+      "final_basin_label": "pyramid",
+      "n_phonon_modes": 140,
+      "phase_coherence": 0.9977313791106575,
+      "heartbeat_power_ratio": 0.21998029202553654,
+      "dominant_freq": 0.008333333333333333,
+      "spectral_entropy": 0.5254401821104291,
+      "final_entropy": 6.308854915573763e-07,
+      "final_maxrho": 6.391131698540285e-22,
+      "top_oscillators": [
+        {
+          "node_id": 90,
+          "label": "christine hayes",
+          "group": "spirit",
+          "amp": 1.1318246720978045
+        },
+        {
+          "node_id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "amp": 1.0935305766378594
+        },
+        {
+          "node_id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "amp": 0.9967043532619372
+        },
+        {
+          "node_id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "amp": 0.8564584314860569
+        },
+        {
+          "node_id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "amp": 0.7057728691182984
+        }
+      ]
+    },
+    {
+      "damping": 20.0,
+      "final_basin": 29,
+      "final_basin_label": "pyramid",
+      "n_phonon_modes": 140,
+      "phase_coherence": 0.998996842821201,
+      "heartbeat_power_ratio": 0.34163115709955894,
+      "dominant_freq": 0.008333333333333333,
+      "spectral_entropy": 0.6206304205218538,
+      "final_entropy": 0.07834512448883213,
+      "final_maxrho": 5.449700841790746e-27,
+      "top_oscillators": [
+        {
+          "node_id": 90,
+          "label": "christine hayes",
+          "group": "spirit",
+          "amp": 1.287956778497362
+        },
+        {
+          "node_id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "amp": 1.2541301760658696
+        },
+        {
+          "node_id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "amp": 1.2405320417209773
+        },
+        {
+          "node_id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "amp": 1.1954674667757197
+        },
+        {
+          "node_id": 136,
+          "label": "maia christianne",
+          "group": "spirit",
+          "amp": 0.8364456851569858
+        }
+      ]
+    },
+    {
+      "damping": 40.0,
+      "final_basin": 22,
+      "final_basin_label": "christic",
+      "n_phonon_modes": 140,
+      "phase_coherence": 0.9995016826441938,
+      "heartbeat_power_ratio": 0.40899272464987546,
+      "dominant_freq": 0.008333333333333333,
+      "spectral_entropy": 0.7207593610371534,
+      "final_entropy": 0.4172158125822979,
+      "final_maxrho": 3.205779270570352e-33,
+      "top_oscillators": [
+        {
+          "node_id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "amp": 1.6237488166732366
+        },
+        {
+          "node_id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "amp": 1.3535371329088421
+        },
+        {
+          "node_id": 90,
+          "label": "christine hayes",
+          "group": "spirit",
+          "amp": 1.271803655692515
+        },
+        {
+          "node_id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "amp": 1.213372759074684
+        },
+        {
+          "node_id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "amp": 1.2091107225799436
+        }
+      ]
+    },
+    {
+      "damping": 55.0,
+      "final_basin": 7,
+      "final_basin_label": "numis'om",
+      "n_phonon_modes": 140,
+      "phase_coherence": 0.9995849226565184,
+      "heartbeat_power_ratio": 0.39586089008852604,
+      "dominant_freq": 0.008333333333333333,
+      "spectral_entropy": 0.7676152736552425,
+      "final_entropy": 0.376957280054777,
+      "final_maxrho": 5.849147314782195e-34,
+      "top_oscillators": [
+        {
+          "node_id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "amp": 1.5865174066682672
+        },
+        {
+          "node_id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "amp": 1.5853899630202268
+        },
+        {
+          "node_id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "amp": 1.268903755264298
+        },
+        {
+          "node_id": 90,
+          "label": "christine hayes",
+          "group": "spirit",
+          "amp": 1.2480420460602706
+        },
+        {
+          "node_id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "amp": 1.1953144379238965
+        }
+      ]
+    },
+    {
+      "damping": 75.0,
+      "final_basin": 7,
+      "final_basin_label": "numis'om",
+      "n_phonon_modes": 140,
+      "phase_coherence": 0.9992048593257621,
+      "heartbeat_power_ratio": 0.34974348219629814,
+      "dominant_freq": 0.008333333333333333,
+      "spectral_entropy": 0.8158444290966483,
+      "final_entropy": 0.3124790842277314,
+      "final_maxrho": 2.224237012990186e-35,
+      "top_oscillators": [
+        {
+          "node_id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "amp": 1.6651563823437028
+        },
+        {
+          "node_id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "amp": 1.6032532326842033
+        },
+        {
+          "node_id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "amp": 1.5972683026976249
+        },
+        {
+          "node_id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "amp": 1.5722121708972985
+        },
+        {
+          "node_id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "amp": 1.3752615214393749
+        }
+      ]
+    },
+    {
+      "damping": 79.5,
+      "final_basin": 2,
+      "final_basin_label": "christ",
+      "n_phonon_modes": 140,
+      "phase_coherence": 0.9999996607990745,
+      "heartbeat_power_ratio": 0.05275312860347533,
+      "dominant_freq": 0.008333333333333333,
+      "spectral_entropy": 0.9996562417958259,
+      "final_entropy": 0.18477523959090902,
+      "final_maxrho": 1.5450164417785532e-39,
+      "top_oscillators": [
+        {
+          "node_id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "amp": 5.570621907939613
+        },
+        {
+          "node_id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "amp": 5.5689123088903445
+        },
+        {
+          "node_id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "amp": 5.567660020639114
+        },
+        {
+          "node_id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "amp": 5.560719930581906
+        },
+        {
+          "node_id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "amp": 5.560719930581906
+        }
+      ]
+    },
+    {
+      "damping": 83.0,
+      "final_basin": 2,
+      "final_basin_label": "christ",
+      "n_phonon_modes": 133,
+      "phase_coherence": 0.9999998749945334,
+      "heartbeat_power_ratio": 0.04854543031083868,
+      "dominant_freq": 0.008333333333333333,
+      "spectral_entropy": 0.9999970709910131,
+      "final_entropy": 0.14806584392524244,
+      "final_maxrho": 6.928090018508351e-42,
+      "top_oscillators": [
+        {
+          "node_id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "amp": 5.811571106036737
+        },
+        {
+          "node_id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "amp": 5.8107099738332435
+        },
+        {
+          "node_id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "amp": 5.810108217717654
+        },
+        {
+          "node_id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "amp": 5.806988508499789
+        },
+        {
+          "node_id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "amp": 5.806988508499788
+        }
+      ]
+    },
+    {
+      "damping": 83.5,
+      "final_basin": 9,
+      "final_basin_label": "metatron",
+      "n_phonon_modes": 5,
+      "phase_coherence": 0.60736956176286,
+      "heartbeat_power_ratio": 0.41846447171318335,
+      "dominant_freq": 0.008333333333333333,
+      "spectral_entropy": 0.7329481005484884,
+      "final_entropy": 0.13925162594738782,
+      "final_maxrho": 3.9377423107092185e-41,
+      "top_oscillators": [
+        {
+          "node_id": 23,
+          "label": "light codes",
+          "group": "tech",
+          "amp": 1.731178981202938
+        },
+        {
+          "node_id": 2,
+          "label": "christ",
+          "group": "spirit",
+          "amp": 1.2691618720995068
+        },
+        {
+          "node_id": 9,
+          "label": "metatron",
+          "group": "spirit",
+          "amp": 1.2691560864899896
+        },
+        {
+          "node_id": 29,
+          "label": "pyramid",
+          "group": "bridge",
+          "amp": 1.1346503439608857
+        },
+        {
+          "node_id": 1,
+          "label": "grail",
+          "group": "bridge",
+          "amp": 1.1346465985184095
+        }
+      ]
+    }
+  ]
+}

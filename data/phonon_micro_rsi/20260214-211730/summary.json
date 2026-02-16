@@ -1,0 +1,35 @@
+{
+  "timestamp": "2026-02-14T23:59:56",
+  "runtime_sec": 9744.79,
+  "config": {
+    "sweeps": 100,
+    "steps": 300,
+    "start_center": 83.323118,
+    "start_half_window": 0.2498755783880542,
+    "damping_min": 82.8,
+    "damping_max": 83.6,
+    "step": 0.02,
+    "rsi_period": 4,
+    "rsi_shift": 0.02,
+    "llm_advisor_every_sweeps": 10,
+    "llm_advisor_lookback": 10,
+    "llm_advisor_max_center_offset": 0.01,
+    "llm_advisor_min_window_scale": 0.9,
+    "llm_advisor_max_window_scale": 1.1,
+    "llm_advisor_max_rsi_shift": 0.03
+  },
+  "best_boundary": {
+    "sweep": 2,
+    "boundary_damping": 83.323376,
+    "boundary_strength": 6000.000000001194,
+    "mode_drop": 120.0,
+    "transition_from": "christos",
+    "transition_to": "grail"
+  },
+  "final_state": {
+    "center": 83.340124,
+    "half_window": 0.35,
+    "rsi_shift": 0.02,
+    "latest_rsi": 100.0
+  }
+}

@@ -1,0 +1,18 @@
+[09:46:26] Starting Phase 2 focused resonance scan
+[09:46:26] Output: G:\docs\TechmanStudios\sol\data\thinking_engine_resonance_phase2\20260213_144626
+[09:48:04] Completed 10/144 | resonance=0.6134 (coherence_prayer__baseline d=5.0)
+[09:49:41] Completed 20/144 | resonance=0.6352 (coherence_prayer__bridge_lift d=2.75)
+[09:51:19] Completed 30/144 | resonance=0.6037 (coherence_prayer__bridge_lift d=5.5)
+[09:52:57] Completed 40/144 | resonance=0.6125 (coherence_prayer__coherence_boost d=3.25)
+[09:54:35] Completed 50/144 | resonance=0.5817 (coherence_prayer__coherence_boost d=6.0)
+[09:56:14] Completed 60/144 | resonance=0.6243 (coherence_prayer__tech_harmonic d=4.0)
+[09:57:52] Completed 70/144 | resonance=0.6434 (coherence_prayer__tech_harmonic d=6.5)
+[09:59:30] Completed 80/144 | resonance=0.6902 (explorer_flux__baseline d=4.5)
+[10:01:08] Completed 90/144 | resonance=0.5778 (explorer_flux__baseline d=7.0)
+[10:02:46] Completed 100/144 | resonance=0.6151 (explorer_flux__bridge_lift d=5.0)
+[10:04:24] Completed 110/144 | resonance=0.6394 (explorer_flux__coherence_boost d=2.75)
+[10:06:02] Completed 120/144 | resonance=0.6284 (explorer_flux__coherence_boost d=5.5)
+[10:07:40] Completed 130/144 | resonance=0.6334 (explorer_flux__tech_harmonic d=3.25)
+[10:09:18] Completed 140/144 | resonance=0.5963 (explorer_flux__tech_harmonic d=6.0)
+[10:09:57] Wrote summary.json and phase2_report.md
+[10:09:57] Trials completed: 144

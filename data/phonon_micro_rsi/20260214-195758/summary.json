@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-02-14T20:02:46",
+  "runtime_sec": 288.7,
+  "config": {
+    "sweeps": 10,
+    "steps": 300,
+    "start_center": 83.2,
+    "start_half_window": 0.2,
+    "damping_min": 82.8,
+    "damping_max": 83.6,
+    "step": 0.02,
+    "rsi_period": 4,
+    "rsi_shift": 0.02
+  },
+  "best_boundary": {
+    "sweep": 2,
+    "boundary_damping": 83.324,
+    "boundary_strength": 5999.9999999969305,
+    "mode_drop": 120.0,
+    "transition_from": "christos",
+    "transition_to": "metatron"
+  },
+  "final_state": {
+    "center": 83.323118,
+    "half_window": 0.2498755783880542,
+    "latest_rsi": 42.80452042056566
+  }
+}

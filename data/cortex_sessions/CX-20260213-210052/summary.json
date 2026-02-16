@@ -1,0 +1,68 @@
+{
+  "session_id": "CX-20260213-210052",
+  "completed_at": "2026-02-13T21:03:50.187807Z",
+  "protocols_run": 8,
+  "total_steps": 46000,
+  "hypotheses_generated": 8,
+  "gaps_addressed": [
+    "open_question:Open Q: Do consciousness, gravity, and e",
+    "open_question:Open Q: Is the node-1 basin specific to ",
+    "open_question:Open Q: At what timescale does damping s",
+    "open_question:Open Q: Does basin migration (RhoMaxNode",
+    "open_question:Open Q: Do dashboard results match these",
+    "open_question:Open Q: What happens in the unexplored g",
+    "open_question:Open Q: Is the truncated replication tar",
+    "open_question:Open Q: Are the decay rate differences t"
+  ],
+  "sanity_results": [
+    {
+      "hypothesis": "H-001",
+      "series": "h-001",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-002",
+      "series": "h-002",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-003",
+      "series": "h-003",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-004",
+      "series": "h-004",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-005",
+      "series": "h-005",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-006",
+      "series": "h-006",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-007",
+      "series": "h-007",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-008",
+      "series": "h-008",
+      "sanity_passed": true,
+      "anomalies": []
+    }
+  ],
+  "dry_run": false
+}
