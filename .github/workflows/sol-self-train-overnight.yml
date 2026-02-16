@@ -1,0 +1,49 @@
+name: "SOL Self-Train Overnight Preset"
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: sol-self-train-overnight-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  self-train-overnight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 480
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run overnight self-train preset
+        id: train
+        run: |
+          OUT_DIR="data/sol_self_train_runs/overnight/${{ github.run_id }}"
+          python tools/sol-evolve/self_train_loop.py \
+            --config "tools/sol-evolve/self_train/config/self_train_config.json" \
+            --generations "3" \
+            --mode "overnight" \
+            --out-dir "$OUT_DIR"
+          echo "out_dir=$OUT_DIR" >> $GITHUB_OUTPUT
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: self-train-overnight-${{ github.run_id }}
+          path: |
+            ${{ steps.train.outputs.out_dir }}
+          retention-days: 30
+
+      - name: Job summary
+        run: |
+          echo "## SOL Self-Train Overnight Preset Complete" >> $GITHUB_STEP_SUMMARY
+          echo "- Mode: \`overnight\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Generations: \`3\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Output: \`${{ steps.train.outputs.out_dir }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Artifact: \`self-train-overnight-${{ github.run_id }}\`" >> $GITHUB_STEP_SUMMARY

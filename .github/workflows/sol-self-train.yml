@@ -1,0 +1,73 @@
+name: "SOL Self-Train"
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Runtime profile mode"
+        required: true
+        default: "overnight"
+        type: choice
+        options:
+          - default
+          - fast
+          - full
+          - overnight
+      generations:
+        description: "Number of generations"
+        required: false
+        default: "3"
+      config:
+        description: "Path to self-train config JSON"
+        required: false
+        default: "tools/sol-evolve/self_train/config/self_train_config.json"
+      out_dir:
+        description: "Output directory (relative to repo root)"
+        required: false
+        default: "data/sol_self_train_runs"
+
+concurrency:
+  group: sol-self-train-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  self-train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run self-train loop
+        id: train
+        run: |
+          OUT_DIR="${{ github.event.inputs.out_dir }}/${{ github.run_id }}"
+          echo "Running self-train with mode=${{ github.event.inputs.mode }} generations=${{ github.event.inputs.generations }}"
+          python tools/sol-evolve/self_train_loop.py \
+            --config "${{ github.event.inputs.config }}" \
+            --generations "${{ github.event.inputs.generations }}" \
+            --mode "${{ github.event.inputs.mode }}" \
+            --out-dir "$OUT_DIR"
+          echo "out_dir=$OUT_DIR" >> $GITHUB_OUTPUT
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: self-train-${{ github.event.inputs.mode }}-${{ github.run_id }}
+          path: |
+            ${{ steps.train.outputs.out_dir }}
+          retention-days: 30
+
+      - name: Job summary
+        run: |
+          echo "## SOL Self-Train Complete" >> $GITHUB_STEP_SUMMARY
+          echo "- Mode: \`${{ github.event.inputs.mode }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Generations: \`${{ github.event.inputs.generations }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Output: \`${{ steps.train.outputs.out_dir }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Artifact: \`self-train-${{ github.event.inputs.mode }}-${{ github.run_id }}\`" >> $GITHUB_STEP_SUMMARY

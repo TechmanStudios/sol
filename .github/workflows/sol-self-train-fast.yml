@@ -1,0 +1,86 @@
+name: "SOL Self-Train Fast Preset"
+
+on:
+  workflow_dispatch:
+    inputs:
+      chain_depth:
+        description: "Daytime chain depth"
+        required: true
+        default: "standard"
+        type: choice
+        options:
+          - quick
+          - standard
+          - extended
+          - ultra-extended
+
+concurrency:
+  group: sol-self-train-fast-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  self-train-fast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Resolve chain config
+        id: chain
+        run: |
+          DEPTH="${{ github.event.inputs.chain_depth }}"
+          case "$DEPTH" in
+            quick)
+              GENERATIONS="1"
+              ;;
+            standard)
+              GENERATIONS="3"
+              ;;
+            extended)
+              GENERATIONS="6"
+              ;;
+            ultra-extended)
+              GENERATIONS="10"
+              ;;
+            *)
+              echo "Invalid chain_depth: $DEPTH"
+              exit 1
+              ;;
+          esac
+          echo "generations=$GENERATIONS" >> $GITHUB_OUTPUT
+          echo "depth=$DEPTH" >> $GITHUB_OUTPUT
+
+      - name: Run fast self-train preset
+        id: train
+        run: |
+          OUT_DIR="data/sol_self_train_runs/fast/${{ steps.chain.outputs.depth }}/${{ github.run_id }}"
+          python tools/sol-evolve/self_train_loop.py \
+            --config "tools/sol-evolve/self_train/config/self_train_config.json" \
+            --generations "${{ steps.chain.outputs.generations }}" \
+            --mode "fast" \
+            --out-dir "$OUT_DIR"
+          echo "out_dir=$OUT_DIR" >> $GITHUB_OUTPUT
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: self-train-fast-${{ steps.chain.outputs.depth }}-${{ github.run_id }}
+          path: |
+            ${{ steps.train.outputs.out_dir }}
+          retention-days: 30
+
+      - name: Job summary
+        run: |
+          echo "## SOL Self-Train Fast Preset Complete" >> $GITHUB_STEP_SUMMARY
+          echo "- Mode: \`fast\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Chain depth: \`${{ steps.chain.outputs.depth }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Generations: \`${{ steps.chain.outputs.generations }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Output: \`${{ steps.train.outputs.out_dir }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Artifact: \`self-train-fast-${{ steps.chain.outputs.depth }}-${{ github.run_id }}\`" >> $GITHUB_STEP_SUMMARY
