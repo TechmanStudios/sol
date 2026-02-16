@@ -33,6 +33,7 @@ on:
         options:
           - phone
           - desktop
+          - server
 
 concurrency:
   group: sol-self-train-${{ github.ref }}

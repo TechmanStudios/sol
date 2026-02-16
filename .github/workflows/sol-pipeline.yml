@@ -26,8 +26,17 @@ on:
       dry_run:
         description: "Dry run (no execution)"
         required: false
-        default: "false"
+        default: false
         type: boolean
+      run_source:
+        description: "Origin label for this run (used for selective local artifact sync)"
+        required: true
+        default: "desktop"
+        type: choice
+        options:
+          - phone
+          - desktop
+          - server
   issues:
     types: [labeled]
   schedule:
@@ -43,6 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_run: ${{ steps.check.outputs.should_run }}
+      run_source: ${{ steps.check.outputs.run_source }}
     steps:
       - id: check
         run: |
@@ -50,11 +60,17 @@ jobs:
             LABELS='${{ toJSON(github.event.issue.labels.*.name) }}'
             if echo "$LABELS" | grep -q '"sol-pipeline"'; then
               echo "should_run=true" >> $GITHUB_OUTPUT
+              echo "run_source=server" >> $GITHUB_OUTPUT
             else
               echo "should_run=false" >> $GITHUB_OUTPUT
             fi
           else
             echo "should_run=true" >> $GITHUB_OUTPUT
+            if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              echo "run_source=${{ github.event.inputs.run_source || 'desktop' }}" >> $GITHUB_OUTPUT
+            else
+              echo "run_source=server" >> $GITHUB_OUTPUT
+            fi
           fi
 
   pipeline:
@@ -134,7 +150,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pipeline-${{ github.run_id }}
+          name: pipeline-${{ needs.check-trigger.outputs.run_source }}-${{ github.run_id }}
           path: |
             data/pipeline_runs/
             pipeline_output.json

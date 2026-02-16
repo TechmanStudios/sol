@@ -28,6 +28,15 @@ on:
         required: false
         default: false
         type: boolean
+      run_source:
+        description: 'Origin label for this run (used for selective local artifact sync)'
+        required: true
+        default: 'desktop'
+        type: choice
+        options:
+          - phone
+          - desktop
+          - server
 
   # Triggered by labeled issues
   issues:
@@ -60,6 +69,7 @@ jobs:
       max_protocols: ${{ steps.check.outputs.max_protocols }}
       gap_type: ${{ steps.check.outputs.gap_type }}
       dry_run: ${{ steps.check.outputs.dry_run }}
+      run_source: ${{ steps.check.outputs.run_source }}
     steps:
       - id: check
         run: |
@@ -70,6 +80,7 @@ jobs:
               echo "max_protocols=3" >> "$GITHUB_OUTPUT"
               echo "gap_type=" >> "$GITHUB_OUTPUT"
               echo "dry_run=false" >> "$GITHUB_OUTPUT"
+              echo "run_source=server" >> "$GITHUB_OUTPUT"
             else
               echo "should_run=false" >> "$GITHUB_OUTPUT"
             fi
@@ -78,12 +89,14 @@ jobs:
             echo "max_protocols=${{ inputs.max_protocols || '3' }}" >> "$GITHUB_OUTPUT"
             echo "gap_type=${{ inputs.gap_type || '' }}" >> "$GITHUB_OUTPUT"
             echo "dry_run=${{ inputs.dry_run || 'false' }}" >> "$GITHUB_OUTPUT"
+            echo "run_source=${{ inputs.run_source || 'desktop' }}" >> "$GITHUB_OUTPUT"
           else
             # schedule
             echo "should_run=true" >> "$GITHUB_OUTPUT"
             echo "max_protocols=3" >> "$GITHUB_OUTPUT"
             echo "gap_type=" >> "$GITHUB_OUTPUT"
             echo "dry_run=false" >> "$GITHUB_OUTPUT"
+            echo "run_source=server" >> "$GITHUB_OUTPUT"
           fi
 
   cortex-session:
@@ -140,7 +153,7 @@ jobs:
       - name: Upload session artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: cortex-session-${{ steps.cortex.outputs.session_id }}
+          name: cortex-session-${{ steps.cortex.outputs.session_id }}-${{ needs.check-trigger.outputs.run_source }}-${{ github.run_id }}
           path: |
             data/cortex_sessions/${{ steps.cortex.outputs.session_id }}/
           retention-days: 90

@@ -21,6 +21,7 @@ on:
         options:
           - phone
           - desktop
+          - server
 
 concurrency:
   group: sol-self-train-fast-${{ github.ref }}

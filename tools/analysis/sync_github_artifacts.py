@@ -354,9 +354,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--force-redownload", action="store_true", help="Redownload and overwrite already-synced artifacts")
     parser.add_argument(
         "--required-run-source",
-        choices=["any", "phone", "desktop"],
+        choices=["any", "phone", "desktop", "server"],
         default="any",
-        help="Only sync artifacts tagged with this run source in artifact name (e.g. self-train-full-phone-<run_id>)",
+        help="Only sync artifacts tagged with this run source in artifact name (e.g. self-train-full-phone-<run_id> or pipeline-server-<run_id>)",
     )
     parser.add_argument("--watch", action="store_true", help="Keep polling and syncing on an interval")
     parser.add_argument("--interval-sec", type=int, default=600, help="Watch interval in seconds")

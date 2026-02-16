@@ -33,6 +33,15 @@ on:
         required: false
         default: false
         type: boolean
+      run_source:
+        description: 'Origin label for this run (used for selective local artifact sync)'
+        required: true
+        default: 'desktop'
+        type: choice
+        options:
+          - phone
+          - desktop
+          - server
 
   # Triggered by labeled issues
   issues:
@@ -61,6 +70,7 @@ jobs:
       candidate: ${{ steps.check.outputs.candidate }}
       protocol: ${{ steps.check.outputs.protocol }}
       rebuild_golden: ${{ steps.check.outputs.rebuild_golden }}
+      run_source: ${{ steps.check.outputs.run_source }}
     steps:
       - id: check
         run: |
@@ -72,6 +82,7 @@ jobs:
               echo "candidate=" >> "$GITHUB_OUTPUT"
               echo "protocol=" >> "$GITHUB_OUTPUT"
               echo "rebuild_golden=false" >> "$GITHUB_OUTPUT"
+              echo "run_source=server" >> "$GITHUB_OUTPUT"
             else
               echo "should_run=false" >> "$GITHUB_OUTPUT"
             fi
@@ -80,6 +91,7 @@ jobs:
             echo "candidate=${{ inputs.candidate }}" >> "$GITHUB_OUTPUT"
             echo "protocol=${{ inputs.protocol || '' }}" >> "$GITHUB_OUTPUT"
             echo "rebuild_golden=${{ inputs.rebuild_golden || 'false' }}" >> "$GITHUB_OUTPUT"
+            echo "run_source=${{ inputs.run_source || 'desktop' }}" >> "$GITHUB_OUTPUT"
           fi
 
   evolve-test:
@@ -153,7 +165,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: evolve-${{ steps.abtest.outputs.candidate }}-${{ github.run_number }}
+          name: evolve-${{ steps.abtest.outputs.candidate }}-${{ needs.check-trigger.outputs.run_source }}-${{ github.run_id }}
           path: |
             data/evolve_reports/
             tools/sol-evolve/ab_result.json

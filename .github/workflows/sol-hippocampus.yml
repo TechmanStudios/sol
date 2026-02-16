@@ -21,6 +21,15 @@ on:
         required: false
         default: false
         type: boolean
+      run_source:
+        description: 'Origin label for this run (used for selective local artifact sync)'
+        required: true
+        default: 'desktop'
+        type: choice
+        options:
+          - phone
+          - desktop
+          - server
 
   # Triggered by labeled issues
   issues:
@@ -56,6 +65,7 @@ jobs:
       command: ${{ steps.check.outputs.command }}
       dream_sessions: ${{ steps.check.outputs.dream_sessions }}
       dry_run: ${{ steps.check.outputs.dry_run }}
+      run_source: ${{ steps.check.outputs.run_source }}
     steps:
       - id: check
         run: |
@@ -66,6 +76,7 @@ jobs:
               echo "command=dream" >> "$GITHUB_OUTPUT"
               echo "dream_sessions=5" >> "$GITHUB_OUTPUT"
               echo "dry_run=false" >> "$GITHUB_OUTPUT"
+              echo "run_source=server" >> "$GITHUB_OUTPUT"
             else
               echo "should_run=false" >> "$GITHUB_OUTPUT"
             fi
@@ -74,11 +85,13 @@ jobs:
             echo "command=${{ inputs.command || 'dream' }}" >> "$GITHUB_OUTPUT"
             echo "dream_sessions=${{ inputs.dream_sessions || '5' }}" >> "$GITHUB_OUTPUT"
             echo "dry_run=${{ inputs.dry_run || 'false' }}" >> "$GITHUB_OUTPUT"
+            echo "run_source=${{ inputs.run_source || 'desktop' }}" >> "$GITHUB_OUTPUT"
           elif [[ "${{ github.event_name }}" == "schedule" ]]; then
             echo "should_run=true" >> "$GITHUB_OUTPUT"
             echo "command=dream" >> "$GITHUB_OUTPUT"
             echo "dream_sessions=5" >> "$GITHUB_OUTPUT"
             echo "dry_run=false" >> "$GITHUB_OUTPUT"
+            echo "run_source=server" >> "$GITHUB_OUTPUT"
           elif [[ "${{ github.event_name }}" == "workflow_run" ]]; then
             # Post-cortex: always dream
             if [[ "${{ github.event.workflow_run.conclusion }}" == "success" ]]; then
@@ -86,6 +99,7 @@ jobs:
               echo "command=dream" >> "$GITHUB_OUTPUT"
               echo "dream_sessions=3" >> "$GITHUB_OUTPUT"
               echo "dry_run=false" >> "$GITHUB_OUTPUT"
+              echo "run_source=server" >> "$GITHUB_OUTPUT"
             else
               echo "should_run=false" >> "$GITHUB_OUTPUT"
             fi
@@ -178,7 +192,7 @@ jobs:
         if: needs.check-trigger.outputs.command == 'dream' && needs.check-trigger.outputs.dry_run != 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: dream-session-${{ github.run_id }}
+          name: dream-session-${{ needs.check-trigger.outputs.run_source }}-${{ github.run_id }}
           path: |
             data/dream_sessions/
             data/memory_graph.json

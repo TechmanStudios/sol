@@ -44,6 +44,15 @@ on:
         required: false
         default: "1.0"
         type: string
+      run_source:
+        description: "Origin label for this run (used for selective local artifact sync)"
+        required: true
+        default: "desktop"
+        type: choice
+        options:
+          - phone
+          - desktop
+          - server
 
   # Weekly schedule: Sunday 03:00 UTC (before cortex Mon 06:00)
   schedule:
@@ -125,6 +134,15 @@ jobs:
 
           python tools/sol-rsi/rsi_engine.py $ARGS
 
+      - name: Resolve run source
+        id: run_source
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "value=${{ github.event.inputs.run_source || 'desktop' }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=server" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Commit results
         run: |
           git config user.name "sol-rsi[bot]"
@@ -141,6 +159,15 @@ jobs:
               git pull --rebase
             done
           fi
+
+      - name: Upload RSI artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rsi-cycle-${{ steps.run_source.outputs.value }}-${{ github.run_id }}
+          path: |
+            data/rsi/
+          retention-days: 90
 
       - name: Print status
         run: python tools/sol-rsi/rsi_engine.py --status
