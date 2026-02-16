@@ -40,6 +40,17 @@ solData/testResults/
 sol_diagnostics/
 # Overnight RSI run outputs (large JSON/CSV per run)
 data/overnight_rsi/
+# Generated self-train scratch outputs (local runs/smokes)
+data/sol_self_train/
+data/sol_self_train_fast_task_launch_smoke/
+data/sol_self_train_mode_fast_smoke/
+data/sol_self_train_mode_full_smoke/
+data/sol_self_train_mode_overnight_smoke/
+data/sol_self_train_phase2_smoke/
+data/sol_self_train_real_smoke/
+data/sol_self_train_runs/
+data/sol_self_train_smoke/
+data/sol_self_train_task_launch_smoke/
 # Cogload replications
 solData/testResults/cogload_replications/
 
