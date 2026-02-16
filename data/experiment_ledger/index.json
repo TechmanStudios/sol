@@ -1,0 +1,239 @@
+{
+  "generated_at": "2026-02-16T18:05:22.278957+00:00",
+  "records": 181,
+  "runs": 11,
+  "experiments": {
+    "resonance": {
+      "runs": 7,
+      "generations": 7,
+      "accepted_generations": 4,
+      "acceptance_rate": 0.5714285714285714,
+      "top_runs_by_anchor": [
+        {
+          "experiment": "resonance",
+          "source": "legacy-local",
+          "mode": "phase1",
+          "run_id": "20260213_063226",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 0.6144517804353012,
+          "best_full_delta": 0.6986138289111846,
+          "latest_anchor_delta": 0.6144517804353012,
+          "latest_full_delta": 0.6986138289111846,
+          "latest_reason": "status=ok"
+        },
+        {
+          "experiment": "resonance",
+          "source": "legacy-local",
+          "mode": "phase1",
+          "run_id": "20260213_063152",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 0.49105329204153586,
+          "best_full_delta": 0.4955753798925616,
+          "latest_anchor_delta": 0.49105329204153586,
+          "latest_full_delta": 0.4955753798925616,
+          "latest_reason": "status=ok"
+        },
+        {
+          "experiment": "resonance",
+          "source": "legacy-local",
+          "mode": "phase2",
+          "run_id": "20260213_144626",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 0.00597391246864265,
+          "best_full_delta": 0.00023529853486548014,
+          "latest_anchor_delta": 0.00597391246864265,
+          "latest_full_delta": 0.00023529853486548014,
+          "latest_reason": "status=ok; delta_mean=0.0060; delta_best=0.0002"
+        },
+        {
+          "experiment": "resonance",
+          "source": "legacy-local",
+          "mode": "phase2",
+          "run_id": "20260213_185510",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 0.0025344510471150272,
+          "best_full_delta": -0.005099966514431675,
+          "latest_anchor_delta": 0.0025344510471150272,
+          "latest_full_delta": -0.005099966514431675,
+          "latest_reason": "status=ok; delta_mean=0.0025; delta_best=-0.0051"
+        },
+        {
+          "experiment": "resonance",
+          "source": "legacy-local",
+          "mode": "phase2",
+          "run_id": "20260213_152757",
+          "generations": 1,
+          "accepted_generations": 0,
+          "acceptance_rate": 0.0,
+          "best_anchor_delta": -0.014114502712705757,
+          "best_full_delta": -0.005099966514431675,
+          "latest_anchor_delta": -0.014114502712705757,
+          "latest_full_delta": -0.005099966514431675,
+          "latest_reason": "status=ok; delta_mean=-0.0141; delta_best=-0.0051"
+        },
+        {
+          "experiment": "resonance",
+          "source": "legacy-local",
+          "mode": "phase2",
+          "run_id": "20260213_144517",
+          "generations": 1,
+          "accepted_generations": 0,
+          "acceptance_rate": 0.0,
+          "best_anchor_delta": -0.05425127564505017,
+          "best_full_delta": 0.593002225823442,
+          "latest_anchor_delta": -0.05425127564505017,
+          "latest_full_delta": 0.593002225823442,
+          "latest_reason": "status=ok; delta_mean=-0.0543; delta_best=0.5930"
+        },
+        {
+          "experiment": "resonance",
+          "source": "legacy-local",
+          "mode": "phase2",
+          "run_id": "20260213_144605",
+          "generations": 1,
+          "accepted_generations": 0,
+          "acceptance_rate": 0.0,
+          "best_anchor_delta": -0.1841171917377845,
+          "best_full_delta": -0.2146555154050574,
+          "latest_anchor_delta": -0.1841171917377845,
+          "latest_full_delta": -0.2146555154050574,
+          "latest_reason": "status=ok; delta_mean=-0.1841; delta_best=-0.2147"
+        }
+      ],
+      "by_mode": {
+        "phase1": {
+          "generations": 2,
+          "runs": 2,
+          "accepted_generations": 2,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 0.6144517804353012,
+          "best_full_delta": 0.6986138289111846
+        },
+        "phase2": {
+          "generations": 5,
+          "runs": 5,
+          "accepted_generations": 2,
+          "acceptance_rate": 0.4,
+          "best_anchor_delta": 0.00597391246864265,
+          "best_full_delta": 0.593002225823442
+        }
+      }
+    },
+    "rsi": {
+      "runs": 3,
+      "generations": 173,
+      "accepted_generations": 168,
+      "acceptance_rate": 0.9710982658959537,
+      "top_runs_by_anchor": [
+        {
+          "experiment": "rsi",
+          "source": "legacy-local",
+          "mode": "interactive",
+          "run_id": "rsi_engine",
+          "generations": 7,
+          "accepted_generations": 7,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 69.39859681001413,
+          "best_full_delta": 76.05753989697035,
+          "latest_anchor_delta": 0.0,
+          "latest_full_delta": 76.05753989697035,
+          "latest_reason": "fitness_ledger_only"
+        },
+        {
+          "experiment": "rsi",
+          "source": "legacy-local",
+          "mode": "cron",
+          "run_id": "rsi_engine",
+          "generations": 9,
+          "accepted_generations": 8,
+          "acceptance_rate": 0.8888888888888888,
+          "best_anchor_delta": 10.400944025174013,
+          "best_full_delta": 86.93181818181819,
+          "latest_anchor_delta": 0.0,
+          "latest_full_delta": 69.17,
+          "latest_reason": "ABORT: Core graph SHA256 mismatch before pipeline start! The sacred graph has been corrupted."
+        },
+        {
+          "experiment": "rsi",
+          "source": "legacy-local",
+          "mode": "persistent",
+          "run_id": "rsi_engine",
+          "generations": 157,
+          "accepted_generations": 153,
+          "acceptance_rate": 0.9745222929936306,
+          "best_anchor_delta": 0.4733342596738197,
+          "best_full_delta": 86.35042283298098,
+          "latest_anchor_delta": 0.0,
+          "latest_full_delta": 69.17,
+          "latest_reason": "ABORT: Core graph SHA256 mismatch before pipeline start! The sacred graph has been corrupted."
+        }
+      ],
+      "by_mode": {
+        "cron": {
+          "generations": 9,
+          "runs": 1,
+          "accepted_generations": 8,
+          "acceptance_rate": 0.8888888888888888,
+          "best_anchor_delta": 10.400944025174013,
+          "best_full_delta": 86.93181818181819
+        },
+        "interactive": {
+          "generations": 7,
+          "runs": 1,
+          "accepted_generations": 7,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 69.39859681001413,
+          "best_full_delta": 76.05753989697035
+        },
+        "persistent": {
+          "generations": 157,
+          "runs": 1,
+          "accepted_generations": 153,
+          "acceptance_rate": 0.9745222929936306,
+          "best_anchor_delta": 0.4733342596738197,
+          "best_full_delta": 86.35042283298098
+        }
+      }
+    },
+    "self_train": {
+      "runs": 1,
+      "generations": 1,
+      "accepted_generations": 0,
+      "acceptance_rate": 0.0,
+      "top_runs_by_anchor": [
+        {
+          "experiment": "self_train",
+          "source": "local-desktop",
+          "mode": "fast",
+          "run_id": "20260216-163748",
+          "generations": 1,
+          "accepted_generations": 0,
+          "acceptance_rate": 0.0,
+          "best_anchor_delta": -0.0030811599661952904,
+          "best_full_delta": -0.003336340081147804,
+          "latest_anchor_delta": -0.0030811599661952904,
+          "latest_full_delta": -0.003336340081147804,
+          "latest_reason": "Anchor delta -0.0031 below minimum 0.0050"
+        }
+      ],
+      "by_mode": {
+        "fast": {
+          "generations": 1,
+          "runs": 1,
+          "accepted_generations": 0,
+          "acceptance_rate": 0.0,
+          "best_anchor_delta": -0.0030811599661952904,
+          "best_full_delta": -0.003336340081147804
+        }
+      }
+    }
+  }
+}

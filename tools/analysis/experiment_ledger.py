@@ -48,6 +48,25 @@ def _safe_float(value: Any) -> float:
         return 0.0
 
 
+def _load_jsonl_rows(path: Path) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    if not path.exists():
+        return rows
+
+    with path.open("r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                payload = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if isinstance(payload, dict):
+                rows.append(payload)
+    return rows
+
+
 def _discover_self_train_records(root: Path) -> list[ExperimentRecord]:
     records: list[ExperimentRecord] = []
 
@@ -162,6 +181,153 @@ def _discover_resonance_records(phase1_root: Path, phase2_root: Path) -> list[Ex
                 )
             except Exception:
                 continue
+
+    records.sort(key=lambda r: (r.experiment, r.source, r.mode, r.run_id, r.generation))
+    return records
+
+
+def _discover_rsi_records(rsi_root: Path) -> list[ExperimentRecord]:
+    records: list[ExperimentRecord] = []
+    if not rsi_root.exists():
+        return records
+
+    outcome_path = rsi_root / "outcome_ledger.jsonl"
+    cycle_path = rsi_root / "cycle_log.jsonl"
+    fitness_path = rsi_root / "fitness_ledger.jsonl"
+
+    cycle_rows = _load_jsonl_rows(cycle_path)
+    outcome_rows = _load_jsonl_rows(outcome_path)
+    fitness_rows = _load_jsonl_rows(fitness_path)
+    outcome_path_text = str(outcome_path).replace("\\", "/")
+    fitness_path_text = str(fitness_path).replace("\\", "/")
+
+    mode_by_cycle: dict[int, str] = {}
+    for row in cycle_rows:
+        cycle_id = int(row.get("cycle_id", 0) or 0)
+        if cycle_id <= 0:
+            continue
+        plan_raw = row.get("plan")
+        execution_raw = row.get("execution")
+        plan: dict[str, Any] = plan_raw if isinstance(plan_raw, dict) else {}
+        execution: dict[str, Any] = execution_raw if isinstance(execution_raw, dict) else {}
+        mode = str(plan.get("mode") or execution.get("mode") or "persistent")
+        mode_by_cycle[cycle_id] = mode
+
+    fitness_by_cycle: dict[int, float] = {}
+    ordered_fitness_rows: list[tuple[int, float]] = []
+    for row in fitness_rows:
+        cycle_id = int(row.get("cycle_id", 0) or 0)
+        if cycle_id <= 0:
+            continue
+        fitness = _safe_float(row.get("fitness", 0.0))
+        fitness_by_cycle[cycle_id] = fitness
+        ordered_fitness_rows.append((cycle_id, fitness))
+
+    seen_cycles: set[int] = set()
+
+    for row in outcome_rows:
+        cycle_id = int(row.get("cycle_id", 0) or 0)
+        if cycle_id <= 0:
+            continue
+
+        pre_raw = row.get("pre")
+        post_raw = row.get("post")
+        delta_raw = row.get("delta")
+        pre: dict[str, Any] = pre_raw if isinstance(pre_raw, dict) else {}
+        post: dict[str, Any] = post_raw if isinstance(post_raw, dict) else {}
+        delta: dict[str, Any] = delta_raw if isinstance(delta_raw, dict) else {}
+        error = row.get("error")
+
+        pre_fitness = _safe_float(pre.get("fitness", fitness_by_cycle.get(cycle_id, 0.0)))
+        post_fitness = _safe_float(post.get("fitness", fitness_by_cycle.get(cycle_id, pre_fitness)))
+        delta_fitness = _safe_float(delta.get("fitness", post_fitness - pre_fitness))
+        experiments_executed = int(row.get("experiments_executed", 0) or 0)
+        templates_raw = row.get("templates_planned")
+        templates_planned: list[Any] = templates_raw if isinstance(templates_raw, list) else []
+
+        if error:
+            reason = str(error)
+        else:
+            reason = (
+                f"experiments_executed={experiments_executed}; "
+                f"templates_planned={len(templates_planned)}"
+            )
+
+        records.append(
+            ExperimentRecord(
+                experiment="rsi",
+                source="legacy-local",
+                mode=mode_by_cycle.get(cycle_id, "persistent"),
+                run_id="rsi_engine",
+                generation=cycle_id,
+                accepted=not bool(error),
+                metrics={
+                    "delta_anchor": delta_fitness,
+                    "delta_full": post_fitness,
+                    "fitness_pre": pre_fitness,
+                    "fitness_post": post_fitness,
+                    "experiments_executed": float(experiments_executed),
+                    "open_questions_delta": _safe_float(delta.get("open_q", 0.0)),
+                },
+                reason=reason,
+                summary_path=(
+                    f"{outcome_path_text}#cycle_id={cycle_id}"
+                ),
+            )
+        )
+        seen_cycles.add(cycle_id)
+
+    if not outcome_rows:
+        ordered_fitness_rows.sort(key=lambda x: x[0])
+        previous_fitness = 0.0
+        for cycle_id, fitness in ordered_fitness_rows:
+            records.append(
+                ExperimentRecord(
+                    experiment="rsi",
+                    source="legacy-local",
+                    mode=mode_by_cycle.get(cycle_id, "persistent"),
+                    run_id="rsi_engine",
+                    generation=cycle_id,
+                    accepted=True,
+                    metrics={
+                        "delta_anchor": fitness - previous_fitness,
+                        "delta_full": fitness,
+                        "fitness_post": fitness,
+                    },
+                    reason="fitness_ledger_only",
+                    summary_path=(
+                        f"{fitness_path_text}#cycle_id={cycle_id}"
+                    ),
+                )
+            )
+            previous_fitness = fitness
+    else:
+        ordered_fitness_rows.sort(key=lambda x: x[0])
+        previous_fitness = 0.0
+        for cycle_id, fitness in ordered_fitness_rows:
+            if cycle_id in seen_cycles:
+                previous_fitness = fitness
+                continue
+            records.append(
+                ExperimentRecord(
+                    experiment="rsi",
+                    source="legacy-local",
+                    mode=mode_by_cycle.get(cycle_id, "persistent"),
+                    run_id="rsi_engine",
+                    generation=cycle_id,
+                    accepted=True,
+                    metrics={
+                        "delta_anchor": fitness - previous_fitness,
+                        "delta_full": fitness,
+                        "fitness_post": fitness,
+                    },
+                    reason="fitness_ledger_only",
+                    summary_path=(
+                        f"{fitness_path_text}#cycle_id={cycle_id}"
+                    ),
+                )
+            )
+            previous_fitness = fitness
 
     records.sort(key=lambda r: (r.experiment, r.source, r.mode, r.run_id, r.generation))
     return records
@@ -299,6 +465,12 @@ def parse_args() -> argparse.Namespace:
         help="Root directory for resonance phase2 runs",
     )
     parser.add_argument(
+        "--rsi-root",
+        type=Path,
+        default=Path("data") / "rsi",
+        help="Root directory for RSI ledger files",
+    )
+    parser.add_argument(
         "--out-dir",
         type=Path,
         default=Path("data") / "experiment_ledger",
@@ -314,6 +486,7 @@ def main() -> int:
     records = []
     records.extend(_discover_self_train_records(args.self_train_root))
     records.extend(_discover_resonance_records(args.resonance_phase1_root, args.resonance_phase2_root))
+    records.extend(_discover_rsi_records(args.rsi_root))
     records.sort(key=lambda r: (r.experiment, r.source, r.mode, r.run_id, r.generation))
     run_summaries = _aggregate_runs(records)
     index = _build_index(records, run_summaries)

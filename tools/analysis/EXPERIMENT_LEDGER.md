@@ -6,6 +6,7 @@ This engine builds a generalized ledger index across experiments using a normali
 
 - `self_train` (from `data/sol_self_train_runs`)
 - `resonance` (from `data/thinking_engine_resonance` + `data/thinking_engine_resonance_phase2`)
+- `rsi` (from `data/rsi` ledger streams)
 
 ## Outputs
 
@@ -25,7 +26,8 @@ Optional roots:
 python tools/analysis/experiment_ledger.py \
 	--self-train-root data/sol_self_train_runs \
 	--resonance-phase1-root data/thinking_engine_resonance \
-	--resonance-phase2-root data/thinking_engine_resonance_phase2
+	--resonance-phase2-root data/thinking_engine_resonance_phase2 \
+	--rsi-root data/rsi
 ```
 
 ## Schema (record)
