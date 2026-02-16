@@ -51,6 +51,9 @@ def _safe_float(value: Any) -> float:
 def _discover_self_train_records(root: Path) -> list[ExperimentRecord]:
     records: list[ExperimentRecord] = []
 
+    if not root.exists():
+        return records
+
     for summary_path in root.glob("*/*/*/gen_*/summary.json"):
         try:
             rel = summary_path.relative_to(root)
@@ -79,6 +82,86 @@ def _discover_self_train_records(root: Path) -> list[ExperimentRecord]:
             )
         except Exception:
             continue
+
+    records.sort(key=lambda r: (r.experiment, r.source, r.mode, r.run_id, r.generation))
+    return records
+
+
+def _discover_resonance_records(phase1_root: Path, phase2_root: Path) -> list[ExperimentRecord]:
+    records: list[ExperimentRecord] = []
+
+    # Phase 1 resonance sweeps
+    if phase1_root.exists():
+        for summary_path in phase1_root.glob("*/summary.json"):
+            try:
+                run_id = summary_path.parent.name
+                payload = json.loads(summary_path.read_text(encoding="utf-8"))
+                best_trial = payload.get("best_trial", {})
+                metric_means = payload.get("metric_means", {})
+
+                primary_score = _safe_float(metric_means.get("resonance_index", 0.0))
+                secondary_score = _safe_float(best_trial.get("resonance_index", 0.0))
+
+                records.append(
+                    ExperimentRecord(
+                        experiment="resonance",
+                        source="legacy-local",
+                        mode="phase1",
+                        run_id=run_id,
+                        generation=1,
+                        accepted=str(payload.get("status", "")).lower() == "ok",
+                        metrics={
+                            "delta_anchor": primary_score,
+                            "delta_full": secondary_score,
+                            "mean_resonance": primary_score,
+                            "best_resonance": secondary_score,
+                        },
+                        reason=f"status={payload.get('status', 'unknown')}",
+                        summary_path=str(summary_path).replace("\\", "/"),
+                    )
+                )
+            except Exception:
+                continue
+
+    # Phase 2 focused resonance sweeps
+    if phase2_root.exists():
+        for summary_path in phase2_root.glob("*/summary.json"):
+            try:
+                run_id = summary_path.parent.name
+                payload = json.loads(summary_path.read_text(encoding="utf-8"))
+                best_trial = payload.get("best_trial", {})
+                metric_means = payload.get("metric_means", {})
+                phase1_ref = payload.get("phase1_reference", {})
+
+                delta_mean = _safe_float(phase1_ref.get("delta_mean_resonance", 0.0))
+                delta_best = _safe_float(phase1_ref.get("delta_best_resonance", 0.0))
+
+                records.append(
+                    ExperimentRecord(
+                        experiment="resonance",
+                        source="legacy-local",
+                        mode="phase2",
+                        run_id=run_id,
+                        generation=1,
+                        accepted=(
+                            str(payload.get("status", "")).lower() == "ok"
+                            and delta_mean >= 0.0
+                        ),
+                        metrics={
+                            "delta_anchor": delta_mean,
+                            "delta_full": delta_best,
+                            "mean_resonance": _safe_float(metric_means.get("resonance_index", 0.0)),
+                            "best_resonance": _safe_float(best_trial.get("resonance_index", 0.0)),
+                        },
+                        reason=(
+                            f"status={payload.get('status', 'unknown')}; "
+                            f"delta_mean={delta_mean:.4f}; delta_best={delta_best:.4f}"
+                        ),
+                        summary_path=str(summary_path).replace("\\", "/"),
+                    )
+                )
+            except Exception:
+                continue
 
     records.sort(key=lambda r: (r.experiment, r.source, r.mode, r.run_id, r.generation))
     return records
@@ -204,6 +287,18 @@ def parse_args() -> argparse.Namespace:
         help="Root directory for self_train canonical runs",
     )
     parser.add_argument(
+        "--resonance-phase1-root",
+        type=Path,
+        default=Path("data") / "thinking_engine_resonance",
+        help="Root directory for resonance phase1 runs",
+    )
+    parser.add_argument(
+        "--resonance-phase2-root",
+        type=Path,
+        default=Path("data") / "thinking_engine_resonance_phase2",
+        help="Root directory for resonance phase2 runs",
+    )
+    parser.add_argument(
         "--out-dir",
         type=Path,
         default=Path("data") / "experiment_ledger",
@@ -216,7 +311,10 @@ def main() -> int:
     args = parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
-    records = _discover_self_train_records(args.self_train_root)
+    records = []
+    records.extend(_discover_self_train_records(args.self_train_root))
+    records.extend(_discover_resonance_records(args.resonance_phase1_root, args.resonance_phase2_root))
+    records.sort(key=lambda r: (r.experiment, r.source, r.mode, r.run_id, r.generation))
     run_summaries = _aggregate_runs(records)
     index = _build_index(records, run_summaries)
 

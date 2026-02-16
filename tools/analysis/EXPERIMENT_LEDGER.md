@@ -5,6 +5,7 @@ This engine builds a generalized ledger index across experiments using a normali
 ## Current adapters
 
 - `self_train` (from `data/sol_self_train_runs`)
+- `resonance` (from `data/thinking_engine_resonance` + `data/thinking_engine_resonance_phase2`)
 
 ## Outputs
 
@@ -16,6 +17,15 @@ This engine builds a generalized ledger index across experiments using a normali
 
 ```powershell
 python tools/analysis/experiment_ledger.py
+```
+
+Optional roots:
+
+```powershell
+python tools/analysis/experiment_ledger.py \
+	--self-train-root data/sol_self_train_runs \
+	--resonance-phase1-root data/thinking_engine_resonance \
+	--resonance-phase2-root data/thinking_engine_resonance_phase2
 ```
 
 ## Schema (record)

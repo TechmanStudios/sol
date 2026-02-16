@@ -34,7 +34,7 @@ Consolidation:
 - `python tools/sol-evolve/self_train_consolidate.py`
 - Outputs ledger files in `data/sol_self_train_runs/_ledger/` for promotion/pipeline review.
 - `python tools/analysis/experiment_ledger.py`
-- Outputs generalized artifacts in `data/experiment_ledger/` for cross-experiment indexing.
+- Outputs generalized artifacts in `data/experiment_ledger/` for cross-experiment indexing (`self_train` + `resonance` adapters currently).
 
 Workflow behavior:
 
