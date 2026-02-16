@@ -59,6 +59,17 @@ Canonical synchronized root:
 
 All self-train workflows commit their run outputs back to the repo, so a local `git pull` brings phone-triggered runs into the same canonical tree.
 
+Consolidate for pipeline handoff:
+
+```powershell
+python tools/sol-evolve/self_train_consolidate.py
+```
+
+Artifacts:
+
+- `data/sol_self_train_runs/_ledger/self_train_ledger.json`
+- `data/sol_self_train_runs/_ledger/self_train_ledger.md`
+
 ## Task-level controls
 
 Per task (`self_train/config/tasks.json`), optional fields in `payload`:

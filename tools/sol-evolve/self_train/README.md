@@ -28,3 +28,8 @@ Synchronization model:
 
 - Local and GitHub runs are written under `data/sol_self_train_runs/<source>/<mode>/<run_id_or_stamp>/`.
 - Workflow runs auto-commit outputs to repo so `git pull` syncs phone-triggered experiments locally.
+
+Consolidation:
+
+- `python tools/sol-evolve/self_train_consolidate.py`
+- Outputs ledger files in `data/sol_self_train_runs/_ledger/` for promotion/pipeline review.
