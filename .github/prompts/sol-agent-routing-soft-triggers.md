@@ -24,6 +24,7 @@ If a request spans phases, I may ask:
 Use when the work is about executing a protocol consistently and producing a Run Bundle.
 - Keywords/phrases: “run”, “execute”, “perform the protocol”, “collect runs”, “generate a run bundle”, “sweep”, “counterbalance”, “AB/BA”, “bracket thresholds”, “hysteresis run”, “automation/runbook”.
 - Typical outputs: run logs, run bundle folder/artifacts, structured run metadata.
+- Daytime phonon-RSI scheduling rule: before proposing sweep counts or time windows, consult `solResearch/daytime_phonon_rsi_runtime_cheat_sheet.md` and use those runtime bands in the recommendation.
 
 ### sol-data-analyst
 Use when the work is about analysis, derived metrics, sanity checks, and compact tables/plots.

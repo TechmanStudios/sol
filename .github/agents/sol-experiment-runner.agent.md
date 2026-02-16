@@ -40,6 +40,7 @@ Follow these instruction files:
 - .github/instructions/sol-run-naming-and-exports.md
 - .github/instructions/sol-ui-neutral-scripting.md
 - .github/instructions/sol-progress-and-help.md
+- For daytime phonon RSI scheduling estimates, consult: solResearch/daytime_phonon_rsi_runtime_cheat_sheet.md
 
 ## Inputs
 - Protocol spec (or a goal + invariants + knobs)
