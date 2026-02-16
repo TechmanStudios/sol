@@ -390,6 +390,29 @@
 			}
 		},
 		{
+			"label": "Artifacts: All-Sources Auto Sync (Watch Overnight)",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\tools\\analysis\\sync_github_artifacts.py",
+				"--required-run-source",
+				"any",
+				"--limit",
+				"120",
+				"--watch",
+				"--interval-sec",
+				"600",
+				"--clear-stop-flag"
+			],
+			"isBackground": true,
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"focus": false,
+				"panel": "new"
+			}
+		},
+		{
 			"label": "Artifacts: All-Sources Auto Sync (Stop)",
 			"type": "shell",
 			"command": "powershell",
