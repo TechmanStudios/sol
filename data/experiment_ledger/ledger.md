@@ -1,7 +1,7 @@
 # Experiment Ledger
 
-Generated: 2026-02-16T18:05:22.278957+00:00
-Records: 181 | Runs: 11
+Generated: 2026-02-16T19:47:44.966469+00:00
+Records: 1300 | Runs: 17
 
 ## resonance
 
@@ -48,16 +48,24 @@ Records: 181 | Runs: 11
 
 ## self_train
 
-- Runs: 1 | Generations: 1 | Accepted: 0 | Acceptance: 0.00%
+- Runs: 7 | Generations: 1120 | Accepted: 22 | Acceptance: 1.96%
 
 ### Modes
 
 | Mode | Runs | Gens | Accepted | Acceptance | Best dA | Best dF |
 |---|---:|---:|---:|---:|---:|---:|
-| fast | 1 | 1 | 0 | 0.00% | -0.0031 | -0.0033 |
+| fast | 2 | 4 | 1 | 25.00% | 0.0191 | 0.0184 |
+| full | 3 | 1103 | 21 | 1.90% | 0.1789 | 0.1191 |
+| overnight | 2 | 13 | 0 | 0.00% | 0.0042 | 0.0045 |
 
 ### Top Runs
 
 | Source | Mode | Run | Gens | Best dA | Latest dA | Latest dF |
 |---|---|---|---:|---:|---:|---:|
+| github-actions | full | 22053459642 | 1000 | 0.1789 | -0.0226 | -0.0197 |
+| github-actions | full | 22052118217 | 100 | 0.0238 | 0.0013 | -0.0000 |
+| github-actions | fast | 22051991831 | 3 | 0.0191 | -0.0194 | -0.0176 |
+| github-actions | full | 22052059066 | 3 | 0.0163 | -0.0193 | -0.0262 |
+| github-actions | overnight | 22053054662 | 10 | 0.0042 | -0.0027 | -0.0035 |
+| github-actions | overnight | 22052842191 | 3 | 0.0023 | -0.0043 | -0.0073 |
 | local-desktop | fast | 20260216-163748 | 1 | -0.0031 | -0.0031 | -0.0033 |

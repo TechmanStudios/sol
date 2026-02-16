@@ -13,6 +13,9 @@ __pycache__/
 
 # IDE / Editor
 .vscode/
+!.vscode/
+.vscode/*
+!.vscode/tasks.json
 *.swp
 *.swo
 
@@ -49,6 +52,13 @@ data/sol_self_train_mode_overnight_smoke/
 data/sol_self_train_phase2_smoke/
 data/sol_self_train_real_smoke/
 data/sol_self_train_runs/
+!data/sol_self_train_runs/
+data/sol_self_train_runs/*
+!data/sol_self_train_runs/github-actions/
+!data/sol_self_train_runs/github-actions/**
+!data/sol_self_train_runs/_ledger/
+!data/sol_self_train_runs/_ledger/**
+data/sol_self_train_runs/_downloaded/
 data/sol_self_train_smoke/
 data/sol_self_train_task_launch_smoke/
 # Cogload replications

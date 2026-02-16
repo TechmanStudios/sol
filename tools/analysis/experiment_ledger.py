@@ -81,6 +81,8 @@ def _discover_self_train_records(root: Path) -> list[ExperimentRecord]:
                 continue
 
             source, mode, run_id = parts[0], parts[1], parts[2]
+            if source.startswith("_"):
+                continue
             payload = json.loads(summary_path.read_text(encoding="utf-8"))
 
             records.append(

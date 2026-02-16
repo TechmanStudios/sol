@@ -25,6 +25,14 @@ on:
         description: "Output directory (relative to repo root)"
         required: false
         default: "data/sol_self_train_runs"
+      run_source:
+        description: "Origin label for this run (used for selective local artifact sync)"
+        required: true
+        default: "desktop"
+        type: choice
+        options:
+          - phone
+          - desktop
 
 concurrency:
   group: sol-self-train-${{ github.ref }}
@@ -94,7 +102,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: self-train-${{ github.event.inputs.mode }}-${{ github.run_id }}
+          name: self-train-${{ github.event.inputs.mode }}-${{ github.event.inputs.run_source }}-${{ github.run_id }}
           path: |
             ${{ steps.train.outputs.out_dir }}
           retention-days: 30
@@ -104,5 +112,6 @@ jobs:
           echo "## SOL Self-Train Complete" >> $GITHUB_STEP_SUMMARY
           echo "- Mode: \`${{ github.event.inputs.mode }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- Generations: \`${{ github.event.inputs.generations }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Run source: \`${{ github.event.inputs.run_source }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- Output: \`${{ steps.train.outputs.out_dir }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- Artifact: \`self-train-${{ github.event.inputs.mode }}-${{ github.run_id }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Artifact: \`self-train-${{ github.event.inputs.mode }}-${{ github.event.inputs.run_source }}-${{ github.run_id }}\`" >> $GITHUB_STEP_SUMMARY

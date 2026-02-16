@@ -1,0 +1,10 @@
+{
+  "generation": 841,
+  "mode": "full",
+  "baseline_policy_id": "policy-g698",
+  "candidate_policy_id": "policy-g841",
+  "accepted": true,
+  "reason": "Candidate clears anchor and full-task thresholds",
+  "delta_anchor": 0.010302400588989236,
+  "delta_full": 0.00567367076873776
+}

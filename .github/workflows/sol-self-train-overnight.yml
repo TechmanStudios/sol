@@ -70,7 +70,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: self-train-overnight-${{ github.run_id }}
+          name: self-train-overnight-phone-${{ github.run_id }}
           path: |
             ${{ steps.train.outputs.out_dir }}
           retention-days: 30
@@ -80,5 +80,6 @@ jobs:
           echo "## SOL Self-Train Overnight Preset Complete" >> $GITHUB_STEP_SUMMARY
           echo "- Mode: \`overnight\`" >> $GITHUB_STEP_SUMMARY
           echo "- Generations: \`3\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Run source: \`phone\`" >> $GITHUB_STEP_SUMMARY
           echo "- Output: \`${{ steps.train.outputs.out_dir }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- Artifact: \`self-train-overnight-${{ github.run_id }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Artifact: \`self-train-overnight-phone-${{ github.run_id }}\`" >> $GITHUB_STEP_SUMMARY

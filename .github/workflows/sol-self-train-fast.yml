@@ -13,6 +13,14 @@ on:
           - standard
           - extended
           - ultra-extended
+      run_source:
+        description: "Origin label for this run (used for selective local artifact sync)"
+        required: true
+        default: "phone"
+        type: choice
+        options:
+          - phone
+          - desktop
 
 concurrency:
   group: sol-self-train-fast-${{ github.ref }}
@@ -106,7 +114,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: self-train-fast-${{ steps.chain.outputs.depth }}-${{ github.run_id }}
+          name: self-train-fast-${{ github.event.inputs.run_source }}-${{ github.run_id }}
           path: |
             ${{ steps.train.outputs.out_dir }}
           retention-days: 30
@@ -117,5 +125,6 @@ jobs:
           echo "- Mode: \`fast\`" >> $GITHUB_STEP_SUMMARY
           echo "- Chain depth: \`${{ steps.chain.outputs.depth }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- Generations: \`${{ steps.chain.outputs.generations }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Run source: \`${{ github.event.inputs.run_source }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- Output: \`${{ steps.train.outputs.out_dir }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- Artifact: \`self-train-fast-${{ steps.chain.outputs.depth }}-${{ github.run_id }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Artifact: \`self-train-fast-${{ github.event.inputs.run_source }}-${{ github.run_id }}\`" >> $GITHUB_STEP_SUMMARY

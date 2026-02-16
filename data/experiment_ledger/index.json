@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-02-16T18:05:22.278957+00:00",
-  "records": 181,
-  "runs": 11,
+  "generated_at": "2026-02-16T19:47:44.966469+00:00",
+  "records": 1300,
+  "runs": 17,
   "experiments": {
     "resonance": {
       "runs": 7,
@@ -204,11 +204,95 @@
       }
     },
     "self_train": {
-      "runs": 1,
-      "generations": 1,
-      "accepted_generations": 0,
-      "acceptance_rate": 0.0,
+      "runs": 7,
+      "generations": 1120,
+      "accepted_generations": 22,
+      "acceptance_rate": 0.019642857142857142,
       "top_runs_by_anchor": [
+        {
+          "experiment": "self_train",
+          "source": "github-actions",
+          "mode": "full",
+          "run_id": "22053459642",
+          "generations": 1000,
+          "accepted_generations": 14,
+          "acceptance_rate": 0.014,
+          "best_anchor_delta": 0.17886290550231934,
+          "best_full_delta": 0.11914285421371461,
+          "latest_anchor_delta": -0.022558665447065862,
+          "latest_full_delta": -0.019704814515639213,
+          "latest_reason": "Anchor delta -0.0226 below minimum 0.0050"
+        },
+        {
+          "experiment": "self_train",
+          "source": "github-actions",
+          "mode": "full",
+          "run_id": "22052118217",
+          "generations": 100,
+          "accepted_generations": 6,
+          "acceptance_rate": 0.06,
+          "best_anchor_delta": 0.023775376664899345,
+          "best_full_delta": 0.022969400830694736,
+          "latest_anchor_delta": 0.001323008537292475,
+          "latest_full_delta": -2.5272369384765625e-05,
+          "latest_reason": "Anchor delta 0.0013 below minimum 0.0050"
+        },
+        {
+          "experiment": "self_train",
+          "source": "github-actions",
+          "mode": "fast",
+          "run_id": "22051991831",
+          "generations": 3,
+          "accepted_generations": 1,
+          "acceptance_rate": 0.3333333333333333,
+          "best_anchor_delta": 0.019070939062089676,
+          "best_full_delta": 0.018409085983620677,
+          "latest_anchor_delta": -0.01935749435231182,
+          "latest_full_delta": -0.01757630180774783,
+          "latest_reason": "Anchor delta -0.0194 below minimum 0.0050"
+        },
+        {
+          "experiment": "self_train",
+          "source": "github-actions",
+          "mode": "full",
+          "run_id": "22052059066",
+          "generations": 3,
+          "accepted_generations": 1,
+          "acceptance_rate": 0.3333333333333333,
+          "best_anchor_delta": 0.016266748999725467,
+          "best_full_delta": 0.02315630907578138,
+          "latest_anchor_delta": -0.019345805739532596,
+          "latest_full_delta": -0.026199448056646854,
+          "latest_reason": "Anchor delta -0.0193 below minimum 0.0050"
+        },
+        {
+          "experiment": "self_train",
+          "source": "github-actions",
+          "mode": "overnight",
+          "run_id": "22053054662",
+          "generations": 10,
+          "accepted_generations": 0,
+          "acceptance_rate": 0.0,
+          "best_anchor_delta": 0.004177959733726089,
+          "best_full_delta": 0.0044961488764383994,
+          "latest_anchor_delta": -0.0027405765584560537,
+          "latest_full_delta": -0.003500042042378082,
+          "latest_reason": "Anchor delta -0.0027 below minimum 0.0050"
+        },
+        {
+          "experiment": "self_train",
+          "source": "github-actions",
+          "mode": "overnight",
+          "run_id": "22052842191",
+          "generations": 3,
+          "accepted_generations": 0,
+          "acceptance_rate": 0.0,
+          "best_anchor_delta": 0.002301188283683253,
+          "best_full_delta": -0.0011071903982859677,
+          "latest_anchor_delta": -0.004265965382071135,
+          "latest_full_delta": -0.0073134531722235385,
+          "latest_reason": "Anchor delta -0.0043 below minimum 0.0050"
+        },
         {
           "experiment": "self_train",
           "source": "local-desktop",
@@ -226,12 +310,28 @@
       ],
       "by_mode": {
         "fast": {
-          "generations": 1,
-          "runs": 1,
+          "generations": 4,
+          "runs": 2,
+          "accepted_generations": 1,
+          "acceptance_rate": 0.25,
+          "best_anchor_delta": 0.019070939062089676,
+          "best_full_delta": 0.018409085983620677
+        },
+        "full": {
+          "generations": 1103,
+          "runs": 3,
+          "accepted_generations": 21,
+          "acceptance_rate": 0.019038984587488667,
+          "best_anchor_delta": 0.17886290550231934,
+          "best_full_delta": 0.11914285421371461
+        },
+        "overnight": {
+          "generations": 13,
+          "runs": 2,
           "accepted_generations": 0,
           "acceptance_rate": 0.0,
-          "best_anchor_delta": -0.0030811599661952904,
-          "best_full_delta": -0.003336340081147804
+          "best_anchor_delta": 0.004177959733726089,
+          "best_full_delta": 0.0044961488764383994
         }
       }
     }

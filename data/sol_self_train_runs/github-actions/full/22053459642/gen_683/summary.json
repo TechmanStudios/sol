@@ -1,0 +1,10 @@
+{
+  "generation": 683,
+  "mode": "full",
+  "baseline_policy_id": "policy-g530",
+  "candidate_policy_id": "policy-g683",
+  "accepted": false,
+  "reason": "Anchor delta 0.0019 below minimum 0.0050",
+  "delta_anchor": 0.001909017562866211,
+  "delta_full": 0.0013104557991027999
+}

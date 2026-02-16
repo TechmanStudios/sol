@@ -71,6 +71,8 @@ def _discover_generation_records(root: Path) -> list[GenerationRecord]:
             if len(parts) < 5:
                 continue
             source, mode, run_id = parts[0], parts[1], parts[2]
+            if source.startswith("_"):
+                continue
 
             payload = json.loads(summary.read_text(encoding="utf-8"))
             records.append(

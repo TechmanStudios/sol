@@ -1,0 +1,399 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Continuity: Auto Note (End of Chat)",
+			"type": "shell",
+			"command": "powershell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"${workspaceFolder}\\tools\\continuity\\continuity_auto_note.ps1"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Continuity: End of Chat",
+			"type": "shell",
+			"command": "powershell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"${workspaceFolder}\\tools\\continuity\\continuity_end_of_chat.ps1"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Continuity: Init Memory",
+			"type": "shell",
+			"command": "python",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"args": [
+				"${workspaceFolder}\\tools\\continuity\\continuity_cli.py",
+				"init"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Thinking Engine: Resonance Experiment",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\experiment_thinking_engine_resonance.py",
+				"--seeds",
+				"5",
+				"--steps",
+				"1000"
+			],
+			"isBackground": true,
+			"group": "test"
+		},
+		{
+			"label": "Thinking Engine: Overnight Resonance Scan",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\experiment_thinking_engine_resonance.py",
+				"--budget-hours",
+				"8",
+				"--seeds",
+				"8",
+				"--steps",
+				"1800",
+				"--sample-every",
+				"4",
+				"--damping-min",
+				"0.5",
+				"--damping-max",
+				"22",
+				"--damping-step",
+				"0.5"
+			],
+			"isBackground": true,
+			"group": "test"
+		},
+		{
+			"label": "Thinking Engine: Morning Brief",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\tools\\analysis\\resonance_morning_helper.py",
+				"--run-root",
+				"${workspaceFolder}\\data\\thinking_engine_resonance",
+				"--top-n",
+				"10"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "Thinking Engine: Morning Brief (Auto Refresh)",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\tools\\analysis\\resonance_morning_helper.py",
+				"--run-root",
+				"${workspaceFolder}\\data\\thinking_engine_resonance",
+				"--top-n",
+				"10",
+				"--watch",
+				"--interval-sec",
+				"600"
+			],
+			"isBackground": true,
+			"group": "test"
+		},
+		{
+			"label": "Thinking Engine: Phase 2 Focused Resonance",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\experiment_thinking_engine_resonance_phase2.py",
+				"--phase1-root",
+				"${workspaceFolder}\\data\\thinking_engine_resonance",
+				"--top-damping-count",
+				"4",
+				"--top-profile-count",
+				"2",
+				"--focus-window",
+				"0.5",
+				"--focus-step",
+				"0.25",
+				"--seeds",
+				"1",
+				"--steps",
+				"2400",
+				"--sample-every",
+				"4",
+				"--budget-hours",
+				"6"
+			],
+			"isBackground": true,
+			"group": "test"
+		},
+		{
+			"label": "Thinking Engine: Phase 2B Resonance",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\experiment_thinking_engine_resonance_phase2.py",
+				"--phase1-root",
+				"${workspaceFolder}\\data\\thinking_engine_resonance",
+				"--top-damping-count",
+				"6",
+				"--top-profile-count",
+				"4",
+				"--focus-window",
+				"0.5",
+				"--focus-step",
+				"0.25",
+				"--seeds",
+				"1",
+				"--steps",
+				"3600",
+				"--sample-every",
+				"4",
+				"--budget-hours",
+				"6"
+			],
+			"isBackground": true,
+			"group": "test"
+		},
+		{
+			"label": "Self-Train: Overnight Mode",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\tools\\sol-evolve\\self_train_run.py",
+				"--generations",
+				"3",
+				"--mode",
+				"overnight",
+				"--source",
+				"local-desktop"
+			],
+			"isBackground": true,
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"focus": false,
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Self-Train: Fast Mode",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\tools\\sol-evolve\\self_train_run.py",
+				"--generations",
+				"3",
+				"--mode",
+				"fast",
+				"--source",
+				"local-desktop"
+			],
+			"isBackground": true,
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"focus": false,
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Self-Train: Fast Mode (Chains)",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\tools\\sol-evolve\\self_train_run.py",
+				"--generations",
+				"6",
+				"--mode",
+				"fast",
+				"--source",
+				"local-desktop"
+			],
+			"isBackground": true,
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"focus": false,
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Self-Train: Fast Mode (Ultra Chains)",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\tools\\sol-evolve\\self_train_run.py",
+				"--generations",
+				"10",
+				"--mode",
+				"fast",
+				"--source",
+				"local-desktop"
+			],
+			"isBackground": true,
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"focus": false,
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Artifacts: Phone-Only Auto Sync",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\tools\\analysis\\sync_github_artifacts.py",
+				"--include-workflow-regex",
+				"Self-Train",
+				"--required-run-source",
+				"phone",
+				"--limit",
+				"80"
+			],
+			"isBackground": false,
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"focus": false,
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Artifacts: Phone-Only Auto Sync (Watch)",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\tools\\analysis\\sync_github_artifacts.py",
+				"--include-workflow-regex",
+				"Self-Train",
+				"--required-run-source",
+				"phone",
+				"--limit",
+				"80",
+				"--watch",
+				"--interval-sec",
+				"180",
+				"--clear-stop-flag"
+			],
+			"isBackground": true,
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"focus": false,
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Artifacts: Phone-Only Auto Sync (Watch Overnight)",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\tools\\analysis\\sync_github_artifacts.py",
+				"--include-workflow-regex",
+				"Self-Train",
+				"--required-run-source",
+				"phone",
+				"--limit",
+				"80",
+				"--watch",
+				"--interval-sec",
+				"600",
+				"--clear-stop-flag"
+			],
+			"isBackground": true,
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"focus": false,
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Artifacts: Phone-Only Auto Sync (Stop)",
+			"type": "shell",
+			"command": "powershell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"New-Item -ItemType File -Path '${workspaceFolder}\\data\\pipeline_runs\\github_artifact_sync.stop' -Force | Out-Null; Write-Host 'Stop flag written: data\\pipeline_runs\\github_artifact_sync.stop'"
+			],
+			"isBackground": false,
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"focus": false,
+				"panel": "new"
+			}
+		},
+		{
+			"label": "RSI: Persistent (VS Code Tab)",
+			"type": "shell",
+			"command": "powershell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"${workspaceFolder}\\tools\\sol-rsi\\run_persistent.ps1",
+				"-Cycles",
+				"6",
+				"-BudgetHours",
+				"6"
+			],
+			"isBackground": false,
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"focus": true,
+				"panel": "new"
+			}
+		},
+		{
+			"label": "RSI: Persistent (External Watch)",
+			"type": "shell",
+			"command": "powershell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"${workspaceFolder}\\tools\\sol-rsi\\run_persistent.ps1",
+				"-Cycles",
+				"6",
+				"-BudgetHours",
+				"6",
+				"-WatchExternal"
+			],
+			"isBackground": false,
+			"group": "test"
+		}
+	]
+}
