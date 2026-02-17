@@ -1,0 +1,323 @@
+[
+  {
+    "id": "H-001",
+    "template": "parameter_sweep",
+    "question": "How does c_press affect entropy, flux, and mass over 200 steps?",
+    "knob": "c_press",
+    "knob_values": [
+      0.01,
+      0.05,
+      0.1,
+      0.2,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 200,
+    "reps": 3,
+    "falsifiers": [
+      "All c_press values produce identical results (no sensitivity)",
+      "Higher c_press produces non-monotonic response without explanation"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unexplored_param",
+      "priority": 4,
+      "claim_id": null,
+      "description": "c_press: Pressure coefficient \u2014 not swept in headless",
+      "suggested_action": "Sweep c_press across [0.01, 0.05, 0.1, 0.2, 0.5]",
+      "metadata": {
+        "param": "c_press",
+        "range": [
+          0.01,
+          0.05,
+          0.1,
+          0.2,
+          0.5
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 24 | Memory edges: 136 | Avg confidence: 0.381 | Tags: basin(24), entropy(24), rhoMax(24)",
+      "kb_passages": [
+        {
+          "chunk_id": 467,
+          "section": "Article 149: Geochronism \u2013 Earth\u2019s Quantum Dance",
+          "line_start": 154517,
+          "line_end": 154578,
+          "score": 6.4798,
+          "matched_terms": [
+            "pressure"
+          ],
+          "snippet": "## Article 149: Geochronism \u2013 Earth\u2019s Quantum Dance\n\n\nGeochronism \u2013 Earth\u2019s Quantum Dance\n\n1981 \u2013 My Akashic Insights on GEOCHRONSIM\n\nGeochronism is the entrainment of Earth and its life inhabitants to the universal condition of change, creating new states of reality and resultant advanced modes of "
+        },
+        {
+          "chunk_id": 1443,
+          "section": "Article 1125: Standing Rock \u2013 A Defining Stand for Love",
+          "line_start": 197391,
+          "line_end": 197432,
+          "score": 6.3369,
+          "matched_terms": [
+            "swept"
+          ],
+          "snippet": "## Article 1125: Standing Rock \u2013 A Defining Stand for Love\n\n\nStanding Rock \u2013 A Defining Stand for Love\n\n\n\n~~~~~~~~~~~~\n\nMy inner-planes mentor ThothHorRa speaks of the confrontations at Standing Rock as the building\u00a0of a new Harmonic, coming out of the Old Earth Guardians \u2013 the Indigenous Keepers of"
+        },
+        {
+          "chunk_id": 29,
+          "section": "Universe One.rtf",
+          "line_start": 12396,
+          "line_end": 12894,
+          "score": 6.0212,
+          "matched_terms": [
+            "pressure"
+          ],
+          "snippet": "d\\*\n\nd\\*The Creation of the Universe and All Therein\n\nd\\*(Continued)\n\nd\\*On the earth plane, with the heat factor present, the concentrations contain both cold and hot heat vibrations that are drawn and accumulate in suctions.  These heat vibrations were originally part of a whole energy mass compos"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-002",
+    "template": "dt_compression",
+    "question": "Does dt compress time-to-failure in headless sol-core as it does in the dashboard?",
+    "knob": "dt",
+    "knob_values": [
+      0.08,
+      0.1,
+      0.12,
+      0.16,
+      0.2
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 500,
+    "reps": 5,
+    "falsifiers": [
+      "Time-to-failure is constant across dt values",
+      "Relationship is non-monotonic (failure time increases then decreases)"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unexplored_param",
+      "priority": 4,
+      "claim_id": null,
+      "description": "dt: Time step \u2014 proven in dashboard, not headless",
+      "suggested_action": "Sweep dt across [0.08, 0.1, 0.12, 0.16]",
+      "metadata": {
+        "param": "dt",
+        "range": [
+          0.08,
+          0.1,
+          0.12,
+          0.16
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 24 | Memory edges: 136 | Avg confidence: 0.381 | Tags: basin(24), entropy(24), rhoMax(24)",
+      "kb_passages": [
+        {
+          "chunk_id": 1381,
+          "section": "Article 1063: Natural Cure for EBOLA Proven!",
+          "line_start": 195373,
+          "line_end": 195396,
+          "score": 8.0363,
+          "matched_terms": [
+            "proven"
+          ],
+          "snippet": "## Article 1063: Natural Cure for EBOLA Proven!\n\n\nNatural Cure for EBOLA Proven!\n\nPLEASE READ THIS AND SHARE . . .\n\nhttp://www.docrowen.com/ebola-cure-press-release.html\n\n<!-- END ARTICLE: 1063 -->\n\n<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->\n<!-- BEGIN ARTICLE: 1064 -->\n\n---\nindex: 1064\ntitle: 'Mars "
+        },
+        {
+          "chunk_id": 1330,
+          "section": "Article 1012: Cancer \u2013 The Forbidden Cure",
+          "line_start": 193763,
+          "line_end": 193802,
+          "score": 7.3637,
+          "matched_terms": [
+            "time",
+            "proven"
+          ],
+          "snippet": "## Article 1012: Cancer \u2013 The Forbidden Cure\n\n\nCancer \u2013 The Forbidden Cure\n\nCures for serious diseases, especially cancer, has been suppressed by the medical empire for a very long time, due to the fact that treating illness and disease is a billions of dollars business. No sick people, no money for"
+        },
+        {
+          "chunk_id": 313,
+          "section": "allWordpress_compendium.md",
+          "line_start": 145564,
+          "line_end": 146063,
+          "score": 7.1499,
+          "matched_terms": [
+            "time",
+            "proven"
+          ],
+          "snippet": "\"anchor\": \"article-1056-animal-equality-inspiring-speech\",\n    \"line_start\": 29922,\n    \"line_end\": 29928,\n    \"char_count\": 98,\n    \"tags\": [\n      \"Inspiring\",\n      \"Speech\",\n      \"Animal\",\n      \"Equality\",\n      \"intelligent\",\n      \"true\"\n    ]\n  },\n  {\n    \"index\": 1057,\n    \"title\": \"The Re"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-003",
+    "template": "psi_sensitivity",
+    "question": "How does psi_diffusion affect entropy distribution and basin selection?",
+    "knob": "psi_diffusion",
+    "knob_values": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 3,
+    "falsifiers": [
+      "Entropy is invariant to psi_diffusion changes",
+      "RhoMaxId distribution is identical across all values"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unexplored_param",
+      "priority": 4,
+      "claim_id": null,
+      "description": "psi_diffusion: Psi diffusion rate \u2014 never swept systematically",
+      "suggested_action": "Sweep psi_diffusion across [0.2, 0.4, 0.6, 0.8, 1.0]",
+      "metadata": {
+        "param": "psi_diffusion",
+        "range": [
+          0.2,
+          0.4,
+          0.6,
+          0.8,
+          1.0
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 24 | Memory edges: 136 | Avg confidence: 0.381 | Tags: basin(24), entropy(24), rhoMax(24)",
+      "kb_passages": [
+        {
+          "chunk_id": 1685,
+          "section": "What a Trip!",
+          "line_start": 214744,
+          "line_end": 214853,
+          "score": 8.0175,
+          "matched_terms": [
+            "rate",
+            "never"
+          ],
+          "snippet": "## What a Trip!\n\n**2024-12-06T19:22:52.956Z**\n\n**Likes:** 0\n\nI was admitted to the hospital just before Thanksgiving, 2024\\. While, I've had longstanding health\nproblems, this was really different and getting worse. I could barely stand up. When I was brought\nin and tested, It was found that I had a"
+        },
+        {
+          "chunk_id": 247,
+          "section": "Table of Contents",
+          "line_start": 113047,
+          "line_end": 113546,
+          "score": 7.9514,
+          "matched_terms": [
+            "psi",
+            "rate",
+            "never"
+          ],
+          "snippet": "this truth, this day will not be graced with the understanding of his own destiny. For it is a maze\nof living to which his body is committed and from which his spirit must rise to the calling of the\nHomeward Light.\"\nA Prayer / Declaration for enlightened humanity by The Initiate:\nIN THE NAME OF DIVI"
+        },
+        {
+          "chunk_id": 329,
+          "section": "Article 011: Noah\u2019s Ark & Gobekli Tepe",
+          "line_start": 148865,
+          "line_end": 148946,
+          "score": 7.542,
+          "matched_terms": [
+            "diffusion"
+          ],
+          "snippet": "## Article 011: Noah\u2019s Ark & Gobekli Tepe\n\n\nNoah\u2019s Ark & Gobekli Tepe\n\n\n\nIn the Beginning Times upon the Earth when the Light Forest mantled the planet and all life sang the One Song The Devic Beings or angels of nature\u2019s temple, created places of Spirit and air in terraces of golden seed strung acr"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-004",
+    "template": "replication",
+    "question": "Can headless sol-core reproduce: ?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "Headless results qualitatively differ from dashboard results",
+      "Metrics trend in opposite direction from original claim"
+    ],
+    "notes": "Replicating unknown",
+    "source_gap": {
+      "gap_type": "unexplored_param",
+      "priority": 4,
+      "claim_id": null,
+      "description": "conductance_gamma: Conductance psi-sensitivity \u2014 never swept",
+      "suggested_action": "Sweep conductance_gamma across [0.25, 0.5, 0.75, 1.0]",
+      "metadata": {
+        "param": "conductance_gamma",
+        "range": [
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 24 | Memory edges: 136 | Avg confidence: 0.381 | Tags: basin(24), entropy(24), rhoMax(24)",
+      "kb_passages": [
+        {
+          "chunk_id": 983,
+          "section": "Article 665: Adam Kadmon & Peter Pan",
+          "line_start": 179200,
+          "line_end": 179355,
+          "score": 6.8902,
+          "matched_terms": [
+            "never",
+            "swept"
+          ],
+          "snippet": "## Article 665: Adam Kadmon & Peter Pan\n\n\nAdam Kadmon & Peter Pan\n\nGathering with ThothHorRa on the New EarthStar Island of Second Life\n\nSTARRY (starheart.erdhein):The Records of Thoth record the animiotesh, or seven creational stages through which the Adam Kadmon Light Body or prototype created the"
+        },
+        {
+          "chunk_id": 1443,
+          "section": "Article 1125: Standing Rock \u2013 A Defining Stand for Love",
+          "line_start": 197391,
+          "line_end": 197432,
+          "score": 6.3369,
+          "matched_terms": [
+            "swept"
+          ],
+          "snippet": "## Article 1125: Standing Rock \u2013 A Defining Stand for Love\n\n\nStanding Rock \u2013 A Defining Stand for Love\n\n\n\n~~~~~~~~~~~~\n\nMy inner-planes mentor ThothHorRa speaks of the confrontations at Standing Rock as the building\u00a0of a new Harmonic, coming out of the Old Earth Guardians \u2013 the Indigenous Keepers of"
+        },
+        {
+          "chunk_id": 781,
+          "section": "Article 463: Lady of the Midnight Sun",
+          "line_start": 171374,
+          "line_end": 171447,
+          "score": 4.964,
+          "matched_terms": [
+            "swept"
+          ],
+          "snippet": "## Article 463: Lady of the Midnight Sun\n\n\nLady of the Midnight Sun\n\nThe following transmission from Se\u2019RA\u2019fana will become a fuller experience for you if you first readLady of the Midnight Sunin the Rite of Avalon on Spirit Mythos.\n\nNESI Gathering with Se\u2019RA\u2019fana Adu\u2019RA on 6/5/11\n\nSerRA\u2019fana Adu\u2019RA"
+        }
+      ]
+    }
+  }
+]

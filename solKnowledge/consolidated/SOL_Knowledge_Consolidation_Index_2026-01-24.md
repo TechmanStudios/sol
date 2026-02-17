@@ -531,3 +531,25 @@ Additional proof packets were promoted by tying claim-ledger items to on-disk CS
   - Question: Can headless sol-core reproduce: ?
   - Claim: exploratory | Sanity: PASS
   - Gap: Open Q: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?
+
+## Cortex Session: CX-20260217-013501 (consolidated 2026-02-17)
+
+- [PP-2026-02-17-cortex-CX-20260217-013501-h-001-c_press.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-013501-h-001-c_press.md)
+  - Question: How does c_press affect entropy, flux, and mass over 200 steps?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: c_press: Pressure coefficient — not swept in headless
+
+- [PP-2026-02-17-cortex-CX-20260217-013501-h-002-dt.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-013501-h-002-dt.md)
+  - Question: Does dt compress time-to-failure in headless sol-core as it does in the dashboard?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: dt: Time step — proven in dashboard, not headless
+
+- [PP-2026-02-17-cortex-CX-20260217-013501-h-003-psi_diffusion.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-013501-h-003-psi_diffusion.md)
+  - Question: How does psi_diffusion affect entropy distribution and basin selection?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: psi_diffusion: Psi diffusion rate — never swept systematically
+
+- [PP-2026-02-17-cortex-CX-20260217-013501-h-004-None.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-013501-h-004-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: conductance_gamma: Conductance psi-sensitivity — never swept

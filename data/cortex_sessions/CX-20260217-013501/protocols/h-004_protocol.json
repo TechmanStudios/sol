@@ -1,0 +1,30 @@
+{
+  "seriesName": "h-004",
+  "question": "Can headless sol-core reproduce: ?",
+  "invariants": {
+    "dt": 0.12,
+    "c_press": 0.1,
+    "damping": 0.2,
+    "rng_seed": 42
+  },
+  "injections": [
+    {
+      "label": "grail",
+      "amount": 50
+    }
+  ],
+  "steps": 300,
+  "reps": 5,
+  "baseline": "fresh",
+  "metrics_every": 5,
+  "outputs": {
+    "summary_csv": true,
+    "trace_csv": true,
+    "run_bundle_md": true
+  },
+  "falsifiers": [
+    "Headless results qualitatively differ from dashboard results",
+    "Metrics trend in opposite direction from original claim"
+  ],
+  "notes": "Replicating unknown"
+}
