@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-02-16T19:47:44.966469+00:00",
-  "records": 1300,
+  "generated_at": "2026-02-17T01:46:42.954162+00:00",
+  "records": 1403,
   "runs": 17,
   "experiments": {
     "resonance": {
@@ -129,9 +129,9 @@
     },
     "rsi": {
       "runs": 3,
-      "generations": 173,
+      "generations": 274,
       "accepted_generations": 168,
-      "acceptance_rate": 0.9710982658959537,
+      "acceptance_rate": 0.6131386861313869,
       "top_runs_by_anchor": [
         {
           "experiment": "rsi",
@@ -152,13 +152,13 @@
           "source": "legacy-local",
           "mode": "cron",
           "run_id": "rsi_engine",
-          "generations": 9,
+          "generations": 110,
           "accepted_generations": 8,
-          "acceptance_rate": 0.8888888888888888,
+          "acceptance_rate": 0.07272727272727272,
           "best_anchor_delta": 10.400944025174013,
           "best_full_delta": 86.93181818181819,
           "latest_anchor_delta": 0.0,
-          "latest_full_delta": 69.17,
+          "latest_full_delta": 56.74,
           "latest_reason": "ABORT: Core graph SHA256 mismatch before pipeline start! The sacred graph has been corrupted."
         },
         {
@@ -178,10 +178,10 @@
       ],
       "by_mode": {
         "cron": {
-          "generations": 9,
+          "generations": 110,
           "runs": 1,
           "accepted_generations": 8,
-          "acceptance_rate": 0.8888888888888888,
+          "acceptance_rate": 0.07272727272727272,
           "best_anchor_delta": 10.400944025174013,
           "best_full_delta": 86.93181818181819
         },
@@ -205,9 +205,9 @@
     },
     "self_train": {
       "runs": 7,
-      "generations": 1120,
-      "accepted_generations": 22,
-      "acceptance_rate": 0.019642857142857142,
+      "generations": 1122,
+      "accepted_generations": 23,
+      "acceptance_rate": 0.020499108734402853,
       "top_runs_by_anchor": [
         {
           "experiment": "self_train",
@@ -236,6 +236,20 @@
           "latest_anchor_delta": 0.001323008537292475,
           "latest_full_delta": -2.5272369384765625e-05,
           "latest_reason": "Anchor delta 0.0013 below minimum 0.0050"
+        },
+        {
+          "experiment": "self_train",
+          "source": "github-actions",
+          "mode": "fast",
+          "run_id": "22083103067",
+          "generations": 3,
+          "accepted_generations": 1,
+          "acceptance_rate": 0.3333333333333333,
+          "best_anchor_delta": 0.019179729459733674,
+          "best_full_delta": 0.017627430672036093,
+          "latest_anchor_delta": -0.019085172651261972,
+          "latest_full_delta": -0.01751515936313719,
+          "latest_reason": "Anchor delta -0.0191 below minimum 0.0050"
         },
         {
           "experiment": "self_train",
@@ -292,29 +306,15 @@
           "latest_anchor_delta": -0.004265965382071135,
           "latest_full_delta": -0.0073134531722235385,
           "latest_reason": "Anchor delta -0.0043 below minimum 0.0050"
-        },
-        {
-          "experiment": "self_train",
-          "source": "local-desktop",
-          "mode": "fast",
-          "run_id": "20260216-163748",
-          "generations": 1,
-          "accepted_generations": 0,
-          "acceptance_rate": 0.0,
-          "best_anchor_delta": -0.0030811599661952904,
-          "best_full_delta": -0.003336340081147804,
-          "latest_anchor_delta": -0.0030811599661952904,
-          "latest_full_delta": -0.003336340081147804,
-          "latest_reason": "Anchor delta -0.0031 below minimum 0.0050"
         }
       ],
       "by_mode": {
         "fast": {
-          "generations": 4,
+          "generations": 6,
           "runs": 2,
-          "accepted_generations": 1,
-          "acceptance_rate": 0.25,
-          "best_anchor_delta": 0.019070939062089676,
+          "accepted_generations": 2,
+          "acceptance_rate": 0.3333333333333333,
+          "best_anchor_delta": 0.019179729459733674,
           "best_full_delta": 0.018409085983620677
         },
         "full": {
