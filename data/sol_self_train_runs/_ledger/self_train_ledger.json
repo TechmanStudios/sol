@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-02-17T04:01:31.197374+00:00",
+  "generated_at": "2026-02-17T07:02:42.593028+00:00",
   "root": "data/sol_self_train_runs",
-  "total_generations": 1125,
-  "total_runs": 8,
-  "accepted_generations": 23,
-  "acceptance_rate": 0.020444444444444446,
+  "total_generations": 1138,
+  "total_runs": 9,
+  "accepted_generations": 25,
+  "acceptance_rate": 0.021968365553602813,
   "by_mode": {
     "fast": {
       "runs": 2,
@@ -27,14 +27,14 @@
       "mean_delta_full": -0.2300758605030513
     },
     "overnight": {
-      "runs": 3,
-      "generations": 16,
-      "accepted_generations": 0,
-      "acceptance_rate": 0.0,
-      "best_delta_anchor": 0.004177959733726089,
-      "mean_delta_anchor": -0.002644601633152487,
-      "best_delta_full": 0.0044961488764383994,
-      "mean_delta_full": -0.002365445464720544
+      "runs": 4,
+      "generations": 29,
+      "accepted_generations": 2,
+      "acceptance_rate": 0.06896551724137931,
+      "best_delta_anchor": 0.0140797813470378,
+      "mean_delta_anchor": -0.0021834212521648307,
+      "best_delta_full": 0.01098737836655922,
+      "mean_delta_full": -0.0013877077567660597
     }
   },
   "top_runs_by_anchor": [
@@ -102,6 +102,19 @@
       "latest_delta_anchor": -0.019345805739532596,
       "latest_delta_full": -0.026199448056646854,
       "latest_reason": "Anchor delta -0.0193 below minimum 0.0050"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generations": 13,
+      "accepted_generations": 2,
+      "acceptance_rate": 0.15384615384615385,
+      "best_delta_anchor": 0.0140797813470378,
+      "best_delta_full": 0.01098737836655922,
+      "latest_delta_anchor": -0.003618077695738714,
+      "latest_delta_full": 0.004566256189232412,
+      "latest_reason": "Anchor delta -0.0036 below minimum 0.0050"
     },
     {
       "source": "github-actions",
@@ -208,6 +221,19 @@
       "latest_delta_anchor": -0.022558665447065862,
       "latest_delta_full": -0.019704814515639213,
       "latest_reason": "Anchor delta -0.0226 below minimum 0.0050"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generations": 13,
+      "accepted_generations": 2,
+      "acceptance_rate": 0.15384615384615385,
+      "best_delta_anchor": 0.0140797813470378,
+      "best_delta_full": 0.01098737836655922,
+      "latest_delta_anchor": -0.003618077695738714,
+      "latest_delta_full": 0.004566256189232412,
+      "latest_reason": "Anchor delta -0.0036 below minimum 0.0050"
     }
   ],
   "near_miss_runs": [
@@ -12626,6 +12652,149 @@
       "delta_full": -0.008851126513126945,
       "reason": "Anchor delta -0.0070 below minimum 0.0050",
       "summary_path": "data/sol_self_train_runs/github-actions/overnight/22085408552/gen_003/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 1,
+      "accepted": false,
+      "delta_anchor": 0.003420874781265709,
+      "delta_full": 0.0007222397315070905,
+      "reason": "Anchor delta 0.0034 below minimum 0.0050",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_001/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 2,
+      "accepted": false,
+      "delta_anchor": -0.008349504506589972,
+      "delta_full": -0.003236919544180261,
+      "reason": "Anchor delta -0.0083 below minimum 0.0050",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_002/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 3,
+      "accepted": false,
+      "delta_anchor": -0.006207619799321135,
+      "delta_full": -0.006704606295867249,
+      "reason": "Anchor delta -0.0062 below minimum 0.0050",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_003/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 4,
+      "accepted": false,
+      "delta_anchor": -0.008390315400042647,
+      "delta_full": -0.004993439066320798,
+      "reason": "Anchor delta -0.0084 below minimum 0.0050",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_004/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 5,
+      "accepted": true,
+      "delta_anchor": 0.0140797813470378,
+      "delta_full": 0.006644775124480196,
+      "reason": "Candidate clears anchor and full-task thresholds",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_005/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 6,
+      "accepted": true,
+      "delta_anchor": 0.01065353453063142,
+      "delta_full": 0.01098737836655922,
+      "reason": "Candidate clears anchor and full-task thresholds",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_006/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 7,
+      "accepted": false,
+      "delta_anchor": -0.011143060855433401,
+      "delta_full": -0.007374711706674253,
+      "reason": "Anchor delta -0.0111 below minimum 0.0050",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_007/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 8,
+      "accepted": false,
+      "delta_anchor": -0.0003932743539790673,
+      "delta_full": 0.0017819331591844983,
+      "reason": "Anchor delta -0.0004 below minimum 0.0050",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_008/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 9,
+      "accepted": false,
+      "delta_anchor": -0.004755118488303539,
+      "delta_full": -0.004436055032183195,
+      "reason": "Anchor delta -0.0048 below minimum 0.0050",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_009/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 10,
+      "accepted": false,
+      "delta_anchor": -0.007447692088648705,
+      "delta_full": -0.004472486053343744,
+      "reason": "Anchor delta -0.0074 below minimum 0.0050",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_010/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 11,
+      "accepted": false,
+      "delta_anchor": -0.00019372686465937705,
+      "delta_full": 0.0024397166347814303,
+      "reason": "Anchor delta -0.0002 below minimum 0.0050",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_011/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 12,
+      "accepted": false,
+      "delta_anchor": 0.0013386092114413273,
+      "delta_full": 0.001679520982137625,
+      "reason": "Anchor delta 0.0013 below minimum 0.0050",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_012/summary.json"
+    },
+    {
+      "source": "github-actions",
+      "mode": "overnight",
+      "run_id": "22088819534",
+      "generation": 13,
+      "accepted": false,
+      "delta_anchor": -0.003618077695738714,
+      "delta_full": 0.004566256189232412,
+      "reason": "Anchor delta -0.0036 below minimum 0.0050",
+      "summary_path": "data/sol_self_train_runs/github-actions/overnight/22088819534/gen_013/summary.json"
     }
   ]
 }

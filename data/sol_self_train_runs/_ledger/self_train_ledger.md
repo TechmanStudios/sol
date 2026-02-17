@@ -1,14 +1,14 @@
 # Self-Train Consolidation Ledger
 
-Generated: 2026-02-17T04:01:31.197374+00:00
+Generated: 2026-02-17T07:02:42.593028+00:00
 Root: data/sol_self_train_runs
 
 ## Global
 
-- Total runs: 8
-- Total generations: 1125
-- Accepted generations: 23
-- Acceptance rate: 2.04%
+- Total runs: 9
+- Total generations: 1138
+- Accepted generations: 25
+- Acceptance rate: 2.20%
 
 ## By Mode
 
@@ -16,7 +16,7 @@ Root: data/sol_self_train_runs
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | fast | 2 | 6 | 2 | 33.33% | 0.0192 | 0.0012 | 0.0184 | 0.0009 |
 | full | 3 | 1103 | 21 | 1.90% | 0.1789 | -0.3121 | 0.1191 | -0.2301 |
-| overnight | 3 | 16 | 0 | 0.00% | 0.0042 | -0.0026 | 0.0045 | -0.0024 |
+| overnight | 4 | 29 | 2 | 6.90% | 0.0141 | -0.0022 | 0.0110 | -0.0014 |
 
 ## Top Runs by Anchor Delta
 
@@ -27,6 +27,7 @@ Root: data/sol_self_train_runs
 | github-actions | fast | 22083103067 | 3 | 0.0192 | -0.0191 | -0.0175 |
 | github-actions | fast | 22051991831 | 3 | 0.0191 | -0.0194 | -0.0176 |
 | github-actions | full | 22052059066 | 3 | 0.0163 | -0.0193 | -0.0262 |
+| github-actions | overnight | 22088819534 | 13 | 0.0141 | -0.0036 | 0.0046 |
 | github-actions | overnight | 22053054662 | 10 | 0.0042 | -0.0027 | -0.0035 |
 | github-actions | overnight | 22052842191 | 3 | 0.0023 | -0.0043 | -0.0073 |
 | github-actions | overnight | 22085408552 | 3 | -0.0025 | -0.0070 | -0.0089 |
@@ -38,6 +39,7 @@ Root: data/sol_self_train_runs
 - github-actions/full/22052059066 (best dA=0.0163, best dF=0.0232)
 - github-actions/full/22052118217 (best dA=0.0238, best dF=0.0230)
 - github-actions/full/22053459642 (best dA=0.1789, best dF=0.1191)
+- github-actions/overnight/22088819534 (best dA=0.0141, best dF=0.0110)
 
 ## Near Miss Runs
 
