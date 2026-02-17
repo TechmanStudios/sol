@@ -1,7 +1,7 @@
 {
   "version": 1,
   "created": "2026-02-09T05:17:20.475980+00:00",
-  "last_cycle": 173,
+  "last_cycle": 174,
   "fitness_weights": {
     "claim_density": 0.2221217619789222,
     "question_ratio": 0.2221217619789222,
@@ -10,14 +10,14 @@
   },
   "template_preferences": {
     "parameter_sweep": 0.1,
-    "replication": 0.19153515754343653,
-    "topology_surgery": 1.99622375,
+    "replication": 0.2668042516970318,
+    "topology_surgery": 1.99370625,
     "injection_protocol": 1.1653066374472818,
     "logic_gate": 0.1,
     "clock_signal": 0.7566446699982226,
     "cascade_pipeline": 2.0,
     "isa_program": 0.23019963191985024,
-    "analog_fidelity": 0.2956142026678337
+    "analog_fidelity": 0.36687211900248573
   },
   "parameter_focus": {
     "damping_range": [
@@ -102,23 +102,9 @@
     ],
     "scope_frontier": []
   },
-  "mutation_rate": 0.25,
+  "mutation_rate": 0.3,
   "exploration_rate": 0.8,
   "history": [
-    {
-      "cycle": 126,
-      "timestamp": "2026-02-10T08:11:27.429895+00:00",
-      "mutations": [
-        "template_pref[replication]: 1.76 -> 1.59",
-        "template_pref[topology_surgery]: 1.32 -> 1.39",
-        "template_pref[injection_protocol]: 2.00 -> 1.94",
-        "template_pref[logic_gate]: 1.46 -> 1.55",
-        "template_pref[clock_signal]: 0.64 -> 0.50",
-        "template_pref[cascade_pipeline]: 1.75 -> 1.91",
-        "PLATEAU RESPONSE: exploration_rate 0.90->0.80, mutation_rate 0.50->0.50"
-      ],
-      "fitness_delta": 0.0
-    },
     {
       "cycle": 127,
       "timestamp": "2026-02-10T08:11:27.495955+00:00",
@@ -701,6 +687,16 @@
         "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.20->0.25"
       ],
       "fitness_delta": 0.0
+    },
+    {
+      "cycle": 174,
+      "timestamp": "2026-02-17T01:39:10.988839+00:00",
+      "mutations": [
+        "template_pref[replication]: 0.19 -> 0.27",
+        "template_pref[analog_fidelity]: 0.30 -> 0.37",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.25->0.30"
+      ],
+      "fitness_delta": -0.8482555012834041
     }
   ],
   "synthesis_insights": {
