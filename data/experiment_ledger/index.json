@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-02-17T01:46:42.954162+00:00",
-  "records": 1403,
-  "runs": 17,
+  "generated_at": "2026-02-17T04:01:31.416985+00:00",
+  "records": 1406,
+  "runs": 18,
   "experiments": {
     "resonance": {
       "runs": 7,
@@ -204,10 +204,10 @@
       }
     },
     "self_train": {
-      "runs": 7,
-      "generations": 1122,
+      "runs": 8,
+      "generations": 1125,
       "accepted_generations": 23,
-      "acceptance_rate": 0.020499108734402853,
+      "acceptance_rate": 0.020444444444444446,
       "top_runs_by_anchor": [
         {
           "experiment": "self_train",
@@ -306,6 +306,20 @@
           "latest_anchor_delta": -0.004265965382071135,
           "latest_full_delta": -0.0073134531722235385,
           "latest_reason": "Anchor delta -0.0043 below minimum 0.0050"
+        },
+        {
+          "experiment": "self_train",
+          "source": "github-actions",
+          "mode": "overnight",
+          "run_id": "22085408552",
+          "generations": 3,
+          "accepted_generations": 0,
+          "acceptance_rate": 0.0,
+          "best_anchor_delta": -0.002502701043895772,
+          "best_full_delta": -0.003449641679303672,
+          "latest_anchor_delta": -0.0070024080009710166,
+          "latest_full_delta": -0.008851126513126945,
+          "latest_reason": "Anchor delta -0.0070 below minimum 0.0050"
         }
       ],
       "by_mode": {
@@ -326,8 +340,8 @@
           "best_full_delta": 0.11914285421371461
         },
         "overnight": {
-          "generations": 13,
-          "runs": 2,
+          "generations": 16,
+          "runs": 3,
           "accepted_generations": 0,
           "acceptance_rate": 0.0,
           "best_anchor_delta": 0.004177959733726089,

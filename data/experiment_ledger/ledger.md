@@ -1,7 +1,7 @@
 # Experiment Ledger
 
-Generated: 2026-02-17T01:46:42.954162+00:00
-Records: 1403 | Runs: 17
+Generated: 2026-02-17T04:01:31.416985+00:00
+Records: 1406 | Runs: 18
 
 ## resonance
 
@@ -48,7 +48,7 @@ Records: 1403 | Runs: 17
 
 ## self_train
 
-- Runs: 7 | Generations: 1122 | Accepted: 23 | Acceptance: 2.05%
+- Runs: 8 | Generations: 1125 | Accepted: 23 | Acceptance: 2.04%
 
 ### Modes
 
@@ -56,7 +56,7 @@ Records: 1403 | Runs: 17
 |---|---:|---:|---:|---:|---:|---:|
 | fast | 2 | 6 | 2 | 33.33% | 0.0192 | 0.0184 |
 | full | 3 | 1103 | 21 | 1.90% | 0.1789 | 0.1191 |
-| overnight | 2 | 13 | 0 | 0.00% | 0.0042 | 0.0045 |
+| overnight | 3 | 16 | 0 | 0.00% | 0.0042 | 0.0045 |
 
 ### Top Runs
 
@@ -69,3 +69,4 @@ Records: 1403 | Runs: 17
 | github-actions | full | 22052059066 | 3 | 0.0163 | -0.0193 | -0.0262 |
 | github-actions | overnight | 22053054662 | 10 | 0.0042 | -0.0027 | -0.0035 |
 | github-actions | overnight | 22052842191 | 3 | 0.0023 | -0.0043 | -0.0073 |
+| github-actions | overnight | 22085408552 | 3 | -0.0025 | -0.0070 | -0.0089 |
