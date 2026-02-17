@@ -553,3 +553,55 @@ Additional proof packets were promoted by tying claim-ledger items to on-disk CS
   - Question: Can headless sol-core reproduce: ?
   - Claim: exploratory | Sanity: PASS
   - Gap: conductance_gamma: Conductance psi-sensitivity — never swept
+
+## Cortex Session: CX-20260217-062310 (consolidated 2026-02-17)
+
+- [PP-2026-02-17-cortex-CX-20260217-062310-h-001-None.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-062310-h-001-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: PP-2026-02-12-cortex-CX-20260212-031340-h-003-None.md: has UNKNOWN fields — ['Replicating unknown']
+
+- [PP-2026-02-17-cortex-CX-20260217-062310-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-062310-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: PP-2026-02-12-cortex-CX-20260212-032105-h-003-None.md: has UNKNOWN fields — ['Replicating unknown']
+
+- [PP-2026-02-17-cortex-CX-20260217-062310-h-003-damping.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-062310-h-003-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: PP-2026-02-12-cortex-CX-20260212-032759-h-003-None.md: has UNKNOWN fields — ['Replicating unknown']
+
+- [PP-2026-02-17-cortex-CX-20260217-062310-h-004-None.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-062310-h-004-None.md)
+  - Question: Do different injection targets produce distinct basin formations?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: PP-2026-02-12-cortex-CX-20260212-033330-h-003-None.md: has UNKNOWN fields — ['Replicating unknown']
+
+- [PP-2026-02-17-cortex-CX-20260217-062310-h-005-None.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-062310-h-005-None.md)
+  - Question: What are the canonical metric outputs for standard injection protocols?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: PP-2026-02-12-cortex-CX-20260212-034732-h-003-None.md: has UNKNOWN fields — ['Replicating unknown']
+
+- [PP-2026-02-17-cortex-CX-20260217-062310-h-006-dt.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-062310-h-006-dt.md)
+  - Question: Does dt compress time-to-failure in headless sol-core as it does in the dashboard?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: PP-2026-02-12-cortex-CX-20260212-052151-h-003-None.md: has UNKNOWN fields — ['Replicating unknown']
+
+- [PP-2026-02-17-cortex-CX-20260217-062310-h-007-psi_diffusion.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-062310-h-007-psi_diffusion.md)
+  - Question: How does psi_diffusion affect entropy distribution and basin selection?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: PP-2026-02-12-cortex-CX-20260212-070748-h-003-None.md: has UNKNOWN fields — ['Replicating unknown']
+
+- [PP-2026-02-17-cortex-CX-20260217-062310-h-008-None.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-062310-h-008-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: PP-2026-02-12-cortex-CX-20260212-074704-h-003-None.md: has UNKNOWN fields — ['Replicating unknown']
+
+- [PP-2026-02-17-cortex-CX-20260217-062310-h-009-None.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-062310-h-009-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: PP-2026-02-12-cortex-CX-20260212-082639-h-003-None.md: has UNKNOWN fields — ['Replicating unknown']
+
+- [PP-2026-02-17-cortex-CX-20260217-062310-h-010-None.md](solKnowledge/proof_packets/PP-2026-02-17-cortex-CX-20260217-062310-h-010-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: PP-2026-02-12-cortex-CX-20260212-084916-h-003-None.md: has UNKNOWN fields — ['Replicating unknown']

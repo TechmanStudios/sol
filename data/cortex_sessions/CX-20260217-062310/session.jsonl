@@ -1,0 +1,83 @@
+{"ts": "2026-02-17T06:23:14.018790Z", "event": "session_start", "session_id": "CX-20260217-062310", "config": {"max_protocols": "10", "max_total_steps": "100000", "gap_type_filter": "weak_evidence", "dry_run": "False", "out_dir": "/home/runner/work/sol/sol/data/cortex_sessions", "strict_guardrails": "True", "verbose": "True"}}
+{"ts": "2026-02-17T06:23:15.132301Z", "event": "knowledge_scan", "total_gaps": 529, "by_type": {"open_question": 225, "unpromoted": 6, "headless_baseline": 1, "weak_evidence": 34, "unfalsified": 4, "replication": 255, "unexplored_param": 4}}
+{"ts": "2026-02-17T06:23:15.132525Z", "event": "gap_selected", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-031340-", "gap_type": "weak_evidence", "priority": 3, "description": "PP-2026-02-12-cortex-CX-20260212-031340-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']"}
+{"ts": "2026-02-17T06:23:15.133972Z", "event": "gap_enriched", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-031340-", "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)"}
+{"ts": "2026-02-17T06:23:15.134025Z", "event": "hypothesis_generated", "hypothesis_id": "H-001", "template": "replication", "question": "Can headless sol-core reproduce: ?"}
+{"ts": "2026-02-17T06:23:15.134156Z", "event": "hypothesis_augmented", "hypothesis_id": "H-001", "memory_falsifiers": 2}
+{"ts": "2026-02-17T06:23:15.134491Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-062310/protocols/h-001_protocol.json"}
+{"ts": "2026-02-17T06:23:15.169127Z", "event": "execution_start", "hypothesis_id": "H-001", "series": "h-001"}
+{"ts": "2026-02-17T06:23:19.353741Z", "event": "execution_complete", "hypothesis_id": "H-001", "elapsed_sec": 4.18, "sanity_passed": true, "anomalies": [], "total_session_steps": 1500}
+{"ts": "2026-02-17T06:23:19.354002Z", "event": "meta_recorded", "hypothesis_id": "H-001", "template": "replication", "gap_type": "weak_evidence"}
+{"ts": "2026-02-17T06:23:19.354124Z", "event": "gap_selected", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-032105-", "gap_type": "weak_evidence", "priority": 3, "description": "PP-2026-02-12-cortex-CX-20260212-032105-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']"}
+{"ts": "2026-02-17T06:23:19.355221Z", "event": "gap_enriched", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-032105-", "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)"}
+{"ts": "2026-02-17T06:23:19.355305Z", "event": "hypothesis_generated", "hypothesis_id": "H-002", "template": "parameter_sweep", "question": "How does damping affect entropy, flux, and mass over 200 steps?"}
+{"ts": "2026-02-17T06:23:19.355600Z", "event": "hypothesis_augmented", "hypothesis_id": "H-002", "memory_falsifiers": 2}
+{"ts": "2026-02-17T06:23:19.355858Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-062310/protocols/h-002_protocol.json"}
+{"ts": "2026-02-17T06:23:19.355906Z", "event": "execution_start", "hypothesis_id": "H-002", "series": "h-002"}
+{"ts": "2026-02-17T06:23:26.033958Z", "event": "execution_complete", "hypothesis_id": "H-002", "elapsed_sec": 6.68, "sanity_passed": true, "anomalies": [], "total_session_steps": 3900}
+{"ts": "2026-02-17T06:23:26.034256Z", "event": "meta_recorded", "hypothesis_id": "H-002", "template": "parameter_sweep", "gap_type": "weak_evidence"}
+{"ts": "2026-02-17T06:23:26.034378Z", "event": "gap_selected", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-032759-", "gap_type": "weak_evidence", "priority": 3, "description": "PP-2026-02-12-cortex-CX-20260212-032759-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']"}
+{"ts": "2026-02-17T06:23:26.035558Z", "event": "gap_enriched", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-032759-", "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)"}
+{"ts": "2026-02-17T06:23:26.035614Z", "event": "hypothesis_generated", "hypothesis_id": "H-003", "template": "threshold_scan", "question": "At what value of damping does the system behavior qualitatively change?"}
+{"ts": "2026-02-17T06:23:26.035803Z", "event": "hypothesis_augmented", "hypothesis_id": "H-003", "memory_falsifiers": 2}
+{"ts": "2026-02-17T06:23:26.035996Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-062310/protocols/h-003_protocol.json"}
+{"ts": "2026-02-17T06:23:26.036031Z", "event": "execution_start", "hypothesis_id": "H-003", "series": "h-003"}
+{"ts": "2026-02-17T06:23:59.573876Z", "event": "execution_complete", "hypothesis_id": "H-003", "elapsed_sec": 33.54, "sanity_passed": true, "anomalies": [], "total_session_steps": 15900}
+{"ts": "2026-02-17T06:23:59.574158Z", "event": "meta_recorded", "hypothesis_id": "H-003", "template": "threshold_scan", "gap_type": "weak_evidence"}
+{"ts": "2026-02-17T06:23:59.574303Z", "event": "gap_selected", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-033330-", "gap_type": "weak_evidence", "priority": 3, "description": "PP-2026-02-12-cortex-CX-20260212-033330-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']"}
+{"ts": "2026-02-17T06:23:59.575373Z", "event": "gap_enriched", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-033330-", "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)"}
+{"ts": "2026-02-17T06:23:59.575425Z", "event": "hypothesis_generated", "hypothesis_id": "H-004", "template": "injection_comparison", "question": "Do different injection targets produce distinct basin formations?"}
+{"ts": "2026-02-17T06:23:59.575539Z", "event": "hypothesis_augmented", "hypothesis_id": "H-004", "memory_falsifiers": 2}
+{"ts": "2026-02-17T06:23:59.575722Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-062310/protocols/h-004_protocol.json"}
+{"ts": "2026-02-17T06:23:59.575759Z", "event": "execution_start", "hypothesis_id": "H-004", "series": "h-004"}
+{"ts": "2026-02-17T06:24:01.238478Z", "event": "execution_complete", "hypothesis_id": "H-004", "elapsed_sec": 1.66, "sanity_passed": true, "anomalies": [], "total_session_steps": 16500}
+{"ts": "2026-02-17T06:24:01.238738Z", "event": "meta_recorded", "hypothesis_id": "H-004", "template": "injection_comparison", "gap_type": "weak_evidence"}
+{"ts": "2026-02-17T06:24:01.238863Z", "event": "gap_selected", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-034732-", "gap_type": "weak_evidence", "priority": 3, "description": "PP-2026-02-12-cortex-CX-20260212-034732-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']"}
+{"ts": "2026-02-17T06:24:01.239939Z", "event": "gap_enriched", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-034732-", "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)"}
+{"ts": "2026-02-17T06:24:01.239986Z", "event": "hypothesis_generated", "hypothesis_id": "H-005", "template": "baseline_golden", "question": "What are the canonical metric outputs for standard injection protocols?"}
+{"ts": "2026-02-17T06:24:01.240097Z", "event": "hypothesis_augmented", "hypothesis_id": "H-005", "memory_falsifiers": 1}
+{"ts": "2026-02-17T06:24:01.240287Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-062310/protocols/h-005_protocol.json"}
+{"ts": "2026-02-17T06:24:01.240322Z", "event": "execution_start", "hypothesis_id": "H-005", "series": "h-005"}
+{"ts": "2026-02-17T06:24:02.611388Z", "event": "execution_complete", "hypothesis_id": "H-005", "elapsed_sec": 1.37, "sanity_passed": true, "anomalies": [], "total_session_steps": 17000}
+{"ts": "2026-02-17T06:24:02.611643Z", "event": "meta_recorded", "hypothesis_id": "H-005", "template": "baseline_golden", "gap_type": "weak_evidence"}
+{"ts": "2026-02-17T06:24:02.611773Z", "event": "gap_selected", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-052151-", "gap_type": "weak_evidence", "priority": 3, "description": "PP-2026-02-12-cortex-CX-20260212-052151-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']"}
+{"ts": "2026-02-17T06:24:02.612841Z", "event": "gap_enriched", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-052151-", "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)"}
+{"ts": "2026-02-17T06:24:02.612890Z", "event": "hypothesis_generated", "hypothesis_id": "H-006", "template": "dt_compression", "question": "Does dt compress time-to-failure in headless sol-core as it does in the dashboard?"}
+{"ts": "2026-02-17T06:24:02.613068Z", "event": "hypothesis_augmented", "hypothesis_id": "H-006", "memory_falsifiers": 2}
+{"ts": "2026-02-17T06:24:02.613273Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-062310/protocols/h-006_protocol.json"}
+{"ts": "2026-02-17T06:24:02.613313Z", "event": "execution_start", "hypothesis_id": "H-006", "series": "h-006"}
+{"ts": "2026-02-17T06:24:37.185507Z", "event": "execution_complete", "hypothesis_id": "H-006", "elapsed_sec": 34.57, "sanity_passed": true, "anomalies": [], "total_session_steps": 29500}
+{"ts": "2026-02-17T06:24:37.185785Z", "event": "meta_recorded", "hypothesis_id": "H-006", "template": "dt_compression", "gap_type": "weak_evidence"}
+{"ts": "2026-02-17T06:24:37.185909Z", "event": "gap_selected", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-070748-", "gap_type": "weak_evidence", "priority": 3, "description": "PP-2026-02-12-cortex-CX-20260212-070748-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']"}
+{"ts": "2026-02-17T06:24:37.187000Z", "event": "gap_enriched", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-070748-", "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)"}
+{"ts": "2026-02-17T06:24:37.187049Z", "event": "hypothesis_generated", "hypothesis_id": "H-007", "template": "psi_sensitivity", "question": "How does psi_diffusion affect entropy distribution and basin selection?"}
+{"ts": "2026-02-17T06:24:37.187243Z", "event": "hypothesis_augmented", "hypothesis_id": "H-007", "memory_falsifiers": 2}
+{"ts": "2026-02-17T06:24:37.187432Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-062310/protocols/h-007_protocol.json"}
+{"ts": "2026-02-17T06:24:37.187468Z", "event": "execution_start", "hypothesis_id": "H-007", "series": "h-007"}
+{"ts": "2026-02-17T06:24:49.850809Z", "event": "execution_complete", "hypothesis_id": "H-007", "elapsed_sec": 12.66, "sanity_passed": true, "anomalies": [], "total_session_steps": 34000}
+{"ts": "2026-02-17T06:24:49.851091Z", "event": "meta_recorded", "hypothesis_id": "H-007", "template": "psi_sensitivity", "gap_type": "weak_evidence"}
+{"ts": "2026-02-17T06:24:49.851264Z", "event": "gap_selected", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-074704-", "gap_type": "weak_evidence", "priority": 3, "description": "PP-2026-02-12-cortex-CX-20260212-074704-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']"}
+{"ts": "2026-02-17T06:24:49.852343Z", "event": "gap_enriched", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-074704-", "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)"}
+{"ts": "2026-02-17T06:24:49.852398Z", "event": "hypothesis_generated", "hypothesis_id": "H-008", "template": "replication", "question": "Can headless sol-core reproduce: ?"}
+{"ts": "2026-02-17T06:24:49.852514Z", "event": "hypothesis_augmented", "hypothesis_id": "H-008", "memory_falsifiers": 2}
+{"ts": "2026-02-17T06:24:49.852699Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-062310/protocols/h-008_protocol.json"}
+{"ts": "2026-02-17T06:24:49.852734Z", "event": "execution_start", "hypothesis_id": "H-008", "series": "h-008"}
+{"ts": "2026-02-17T06:24:54.034399Z", "event": "execution_complete", "hypothesis_id": "H-008", "elapsed_sec": 4.18, "sanity_passed": true, "anomalies": [], "total_session_steps": 35500}
+{"ts": "2026-02-17T06:24:54.034661Z", "event": "meta_recorded", "hypothesis_id": "H-008", "template": "replication", "gap_type": "weak_evidence"}
+{"ts": "2026-02-17T06:24:54.034787Z", "event": "gap_selected", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-082639-", "gap_type": "weak_evidence", "priority": 3, "description": "PP-2026-02-12-cortex-CX-20260212-082639-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']"}
+{"ts": "2026-02-17T06:24:54.035841Z", "event": "gap_enriched", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-082639-", "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)"}
+{"ts": "2026-02-17T06:24:54.035888Z", "event": "hypothesis_generated", "hypothesis_id": "H-009", "template": "replication", "question": "Can headless sol-core reproduce: ?"}
+{"ts": "2026-02-17T06:24:54.035998Z", "event": "hypothesis_augmented", "hypothesis_id": "H-009", "memory_falsifiers": 2}
+{"ts": "2026-02-17T06:24:54.036166Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-062310/protocols/h-009_protocol.json"}
+{"ts": "2026-02-17T06:24:54.036219Z", "event": "execution_start", "hypothesis_id": "H-009", "series": "h-009"}
+{"ts": "2026-02-17T06:24:58.213266Z", "event": "execution_complete", "hypothesis_id": "H-009", "elapsed_sec": 4.18, "sanity_passed": true, "anomalies": [], "total_session_steps": 37000}
+{"ts": "2026-02-17T06:24:58.213649Z", "event": "meta_recorded", "hypothesis_id": "H-009", "template": "replication", "gap_type": "weak_evidence"}
+{"ts": "2026-02-17T06:24:58.213849Z", "event": "gap_selected", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-084916-", "gap_type": "weak_evidence", "priority": 3, "description": "PP-2026-02-12-cortex-CX-20260212-084916-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']"}
+{"ts": "2026-02-17T06:24:58.215520Z", "event": "gap_enriched", "gap_id": "weak_evidence:PP-2026-02-12-cortex-CX-20260212-084916-", "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)"}
+{"ts": "2026-02-17T06:24:58.215585Z", "event": "hypothesis_generated", "hypothesis_id": "H-010", "template": "replication", "question": "Can headless sol-core reproduce: ?"}
+{"ts": "2026-02-17T06:24:58.215771Z", "event": "hypothesis_augmented", "hypothesis_id": "H-010", "memory_falsifiers": 2}
+{"ts": "2026-02-17T06:24:58.216001Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-062310/protocols/h-010_protocol.json"}
+{"ts": "2026-02-17T06:24:58.216047Z", "event": "execution_start", "hypothesis_id": "H-010", "series": "h-010"}
+{"ts": "2026-02-17T06:25:02.456056Z", "event": "execution_complete", "hypothesis_id": "H-010", "elapsed_sec": 4.24, "sanity_passed": true, "anomalies": [], "total_session_steps": 38500}
+{"ts": "2026-02-17T06:25:02.456320Z", "event": "meta_recorded", "hypothesis_id": "H-010", "template": "replication", "gap_type": "weak_evidence"}
+{"ts": "2026-02-17T06:25:02.456346Z", "event": "budget_stop", "reason": "max_protocols reached (10/10)"}

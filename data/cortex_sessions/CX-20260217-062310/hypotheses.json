@@ -1,0 +1,771 @@
+[
+  {
+    "id": "H-001",
+    "template": "replication",
+    "question": "Can headless sol-core reproduce: ?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "Headless results qualitatively differ from dashboard results",
+      "Metrics trend in opposite direction from original claim"
+    ],
+    "notes": "Replicating PP-2026-02-12-cortex-CX-20260212-031340-h-003-None.md",
+    "source_gap": {
+      "gap_type": "weak_evidence",
+      "priority": 3,
+      "claim_id": null,
+      "description": "PP-2026-02-12-cortex-CX-20260212-031340-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']",
+      "suggested_action": "Re-run PP-2026-02-12-cortex-CX-20260212-031340-h-003-None.md's protocol with full invariant recording",
+      "metadata": {
+        "packet": "PP-2026-02-12-cortex-CX-20260212-031340-h-003-None.md",
+        "unknowns": [
+          "Replicating unknown"
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)",
+      "kb_passages": [
+        {
+          "chunk_id": 114,
+          "section": "Top Keywords",
+          "line_start": 52598,
+          "line_end": 52665,
+          "score": 9.0242,
+          "matched_terms": [
+            "md",
+            "unknown"
+          ],
+          "snippet": "From The Secret Tradition in Arthurian Legend by Gareth Knight:\nThe secrets of the sea power are among the traditional lost secrets of Atlantis, pertaining not\nso much to the well known Sun Temple priesthood of the Sacred Mountain, as to the older centre\nbased upon the island of Ruta.\nIn his role Me"
+        },
+        {
+          "chunk_id": 243,
+          "section": "Table of Contents",
+          "line_start": 111070,
+          "line_end": 111546,
+          "score": 8.5967,
+          "matched_terms": [
+            "md",
+            "unknown",
+            "fields"
+          ],
+          "snippet": "transfiguration through the Earth in the many stages of receipt. I later read in the New Age Bible\nInterpretation, Vol. V, of a similar world to \"Talithwa\" - \"Talitha,\" Aramaic for \"Little Lamb\" -\nused by the Christ in his incarnation as Jesus.\n***\n********\nI was informed by my sources that the pupi"
+        },
+        {
+          "chunk_id": 145,
+          "section": "Top Keywords",
+          "line_start": 65754,
+          "line_end": 65969,
+          "score": 7.3369,
+          "matched_terms": [
+            "md",
+            "fields"
+          ],
+          "snippet": "dynamic. The arianrhod (-) is the feminine expression and is projected from the Celtic\nCeridwen, a lunar Goddess. The vibration of the Arianrhod is a 52/7 which equates to\nChange, Separation and Mediation. The Arianrhod defines harmonics to celestial origin,\nsynthesized, sacrifices and rebuilds. The"
+        }
+      ]
+    }
+  },
+  {
+    "id": "H-002",
+    "template": "parameter_sweep",
+    "question": "How does damping affect entropy, flux, and mass over 200 steps?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.2,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 200,
+    "reps": 3,
+    "falsifiers": [
+      "All damping values produce identical results (no sensitivity)",
+      "Higher damping produces non-monotonic response without explanation"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "weak_evidence",
+      "priority": 3,
+      "claim_id": null,
+      "description": "PP-2026-02-12-cortex-CX-20260212-032105-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']",
+      "suggested_action": "Re-run PP-2026-02-12-cortex-CX-20260212-032105-h-003-None.md's protocol with full invariant recording",
+      "metadata": {
+        "packet": "PP-2026-02-12-cortex-CX-20260212-032105-h-003-None.md",
+        "unknowns": [
+          "Replicating unknown"
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)",
+      "kb_passages": [
+        {
+          "chunk_id": 114,
+          "section": "Top Keywords",
+          "line_start": 52598,
+          "line_end": 52665,
+          "score": 9.0242,
+          "matched_terms": [
+            "md",
+            "unknown"
+          ],
+          "snippet": "From The Secret Tradition in Arthurian Legend by Gareth Knight:\nThe secrets of the sea power are among the traditional lost secrets of Atlantis, pertaining not\nso much to the well known Sun Temple priesthood of the Sacred Mountain, as to the older centre\nbased upon the island of Ruta.\nIn his role Me"
+        },
+        {
+          "chunk_id": 243,
+          "section": "Table of Contents",
+          "line_start": 111070,
+          "line_end": 111546,
+          "score": 8.5967,
+          "matched_terms": [
+            "md",
+            "unknown",
+            "fields"
+          ],
+          "snippet": "transfiguration through the Earth in the many stages of receipt. I later read in the New Age Bible\nInterpretation, Vol. V, of a similar world to \"Talithwa\" - \"Talitha,\" Aramaic for \"Little Lamb\" -\nused by the Christ in his incarnation as Jesus.\n***\n********\nI was informed by my sources that the pupi"
+        },
+        {
+          "chunk_id": 145,
+          "section": "Top Keywords",
+          "line_start": 65754,
+          "line_end": 65969,
+          "score": 7.3369,
+          "matched_terms": [
+            "md",
+            "fields"
+          ],
+          "snippet": "dynamic. The arianrhod (-) is the feminine expression and is projected from the Celtic\nCeridwen, a lunar Goddess. The vibration of the Arianrhod is a 52/7 which equates to\nChange, Separation and Mediation. The Arianrhod defines harmonics to celestial origin,\nsynthesized, sacrifices and rebuilds. The"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-003",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "weak_evidence",
+      "priority": 3,
+      "claim_id": null,
+      "description": "PP-2026-02-12-cortex-CX-20260212-032759-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']",
+      "suggested_action": "Re-run PP-2026-02-12-cortex-CX-20260212-032759-h-003-None.md's protocol with full invariant recording",
+      "metadata": {
+        "packet": "PP-2026-02-12-cortex-CX-20260212-032759-h-003-None.md",
+        "unknowns": [
+          "Replicating unknown"
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)",
+      "kb_passages": [
+        {
+          "chunk_id": 114,
+          "section": "Top Keywords",
+          "line_start": 52598,
+          "line_end": 52665,
+          "score": 9.0242,
+          "matched_terms": [
+            "md",
+            "unknown"
+          ],
+          "snippet": "From The Secret Tradition in Arthurian Legend by Gareth Knight:\nThe secrets of the sea power are among the traditional lost secrets of Atlantis, pertaining not\nso much to the well known Sun Temple priesthood of the Sacred Mountain, as to the older centre\nbased upon the island of Ruta.\nIn his role Me"
+        },
+        {
+          "chunk_id": 243,
+          "section": "Table of Contents",
+          "line_start": 111070,
+          "line_end": 111546,
+          "score": 8.5967,
+          "matched_terms": [
+            "md",
+            "unknown",
+            "fields"
+          ],
+          "snippet": "transfiguration through the Earth in the many stages of receipt. I later read in the New Age Bible\nInterpretation, Vol. V, of a similar world to \"Talithwa\" - \"Talitha,\" Aramaic for \"Little Lamb\" -\nused by the Christ in his incarnation as Jesus.\n***\n********\nI was informed by my sources that the pupi"
+        },
+        {
+          "chunk_id": 145,
+          "section": "Top Keywords",
+          "line_start": 65754,
+          "line_end": 65969,
+          "score": 7.3369,
+          "matched_terms": [
+            "md",
+            "fields"
+          ],
+          "snippet": "dynamic. The arianrhod (-) is the feminine expression and is projected from the Celtic\nCeridwen, a lunar Goddess. The vibration of the Arianrhod is a 52/7 which equates to\nChange, Separation and Mediation. The Arianrhod defines harmonics to celestial origin,\nsynthesized, sacrifices and rebuilds. The"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-004",
+    "template": "injection_comparison",
+    "question": "Do different injection targets produce distinct basin formations?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 200,
+    "reps": 3,
+    "falsifiers": [
+      "All injection targets produce identical metric trajectories",
+      "RhoMaxId is always the same regardless of injection target"
+    ],
+    "notes": "Comparing targets: ['grail', 'consciousness', 'gravity', 'entropy']",
+    "source_gap": {
+      "gap_type": "weak_evidence",
+      "priority": 3,
+      "claim_id": null,
+      "description": "PP-2026-02-12-cortex-CX-20260212-033330-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']",
+      "suggested_action": "Re-run PP-2026-02-12-cortex-CX-20260212-033330-h-003-None.md's protocol with full invariant recording",
+      "metadata": {
+        "packet": "PP-2026-02-12-cortex-CX-20260212-033330-h-003-None.md",
+        "unknowns": [
+          "Replicating unknown"
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)",
+      "kb_passages": [
+        {
+          "chunk_id": 114,
+          "section": "Top Keywords",
+          "line_start": 52598,
+          "line_end": 52665,
+          "score": 9.0242,
+          "matched_terms": [
+            "md",
+            "unknown"
+          ],
+          "snippet": "From The Secret Tradition in Arthurian Legend by Gareth Knight:\nThe secrets of the sea power are among the traditional lost secrets of Atlantis, pertaining not\nso much to the well known Sun Temple priesthood of the Sacred Mountain, as to the older centre\nbased upon the island of Ruta.\nIn his role Me"
+        },
+        {
+          "chunk_id": 243,
+          "section": "Table of Contents",
+          "line_start": 111070,
+          "line_end": 111546,
+          "score": 8.5967,
+          "matched_terms": [
+            "md",
+            "unknown",
+            "fields"
+          ],
+          "snippet": "transfiguration through the Earth in the many stages of receipt. I later read in the New Age Bible\nInterpretation, Vol. V, of a similar world to \"Talithwa\" - \"Talitha,\" Aramaic for \"Little Lamb\" -\nused by the Christ in his incarnation as Jesus.\n***\n********\nI was informed by my sources that the pupi"
+        },
+        {
+          "chunk_id": 145,
+          "section": "Top Keywords",
+          "line_start": 65754,
+          "line_end": 65969,
+          "score": 7.3369,
+          "matched_terms": [
+            "md",
+            "fields"
+          ],
+          "snippet": "dynamic. The arianrhod (-) is the feminine expression and is projected from the Celtic\nCeridwen, a lunar Goddess. The vibration of the Arianrhod is a 52/7 which equates to\nChange, Separation and Mediation. The Arianrhod defines harmonics to celestial origin,\nsynthesized, sacrifices and rebuilds. The"
+        }
+      ]
+    }
+  },
+  {
+    "id": "H-005",
+    "template": "baseline_golden",
+    "question": "What are the canonical metric outputs for standard injection protocols?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 500,
+    "reps": 1,
+    "falsifiers": [
+      "Output changes between identical runs with same seed (non-determinism)"
+    ],
+    "notes": "Golden baseline for Phase 3 regression suite. Single rep, high step count, full trace.",
+    "source_gap": {
+      "gap_type": "weak_evidence",
+      "priority": 3,
+      "claim_id": null,
+      "description": "PP-2026-02-12-cortex-CX-20260212-034732-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']",
+      "suggested_action": "Re-run PP-2026-02-12-cortex-CX-20260212-034732-h-003-None.md's protocol with full invariant recording",
+      "metadata": {
+        "packet": "PP-2026-02-12-cortex-CX-20260212-034732-h-003-None.md",
+        "unknowns": [
+          "Replicating unknown"
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)",
+      "kb_passages": [
+        {
+          "chunk_id": 114,
+          "section": "Top Keywords",
+          "line_start": 52598,
+          "line_end": 52665,
+          "score": 9.0242,
+          "matched_terms": [
+            "md",
+            "unknown"
+          ],
+          "snippet": "From The Secret Tradition in Arthurian Legend by Gareth Knight:\nThe secrets of the sea power are among the traditional lost secrets of Atlantis, pertaining not\nso much to the well known Sun Temple priesthood of the Sacred Mountain, as to the older centre\nbased upon the island of Ruta.\nIn his role Me"
+        },
+        {
+          "chunk_id": 243,
+          "section": "Table of Contents",
+          "line_start": 111070,
+          "line_end": 111546,
+          "score": 8.5967,
+          "matched_terms": [
+            "md",
+            "unknown",
+            "fields"
+          ],
+          "snippet": "transfiguration through the Earth in the many stages of receipt. I later read in the New Age Bible\nInterpretation, Vol. V, of a similar world to \"Talithwa\" - \"Talitha,\" Aramaic for \"Little Lamb\" -\nused by the Christ in his incarnation as Jesus.\n***\n********\nI was informed by my sources that the pupi"
+        },
+        {
+          "chunk_id": 145,
+          "section": "Top Keywords",
+          "line_start": 65754,
+          "line_end": 65969,
+          "score": 7.3369,
+          "matched_terms": [
+            "md",
+            "fields"
+          ],
+          "snippet": "dynamic. The arianrhod (-) is the feminine expression and is projected from the Celtic\nCeridwen, a lunar Goddess. The vibration of the Arianrhod is a 52/7 which equates to\nChange, Separation and Mediation. The Arianrhod defines harmonics to celestial origin,\nsynthesized, sacrifices and rebuilds. The"
+        }
+      ]
+    }
+  },
+  {
+    "id": "H-006",
+    "template": "dt_compression",
+    "question": "Does dt compress time-to-failure in headless sol-core as it does in the dashboard?",
+    "knob": "dt",
+    "knob_values": [
+      0.08,
+      0.1,
+      0.12,
+      0.16,
+      0.2
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 500,
+    "reps": 5,
+    "falsifiers": [
+      "Time-to-failure is constant across dt values",
+      "Relationship is non-monotonic (failure time increases then decreases)"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "weak_evidence",
+      "priority": 3,
+      "claim_id": null,
+      "description": "PP-2026-02-12-cortex-CX-20260212-052151-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']",
+      "suggested_action": "Re-run PP-2026-02-12-cortex-CX-20260212-052151-h-003-None.md's protocol with full invariant recording",
+      "metadata": {
+        "packet": "PP-2026-02-12-cortex-CX-20260212-052151-h-003-None.md",
+        "unknowns": [
+          "Replicating unknown"
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)",
+      "kb_passages": [
+        {
+          "chunk_id": 114,
+          "section": "Top Keywords",
+          "line_start": 52598,
+          "line_end": 52665,
+          "score": 9.0242,
+          "matched_terms": [
+            "md",
+            "unknown"
+          ],
+          "snippet": "From The Secret Tradition in Arthurian Legend by Gareth Knight:\nThe secrets of the sea power are among the traditional lost secrets of Atlantis, pertaining not\nso much to the well known Sun Temple priesthood of the Sacred Mountain, as to the older centre\nbased upon the island of Ruta.\nIn his role Me"
+        },
+        {
+          "chunk_id": 243,
+          "section": "Table of Contents",
+          "line_start": 111070,
+          "line_end": 111546,
+          "score": 8.5967,
+          "matched_terms": [
+            "md",
+            "unknown",
+            "fields"
+          ],
+          "snippet": "transfiguration through the Earth in the many stages of receipt. I later read in the New Age Bible\nInterpretation, Vol. V, of a similar world to \"Talithwa\" - \"Talitha,\" Aramaic for \"Little Lamb\" -\nused by the Christ in his incarnation as Jesus.\n***\n********\nI was informed by my sources that the pupi"
+        },
+        {
+          "chunk_id": 145,
+          "section": "Top Keywords",
+          "line_start": 65754,
+          "line_end": 65969,
+          "score": 7.3369,
+          "matched_terms": [
+            "md",
+            "fields"
+          ],
+          "snippet": "dynamic. The arianrhod (-) is the feminine expression and is projected from the Celtic\nCeridwen, a lunar Goddess. The vibration of the Arianrhod is a 52/7 which equates to\nChange, Separation and Mediation. The Arianrhod defines harmonics to celestial origin,\nsynthesized, sacrifices and rebuilds. The"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-007",
+    "template": "psi_sensitivity",
+    "question": "How does psi_diffusion affect entropy distribution and basin selection?",
+    "knob": "psi_diffusion",
+    "knob_values": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 3,
+    "falsifiers": [
+      "Entropy is invariant to psi_diffusion changes",
+      "RhoMaxId distribution is identical across all values"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "weak_evidence",
+      "priority": 3,
+      "claim_id": null,
+      "description": "PP-2026-02-12-cortex-CX-20260212-070748-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']",
+      "suggested_action": "Re-run PP-2026-02-12-cortex-CX-20260212-070748-h-003-None.md's protocol with full invariant recording",
+      "metadata": {
+        "packet": "PP-2026-02-12-cortex-CX-20260212-070748-h-003-None.md",
+        "unknowns": [
+          "Replicating unknown"
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)",
+      "kb_passages": [
+        {
+          "chunk_id": 114,
+          "section": "Top Keywords",
+          "line_start": 52598,
+          "line_end": 52665,
+          "score": 9.0242,
+          "matched_terms": [
+            "md",
+            "unknown"
+          ],
+          "snippet": "From The Secret Tradition in Arthurian Legend by Gareth Knight:\nThe secrets of the sea power are among the traditional lost secrets of Atlantis, pertaining not\nso much to the well known Sun Temple priesthood of the Sacred Mountain, as to the older centre\nbased upon the island of Ruta.\nIn his role Me"
+        },
+        {
+          "chunk_id": 243,
+          "section": "Table of Contents",
+          "line_start": 111070,
+          "line_end": 111546,
+          "score": 8.5967,
+          "matched_terms": [
+            "md",
+            "unknown",
+            "fields"
+          ],
+          "snippet": "transfiguration through the Earth in the many stages of receipt. I later read in the New Age Bible\nInterpretation, Vol. V, of a similar world to \"Talithwa\" - \"Talitha,\" Aramaic for \"Little Lamb\" -\nused by the Christ in his incarnation as Jesus.\n***\n********\nI was informed by my sources that the pupi"
+        },
+        {
+          "chunk_id": 145,
+          "section": "Top Keywords",
+          "line_start": 65754,
+          "line_end": 65969,
+          "score": 7.3369,
+          "matched_terms": [
+            "md",
+            "fields"
+          ],
+          "snippet": "dynamic. The arianrhod (-) is the feminine expression and is projected from the Celtic\nCeridwen, a lunar Goddess. The vibration of the Arianrhod is a 52/7 which equates to\nChange, Separation and Mediation. The Arianrhod defines harmonics to celestial origin,\nsynthesized, sacrifices and rebuilds. The"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-008",
+    "template": "replication",
+    "question": "Can headless sol-core reproduce: ?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "Headless results qualitatively differ from dashboard results",
+      "Metrics trend in opposite direction from original claim"
+    ],
+    "notes": "Replicating PP-2026-02-12-cortex-CX-20260212-074704-h-003-None.md",
+    "source_gap": {
+      "gap_type": "weak_evidence",
+      "priority": 3,
+      "claim_id": null,
+      "description": "PP-2026-02-12-cortex-CX-20260212-074704-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']",
+      "suggested_action": "Re-run PP-2026-02-12-cortex-CX-20260212-074704-h-003-None.md's protocol with full invariant recording",
+      "metadata": {
+        "packet": "PP-2026-02-12-cortex-CX-20260212-074704-h-003-None.md",
+        "unknowns": [
+          "Replicating unknown"
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)",
+      "kb_passages": [
+        {
+          "chunk_id": 114,
+          "section": "Top Keywords",
+          "line_start": 52598,
+          "line_end": 52665,
+          "score": 9.0242,
+          "matched_terms": [
+            "md",
+            "unknown"
+          ],
+          "snippet": "From The Secret Tradition in Arthurian Legend by Gareth Knight:\nThe secrets of the sea power are among the traditional lost secrets of Atlantis, pertaining not\nso much to the well known Sun Temple priesthood of the Sacred Mountain, as to the older centre\nbased upon the island of Ruta.\nIn his role Me"
+        },
+        {
+          "chunk_id": 243,
+          "section": "Table of Contents",
+          "line_start": 111070,
+          "line_end": 111546,
+          "score": 8.5967,
+          "matched_terms": [
+            "md",
+            "unknown",
+            "fields"
+          ],
+          "snippet": "transfiguration through the Earth in the many stages of receipt. I later read in the New Age Bible\nInterpretation, Vol. V, of a similar world to \"Talithwa\" - \"Talitha,\" Aramaic for \"Little Lamb\" -\nused by the Christ in his incarnation as Jesus.\n***\n********\nI was informed by my sources that the pupi"
+        },
+        {
+          "chunk_id": 145,
+          "section": "Top Keywords",
+          "line_start": 65754,
+          "line_end": 65969,
+          "score": 7.3369,
+          "matched_terms": [
+            "md",
+            "fields"
+          ],
+          "snippet": "dynamic. The arianrhod (-) is the feminine expression and is projected from the Celtic\nCeridwen, a lunar Goddess. The vibration of the Arianrhod is a 52/7 which equates to\nChange, Separation and Mediation. The Arianrhod defines harmonics to celestial origin,\nsynthesized, sacrifices and rebuilds. The"
+        }
+      ]
+    }
+  },
+  {
+    "id": "H-009",
+    "template": "replication",
+    "question": "Can headless sol-core reproduce: ?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "Headless results qualitatively differ from dashboard results",
+      "Metrics trend in opposite direction from original claim"
+    ],
+    "notes": "Replicating PP-2026-02-12-cortex-CX-20260212-082639-h-003-None.md",
+    "source_gap": {
+      "gap_type": "weak_evidence",
+      "priority": 3,
+      "claim_id": null,
+      "description": "PP-2026-02-12-cortex-CX-20260212-082639-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']",
+      "suggested_action": "Re-run PP-2026-02-12-cortex-CX-20260212-082639-h-003-None.md's protocol with full invariant recording",
+      "metadata": {
+        "packet": "PP-2026-02-12-cortex-CX-20260212-082639-h-003-None.md",
+        "unknowns": [
+          "Replicating unknown"
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)",
+      "kb_passages": [
+        {
+          "chunk_id": 114,
+          "section": "Top Keywords",
+          "line_start": 52598,
+          "line_end": 52665,
+          "score": 9.0242,
+          "matched_terms": [
+            "md",
+            "unknown"
+          ],
+          "snippet": "From The Secret Tradition in Arthurian Legend by Gareth Knight:\nThe secrets of the sea power are among the traditional lost secrets of Atlantis, pertaining not\nso much to the well known Sun Temple priesthood of the Sacred Mountain, as to the older centre\nbased upon the island of Ruta.\nIn his role Me"
+        },
+        {
+          "chunk_id": 243,
+          "section": "Table of Contents",
+          "line_start": 111070,
+          "line_end": 111546,
+          "score": 8.5967,
+          "matched_terms": [
+            "md",
+            "unknown",
+            "fields"
+          ],
+          "snippet": "transfiguration through the Earth in the many stages of receipt. I later read in the New Age Bible\nInterpretation, Vol. V, of a similar world to \"Talithwa\" - \"Talitha,\" Aramaic for \"Little Lamb\" -\nused by the Christ in his incarnation as Jesus.\n***\n********\nI was informed by my sources that the pupi"
+        },
+        {
+          "chunk_id": 145,
+          "section": "Top Keywords",
+          "line_start": 65754,
+          "line_end": 65969,
+          "score": 7.3369,
+          "matched_terms": [
+            "md",
+            "fields"
+          ],
+          "snippet": "dynamic. The arianrhod (-) is the feminine expression and is projected from the Celtic\nCeridwen, a lunar Goddess. The vibration of the Arianrhod is a 52/7 which equates to\nChange, Separation and Mediation. The Arianrhod defines harmonics to celestial origin,\nsynthesized, sacrifices and rebuilds. The"
+        }
+      ]
+    }
+  },
+  {
+    "id": "H-010",
+    "template": "replication",
+    "question": "Can headless sol-core reproduce: ?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "Headless results qualitatively differ from dashboard results",
+      "Metrics trend in opposite direction from original claim"
+    ],
+    "notes": "Replicating PP-2026-02-12-cortex-CX-20260212-084916-h-003-None.md",
+    "source_gap": {
+      "gap_type": "weak_evidence",
+      "priority": 3,
+      "claim_id": null,
+      "description": "PP-2026-02-12-cortex-CX-20260212-084916-h-003-None.md: has UNKNOWN fields \u2014 ['Replicating unknown']",
+      "suggested_action": "Re-run PP-2026-02-12-cortex-CX-20260212-084916-h-003-None.md's protocol with full invariant recording",
+      "metadata": {
+        "packet": "PP-2026-02-12-cortex-CX-20260212-084916-h-003-None.md",
+        "unknowns": [
+          "Replicating unknown"
+        ]
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 25 | Memory edges: 152 | Avg confidence: 0.373 | Tags: basin(25), entropy(25), rhoMax(25)",
+      "kb_passages": [
+        {
+          "chunk_id": 114,
+          "section": "Top Keywords",
+          "line_start": 52598,
+          "line_end": 52665,
+          "score": 9.0242,
+          "matched_terms": [
+            "md",
+            "unknown"
+          ],
+          "snippet": "From The Secret Tradition in Arthurian Legend by Gareth Knight:\nThe secrets of the sea power are among the traditional lost secrets of Atlantis, pertaining not\nso much to the well known Sun Temple priesthood of the Sacred Mountain, as to the older centre\nbased upon the island of Ruta.\nIn his role Me"
+        },
+        {
+          "chunk_id": 243,
+          "section": "Table of Contents",
+          "line_start": 111070,
+          "line_end": 111546,
+          "score": 8.5967,
+          "matched_terms": [
+            "md",
+            "unknown",
+            "fields"
+          ],
+          "snippet": "transfiguration through the Earth in the many stages of receipt. I later read in the New Age Bible\nInterpretation, Vol. V, of a similar world to \"Talithwa\" - \"Talitha,\" Aramaic for \"Little Lamb\" -\nused by the Christ in his incarnation as Jesus.\n***\n********\nI was informed by my sources that the pupi"
+        },
+        {
+          "chunk_id": 145,
+          "section": "Top Keywords",
+          "line_start": 65754,
+          "line_end": 65969,
+          "score": 7.3369,
+          "matched_terms": [
+            "md",
+            "fields"
+          ],
+          "snippet": "dynamic. The arianrhod (-) is the feminine expression and is projected from the Celtic\nCeridwen, a lunar Goddess. The vibration of the Arianrhod is a 52/7 which equates to\nChange, Separation and Mediation. The Arianrhod defines harmonics to celestial origin,\nsynthesized, sacrifices and rebuilds. The"
+        }
+      ]
+    }
+  }
+]
