@@ -63,6 +63,16 @@ Normalization examples:
 | coherence score | Thought Vibration |
 | semantic coupling | Semantic Entanglement |
 | possibility bandwidth | Manifold Potential |
+| routing cue, keyword cue, soft keyword | Soft Trigger |
+| runtime trigger, delegation trigger | Adaptive Trigger |
+| throughput stall, execution stall, no-protocols-run | Velocity Drop |
+| budget overrun, timeout overrun, elapsed over budget | Resource Overrun |
+| rerun this stage, retry this stage | Stage Retry |
+| trust score log, reliability ledger | Trust Ledger |
+| stage contract, delegation spec | Delegation Contract |
+| run/protocol intent | RUN Intent Tag |
+| analysis intent, metrics intent | ANALYSIS Intent Tag |
+| promotion intent, proof packet intent | PROMOTION Intent Tag |
 
 ## Core SOL concepts
 
@@ -86,6 +96,38 @@ System tendency to restructure local/global semantics over time based on usage, 
 
 ### Reflective Loop
 Generate → evaluate → adapt cycle used to improve outputs and update strategy/policies.
+
+## Routing and delegation terms
+
+### Soft Trigger
+Lightweight routing cue (usually a keyword/phrase in user text) used to select the best-fit agent/workflow path.
+
+### Adaptive Trigger
+Runtime trigger emitted from stage execution outcomes (for example sanity failures, stalls, or overruns) to drive retry/adaptation decisions.
+
+### Delegation Contract
+Contract-first stage specification including objective, falsifier, verifier, criticality, reversibility, budget, and authority scope.
+
+### Trust Ledger
+Stage reliability store tracking pass/fail history, trigger pressure, and trust score used for adaptive thresholding.
+
+### Stage Retry
+A bounded re-execution strategy applied when adaptive triggers indicate recoverable failure conditions.
+
+### Velocity Drop
+Trigger indicating throughput collapse (commonly no protocols executed in non-dry cortex execution).
+
+### Resource Overrun
+Trigger indicating stage elapsed time exceeded declared budget limits.
+
+### RUN Intent Tag
+Optional routing tag indicating protocol execution intent (run/sweep/counterbalance/run-bundle production).
+
+### ANALYSIS Intent Tag
+Optional routing tag indicating analysis intent (metrics/sanity/statistics/drift interpretation).
+
+### PROMOTION Intent Tag
+Optional routing tag indicating knowledge promotion intent (proof packet/claim ledger/canonical consolidation).
 
 ## Operator and workflow terms
 

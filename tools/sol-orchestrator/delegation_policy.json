@@ -1,0 +1,366 @@
+{
+  "version": "1.0",
+  "enabled": true,
+  "self_reconfigure": {
+    "enabled": true,
+    "proposal_only": true,
+    "max_proposals_per_run": 2,
+    "target_stages": ["cortex", "consolidate", "hippocampus", "evolve"],
+    "min_stage_observations": 6,
+    "min_confidence": 0.6,
+    "acceptance": {
+      "enabled": true,
+      "require_explicit_approval": true,
+      "approved_proposal_ids": [],
+      "max_acceptances_per_run": 1,
+      "use_approval_ledger_ids": true,
+      "merge_policy_and_ledger_ids": true,
+      "autonomous_approval": {
+        "enabled": true,
+        "lookback_runs": 40,
+        "min_repeated_proposals": 3,
+        "max_new_approvals_per_run": 1,
+        "min_trust_score": 0.9,
+        "min_trust_confidence_ema": 0.85,
+        "allow_modes": ["relax"],
+        "pruning": {
+          "enabled": true,
+          "max_approved_ids": 50,
+          "expire_unused_after_runs": 60,
+          "expire_after_acceptance_runs": 30
+        },
+        "feedback": {
+          "enabled": true,
+          "min_runs_after_acceptance": 5,
+          "max_trust_degradation": 0.15,
+          "max_revocations_per_run": 1,
+          "cooldown_runs_after_revocation": 20,
+          "escalation": {
+            "enabled": true,
+            "max_revocation_cycles": 2
+          }
+        },
+        "utility_learning": {
+          "enabled": true,
+          "min_runs_after_acceptance": 5,
+          "min_observations_for_gating": 2,
+          "min_expected_utility": -0.02,
+          "lookback_acceptance_events": 20,
+          "exploration": {
+            "enabled": true,
+            "max_explorations_per_run": 1,
+            "max_expected_utility_confidence": 0.5,
+            "min_trust_score": 0.9,
+            "min_trust_confidence_ema": 0.85,
+            "allow_modes": ["relax"]
+          }
+        }
+      }
+    },
+    "tighten_when": {
+      "max_trust_score": 0.45,
+      "min_trigger_rate": 0.25,
+      "recommended_change": "tighten_retry_limits"
+    },
+    "relax_when": {
+      "min_trust_score": 0.9,
+      "max_trigger_rate": 0.05,
+      "recommended_change": "relax_retry_limits"
+    },
+    "trend_gating": {
+      "enabled": true,
+      "min_trend_observations": 5,
+      "min_trend_consistency": 0.6
+    }
+  },
+  "trust_dynamics": {
+    "default": {
+      "alpha": 0.25,
+      "success_gain": 1.0,
+      "failure_penalty": 1.0,
+      "min_score": 0.0,
+      "max_score": 1.0,
+      "history_window": 20,
+      "dynamic_weight": 0.65,
+      "lifetime_weight": 0.35,
+      "confidence_k": 5.0,
+      "confidence_ema_alpha": 0.3,
+      "neutral_score": 0.5,
+      "trigger_type_weights": {
+        "sanity_fail": 1.0,
+        "anomaly": 0.8,
+        "velocity_drop": 0.6,
+        "resource_overrun": 0.4
+      }
+    },
+    "stages": {
+      "cortex": {
+        "alpha": 0.35,
+        "failure_penalty": 1.2,
+        "success_gain": 1.0,
+        "history_window": 20
+      },
+      "consolidate": {
+        "alpha": 0.25,
+        "failure_penalty": 1.05,
+        "success_gain": 1.0,
+        "history_window": 12
+      },
+      "hippocampus": {
+        "alpha": 0.2,
+        "failure_penalty": 1.0,
+        "success_gain": 1.05,
+        "history_window": 30
+      },
+      "evolve": {
+        "alpha": 0.3,
+        "failure_penalty": 1.15,
+        "success_gain": 1.0,
+        "history_window": 15
+      }
+    }
+  },
+  "stages": {
+    "cortex": {
+      "enabled": true,
+      "max_retries_per_stage": 1,
+      "trigger_priority": ["sanity_fail", "velocity_drop"],
+      "adoption_rule": "higher_protocols_run",
+      "trust_control": {
+        "enabled": true,
+        "min_observations_for_override": 3,
+        "low_trust_threshold": 0.35,
+        "high_trust_threshold": 0.9,
+        "confidence_scaling": {
+          "enabled": true,
+          "neutral_trust": 0.5,
+          "confidence_source": "raw",
+          "min_confidence_for_override": 0.3,
+          "min_confidence_for_low_override": 0.3,
+          "min_confidence_for_high_override": 0.3,
+          "guard_low_on_confidence_recovery": false,
+          "min_confidence_recovery_for_low_override": 0.2,
+          "guard_high_on_confidence_drop": false,
+          "max_confidence_drop_for_high_override": 0.2,
+          "guard_overrides_on_confidence_volatility": false,
+          "max_confidence_volatility_for_overrides": 0.25,
+          "require_consensus_for_overrides": false,
+          "max_effective_trust_disagreement_for_overrides": 0.15,
+          "scale_threshold_adjustment": true,
+          "min_threshold_adjustment_scale": 0.25,
+          "scale_trigger_signal": false,
+          "min_trigger_signal_scale": 0.25,
+          "scale_min_observations": false,
+          "max_min_observations": 10
+        },
+        "adaptive_thresholds": {
+          "enabled": true,
+          "signal_mode": "max",
+          "min_signal_observations": 5,
+          "ramp_observations": 5,
+          "deadband": 0.02,
+          "high_deadband": 0.02,
+          "low_deadband": 0.02,
+          "high_trigger_rate": 0.3,
+          "low_trigger_rate": 0.05,
+          "trigger_rate_step": 0.1,
+          "threshold_step": 0.05,
+          "max_adjustment": 0.2
+        },
+        "low_trust": {
+          "max_retries_per_stage": 0,
+          "adoption_rule": "success_replaces_failure"
+        },
+        "high_trust": {
+          "max_retries_per_stage": 1,
+          "adoption_rule": "always_on_success"
+        }
+      },
+      "plans": {
+        "sanity_fail": {
+          "enabled": true,
+          "retry_gap_type": "replication",
+          "retry_max_protocols": 1,
+          "retry_max_steps_cap": 800
+        },
+        "velocity_drop": {
+          "enabled": true,
+          "retry_gap_type": null,
+          "retry_max_protocols_min": 2,
+          "retry_max_steps_cap": null
+        }
+      }
+    },
+    "consolidate": {
+      "enabled": true,
+      "max_retries_per_stage": 1,
+      "trigger_priority": ["anomaly"],
+      "adoption_rule": "success_replaces_failure",
+      "trust_control": {
+        "enabled": true,
+        "min_observations_for_override": 3,
+        "low_trust_threshold": 0.35,
+        "high_trust_threshold": 0.9,
+        "confidence_scaling": {
+          "enabled": true,
+          "neutral_trust": 0.5,
+          "confidence_source": "raw",
+          "min_confidence_for_override": 0.3,
+          "min_confidence_for_low_override": 0.3,
+          "min_confidence_for_high_override": 0.3,
+          "guard_low_on_confidence_recovery": false,
+          "min_confidence_recovery_for_low_override": 0.2,
+          "guard_high_on_confidence_drop": false,
+          "max_confidence_drop_for_high_override": 0.2,
+          "guard_overrides_on_confidence_volatility": false,
+          "max_confidence_volatility_for_overrides": 0.25,
+          "require_consensus_for_overrides": false,
+          "max_effective_trust_disagreement_for_overrides": 0.15,
+          "scale_threshold_adjustment": true,
+          "min_threshold_adjustment_scale": 0.25,
+          "scale_trigger_signal": false,
+          "min_trigger_signal_scale": 0.25,
+          "scale_min_observations": false,
+          "max_min_observations": 10
+        },
+        "adaptive_thresholds": {
+          "enabled": true,
+          "signal_mode": "max",
+          "min_signal_observations": 5,
+          "ramp_observations": 5,
+          "deadband": 0.02,
+          "high_deadband": 0.02,
+          "low_deadband": 0.02,
+          "high_trigger_rate": 0.35,
+          "low_trigger_rate": 0.05,
+          "trigger_rate_step": 0.1,
+          "threshold_step": 0.03,
+          "max_adjustment": 0.15
+        },
+        "low_trust": {
+          "max_retries_per_stage": 0
+        }
+      },
+      "plans": {
+        "anomaly": {
+          "enabled": true,
+          "strategy": "retry_same_stage"
+        }
+      }
+    },
+    "hippocampus": {
+      "enabled": true,
+      "max_retries_per_stage": 1,
+      "trigger_priority": ["anomaly"],
+      "adoption_rule": "success_replaces_failure",
+      "trust_control": {
+        "enabled": true,
+        "min_observations_for_override": 3,
+        "low_trust_threshold": 0.35,
+        "high_trust_threshold": 0.9,
+        "confidence_scaling": {
+          "enabled": true,
+          "neutral_trust": 0.5,
+          "confidence_source": "raw",
+          "min_confidence_for_override": 0.3,
+          "min_confidence_for_low_override": 0.3,
+          "min_confidence_for_high_override": 0.3,
+          "guard_low_on_confidence_recovery": false,
+          "min_confidence_recovery_for_low_override": 0.2,
+          "guard_high_on_confidence_drop": false,
+          "max_confidence_drop_for_high_override": 0.2,
+          "guard_overrides_on_confidence_volatility": false,
+          "max_confidence_volatility_for_overrides": 0.25,
+          "require_consensus_for_overrides": false,
+          "max_effective_trust_disagreement_for_overrides": 0.15,
+          "scale_threshold_adjustment": true,
+          "min_threshold_adjustment_scale": 0.25,
+          "scale_trigger_signal": false,
+          "min_trigger_signal_scale": 0.25,
+          "scale_min_observations": false,
+          "max_min_observations": 10
+        },
+        "adaptive_thresholds": {
+          "enabled": true,
+          "signal_mode": "max",
+          "min_signal_observations": 5,
+          "ramp_observations": 5,
+          "deadband": 0.02,
+          "high_deadband": 0.02,
+          "low_deadband": 0.02,
+          "high_trigger_rate": 0.35,
+          "low_trigger_rate": 0.05,
+          "trigger_rate_step": 0.1,
+          "threshold_step": 0.03,
+          "max_adjustment": 0.15
+        },
+        "low_trust": {
+          "max_retries_per_stage": 0
+        }
+      },
+      "plans": {
+        "anomaly": {
+          "enabled": true,
+          "strategy": "retry_same_stage"
+        }
+      }
+    },
+    "evolve": {
+      "enabled": true,
+      "max_retries_per_stage": 1,
+      "trigger_priority": ["anomaly"],
+      "adoption_rule": "success_replaces_failure",
+      "trust_control": {
+        "enabled": true,
+        "min_observations_for_override": 3,
+        "low_trust_threshold": 0.35,
+        "high_trust_threshold": 0.9,
+        "confidence_scaling": {
+          "enabled": true,
+          "neutral_trust": 0.5,
+          "confidence_source": "raw",
+          "min_confidence_for_override": 0.3,
+          "min_confidence_for_low_override": 0.3,
+          "min_confidence_for_high_override": 0.3,
+          "guard_low_on_confidence_recovery": false,
+          "min_confidence_recovery_for_low_override": 0.2,
+          "guard_high_on_confidence_drop": false,
+          "max_confidence_drop_for_high_override": 0.2,
+          "guard_overrides_on_confidence_volatility": false,
+          "max_confidence_volatility_for_overrides": 0.25,
+          "require_consensus_for_overrides": false,
+          "max_effective_trust_disagreement_for_overrides": 0.15,
+          "scale_threshold_adjustment": true,
+          "min_threshold_adjustment_scale": 0.25,
+          "scale_trigger_signal": false,
+          "min_trigger_signal_scale": 0.25,
+          "scale_min_observations": false,
+          "max_min_observations": 10
+        },
+        "adaptive_thresholds": {
+          "enabled": true,
+          "signal_mode": "max",
+          "min_signal_observations": 5,
+          "ramp_observations": 5,
+          "deadband": 0.02,
+          "high_deadband": 0.02,
+          "low_deadband": 0.02,
+          "high_trigger_rate": 0.35,
+          "low_trigger_rate": 0.05,
+          "trigger_rate_step": 0.1,
+          "threshold_step": 0.03,
+          "max_adjustment": 0.15
+        },
+        "low_trust": {
+          "max_retries_per_stage": 0
+        }
+      },
+      "plans": {
+        "anomaly": {
+          "enabled": true,
+          "strategy": "retry_same_stage"
+        }
+      }
+    }
+  }
+}
