@@ -66,3 +66,6 @@
 {"timestamp": "2026-02-15T23:49:55.783421+00:00", "model": "Meta-Llama-3.1-405B-Instruct", "role": "primary", "task": "reflection", "input_tokens": 1104, "output_tokens": 55, "cost_usd": 0.0, "latency_sec": 2.45, "success": true}
 {"timestamp": "2026-02-16T00:01:36.456751+00:00", "model": "Meta-Llama-3.1-405B-Instruct", "role": "primary", "task": "reflection", "input_tokens": 1104, "output_tokens": 51, "cost_usd": 0.0, "latency_sec": 2.45, "success": true}
 {"timestamp": "2026-02-16T00:13:31.383463+00:00", "model": "Meta-Llama-3.1-405B-Instruct", "role": "primary", "task": "reflection", "input_tokens": 1106, "output_tokens": 47, "cost_usd": 0.0, "latency_sec": 2.12, "success": true}
+{"timestamp": "2026-02-23T03:57:15.793076+00:00", "model": "Mistral-large-2411", "role": "fallback", "task": "reflection", "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "latency_sec": 0.04, "success": false}
+{"timestamp": "2026-02-23T04:27:46.799023+00:00", "model": "Mistral-large-2411", "role": "fallback", "task": "reflection", "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "latency_sec": 0.24, "success": false}
+{"timestamp": "2026-02-23T04:58:17.900464+00:00", "model": "Mistral-large-2411", "role": "fallback", "task": "reflection", "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "latency_sec": 0.03, "success": false}
