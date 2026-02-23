@@ -605,3 +605,20 @@ Additional proof packets were promoted by tying claim-ledger items to on-disk CS
   - Question: Can headless sol-core reproduce: ?
   - Claim: exploratory | Sanity: PASS
   - Gap: PP-2026-02-12-cortex-CX-20260212-084916-h-003-None.md: has UNKNOWN fields — ['Replicating unknown']
+
+## Cortex Session: CX-20260223-063438 (consolidated 2026-02-23)
+
+- [PP-2026-02-23-cortex-CX-20260223-063438-h-001-damping.md](solKnowledge/proof_packets/PP-2026-02-23-cortex-CX-20260223-063438-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does basin migration (RhoMaxNode 132→43) at damping=0.5 signal the beginning of a topological reorganization?
+
+- [PP-2026-02-23-cortex-CX-20260223-063438-h-002-damping.md](solKnowledge/proof_packets/PP-2026-02-23-cortex-CX-20260223-063438-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: What happens in the unexplored gap between damping=0.5 and the known critical threshold?
+
+- [PP-2026-02-23-cortex-CX-20260223-063438-h-003-None.md](solKnowledge/proof_packets/PP-2026-02-23-cortex-CX-20260223-063438-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?
