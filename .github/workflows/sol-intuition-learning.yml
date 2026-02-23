@@ -1,0 +1,113 @@
+name: "SOL Intuition Learning Sequence"
+
+on:
+  workflow_dispatch:
+    inputs:
+      cycles:
+        description: "Number of RSI cycles to run"
+        required: true
+        default: "5"
+        type: string
+      budget_hours:
+        description: "Maximum runtime in hours"
+        required: true
+        default: "3.0"
+        type: string
+      budget_dollars:
+        description: "Maximum LLM spend in USD"
+        required: true
+        default: "1.0"
+        type: string
+      run_source:
+        description: "Origin label for this run"
+        required: true
+        default: "desktop"
+        type: choice
+        options:
+          - phone
+          - desktop
+          - server
+
+concurrency:
+  group: sol-intuition-learning-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  intuition-learning:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360 # 6 hours max for the runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy openai
+
+      - name: Run Intuition Learning Sequence (RSI Persistent Mode)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MODAL_API_KEY: ${{ secrets.MODAL_API_KEY }}
+        run: |
+          python tools/sol-rsi/rsi_engine.py \
+            --mode persistent \
+            --cycles ${{ github.event.inputs.cycles }} \
+            --budget-hours ${{ github.event.inputs.budget_hours }} \
+            --budget-dollars ${{ github.event.inputs.budget_dollars }}
+
+      - name: Commit synced run outputs
+        run: |
+          git config user.name "sol-intuition[bot]"
+          git config user.email "sol-intuition@techmanstudios.com"
+          
+          # Add all relevant data directories that the intuition sequence touches
+          git add data/rsi/ || true
+          git add data/cortex_sessions/ || true
+          git add data/memory_traces/ || true
+          git add data/dream_sessions/ || true
+          git add data/meta_learning_log.jsonl || true
+          git add solKnowledge/ || true
+          
+          if git diff --cached --quiet; then
+            echo "No run outputs to commit"
+            exit 0
+          fi
+          
+          git commit -m "intuition-learning: cycles=${{ github.event.inputs.cycles }} run=${{ github.run_id }}"
+          
+          for attempt in 1 2 3; do
+            if git push; then break; fi
+            echo "Push attempt $attempt failed, rebasing..."
+            git pull --rebase
+          done
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: intuition-learning-${{ github.event.inputs.run_source }}-${{ github.run_id }}
+          path: |
+            data/rsi/
+            data/cortex_sessions/
+            data/memory_traces/
+            data/dream_sessions/
+            data/meta_learning_log.jsonl
+            solKnowledge/
+          retention-days: 30
+
+      - name: Job summary
+        run: |
+          echo "## SOL Intuition Learning Sequence Complete" >> $GITHUB_STEP_SUMMARY
+          echo "- Cycles Requested: \`${{ github.event.inputs.cycles }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Budget Hours: \`${{ github.event.inputs.budget_hours }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Budget Dollars: \`${{ github.event.inputs.budget_dollars }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Artifact: \`intuition-learning-${{ github.event.inputs.run_source }}-${{ github.run_id }}\`" >> $GITHUB_STEP_SUMMARY

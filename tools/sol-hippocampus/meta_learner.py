@@ -27,6 +27,10 @@ from typing import Any
 
 _THIS_DIR = Path(__file__).resolve().parent
 _SOL_ROOT = _THIS_DIR.parent.parent
+sys.path.insert(0, str(_SOL_ROOT / "tools" / "sol-core"))
+from sol_engine import SOLEngine
+from sol_intuition import get_intuition
+
 _META_LOG = _SOL_ROOT / "data" / "meta_learning_log.jsonl"
 _CONFIG_PATH = _THIS_DIR / "config.json"
 
@@ -219,7 +223,7 @@ class MetaLearner:
         Suggest the best template for a gap based on historical insight scores.
 
         Uses weighted random selection biased toward higher-scoring templates.
-        Falls back to None if insufficient data (< cold_start_threshold
+        Falls back to intuition if insufficient data (< cold_start_threshold
         observations for the gap type).
 
         Args:
@@ -233,6 +237,18 @@ class MetaLearner:
         # Check if we have enough data
         relevant = [e for e in self._log if e.get("gap_type") == gap_type]
         if len(relevant) < self._cold_start:
+            # Use intuition for cold start
+            try:
+                engine = SOLEngine.from_default_graph()
+                context_nodes = [gap_type]
+                if gap.get("claim_id"):
+                    context_nodes.append(gap["claim_id"])
+                intuition = get_intuition(engine, context_nodes, signal_strength=50.0)
+                if intuition["confidence"] > 0.5 and intuition["hunch"]:
+                    # Return the label of the top hunch node as a suggested template
+                    return intuition["hunch"][0]["label"]
+            except Exception:
+                pass
             return None
 
         # Get template scores

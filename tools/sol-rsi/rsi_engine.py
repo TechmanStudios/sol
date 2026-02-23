@@ -960,7 +960,14 @@ def _load_fitness_history() -> list[dict]:
 # ===================================================================
 
 import random
+import sys
+from pathlib import Path
 
+_HERE = Path(__file__).parent
+_SOL_ROOT = _HERE.parent.parent
+sys.path.insert(0, str(_SOL_ROOT / "tools" / "sol-core"))
+from sol_engine import SOLEngine
+from sol_intuition import get_intuition
 
 def mutate_genome(genome: dict, reflection: ReflectionReport) -> dict:
     """
@@ -1025,6 +1032,24 @@ def mutate_genome(genome: dict, reflection: ReflectionReport) -> dict:
                     mutations.append(
                         f"template_pref[{cat}]: {old_val:.2f} -> {prefs[cat]:.2f}"
                     )
+
+    # --- (A.5) INTUITION-DRIVEN template preference update ---
+    # If we are plateauing, use the SOL Engine to find a 'hunch' for the next template
+    if reflection.is_plateauing:
+        try:
+            engine = SOLEngine.from_default_graph()
+            context_nodes = ["plateau", "exploration"] + list(prefs.keys())
+            intuition = get_intuition(engine, context_nodes, signal_strength=100.0)
+            if intuition["confidence"] > 0.5 and intuition["hunch"]:
+                hunch_label = intuition["hunch"][0]["label"]
+                # If the hunch matches a template, boost it significantly
+                for cat in prefs:
+                    if hunch_label in cat or cat in hunch_label:
+                        old_val = prefs[cat]
+                        prefs[cat] = min(2.0, old_val + 0.5)
+                        mutations.append(f"INTUITION template_pref[{cat}]: {old_val:.2f} -> {prefs[cat]:.2f} (confidence={intuition['confidence']:.2f})")
+        except Exception as e:
+            pass # Fallback to normal mutation if intuition fails
 
     # --- (B) Shift parameter focus based on coverage ---
     focus = genome.get("parameter_focus", {})

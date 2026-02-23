@@ -46,6 +46,8 @@ from protocol_gen import (
     ProtocolValidationError,
     GUARD_RAILS,
 )
+from sol_engine import SOLEngine
+from sol_intuition import get_intuition
 
 # ---------------------------------------------------------------------------
 # Optional hippocampus integration (additive — cortex runs fine without it)
@@ -124,16 +126,45 @@ def should_continue(session_steps: int, protocols_run: int, config: SessionConfi
 
 
 def select_gap(ranked_gaps: list[Gap], completed_gap_ids: set[str],
-               gap_type_filter: str | None = None) -> Gap | None:
-    """Pick the next gap to pursue, skipping already-addressed ones."""
+               gap_type_filter: str | None = None, engine: SOLEngine | None = None) -> Gap | None:
+    """Pick the next gap to pursue, skipping already-addressed ones.
+    If an engine is provided, uses the intuition subroutine to pick the most resonant gap.
+    """
+    valid_gaps = []
     for gap in ranked_gaps:
         gap_id = f"{gap.gap_type}:{gap.claim_id or gap.description[:40]}"
         if gap_id in completed_gap_ids:
             continue
         if gap_type_filter and gap.gap_type != gap_type_filter:
             continue
-        return gap
-    return None
+        valid_gaps.append(gap)
+        
+    if not valid_gaps:
+        return None
+        
+    if len(valid_gaps) == 1 or engine is None:
+        return valid_gaps[0]
+        
+    # Use intuition to pick the best gap
+    # We'll inject the gap types and claim IDs as context nodes
+    best_gap = valid_gaps[0]
+    highest_confidence = -1.0
+    
+    # To avoid running intuition on too many gaps, limit to top 5
+    for gap in valid_gaps[:5]:
+        context_nodes = [gap.gap_type]
+        if gap.claim_id:
+            context_nodes.append(gap.claim_id)
+        # Add some keywords from description
+        words = [w.strip(".,!?") for w in gap.description.split() if len(w) > 4]
+        context_nodes.extend(words[:3])
+        
+        intuition = get_intuition(engine, context_nodes, signal_strength=50.0)
+        if intuition["confidence"] > highest_confidence:
+            highest_confidence = intuition["confidence"]
+            best_gap = gap
+            
+    return best_gap
 
 
 def interpret_results(results: dict) -> dict:
@@ -251,8 +282,9 @@ class CortexSession:
                 break
 
             # Select next gap
+            engine = SOLEngine.from_default_graph()
             gap = select_gap(self._gaps, self.completed_gaps,
-                             self.config.gap_type_filter)
+                             self.config.gap_type_filter, engine=engine)
             if gap is None:
                 self._log("no_gaps_remaining")
                 break
