@@ -1,0 +1,31 @@
+{
+  "proposal_id": "EVO-20260225-141432",
+  "candidate": "tune_jeans_critical",
+  "verdict": "PASS",
+  "approved": true,
+  "requires_review": false,
+  "rejected": false,
+  "change": {
+    "type": "param_tune",
+    "target": "jeans_cfg",
+    "parameters": {
+      "jeans_cfg.Jcrit": 12.0
+    }
+  },
+  "evidence": {
+    "protocols_tested": [
+      "single_inject_baseline",
+      "damping_sweep_smoke",
+      "dual_inject_timing"
+    ],
+    "per_condition_verdicts": [
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS"
+    ]
+  },
+  "action": "Safe to merge \u2014 no behavioral change detected"
+}
