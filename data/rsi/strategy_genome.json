@@ -1,7 +1,7 @@
 {
   "version": 1,
   "created": "2026-02-09T05:17:20.475980+00:00",
-  "last_cycle": 290,
+  "last_cycle": 291,
   "fitness_weights": {
     "claim_density": 0.1427741201142807,
     "question_ratio": 0.49999999999979616,
@@ -10,14 +10,14 @@
   },
   "template_preferences": {
     "parameter_sweep": 0.1469432631903649,
-    "replication": 0.29183342939416224,
+    "replication": 0.2821302062284379,
     "topology_surgery": 1.9648319803454188,
     "injection_protocol": 0.8626431072290314,
     "logic_gate": 0.40083318038637084,
-    "clock_signal": 0.4695710053853623,
-    "cascade_pipeline": 1.7982396581877638,
+    "clock_signal": 0.4697131505909761,
+    "cascade_pipeline": 1.8095978732493863,
     "isa_program": 0.4537231315926119,
-    "analog_fidelity": 0.6832635031966461
+    "analog_fidelity": 0.6859523149232826
   },
   "parameter_focus": {
     "damping_range": [
@@ -105,19 +105,6 @@
   "mutation_rate": 0.5,
   "exploration_rate": 0.8,
   "history": [
-    {
-      "cycle": 241,
-      "timestamp": "2026-02-17T01:41:36.422611+00:00",
-      "mutations": [
-        "REWARD template_pref[replication]: 0.53 -> 0.50 (avg_reward=+0.00)",
-        "REWARD template_pref[topology_surgery]: 1.95 -> 1.93 (avg_reward=+0.00)",
-        "REWARD template_pref[injection_protocol]: 1.02 -> 0.99 (avg_reward=+0.00)",
-        "REWARD template_pref[logic_gate]: 0.42 -> 0.45 (avg_reward=+0.00)",
-        "REWARD template_pref[cascade_pipeline]: 1.87 -> 1.86 (avg_reward=+0.00)",
-        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
-      ],
-      "fitness_delta": -1.782929976457126e-05
-    },
     {
       "cycle": 242,
       "timestamp": "2026-02-17T01:41:36.455089+00:00",
@@ -718,6 +705,15 @@
         "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
       ],
       "fitness_delta": -1.7024603948812e-11
+    },
+    {
+      "cycle": 291,
+      "timestamp": "2026-03-08T03:46:03.872747+00:00",
+      "mutations": [
+        "REWARD template_pref[cascade_pipeline]: 1.80 -> 1.81 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -8.469669410260394e-12
     }
   ],
   "synthesis_insights": {
