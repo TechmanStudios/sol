@@ -1,7 +1,7 @@
 {
   "version": 1,
   "created": "2026-02-09T05:17:20.475980+00:00",
-  "last_cycle": 291,
+  "last_cycle": 292,
   "fitness_weights": {
     "claim_density": 0.1427741201142807,
     "question_ratio": 0.49999999999979616,
@@ -9,15 +9,15 @@
     "productivity": 0.2144517597716426
   },
   "template_preferences": {
-    "parameter_sweep": 0.1469432631903649,
+    "parameter_sweep": 0.11237962348323607,
     "replication": 0.2821302062284379,
     "topology_surgery": 1.9648319803454188,
-    "injection_protocol": 0.8626431072290314,
+    "injection_protocol": 0.9091410684908378,
     "logic_gate": 0.40083318038637084,
     "clock_signal": 0.4697131505909761,
-    "cascade_pipeline": 1.8095978732493863,
+    "cascade_pipeline": 1.7740202473683062,
     "isa_program": 0.4537231315926119,
-    "analog_fidelity": 0.6859523149232826
+    "analog_fidelity": 0.6583141236211889
   },
   "parameter_focus": {
     "damping_range": [
@@ -105,17 +105,6 @@
   "mutation_rate": 0.5,
   "exploration_rate": 0.8,
   "history": [
-    {
-      "cycle": 242,
-      "timestamp": "2026-02-17T01:41:36.455089+00:00",
-      "mutations": [
-        "REWARD template_pref[injection_protocol]: 0.99 -> 1.01 (avg_reward=+0.00)",
-        "REWARD template_pref[isa_program]: 0.53 -> 0.49 (avg_reward=+0.00)",
-        "REWARD template_pref[analog_fidelity]: 0.48 -> 0.50 (avg_reward=+0.00)",
-        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
-      ],
-      "fitness_delta": 0.0
-    },
     {
       "cycle": 243,
       "timestamp": "2026-02-17T01:41:36.486856+00:00",
@@ -714,6 +703,18 @@
         "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
       ],
       "fitness_delta": -8.469669410260394e-12
+    },
+    {
+      "cycle": 292,
+      "timestamp": "2026-03-15T03:57:06.836570+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.15 -> 0.11 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.86 -> 0.91 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.81 -> 1.77 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.69 -> 0.66 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
     }
   ],
   "synthesis_insights": {
