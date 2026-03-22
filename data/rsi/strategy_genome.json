@@ -1,23 +1,23 @@
 {
   "version": 1,
   "created": "2026-02-09T05:17:20.475980+00:00",
-  "last_cycle": 292,
+  "last_cycle": 293,
   "fitness_weights": {
-    "claim_density": 0.1427741201142807,
-    "question_ratio": 0.49999999999979616,
-    "coverage_score": 0.1427741201142807,
-    "productivity": 0.2144517597716426
+    "claim_density": 0.14277412011425156,
+    "question_ratio": 0.49999999999989797,
+    "coverage_score": 0.14277412011425156,
+    "productivity": 0.21445175977159883
   },
   "template_preferences": {
-    "parameter_sweep": 0.11237962348323607,
-    "replication": 0.2821302062284379,
-    "topology_surgery": 1.9648319803454188,
-    "injection_protocol": 0.9091410684908378,
-    "logic_gate": 0.40083318038637084,
+    "parameter_sweep": 0.1541115908334732,
+    "replication": 0.2321412265443155,
+    "topology_surgery": 1.9454024271143222,
+    "injection_protocol": 0.8928580478039313,
+    "logic_gate": 0.4066619723429447,
     "clock_signal": 0.4697131505909761,
-    "cascade_pipeline": 1.7740202473683062,
+    "cascade_pipeline": 1.802805693314159,
     "isa_program": 0.4537231315926119,
-    "analog_fidelity": 0.6583141236211889
+    "analog_fidelity": 0.6569547383076704
   },
   "parameter_focus": {
     "damping_range": [
@@ -105,17 +105,6 @@
   "mutation_rate": 0.5,
   "exploration_rate": 0.8,
   "history": [
-    {
-      "cycle": 243,
-      "timestamp": "2026-02-17T01:41:36.486856+00:00",
-      "mutations": [
-        "REWARD template_pref[replication]: 0.50 -> 0.48 (avg_reward=+0.00)",
-        "REWARD template_pref[injection_protocol]: 1.01 -> 0.98 (avg_reward=+0.00)",
-        "REWARD template_pref[logic_gate]: 0.45 -> 0.43 (avg_reward=+0.00)",
-        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
-      ],
-      "fitness_delta": 0.0
-    },
     {
       "cycle": 244,
       "timestamp": "2026-02-17T01:41:36.523297+00:00",
@@ -713,6 +702,20 @@
         "REWARD template_pref[cascade_pipeline]: 1.81 -> 1.77 (avg_reward=+0.00)",
         "REWARD template_pref[analog_fidelity]: 0.69 -> 0.66 (avg_reward=+0.00)",
         "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 293,
+      "timestamp": "2026-03-22T03:48:49.626812+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.11 -> 0.15 (avg_reward=+0.00)",
+        "REWARD template_pref[replication]: 0.28 -> 0.23 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.96 -> 1.95 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.91 -> 0.89 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.77 -> 1.80 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
       ],
       "fitness_delta": 0.0
     }
