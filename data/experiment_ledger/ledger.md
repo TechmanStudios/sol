@@ -1,7 +1,38 @@
 # Experiment Ledger
 
-Generated: 2026-02-17T07:02:42.742811+00:00
-Records: 1419 | Runs: 19
+Generated: 2026-03-26T05:46:00.106911+00:00
+Records: 1498 | Runs: 79
+
+## cortex
+
+- Runs: 60 | Generations: 60 | Accepted: 43 | Acceptance: 71.67%
+
+### Modes
+
+| Mode | Runs | Gens | Accepted | Acceptance | Best dA | Best dF |
+|---|---:|---:|---:|---:|---:|---:|
+| dry_run | 17 | 17 | 0 | 0.00% | 0.0000 | 3.0000 |
+| mixed | 1 | 1 | 1 | 100.00% | 1.0000 | 8.0000 |
+| open_question | 26 | 26 | 26 | 100.00% | 1.0000 | 8.0000 |
+| unexplored_param | 2 | 2 | 2 | 100.00% | 1.0000 | 4.0000 |
+| unfalsified | 1 | 1 | 1 | 100.00% | 1.0000 | 1.0000 |
+| unpromoted | 12 | 12 | 12 | 100.00% | 1.0000 | 5.0000 |
+| weak_evidence | 1 | 1 | 1 | 100.00% | 1.0000 | 10.0000 |
+
+### Top Runs
+
+| Source | Mode | Run | Gens | Best dA | Latest dA | Latest dF |
+|---|---|---|---:|---:|---:|---:|
+| autonomous-session | mixed | CX-20260212-052151 | 1 | 1.0000 | 1.0000 | 8.0000 |
+| autonomous-session | open_question | CX-20260212-070748 | 1 | 1.0000 | 1.0000 | 8.0000 |
+| autonomous-session | open_question | CX-20260212-074704 | 1 | 1.0000 | 1.0000 | 8.0000 |
+| autonomous-session | open_question | CX-20260212-082639 | 1 | 1.0000 | 1.0000 | 8.0000 |
+| autonomous-session | open_question | CX-20260213-201042 | 1 | 1.0000 | 1.0000 | 5.0000 |
+| autonomous-session | open_question | CX-20260213-203542 | 1 | 1.0000 | 1.0000 | 5.0000 |
+| autonomous-session | open_question | CX-20260213-210052 | 1 | 1.0000 | 1.0000 | 8.0000 |
+| autonomous-session | open_question | CX-20260213-222458 | 1 | 1.0000 | 1.0000 | 8.0000 |
+| autonomous-session | open_question | CX-20260213-231014 | 1 | 1.0000 | 1.0000 | 8.0000 |
+| autonomous-session | open_question | CX-20260214-001519 | 1 | 1.0000 | 1.0000 | 5.0000 |
 
 ## resonance
 
@@ -28,23 +59,23 @@ Records: 1419 | Runs: 19
 
 ## rsi
 
-- Runs: 3 | Generations: 274 | Accepted: 168 | Acceptance: 61.31%
+- Runs: 3 | Generations: 293 | Accepted: 168 | Acceptance: 57.34%
 
 ### Modes
 
 | Mode | Runs | Gens | Accepted | Acceptance | Best dA | Best dF |
 |---|---:|---:|---:|---:|---:|---:|
-| cron | 1 | 110 | 8 | 7.27% | 10.4009 | 86.9318 |
+| cron | 1 | 115 | 8 | 6.96% | 10.4009 | 86.9318 |
 | interactive | 1 | 7 | 7 | 100.00% | 69.3986 | 76.0575 |
-| persistent | 1 | 157 | 153 | 97.45% | 0.4733 | 86.3504 |
+| persistent | 1 | 171 | 153 | 89.47% | 0.4733 | 86.3504 |
 
 ### Top Runs
 
 | Source | Mode | Run | Gens | Best dA | Latest dA | Latest dF |
 |---|---|---|---:|---:|---:|---:|
 | legacy-local | interactive | rsi_engine | 7 | 69.3986 | 0.0000 | 76.0575 |
-| legacy-local | cron | rsi_engine | 110 | 10.4009 | 0.0000 | 56.7400 |
-| legacy-local | persistent | rsi_engine | 157 | 0.4733 | 0.0000 | 69.1700 |
+| legacy-local | cron | rsi_engine | 115 | 10.4009 | 0.0000 | 56.7400 |
+| legacy-local | persistent | rsi_engine | 171 | 0.4733 | 0.0000 | 56.7400 |
 
 ## self_train
 
@@ -71,3 +102,53 @@ Records: 1419 | Runs: 19
 | github-actions | overnight | 22053054662 | 10 | 0.0042 | -0.0027 | -0.0035 |
 | github-actions | overnight | 22052842191 | 3 | 0.0023 | -0.0043 | -0.0073 |
 | github-actions | overnight | 22085408552 | 3 | -0.0025 | -0.0070 | -0.0089 |
+
+## Knowledge Domains
+
+| Signal | Records | Accepted | Experiments |
+|---|---:|---:|---|
+| sol_manifold | 1198 | 68 | cortex, self_train |
+| policy_adaptation | 1138 | 25 | self_train |
+| adaptive_rsi | 293 | 168 | rsi |
+| open_questions | 132 | 7 | rsi |
+| injection:grail | 59 | 43 | cortex |
+| damping | 57 | 41 | cortex |
+| dt | 19 | 19 | cortex |
+| injection | 13 | 13 | cortex |
+| manifold_potential | 7 | 4 | resonance |
+| phonon_memory | 7 | 4 | resonance |
+| semantic_entanglement | 7 | 4 | resonance |
+| thought_vibration | 7 | 4 | resonance |
+| basin:christic | 4 | 3 | resonance |
+| psi_diffusion | 3 | 3 | cortex |
+| topology | 3 | 3 | cortex |
+| basin:metatron | 2 | 1 | resonance |
+| c_press | 2 | 2 | cortex |
+| basin:grail | 1 | 0 | resonance |
+| conductance_gamma | 1 | 1 | cortex |
+
+## Potential Emergence
+
+| Signal | Records | Accepted | Experiments |
+|---|---:|---:|---|
+| threshold_transition | 57 | 41 | cortex |
+| stable_replay | 39 | 39 | cortex |
+| accepted_candidate | 25 | 25 | self_train |
+| basin_migration | 23 | 23 | cortex |
+| topological_reorganization | 23 | 23 | cortex |
+| fitness_gain | 5 | 5 | rsi |
+| high_resonance | 4 | 3 | resonance |
+| multi_basin | 4 | 3 | resonance |
+| phase2_gain | 2 | 2 | resonance |
+
+## Unknown Mechanics
+
+| Signal | Records | Accepted | Experiments |
+|---|---:|---:|---|
+| rejected_candidate | 1113 | 0 | self_train |
+| cycle_error | 125 | 0 | rsi |
+| mechanistic_gap | 35 | 35 | cortex |
+| unknown_mechanics | 34 | 34 | cortex |
+| open_question | 27 | 27 | cortex |
+| unmapped_regime | 23 | 23 | cortex |
+| phase2_regression | 3 | 0 | resonance |

@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import argparse
 import json
-from dataclasses import dataclass, asdict
+import re
+from dataclasses import dataclass, asdict, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -19,6 +20,9 @@ class ExperimentRecord:
     metrics: dict[str, float]
     reason: str
     summary_path: str
+    knowledge_domains: list[str] = field(default_factory=list)
+    emergence_signals: list[str] = field(default_factory=list)
+    unknown_mechanics: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -67,6 +71,49 @@ def _load_jsonl_rows(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def _load_json_file(path: Path) -> dict[str, Any]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if isinstance(payload, dict):
+        return payload
+    return {}
+
+
+def _load_optional_json_list(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, list):
+        return []
+    return [item for item in payload if isinstance(item, dict)]
+
+
+def _normalize_token(value: Any) -> str:
+    if value is None:
+        return ""
+    token = re.sub(r"[^a-z0-9]+", "_", str(value).strip().lower()).strip("_")
+    if token in {"", "none", "null", "n_a"}:
+        return ""
+    return token
+
+
+def _append_token(values: list[str], token: Any, *, prefix: str | None = None) -> None:
+    normalized = _normalize_token(token)
+    if not normalized:
+        return
+    text = f"{prefix}:{normalized}" if prefix else normalized
+    if text not in values:
+        values.append(text)
+
+
+def _extract_text_tokens(text: str, mapping: dict[str, str]) -> list[str]:
+    tokens: list[str] = []
+    lowered = text.lower()
+    for needle, label in mapping.items():
+        if needle in lowered and label not in tokens:
+            tokens.append(label)
+    return tokens
+
+
 def _discover_self_train_records(root: Path) -> list[ExperimentRecord]:
     records: list[ExperimentRecord] = []
 
@@ -84,6 +131,14 @@ def _discover_self_train_records(root: Path) -> list[ExperimentRecord]:
             if source.startswith("_"):
                 continue
             payload = json.loads(summary_path.read_text(encoding="utf-8"))
+            knowledge_domains = ["policy_adaptation", "sol_manifold"]
+            emergence_signals: list[str] = []
+            if bool(payload.get("accepted", False)) and _safe_float(payload.get("delta_full", 0.0)) > 0.0:
+                emergence_signals.append("accepted_candidate")
+
+            unknown_mechanics: list[str] = []
+            if not bool(payload.get("accepted", False)):
+                unknown_mechanics.append("rejected_candidate")
 
             records.append(
                 ExperimentRecord(
@@ -99,6 +154,9 @@ def _discover_self_train_records(root: Path) -> list[ExperimentRecord]:
                     },
                     reason=str(payload.get("reason", "")),
                     summary_path=str(summary_path).replace("\\", "/"),
+                    knowledge_domains=knowledge_domains,
+                    emergence_signals=emergence_signals,
+                    unknown_mechanics=unknown_mechanics,
                 )
             )
         except Exception:
@@ -119,9 +177,31 @@ def _discover_resonance_records(phase1_root: Path, phase2_root: Path) -> list[Ex
                 payload = json.loads(summary_path.read_text(encoding="utf-8"))
                 best_trial = payload.get("best_trial", {})
                 metric_means = payload.get("metric_means", {})
+                knowledge_domains = [
+                    domain
+                    for metric_name, domain in {
+                        "phonon_memory": "phonon_memory",
+                        "thought_vibration": "thought_vibration",
+                        "semantic_entanglement": "semantic_entanglement",
+                        "manifold_potential": "manifold_potential",
+                    }.items()
+                    if metric_name in metric_means
+                ]
+                _append_token(knowledge_domains, best_trial.get("final_basin_label"), prefix="basin")
 
                 primary_score = _safe_float(metric_means.get("resonance_index", 0.0))
                 secondary_score = _safe_float(best_trial.get("resonance_index", 0.0))
+                emergence_signals: list[str] = []
+                if primary_score >= 0.6 or secondary_score >= 0.6:
+                    emergence_signals.append("high_resonance")
+                if int(best_trial.get("unique_basins", 0) or 0) >= 5:
+                    emergence_signals.append("multi_basin")
+
+                unknown_mechanics: list[str] = []
+                if not best_trial.get("final_basin_label"):
+                    unknown_mechanics.append("unidentified_basin")
+                if str(payload.get("status", "")).lower() != "ok":
+                    unknown_mechanics.append("run_status_not_ok")
 
                 records.append(
                     ExperimentRecord(
@@ -139,6 +219,9 @@ def _discover_resonance_records(phase1_root: Path, phase2_root: Path) -> list[Ex
                         },
                         reason=f"status={payload.get('status', 'unknown')}",
                         summary_path=str(summary_path).replace("\\", "/"),
+                        knowledge_domains=knowledge_domains,
+                        emergence_signals=emergence_signals,
+                        unknown_mechanics=unknown_mechanics,
                     )
                 )
             except Exception:
@@ -153,9 +236,35 @@ def _discover_resonance_records(phase1_root: Path, phase2_root: Path) -> list[Ex
                 best_trial = payload.get("best_trial", {})
                 metric_means = payload.get("metric_means", {})
                 phase1_ref = payload.get("phase1_reference", {})
+                knowledge_domains = [
+                    domain
+                    for metric_name, domain in {
+                        "phonon_memory": "phonon_memory",
+                        "thought_vibration": "thought_vibration",
+                        "semantic_entanglement": "semantic_entanglement",
+                        "manifold_potential": "manifold_potential",
+                    }.items()
+                    if metric_name in metric_means
+                ]
+                _append_token(knowledge_domains, best_trial.get("final_basin_label"), prefix="basin")
 
                 delta_mean = _safe_float(phase1_ref.get("delta_mean_resonance", 0.0))
                 delta_best = _safe_float(phase1_ref.get("delta_best_resonance", 0.0))
+                emergence_signals: list[str] = []
+                if _safe_float(metric_means.get("resonance_index", 0.0)) >= 0.6:
+                    emergence_signals.append("high_resonance")
+                if int(best_trial.get("unique_basins", 0) or 0) >= 5:
+                    emergence_signals.append("multi_basin")
+                if delta_mean > 0.0:
+                    emergence_signals.append("phase2_gain")
+
+                unknown_mechanics: list[str] = []
+                if not best_trial.get("final_basin_label"):
+                    unknown_mechanics.append("unidentified_basin")
+                if delta_mean < 0.0:
+                    unknown_mechanics.append("phase2_regression")
+                if str(payload.get("status", "")).lower() != "ok":
+                    unknown_mechanics.append("run_status_not_ok")
 
                 records.append(
                     ExperimentRecord(
@@ -179,6 +288,9 @@ def _discover_resonance_records(phase1_root: Path, phase2_root: Path) -> list[Ex
                             f"delta_mean={delta_mean:.4f}; delta_best={delta_best:.4f}"
                         ),
                         summary_path=str(summary_path).replace("\\", "/"),
+                        knowledge_domains=knowledge_domains,
+                        emergence_signals=emergence_signals,
+                        unknown_mechanics=unknown_mechanics,
                     )
                 )
             except Exception:
@@ -275,6 +387,9 @@ def _discover_rsi_records(rsi_root: Path) -> list[ExperimentRecord]:
                 summary_path=(
                     f"{outcome_path_text}#cycle_id={cycle_id}"
                 ),
+                knowledge_domains=["adaptive_rsi", "open_questions"],
+                emergence_signals=["fitness_gain"] if delta_fitness > 0 else [],
+                unknown_mechanics=["cycle_error"] if error else [],
             )
         )
         seen_cycles.add(cycle_id)
@@ -300,6 +415,9 @@ def _discover_rsi_records(rsi_root: Path) -> list[ExperimentRecord]:
                     summary_path=(
                         f"{fitness_path_text}#cycle_id={cycle_id}"
                     ),
+                    knowledge_domains=["adaptive_rsi"],
+                    emergence_signals=["fitness_gain"] if fitness - previous_fitness > 0 else [],
+                    unknown_mechanics=[],
                 )
             )
             previous_fitness = fitness
@@ -327,9 +445,147 @@ def _discover_rsi_records(rsi_root: Path) -> list[ExperimentRecord]:
                     summary_path=(
                         f"{fitness_path_text}#cycle_id={cycle_id}"
                     ),
+                    knowledge_domains=["adaptive_rsi"],
+                    emergence_signals=["fitness_gain"] if fitness - previous_fitness > 0 else [],
+                    unknown_mechanics=[],
                 )
             )
             previous_fitness = fitness
+
+    records.sort(key=lambda r: (r.experiment, r.source, r.mode, r.run_id, r.generation))
+    return records
+
+
+def _discover_cortex_records(cortex_root: Path) -> list[ExperimentRecord]:
+    records: list[ExperimentRecord] = []
+    if not cortex_root.exists():
+        return records
+
+    emergence_keywords = {
+        "emerg": "explicit_emergence",
+        "threshold": "threshold_transition",
+        "qualitatively change": "threshold_transition",
+        "basin migration": "basin_migration",
+        "topological reorganization": "topological_reorganization",
+        "novel basin": "novel_basin",
+        "symmetry": "symmetry_shift",
+    }
+    unknown_keywords = {
+        "open q": "open_question",
+        "unknown": "unknown_mechanics",
+        "what happens": "unmapped_regime",
+        "why": "causal_gap",
+        "how": "mechanistic_gap",
+        "not understood": "mechanistic_gap",
+    }
+
+    for summary_path in cortex_root.glob("*/summary.json"):
+        try:
+            session_dir = summary_path.parent
+            payload = _load_json_file(summary_path)
+            hypotheses = _load_optional_json_list(session_dir / "hypotheses.json")
+            sanity_results = payload.get("sanity_results", [])
+            sanity_rows = sanity_results if isinstance(sanity_results, list) else []
+            protocols_run = int(payload.get("protocols_run", len(hypotheses)) or len(hypotheses) or 0)
+            hypotheses_generated = int(payload.get("hypotheses_generated", len(hypotheses)) or len(hypotheses) or 0)
+            total_steps = int(payload.get("total_steps", 0) or 0)
+            anomalies_count = 0
+            passing = 0
+            for row in sanity_rows:
+                if not isinstance(row, dict):
+                    continue
+                if row.get("sanity_passed"):
+                    passing += 1
+                anomalies = row.get("anomalies", [])
+                if isinstance(anomalies, list):
+                    anomalies_count += len(anomalies)
+            pass_rate = passing / max(1, len(sanity_rows) or hypotheses_generated or protocols_run or 1)
+
+            knowledge_domains: list[str] = ["sol_manifold"]
+            emergence_signals: list[str] = []
+            unknown_mechanics: list[str] = []
+
+            for hypothesis in hypotheses:
+                _append_token(knowledge_domains, hypothesis.get("knob"))
+                source_gap_raw = hypothesis.get("source_gap")
+                source_gap = source_gap_raw if isinstance(source_gap_raw, dict) else {}
+                metadata_raw = source_gap.get("metadata")
+                metadata = metadata_raw if isinstance(metadata_raw, dict) else {}
+                _append_token(knowledge_domains, metadata.get("param"))
+                injection_raw = hypothesis.get("injection")
+                injection = injection_raw if isinstance(injection_raw, dict) else {}
+                _append_token(knowledge_domains, injection.get("label"), prefix="injection")
+
+                text_parts = [
+                    str(hypothesis.get("question", "")),
+                    str(hypothesis.get("notes", "")),
+                    str(source_gap.get("description", "")),
+                    str(source_gap.get("gap_type", "")),
+                ]
+                text = " ".join(part for part in text_parts if part).strip()
+                for token in _extract_text_tokens(text, emergence_keywords):
+                    _append_token(emergence_signals, token)
+                for token in _extract_text_tokens(text, unknown_keywords):
+                    _append_token(unknown_mechanics, token)
+
+            if anomalies_count > 0:
+                _append_token(unknown_mechanics, "observed_anomalies")
+            if pass_rate >= 0.8 and protocols_run >= 3:
+                _append_token(emergence_signals, "stable_replay")
+
+            gap_types = {
+                _normalize_token(
+                    (hypothesis.get("source_gap") if isinstance(hypothesis.get("source_gap"), dict) else {}).get("gap_type", "")
+                )
+                for hypothesis in hypotheses
+                if isinstance(hypothesis, dict)
+            }
+            gap_types.discard("")
+            if payload.get("dry_run", False):
+                mode = "dry_run"
+            elif len(gap_types) == 1:
+                mode = next(iter(gap_types))
+            elif gap_types:
+                mode = "mixed"
+            else:
+                mode = "autonomous"
+
+            reason_parts = [
+                f"protocols_run={protocols_run}",
+                f"anomalies={anomalies_count}",
+            ]
+            if gap_types:
+                reason_parts.append(f"gap_types={','.join(sorted(gap_types))}")
+
+            records.append(
+                ExperimentRecord(
+                    experiment="cortex",
+                    source="autonomous-session",
+                    mode=mode,
+                    run_id=session_dir.name,
+                    generation=max(1, protocols_run or hypotheses_generated),
+                    accepted=(
+                        not bool(payload.get("dry_run", False))
+                        and pass_rate > 0.0
+                        and anomalies_count == 0
+                    ),
+                    metrics={
+                        "delta_anchor": pass_rate,
+                        "delta_full": float(protocols_run),
+                        "protocols_run": float(protocols_run),
+                        "hypotheses_generated": float(hypotheses_generated),
+                        "total_steps": float(total_steps),
+                        "anomaly_count": float(anomalies_count),
+                    },
+                    reason="; ".join(reason_parts),
+                    summary_path=str(summary_path).replace("\\", "/"),
+                    knowledge_domains=knowledge_domains,
+                    emergence_signals=emergence_signals,
+                    unknown_mechanics=unknown_mechanics,
+                )
+            )
+        except Exception:
+            continue
 
     records.sort(key=lambda r: (r.experiment, r.source, r.mode, r.run_id, r.generation))
     return records
@@ -401,11 +657,39 @@ def _build_index(records: list[ExperimentRecord], run_summaries: list[Experiment
             "by_mode": by_mode,
         }
 
+    def summarize_annotations(field_name: str) -> dict[str, dict[str, Any]]:
+        summary: dict[str, dict[str, Any]] = {}
+        for record in records:
+            for value in getattr(record, field_name, []) or []:
+                entry = summary.setdefault(
+                    value,
+                    {
+                        "records": 0,
+                        "accepted_generations": 0,
+                        "experiments": set(),
+                    },
+                )
+                entry["records"] += 1
+                entry["accepted_generations"] += int(record.accepted)
+                entry["experiments"].add(record.experiment)
+
+        return {
+            key: {
+                "records": value["records"],
+                "accepted_generations": value["accepted_generations"],
+                "experiments": sorted(value["experiments"]),
+            }
+            for key, value in sorted(summary.items(), key=lambda item: (-item[1]["records"], item[0]))
+        }
+
     return {
         "generated_at": _utc_now_iso(),
         "records": len(records),
         "runs": len(run_summaries),
         "experiments": by_experiment,
+        "knowledge_domains": summarize_annotations("knowledge_domains"),
+        "potential_emergence": summarize_annotations("emergence_signals"),
+        "unknown_mechanics": summarize_annotations("unknown_mechanics"),
     }
 
 
@@ -443,6 +727,24 @@ def _render_markdown(index: dict[str, Any]) -> str:
             )
         lines.append("")
 
+    def render_annotation_section(title: str, key: str) -> None:
+        entries = index.get(key, {})
+        if not entries:
+            return
+        lines.append(f"## {title}")
+        lines.append("")
+        lines.append("| Signal | Records | Accepted | Experiments |")
+        lines.append("|---|---:|---:|---|")
+        for signal, stats in entries.items():
+            lines.append(
+                f"| {signal} | {stats['records']} | {stats['accepted_generations']} | {', '.join(stats['experiments'])} |"
+            )
+        lines.append("")
+
+    render_annotation_section("Knowledge Domains", "knowledge_domains")
+    render_annotation_section("Potential Emergence", "potential_emergence")
+    render_annotation_section("Unknown Mechanics", "unknown_mechanics")
+
     return "\n".join(lines)
 
 
@@ -473,6 +775,12 @@ def parse_args() -> argparse.Namespace:
         help="Root directory for RSI ledger files",
     )
     parser.add_argument(
+        "--cortex-root",
+        type=Path,
+        default=Path("data") / "cortex_sessions",
+        help="Root directory for cortex autonomous session summaries",
+    )
+    parser.add_argument(
         "--out-dir",
         type=Path,
         default=Path("data") / "experiment_ledger",
@@ -489,6 +797,7 @@ def main() -> int:
     records.extend(_discover_self_train_records(args.self_train_root))
     records.extend(_discover_resonance_records(args.resonance_phase1_root, args.resonance_phase2_root))
     records.extend(_discover_rsi_records(args.rsi_root))
+    records.extend(_discover_cortex_records(args.cortex_root))
     records.sort(key=lambda r: (r.experiment, r.source, r.mode, r.run_id, r.generation))
     run_summaries = _aggregate_runs(records)
     index = _build_index(records, run_summaries)

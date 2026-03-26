@@ -7,12 +7,19 @@ This engine builds a generalized ledger index across experiments using a normali
 - `self_train` (from `data/sol_self_train_runs`)
 - `resonance` (from `data/thinking_engine_resonance` + `data/thinking_engine_resonance_phase2`)
 - `rsi` (from `data/rsi` ledger streams)
+- `cortex` (from `data/cortex_sessions`)
 
 ## Outputs
 
 - `data/experiment_ledger/records.jsonl` — normalized record stream
 - `data/experiment_ledger/index.json` — aggregate index for pipeline consumers
 - `data/experiment_ledger/ledger.md` — human-readable summary
+
+Record annotations also summarize:
+
+- `knowledge_domains` — manifold/domain tags inferred from experiment content
+- `potential_emergence` — heuristic emergence signals worth follow-up
+- `unknown_mechanics` — unresolved mechanics/open-question flags
 
 ## Local-only generated data
 
@@ -42,7 +49,8 @@ python tools/analysis/experiment_ledger.py \
 	--self-train-root data/sol_self_train_runs \
 	--resonance-phase1-root data/thinking_engine_resonance \
 	--resonance-phase2-root data/thinking_engine_resonance_phase2 \
-	--rsi-root data/rsi
+	--rsi-root data/rsi \
+	--cortex-root data/cortex_sessions
 ```
 
 ## Schema (record)
