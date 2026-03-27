@@ -1,10 +1,9 @@
 # SOL RSI — Recursive Self-Improvement
 #
-# Runs the RSI outer loop on a schedule or manual trigger.
-# Mode: cron (unattended single cycle)
+# Runs the RSI outer loop on a manual trigger or labeled issue.
 #
 # Three execution contexts:
-#   1. GitHub Actions (this workflow) — scheduled cron + manual dispatch
+#   1. GitHub Actions (this workflow) — manual dispatch or labeled issue
 #   2. Local persistent — run on personal machine for N hours
 #   3. Server persistent — run on VM/server continuously
 
@@ -54,10 +53,6 @@ on:
           - desktop
           - server
 
-  # Weekly schedule: Sunday 03:00 UTC (before cortex Mon 06:00)
-  schedule:
-    - cron: "0 3 * * 0"
-
   # Trigger on sol-rsi labeled issues
   issues:
     types: [labeled]
@@ -75,7 +70,6 @@ jobs:
   rsi-cycle:
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      github.event_name == 'schedule' ||
       (github.event_name == 'issues' &&
        contains(github.event.issue.labels.*.name, 'sol-rsi'))
     runs-on: ubuntu-latest
