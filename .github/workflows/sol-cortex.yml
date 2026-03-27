@@ -150,6 +150,12 @@ jobs:
             python tools/sol-cortex/consolidate.py "$SESSION_DIR"
           fi
 
+      - name: Refresh experiment ledger
+        if: needs.check-trigger.outputs.dry_run != 'true'
+        run: |
+          python tools/analysis/experiment_ledger.py \
+            --out-dir "data/experiment_ledger"
+
       - name: Upload session artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -167,6 +173,7 @@ jobs:
           SESSION_DIR="data/cortex_sessions/${{ steps.cortex.outputs.session_id }}"
           git add "$SESSION_DIR/" || true
           git add "solKnowledge/" || true
+          git add "data/experiment_ledger" || true
 
           if git diff --cached --quiet; then
             echo "No changes to commit"

@@ -1,8 +1,214 @@
 {
-  "generated_at": "2026-02-17T07:02:42.742811+00:00",
-  "records": 1419,
-  "runs": 19,
+  "generated_at": "2026-03-26T05:46:00.106911+00:00",
+  "records": 1498,
+  "runs": 79,
   "experiments": {
+    "cortex": {
+      "runs": 60,
+      "generations": 60,
+      "accepted_generations": 43,
+      "acceptance_rate": 0.7166666666666667,
+      "top_runs_by_anchor": [
+        {
+          "experiment": "cortex",
+          "source": "autonomous-session",
+          "mode": "mixed",
+          "run_id": "CX-20260212-052151",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 8.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 8.0,
+          "latest_reason": "protocols_run=8; anomalies=0; gap_types=open_question,unpromoted"
+        },
+        {
+          "experiment": "cortex",
+          "source": "autonomous-session",
+          "mode": "open_question",
+          "run_id": "CX-20260212-070748",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 8.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 8.0,
+          "latest_reason": "protocols_run=8; anomalies=0; gap_types=open_question"
+        },
+        {
+          "experiment": "cortex",
+          "source": "autonomous-session",
+          "mode": "open_question",
+          "run_id": "CX-20260212-074704",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 8.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 8.0,
+          "latest_reason": "protocols_run=8; anomalies=0; gap_types=open_question"
+        },
+        {
+          "experiment": "cortex",
+          "source": "autonomous-session",
+          "mode": "open_question",
+          "run_id": "CX-20260212-082639",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 8.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 8.0,
+          "latest_reason": "protocols_run=8; anomalies=0; gap_types=open_question"
+        },
+        {
+          "experiment": "cortex",
+          "source": "autonomous-session",
+          "mode": "open_question",
+          "run_id": "CX-20260213-201042",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 5.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 5.0,
+          "latest_reason": "protocols_run=5; anomalies=0; gap_types=open_question"
+        },
+        {
+          "experiment": "cortex",
+          "source": "autonomous-session",
+          "mode": "open_question",
+          "run_id": "CX-20260213-203542",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 5.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 5.0,
+          "latest_reason": "protocols_run=5; anomalies=0; gap_types=open_question"
+        },
+        {
+          "experiment": "cortex",
+          "source": "autonomous-session",
+          "mode": "open_question",
+          "run_id": "CX-20260213-210052",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 8.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 8.0,
+          "latest_reason": "protocols_run=8; anomalies=0; gap_types=open_question"
+        },
+        {
+          "experiment": "cortex",
+          "source": "autonomous-session",
+          "mode": "open_question",
+          "run_id": "CX-20260213-222458",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 8.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 8.0,
+          "latest_reason": "protocols_run=8; anomalies=0; gap_types=open_question"
+        },
+        {
+          "experiment": "cortex",
+          "source": "autonomous-session",
+          "mode": "open_question",
+          "run_id": "CX-20260213-231014",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 8.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 8.0,
+          "latest_reason": "protocols_run=8; anomalies=0; gap_types=open_question"
+        },
+        {
+          "experiment": "cortex",
+          "source": "autonomous-session",
+          "mode": "open_question",
+          "run_id": "CX-20260214-001519",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 5.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 5.0,
+          "latest_reason": "protocols_run=5; anomalies=0; gap_types=open_question"
+        }
+      ],
+      "by_mode": {
+        "dry_run": {
+          "generations": 17,
+          "runs": 17,
+          "accepted_generations": 0,
+          "acceptance_rate": 0.0,
+          "best_anchor_delta": 0.0,
+          "best_full_delta": 3.0
+        },
+        "mixed": {
+          "generations": 1,
+          "runs": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 8.0
+        },
+        "open_question": {
+          "generations": 26,
+          "runs": 26,
+          "accepted_generations": 26,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 8.0
+        },
+        "unexplored_param": {
+          "generations": 2,
+          "runs": 2,
+          "accepted_generations": 2,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 4.0
+        },
+        "unfalsified": {
+          "generations": 1,
+          "runs": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 1.0
+        },
+        "unpromoted": {
+          "generations": 12,
+          "runs": 12,
+          "accepted_generations": 12,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 5.0
+        },
+        "weak_evidence": {
+          "generations": 1,
+          "runs": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 10.0
+        }
+      }
+    },
     "resonance": {
       "runs": 7,
       "generations": 7,
@@ -129,9 +335,9 @@
     },
     "rsi": {
       "runs": 3,
-      "generations": 274,
+      "generations": 293,
       "accepted_generations": 168,
-      "acceptance_rate": 0.6131386861313869,
+      "acceptance_rate": 0.5733788395904437,
       "top_runs_by_anchor": [
         {
           "experiment": "rsi",
@@ -152,9 +358,9 @@
           "source": "legacy-local",
           "mode": "cron",
           "run_id": "rsi_engine",
-          "generations": 110,
+          "generations": 115,
           "accepted_generations": 8,
-          "acceptance_rate": 0.07272727272727272,
+          "acceptance_rate": 0.06956521739130435,
           "best_anchor_delta": 10.400944025174013,
           "best_full_delta": 86.93181818181819,
           "latest_anchor_delta": 0.0,
@@ -166,22 +372,22 @@
           "source": "legacy-local",
           "mode": "persistent",
           "run_id": "rsi_engine",
-          "generations": 157,
+          "generations": 171,
           "accepted_generations": 153,
-          "acceptance_rate": 0.9745222929936306,
+          "acceptance_rate": 0.8947368421052632,
           "best_anchor_delta": 0.4733342596738197,
           "best_full_delta": 86.35042283298098,
           "latest_anchor_delta": 0.0,
-          "latest_full_delta": 69.17,
+          "latest_full_delta": 56.74,
           "latest_reason": "ABORT: Core graph SHA256 mismatch before pipeline start! The sacred graph has been corrupted."
         }
       ],
       "by_mode": {
         "cron": {
-          "generations": 110,
+          "generations": 115,
           "runs": 1,
           "accepted_generations": 8,
-          "acceptance_rate": 0.07272727272727272,
+          "acceptance_rate": 0.06956521739130435,
           "best_anchor_delta": 10.400944025174013,
           "best_full_delta": 86.93181818181819
         },
@@ -194,10 +400,10 @@
           "best_full_delta": 76.05753989697035
         },
         "persistent": {
-          "generations": 157,
+          "generations": 171,
           "runs": 1,
           "accepted_generations": 153,
-          "acceptance_rate": 0.9745222929936306,
+          "acceptance_rate": 0.8947368421052632,
           "best_anchor_delta": 0.4733342596738197,
           "best_full_delta": 86.35042283298098
         }
@@ -362,6 +568,258 @@
           "best_full_delta": 0.01098737836655922
         }
       }
+    }
+  },
+  "knowledge_domains": {
+    "sol_manifold": {
+      "records": 1198,
+      "accepted_generations": 68,
+      "experiments": [
+        "cortex",
+        "self_train"
+      ]
+    },
+    "policy_adaptation": {
+      "records": 1138,
+      "accepted_generations": 25,
+      "experiments": [
+        "self_train"
+      ]
+    },
+    "adaptive_rsi": {
+      "records": 293,
+      "accepted_generations": 168,
+      "experiments": [
+        "rsi"
+      ]
+    },
+    "open_questions": {
+      "records": 132,
+      "accepted_generations": 7,
+      "experiments": [
+        "rsi"
+      ]
+    },
+    "injection:grail": {
+      "records": 59,
+      "accepted_generations": 43,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "damping": {
+      "records": 57,
+      "accepted_generations": 41,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "dt": {
+      "records": 19,
+      "accepted_generations": 19,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "injection": {
+      "records": 13,
+      "accepted_generations": 13,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "manifold_potential": {
+      "records": 7,
+      "accepted_generations": 4,
+      "experiments": [
+        "resonance"
+      ]
+    },
+    "phonon_memory": {
+      "records": 7,
+      "accepted_generations": 4,
+      "experiments": [
+        "resonance"
+      ]
+    },
+    "semantic_entanglement": {
+      "records": 7,
+      "accepted_generations": 4,
+      "experiments": [
+        "resonance"
+      ]
+    },
+    "thought_vibration": {
+      "records": 7,
+      "accepted_generations": 4,
+      "experiments": [
+        "resonance"
+      ]
+    },
+    "basin:christic": {
+      "records": 4,
+      "accepted_generations": 3,
+      "experiments": [
+        "resonance"
+      ]
+    },
+    "psi_diffusion": {
+      "records": 3,
+      "accepted_generations": 3,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "topology": {
+      "records": 3,
+      "accepted_generations": 3,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "basin:metatron": {
+      "records": 2,
+      "accepted_generations": 1,
+      "experiments": [
+        "resonance"
+      ]
+    },
+    "c_press": {
+      "records": 2,
+      "accepted_generations": 2,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "basin:grail": {
+      "records": 1,
+      "accepted_generations": 0,
+      "experiments": [
+        "resonance"
+      ]
+    },
+    "conductance_gamma": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "cortex"
+      ]
+    }
+  },
+  "potential_emergence": {
+    "threshold_transition": {
+      "records": 57,
+      "accepted_generations": 41,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "stable_replay": {
+      "records": 39,
+      "accepted_generations": 39,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "accepted_candidate": {
+      "records": 25,
+      "accepted_generations": 25,
+      "experiments": [
+        "self_train"
+      ]
+    },
+    "basin_migration": {
+      "records": 23,
+      "accepted_generations": 23,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "topological_reorganization": {
+      "records": 23,
+      "accepted_generations": 23,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "fitness_gain": {
+      "records": 5,
+      "accepted_generations": 5,
+      "experiments": [
+        "rsi"
+      ]
+    },
+    "high_resonance": {
+      "records": 4,
+      "accepted_generations": 3,
+      "experiments": [
+        "resonance"
+      ]
+    },
+    "multi_basin": {
+      "records": 4,
+      "accepted_generations": 3,
+      "experiments": [
+        "resonance"
+      ]
+    },
+    "phase2_gain": {
+      "records": 2,
+      "accepted_generations": 2,
+      "experiments": [
+        "resonance"
+      ]
+    }
+  },
+  "unknown_mechanics": {
+    "rejected_candidate": {
+      "records": 1113,
+      "accepted_generations": 0,
+      "experiments": [
+        "self_train"
+      ]
+    },
+    "cycle_error": {
+      "records": 125,
+      "accepted_generations": 0,
+      "experiments": [
+        "rsi"
+      ]
+    },
+    "mechanistic_gap": {
+      "records": 35,
+      "accepted_generations": 35,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "unknown_mechanics": {
+      "records": 34,
+      "accepted_generations": 34,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "open_question": {
+      "records": 27,
+      "accepted_generations": 27,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "unmapped_regime": {
+      "records": 23,
+      "accepted_generations": 23,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "phase2_regression": {
+      "records": 3,
+      "accepted_generations": 0,
+      "experiments": [
+        "resonance"
+      ]
     }
   }
 }
