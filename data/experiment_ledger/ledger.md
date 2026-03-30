@@ -1,11 +1,11 @@
 # Experiment Ledger
 
-Generated: 2026-03-26T05:46:00.106911+00:00
-Records: 1498 | Runs: 79
+Generated: 2026-03-30T06:49:24.232916+00:00
+Records: 1499 | Runs: 80
 
 ## cortex
 
-- Runs: 60 | Generations: 60 | Accepted: 43 | Acceptance: 71.67%
+- Runs: 61 | Generations: 61 | Accepted: 44 | Acceptance: 72.13%
 
 ### Modes
 
@@ -13,7 +13,7 @@ Records: 1498 | Runs: 79
 |---|---:|---:|---:|---:|---:|---:|
 | dry_run | 17 | 17 | 0 | 0.00% | 0.0000 | 3.0000 |
 | mixed | 1 | 1 | 1 | 100.00% | 1.0000 | 8.0000 |
-| open_question | 26 | 26 | 26 | 100.00% | 1.0000 | 8.0000 |
+| open_question | 27 | 27 | 27 | 100.00% | 1.0000 | 8.0000 |
 | unexplored_param | 2 | 2 | 2 | 100.00% | 1.0000 | 4.0000 |
 | unfalsified | 1 | 1 | 1 | 100.00% | 1.0000 | 1.0000 |
 | unpromoted | 12 | 12 | 12 | 100.00% | 1.0000 | 5.0000 |
@@ -107,12 +107,12 @@ Records: 1498 | Runs: 79
 
 | Signal | Records | Accepted | Experiments |
 |---|---:|---:|---|
-| sol_manifold | 1198 | 68 | cortex, self_train |
+| sol_manifold | 1199 | 69 | cortex, self_train |
 | policy_adaptation | 1138 | 25 | self_train |
 | adaptive_rsi | 293 | 168 | rsi |
 | open_questions | 132 | 7 | rsi |
-| injection:grail | 59 | 43 | cortex |
-| damping | 57 | 41 | cortex |
+| injection:grail | 60 | 44 | cortex |
+| damping | 58 | 42 | cortex |
 | dt | 19 | 19 | cortex |
 | injection | 13 | 13 | cortex |
 | manifold_potential | 7 | 4 | resonance |
@@ -131,11 +131,11 @@ Records: 1498 | Runs: 79
 
 | Signal | Records | Accepted | Experiments |
 |---|---:|---:|---|
-| threshold_transition | 57 | 41 | cortex |
-| stable_replay | 39 | 39 | cortex |
+| threshold_transition | 58 | 42 | cortex |
+| stable_replay | 40 | 40 | cortex |
 | accepted_candidate | 25 | 25 | self_train |
-| basin_migration | 23 | 23 | cortex |
-| topological_reorganization | 23 | 23 | cortex |
+| basin_migration | 24 | 24 | cortex |
+| topological_reorganization | 24 | 24 | cortex |
 | fitness_gain | 5 | 5 | rsi |
 | high_resonance | 4 | 3 | resonance |
 | multi_basin | 4 | 3 | resonance |
@@ -147,8 +147,8 @@ Records: 1498 | Runs: 79
 |---|---:|---:|---|
 | rejected_candidate | 1113 | 0 | self_train |
 | cycle_error | 125 | 0 | rsi |
-| mechanistic_gap | 35 | 35 | cortex |
-| unknown_mechanics | 34 | 34 | cortex |
-| open_question | 27 | 27 | cortex |
-| unmapped_regime | 23 | 23 | cortex |
+| mechanistic_gap | 36 | 36 | cortex |
+| unknown_mechanics | 35 | 35 | cortex |
+| open_question | 28 | 28 | cortex |
+| unmapped_regime | 24 | 24 | cortex |
 | phase2_regression | 3 | 0 | resonance |

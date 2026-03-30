@@ -1,0 +1,33 @@
+{
+  "session_id": "CX-20260330-064835",
+  "completed_at": "2026-03-30T06:49:23.726858Z",
+  "protocols_run": 3,
+  "total_steps": 15900,
+  "hypotheses_generated": 3,
+  "gaps_addressed": [
+    "open_question:Open Q: Does basin migration (RhoMaxNode",
+    "open_question:Open Q: What happens in the unexplored g",
+    "open_question:Open Q: At what timescale does damping s"
+  ],
+  "sanity_results": [
+    {
+      "hypothesis": "H-001",
+      "series": "h-001",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-002",
+      "series": "h-002",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-003",
+      "series": "h-003",
+      "sanity_passed": true,
+      "anomalies": []
+    }
+  ],
+  "dry_run": false
+}

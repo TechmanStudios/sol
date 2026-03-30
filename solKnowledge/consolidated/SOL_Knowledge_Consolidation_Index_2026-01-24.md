@@ -690,3 +690,20 @@ Additional proof packets were promoted by tying claim-ledger items to on-disk CS
   - Question: Can headless sol-core reproduce: ?
   - Claim: exploratory | Sanity: PASS
   - Gap: Open Q: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?
+
+## Cortex Session: CX-20260330-064835 (consolidated 2026-03-30)
+
+- [PP-2026-03-30-cortex-CX-20260330-064835-h-001-damping.md](solKnowledge/proof_packets/PP-2026-03-30-cortex-CX-20260330-064835-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does basin migration (RhoMaxNode 132→43) at damping=0.5 signal the beginning of a topological reorganization?
+
+- [PP-2026-03-30-cortex-CX-20260330-064835-h-002-damping.md](solKnowledge/proof_packets/PP-2026-03-30-cortex-CX-20260330-064835-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: What happens in the unexplored gap between damping=0.5 and the known critical threshold?
+
+- [PP-2026-03-30-cortex-CX-20260330-064835-h-003-None.md](solKnowledge/proof_packets/PP-2026-03-30-cortex-CX-20260330-064835-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?
