@@ -1,0 +1,3707 @@
+[
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1083,
+    "top_nodes": [
+      1083,
+      1082,
+      1084,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 46.21,
+    "mass_hash": "079a7581",
+    "activeCount": 142,
+    "knob_value": 0.05,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 43.9,
+    "mass_hash": "f8d09e15",
+    "activeCount": 137,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 41.68,
+    "mass_hash": "5a0edb79",
+    "activeCount": 135,
+    "knob_value": 0.15,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.2,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 37.45,
+    "mass_hash": "27c98809",
+    "activeCount": 128,
+    "knob_value": 0.25,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 35.48,
+    "mass_hash": "8655f7e3",
+    "activeCount": 126,
+    "knob_value": 0.3,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 31.7,
+    "mass_hash": "de4b82da",
+    "activeCount": 113,
+    "knob_value": 0.4,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 0,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 1,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 28.36,
+    "mass_hash": "6c989fef",
+    "activeCount": 68,
+    "knob_value": 0.5,
+    "rep": 2,
+    "source_hypothesis": "H-001",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 47.93,
+    "mass_hash": "5ba0d58f",
+    "activeCount": 107,
+    "knob_value": 0.05,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 46.62,
+    "mass_hash": "db7d91f6",
+    "activeCount": 104,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 44.1,
+    "mass_hash": "a53aae57",
+    "activeCount": 82,
+    "knob_value": 0.2,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 0,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 1,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1,
+    "top_nodes": [
+      1,
+      1084,
+      1083,
+      1082,
+      1081
+    ],
+    "entropy_band": 0.7,
+    "mass": 37.37,
+    "mass_hash": "9dd2ca5b",
+    "activeCount": 51,
+    "knob_value": 0.5,
+    "rep": 2,
+    "source_hypothesis": "H-002",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 0,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 1,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  },
+  {
+    "rhoMaxId": 1084,
+    "top_nodes": [
+      1084,
+      1083,
+      1082,
+      1081,
+      1080
+    ],
+    "entropy_band": 0.9,
+    "mass": 39.53,
+    "mass_hash": "7d5e3869",
+    "activeCount": 134,
+    "knob_value": 0.1,
+    "rep": 2,
+    "source_hypothesis": "H-003",
+    "stability": 3,
+    "is_stable": true
+  }
+]
