@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-06T06:50:14.633258+00:00",
-  "records": 1500,
-  "runs": 81,
+  "generated_at": "2026-04-13T06:18:33.502253+00:00",
+  "records": 1598,
+  "runs": 179,
   "experiments": {
     "cortex": {
       "runs": 62,
@@ -206,6 +206,164 @@
           "acceptance_rate": 1.0,
           "best_anchor_delta": 1.0,
           "best_full_delta": 10.0
+        }
+      }
+    },
+    "dream": {
+      "runs": 98,
+      "generations": 98,
+      "accepted_generations": 98,
+      "acceptance_rate": 1.0,
+      "top_runs_by_anchor": [
+        {
+          "experiment": "dream",
+          "source": "hippocampus-nightly",
+          "mode": "dream_cycle",
+          "run_id": "DS-20260208-052205",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 3.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 3.0,
+          "latest_reason": "sessions_replayed=2; replays_run=3; stable_basins=63; source_sessions=2; hypotheses=2"
+        },
+        {
+          "experiment": "dream",
+          "source": "hippocampus-nightly",
+          "mode": "dream_cycle",
+          "run_id": "DS-20260208-055125",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 3.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 3.0,
+          "latest_reason": "sessions_replayed=2; replays_run=3; stable_basins=72; source_sessions=2; hypotheses=2"
+        },
+        {
+          "experiment": "dream",
+          "source": "hippocampus-nightly",
+          "mode": "dream_cycle",
+          "run_id": "DS-20260210-045027",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 5.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 5.0,
+          "latest_reason": "sessions_replayed=4; replays_run=5; stable_basins=111; source_sessions=4; hypotheses=2"
+        },
+        {
+          "experiment": "dream",
+          "source": "hippocampus-nightly",
+          "mode": "dream_cycle",
+          "run_id": "DS-20260211-044926",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 5.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 5.0,
+          "latest_reason": "sessions_replayed=4; replays_run=5; stable_basins=111; source_sessions=4; hypotheses=2"
+        },
+        {
+          "experiment": "dream",
+          "source": "hippocampus-nightly",
+          "mode": "dream_cycle",
+          "run_id": "DS-20260211-171806",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 10.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 10.0,
+          "latest_reason": "sessions_replayed=5; replays_run=10; stable_basins=231; source_sessions=5; hypotheses=5"
+        },
+        {
+          "experiment": "dream",
+          "source": "hippocampus-nightly",
+          "mode": "dream_cycle",
+          "run_id": "DS-20260211-191202",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 22.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 22.0,
+          "latest_reason": "sessions_replayed=5; replays_run=22; stable_basins=528; source_sessions=5; hypotheses=5"
+        },
+        {
+          "experiment": "dream",
+          "source": "hippocampus-nightly",
+          "mode": "dream_cycle",
+          "run_id": "DS-20260212-024212",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 25.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 25.0,
+          "latest_reason": "sessions_replayed=5; replays_run=25; stable_basins=600; source_sessions=5; hypotheses=5"
+        },
+        {
+          "experiment": "dream",
+          "source": "hippocampus-nightly",
+          "mode": "dream_cycle",
+          "run_id": "DS-20260212-031446",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 25.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 25.0,
+          "latest_reason": "sessions_replayed=5; replays_run=25; stable_basins=525; source_sessions=5; hypotheses=5"
+        },
+        {
+          "experiment": "dream",
+          "source": "hippocampus-nightly",
+          "mode": "dream_cycle",
+          "run_id": "DS-20260212-032211",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 25.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 25.0,
+          "latest_reason": "sessions_replayed=5; replays_run=25; stable_basins=450; source_sessions=5; hypotheses=5"
+        },
+        {
+          "experiment": "dream",
+          "source": "hippocampus-nightly",
+          "mode": "dream_cycle",
+          "run_id": "DS-20260212-032906",
+          "generations": 1,
+          "accepted_generations": 1,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 25.0,
+          "latest_anchor_delta": 1.0,
+          "latest_full_delta": 25.0,
+          "latest_reason": "sessions_replayed=5; replays_run=25; stable_basins=375; source_sessions=5; hypotheses=5"
+        }
+      ],
+      "by_mode": {
+        "dream_cycle": {
+          "generations": 98,
+          "runs": 98,
+          "accepted_generations": 98,
+          "acceptance_rate": 1.0,
+          "best_anchor_delta": 1.0,
+          "best_full_delta": 62.0
         }
       }
     },
@@ -600,6 +758,83 @@
         "rsi"
       ]
     },
+    "hippocampal_replay": {
+      "records": 98,
+      "accepted_generations": 98,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "hypothesis:h_001": {
+      "records": 98,
+      "accepted_generations": 98,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "hypothesis:h_002": {
+      "records": 98,
+      "accepted_generations": 98,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "protocol:dream_h_001": {
+      "records": 98,
+      "accepted_generations": 98,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "protocol:dream_h_002": {
+      "records": 98,
+      "accepted_generations": 98,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "hypothesis:h_003": {
+      "records": 93,
+      "accepted_generations": 93,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "protocol:dream_h_003": {
+      "records": 93,
+      "accepted_generations": 93,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "hypothesis:h_004": {
+      "records": 67,
+      "accepted_generations": 67,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "hypothesis:h_005": {
+      "records": 67,
+      "accepted_generations": 67,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "protocol:dream_h_004": {
+      "records": 67,
+      "accepted_generations": 67,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "protocol:dream_h_005": {
+      "records": 67,
+      "accepted_generations": 67,
+      "experiments": [
+        "dream"
+      ]
+    },
     "injection:grail": {
       "records": 61,
       "accepted_generations": 45,
@@ -614,6 +849,132 @@
         "cortex"
       ]
     },
+    "hypothesis:h_006": {
+      "records": 59,
+      "accepted_generations": 59,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "hypothesis:h_007": {
+      "records": 59,
+      "accepted_generations": 59,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "protocol:dream_h_006": {
+      "records": 59,
+      "accepted_generations": 59,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "protocol:dream_h_007": {
+      "records": 59,
+      "accepted_generations": 59,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "hypothesis:h_008": {
+      "records": 58,
+      "accepted_generations": 58,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "protocol:dream_h_008": {
+      "records": 58,
+      "accepted_generations": 58,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260223_063438": {
+      "records": 37,
+      "accepted_generations": 37,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260302_062850": {
+      "records": 37,
+      "accepted_generations": 37,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260309_063136": {
+      "records": 37,
+      "accepted_generations": 37,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "hypothesis:h_009": {
+      "records": 36,
+      "accepted_generations": 36,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "hypothesis:h_010": {
+      "records": 36,
+      "accepted_generations": 36,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "protocol:dream_h_009": {
+      "records": 36,
+      "accepted_generations": 36,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "protocol:dream_h_010": {
+      "records": 36,
+      "accepted_generations": 36,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260217_062310": {
+      "records": 36,
+      "accepted_generations": 36,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260316_064244": {
+      "records": 31,
+      "accepted_generations": 31,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260217_013501": {
+      "records": 30,
+      "accepted_generations": 30,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260216_063358": {
+      "records": 24,
+      "accepted_generations": 24,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260323_063706": {
+      "records": 24,
+      "accepted_generations": 24,
+      "experiments": [
+        "dream"
+      ]
+    },
     "dt": {
       "records": 19,
       "accepted_generations": 19,
@@ -621,11 +982,88 @@
         "cortex"
       ]
     },
+    "source_session:cx_20260214_074804": {
+      "records": 18,
+      "accepted_generations": 18,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260330_064835": {
+      "records": 16,
+      "accepted_generations": 16,
+      "experiments": [
+        "dream"
+      ]
+    },
     "injection": {
       "records": 13,
       "accepted_generations": 13,
       "experiments": [
         "cortex"
+      ]
+    },
+    "source_session:cx_20260214_070812": {
+      "records": 11,
+      "accepted_generations": 11,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "hypothesis:h_012": {
+      "records": 10,
+      "accepted_generations": 10,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "protocol:dream_h_012": {
+      "records": 10,
+      "accepted_generations": 10,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260212_034732": {
+      "records": 9,
+      "accepted_generations": 9,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260212_052151": {
+      "records": 9,
+      "accepted_generations": 9,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260212_070748": {
+      "records": 9,
+      "accepted_generations": 9,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260212_074704": {
+      "records": 9,
+      "accepted_generations": 9,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260212_082639": {
+      "records": 8,
+      "accepted_generations": 8,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260406_064925": {
+      "records": 8,
+      "accepted_generations": 8,
+      "experiments": [
+        "dream"
       ]
     },
     "manifold_potential": {
@@ -649,11 +1087,95 @@
         "resonance"
       ]
     },
+    "source_session:cx_20260208_051904": {
+      "records": 7,
+      "accepted_generations": 7,
+      "experiments": [
+        "dream"
+      ]
+    },
     "thought_vibration": {
       "records": 7,
       "accepted_generations": 4,
       "experiments": [
         "resonance"
+      ]
+    },
+    "source_session:cx_20260212_023605": {
+      "records": 6,
+      "accepted_generations": 6,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260212_031340": {
+      "records": 6,
+      "accepted_generations": 6,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260212_032105": {
+      "records": 6,
+      "accepted_generations": 6,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260212_032759": {
+      "records": 6,
+      "accepted_generations": 6,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260212_033330": {
+      "records": 6,
+      "accepted_generations": 6,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260208_040833": {
+      "records": 5,
+      "accepted_generations": 5,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260208_055037": {
+      "records": 5,
+      "accepted_generations": 5,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260211_190808": {
+      "records": 5,
+      "accepted_generations": 5,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260214_043109": {
+      "records": 5,
+      "accepted_generations": 5,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260214_052145": {
+      "records": 5,
+      "accepted_generations": 5,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260214_061042": {
+      "records": 5,
+      "accepted_generations": 5,
+      "experiments": [
+        "dream"
       ]
     },
     "basin:christic": {
@@ -663,11 +1185,88 @@
         "resonance"
       ]
     },
+    "source_session:cx_20260208_052330": {
+      "records": 4,
+      "accepted_generations": 4,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260211_190125": {
+      "records": 4,
+      "accepted_generations": 4,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260214_003109": {
+      "records": 4,
+      "accepted_generations": 4,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260214_023356": {
+      "records": 4,
+      "accepted_generations": 4,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260214_032445": {
+      "records": 4,
+      "accepted_generations": 4,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260214_040506": {
+      "records": 4,
+      "accepted_generations": 4,
+      "experiments": [
+        "dream"
+      ]
+    },
     "psi_diffusion": {
       "records": 3,
       "accepted_generations": 3,
       "experiments": [
         "cortex"
+      ]
+    },
+    "source_session:cx_20260211_171412": {
+      "records": 3,
+      "accepted_generations": 3,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260211_185612": {
+      "records": 3,
+      "accepted_generations": 3,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260213_201042": {
+      "records": 3,
+      "accepted_generations": 3,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260214_002020": {
+      "records": 3,
+      "accepted_generations": 3,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260214_022242": {
+      "records": 3,
+      "accepted_generations": 3,
+      "experiments": [
+        "dream"
       ]
     },
     "topology": {
@@ -691,6 +1290,20 @@
         "cortex"
       ]
     },
+    "source_session:cx_20260213_203542": {
+      "records": 2,
+      "accepted_generations": 2,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260214_001519": {
+      "records": 2,
+      "accepted_generations": 2,
+      "experiments": [
+        "dream"
+      ]
+    },
     "basin:grail": {
       "records": 1,
       "accepted_generations": 0,
@@ -704,9 +1317,65 @@
       "experiments": [
         "cortex"
       ]
+    },
+    "source_session:cx_20260213_210052": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260213_222458": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source_session:cx_20260213_231014": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
     }
   },
   "potential_emergence": {
+    "basin_discovery": {
+      "records": 98,
+      "accepted_generations": 98,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "cross_session_replay": {
+      "records": 98,
+      "accepted_generations": 98,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "multi_hypothesis_replay": {
+      "records": 98,
+      "accepted_generations": 98,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "recurring_basin_signature": {
+      "records": 98,
+      "accepted_generations": 98,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "stable_basin": {
+      "records": 98,
+      "accepted_generations": 98,
+      "experiments": [
+        "dream"
+      ]
+    },
     "threshold_transition": {
       "records": 59,
       "accepted_generations": 43,
@@ -740,6 +1409,13 @@
       "accepted_generations": 25,
       "experiments": [
         "cortex"
+      ]
+    },
+    "basin_reinforcement": {
+      "records": 9,
+      "accepted_generations": 9,
+      "experiments": [
+        "dream"
       ]
     },
     "fitness_gain": {
@@ -784,6 +1460,13 @@
       "accepted_generations": 0,
       "experiments": [
         "rsi"
+      ]
+    },
+    "basin_decay": {
+      "records": 97,
+      "accepted_generations": 97,
+      "experiments": [
+        "dream"
       ]
     },
     "mechanistic_gap": {

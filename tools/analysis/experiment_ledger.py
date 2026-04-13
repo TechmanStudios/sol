@@ -610,6 +610,7 @@ def _discover_dream_records(dream_root: Path) -> list[ExperimentRecord]:
             basins_decayed = int(payload.get("basins_decayed", 0) or 0)
 
             stable_basins = 0
+            basin_signature_count = len(basin_signatures)
             recurring_mass_hashes: set[str] = set()
             seen_mass_hashes: set[str] = set()
             knowledge_domains: list[str] = ["hippocampal_replay"]
@@ -686,7 +687,7 @@ def _discover_dream_records(dream_root: Path) -> list[ExperimentRecord]:
                     generation=1,
                     accepted=replays_run > 0 and (basins_discovered > 0 or basins_reinforced > 0 or stable_basins > 0),
                     metrics={
-                        "delta_anchor": stable_basins / max(1, replays_run),
+                        "delta_anchor": stable_basins / max(1, basin_signature_count),
                         "delta_full": float(replays_run),
                         "sessions_replayed": float(sessions_replayed),
                         "replays_run": float(replays_run),
@@ -694,6 +695,7 @@ def _discover_dream_records(dream_root: Path) -> list[ExperimentRecord]:
                         "basins_reinforced": float(basins_reinforced),
                         "basins_decayed": float(basins_decayed),
                         "stable_basins": float(stable_basins),
+                        "basin_signatures": float(basin_signature_count),
                         "source_sessions": float(len(source_sessions)),
                         "hypotheses": float(len(hypothesis_ids)),
                         "protocols": float(len(protocol_names)),

@@ -1,7 +1,7 @@
 # Experiment Ledger
 
-Generated: 2026-04-06T06:50:14.633258+00:00
-Records: 1500 | Runs: 81
+Generated: 2026-04-13T06:18:33.502253+00:00
+Records: 1598 | Runs: 179
 
 ## cortex
 
@@ -33,6 +33,31 @@ Records: 1500 | Runs: 81
 | autonomous-session | open_question | CX-20260213-222458 | 1 | 1.0000 | 1.0000 | 8.0000 |
 | autonomous-session | open_question | CX-20260213-231014 | 1 | 1.0000 | 1.0000 | 8.0000 |
 | autonomous-session | open_question | CX-20260214-001519 | 1 | 1.0000 | 1.0000 | 5.0000 |
+
+## dream
+
+- Runs: 98 | Generations: 98 | Accepted: 98 | Acceptance: 100.00%
+
+### Modes
+
+| Mode | Runs | Gens | Accepted | Acceptance | Best dA | Best dF |
+|---|---:|---:|---:|---:|---:|---:|
+| dream_cycle | 98 | 98 | 98 | 100.00% | 1.0000 | 62.0000 |
+
+### Top Runs
+
+| Source | Mode | Run | Gens | Best dA | Latest dA | Latest dF |
+|---|---|---|---:|---:|---:|---:|
+| hippocampus-nightly | dream_cycle | DS-20260208-052205 | 1 | 1.0000 | 1.0000 | 3.0000 |
+| hippocampus-nightly | dream_cycle | DS-20260208-055125 | 1 | 1.0000 | 1.0000 | 3.0000 |
+| hippocampus-nightly | dream_cycle | DS-20260210-045027 | 1 | 1.0000 | 1.0000 | 5.0000 |
+| hippocampus-nightly | dream_cycle | DS-20260211-044926 | 1 | 1.0000 | 1.0000 | 5.0000 |
+| hippocampus-nightly | dream_cycle | DS-20260211-171806 | 1 | 1.0000 | 1.0000 | 10.0000 |
+| hippocampus-nightly | dream_cycle | DS-20260211-191202 | 1 | 1.0000 | 1.0000 | 22.0000 |
+| hippocampus-nightly | dream_cycle | DS-20260212-024212 | 1 | 1.0000 | 1.0000 | 25.0000 |
+| hippocampus-nightly | dream_cycle | DS-20260212-031446 | 1 | 1.0000 | 1.0000 | 25.0000 |
+| hippocampus-nightly | dream_cycle | DS-20260212-032211 | 1 | 1.0000 | 1.0000 | 25.0000 |
+| hippocampus-nightly | dream_cycle | DS-20260212-032906 | 1 | 1.0000 | 1.0000 | 25.0000 |
 
 ## resonance
 
@@ -111,31 +136,105 @@ Records: 1500 | Runs: 81
 | policy_adaptation | 1138 | 25 | self_train |
 | adaptive_rsi | 293 | 168 | rsi |
 | open_questions | 132 | 7 | rsi |
+| hippocampal_replay | 98 | 98 | dream |
+| hypothesis:h_001 | 98 | 98 | dream |
+| hypothesis:h_002 | 98 | 98 | dream |
+| protocol:dream_h_001 | 98 | 98 | dream |
+| protocol:dream_h_002 | 98 | 98 | dream |
+| hypothesis:h_003 | 93 | 93 | dream |
+| protocol:dream_h_003 | 93 | 93 | dream |
+| hypothesis:h_004 | 67 | 67 | dream |
+| hypothesis:h_005 | 67 | 67 | dream |
+| protocol:dream_h_004 | 67 | 67 | dream |
+| protocol:dream_h_005 | 67 | 67 | dream |
 | injection:grail | 61 | 45 | cortex |
 | damping | 59 | 43 | cortex |
+| hypothesis:h_006 | 59 | 59 | dream |
+| hypothesis:h_007 | 59 | 59 | dream |
+| protocol:dream_h_006 | 59 | 59 | dream |
+| protocol:dream_h_007 | 59 | 59 | dream |
+| hypothesis:h_008 | 58 | 58 | dream |
+| protocol:dream_h_008 | 58 | 58 | dream |
+| source_session:cx_20260223_063438 | 37 | 37 | dream |
+| source_session:cx_20260302_062850 | 37 | 37 | dream |
+| source_session:cx_20260309_063136 | 37 | 37 | dream |
+| hypothesis:h_009 | 36 | 36 | dream |
+| hypothesis:h_010 | 36 | 36 | dream |
+| protocol:dream_h_009 | 36 | 36 | dream |
+| protocol:dream_h_010 | 36 | 36 | dream |
+| source_session:cx_20260217_062310 | 36 | 36 | dream |
+| source_session:cx_20260316_064244 | 31 | 31 | dream |
+| source_session:cx_20260217_013501 | 30 | 30 | dream |
+| source_session:cx_20260216_063358 | 24 | 24 | dream |
+| source_session:cx_20260323_063706 | 24 | 24 | dream |
 | dt | 19 | 19 | cortex |
+| source_session:cx_20260214_074804 | 18 | 18 | dream |
+| source_session:cx_20260330_064835 | 16 | 16 | dream |
 | injection | 13 | 13 | cortex |
+| source_session:cx_20260214_070812 | 11 | 11 | dream |
+| hypothesis:h_012 | 10 | 10 | dream |
+| protocol:dream_h_012 | 10 | 10 | dream |
+| source_session:cx_20260212_034732 | 9 | 9 | dream |
+| source_session:cx_20260212_052151 | 9 | 9 | dream |
+| source_session:cx_20260212_070748 | 9 | 9 | dream |
+| source_session:cx_20260212_074704 | 9 | 9 | dream |
+| source_session:cx_20260212_082639 | 8 | 8 | dream |
+| source_session:cx_20260406_064925 | 8 | 8 | dream |
 | manifold_potential | 7 | 4 | resonance |
 | phonon_memory | 7 | 4 | resonance |
 | semantic_entanglement | 7 | 4 | resonance |
+| source_session:cx_20260208_051904 | 7 | 7 | dream |
 | thought_vibration | 7 | 4 | resonance |
+| source_session:cx_20260212_023605 | 6 | 6 | dream |
+| source_session:cx_20260212_031340 | 6 | 6 | dream |
+| source_session:cx_20260212_032105 | 6 | 6 | dream |
+| source_session:cx_20260212_032759 | 6 | 6 | dream |
+| source_session:cx_20260212_033330 | 6 | 6 | dream |
+| source_session:cx_20260208_040833 | 5 | 5 | dream |
+| source_session:cx_20260208_055037 | 5 | 5 | dream |
+| source_session:cx_20260211_190808 | 5 | 5 | dream |
+| source_session:cx_20260214_043109 | 5 | 5 | dream |
+| source_session:cx_20260214_052145 | 5 | 5 | dream |
+| source_session:cx_20260214_061042 | 5 | 5 | dream |
 | basin:christic | 4 | 3 | resonance |
+| source_session:cx_20260208_052330 | 4 | 4 | dream |
+| source_session:cx_20260211_190125 | 4 | 4 | dream |
+| source_session:cx_20260214_003109 | 4 | 4 | dream |
+| source_session:cx_20260214_023356 | 4 | 4 | dream |
+| source_session:cx_20260214_032445 | 4 | 4 | dream |
+| source_session:cx_20260214_040506 | 4 | 4 | dream |
 | psi_diffusion | 3 | 3 | cortex |
+| source_session:cx_20260211_171412 | 3 | 3 | dream |
+| source_session:cx_20260211_185612 | 3 | 3 | dream |
+| source_session:cx_20260213_201042 | 3 | 3 | dream |
+| source_session:cx_20260214_002020 | 3 | 3 | dream |
+| source_session:cx_20260214_022242 | 3 | 3 | dream |
 | topology | 3 | 3 | cortex |
 | basin:metatron | 2 | 1 | resonance |
 | c_press | 2 | 2 | cortex |
+| source_session:cx_20260213_203542 | 2 | 2 | dream |
+| source_session:cx_20260214_001519 | 2 | 2 | dream |
 | basin:grail | 1 | 0 | resonance |
 | conductance_gamma | 1 | 1 | cortex |
+| source_session:cx_20260213_210052 | 1 | 1 | dream |
+| source_session:cx_20260213_222458 | 1 | 1 | dream |
+| source_session:cx_20260213_231014 | 1 | 1 | dream |
 
 ## Potential Emergence
 
 | Signal | Records | Accepted | Experiments |
 |---|---:|---:|---|
+| basin_discovery | 98 | 98 | dream |
+| cross_session_replay | 98 | 98 | dream |
+| multi_hypothesis_replay | 98 | 98 | dream |
+| recurring_basin_signature | 98 | 98 | dream |
+| stable_basin | 98 | 98 | dream |
 | threshold_transition | 59 | 43 | cortex |
 | stable_replay | 41 | 41 | cortex |
 | accepted_candidate | 25 | 25 | self_train |
 | basin_migration | 25 | 25 | cortex |
 | topological_reorganization | 25 | 25 | cortex |
+| basin_reinforcement | 9 | 9 | dream |
 | fitness_gain | 5 | 5 | rsi |
 | high_resonance | 4 | 3 | resonance |
 | multi_basin | 4 | 3 | resonance |
@@ -147,6 +246,7 @@ Records: 1500 | Runs: 81
 |---|---:|---:|---|
 | rejected_candidate | 1113 | 0 | self_train |
 | cycle_error | 125 | 0 | rsi |
+| basin_decay | 97 | 97 | dream |
 | mechanistic_gap | 37 | 37 | cortex |
 | unknown_mechanics | 36 | 36 | cortex |
 | open_question | 29 | 29 | cortex |
