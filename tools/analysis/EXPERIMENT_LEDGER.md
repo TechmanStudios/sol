@@ -8,6 +8,7 @@ This engine builds a generalized ledger index across experiments using a normali
 - `resonance` (from `data/thinking_engine_resonance` + `data/thinking_engine_resonance_phase2`)
 - `rsi` (from `data/rsi` ledger streams)
 - `cortex` (from `data/cortex_sessions`)
+- `dream` (from `data/dream_sessions`)
 
 ## Outputs
 
@@ -50,7 +51,8 @@ python tools/analysis/experiment_ledger.py \
 	--resonance-phase1-root data/thinking_engine_resonance \
 	--resonance-phase2-root data/thinking_engine_resonance_phase2 \
 	--rsi-root data/rsi \
-	--cortex-root data/cortex_sessions
+	--cortex-root data/cortex_sessions \
+	--dream-root data/dream_sessions
 ```
 
 ## Schema (record)

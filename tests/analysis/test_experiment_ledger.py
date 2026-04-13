@@ -15,6 +15,7 @@ from experiment_ledger import (
     _aggregate_runs,
     _build_index,
     _discover_cortex_records,
+    _discover_dream_records,
     _discover_resonance_records,
 )
 
@@ -89,6 +90,109 @@ def test_discover_cortex_records_extracts_domains_and_signals(tmp_path):
     assert "open_question" in record.unknown_mechanics
     assert "unknown_mechanics" in record.unknown_mechanics
     assert "mechanistic_gap" in record.unknown_mechanics
+
+
+def test_discover_dream_records_extracts_replay_annotations(tmp_path):
+    dream_root = tmp_path / "dream_sessions"
+    session_dir = dream_root / "DS-20260413-050853"
+    session_dir.mkdir(parents=True)
+
+    (session_dir / "summary.json").write_text(
+        json.dumps(
+            {
+                "session_id": "DS-20260413-050853",
+                "completed_at": "2026-04-13T05:10:19.700959+00:00",
+                "sessions_replayed": 2,
+                "replays_run": 3,
+                "basins_discovered": 2,
+                "basins_reinforced": 1,
+                "basins_decayed": 4,
+            }
+        ),
+        encoding="utf-8",
+    )
+    (session_dir / "dream_log.jsonl").write_text(
+        "\n".join(
+            [
+                json.dumps(
+                    {
+                        "source_session": "CX-20260406-064925",
+                        "hypothesis_id": "H-001",
+                        "protocol_name": "dream_H-001",
+                        "basins_found": 24,
+                        "score": 0.45,
+                    }
+                ),
+                json.dumps(
+                    {
+                        "source_session": "CX-20260330-064835",
+                        "hypothesis_id": "H-002",
+                        "protocol_name": "dream_H-002",
+                        "basins_found": 12,
+                        "score": 0.22,
+                    }
+                ),
+                json.dumps(
+                    {
+                        "source_session": "CX-20260330-064835",
+                        "hypothesis_id": "H-003",
+                        "protocol_name": "dream_H-003",
+                        "basins_found": 3,
+                        "score": 0.22,
+                    }
+                ),
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (session_dir / "basin_signatures.json").write_text(
+        json.dumps(
+            [
+                {
+                    "mass_hash": "efeeb046",
+                    "source_hypothesis": "H-001",
+                    "stability": 3,
+                    "is_stable": True,
+                },
+                {
+                    "mass_hash": "efeeb046",
+                    "source_hypothesis": "H-002",
+                    "stability": 3,
+                    "is_stable": True,
+                },
+                {
+                    "mass_hash": "fa6d4a79",
+                    "source_hypothesis": "H-003",
+                    "stability": 1,
+                    "is_stable": False,
+                },
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    records = _discover_dream_records(dream_root)
+
+    assert len(records) == 1
+    record = records[0]
+    assert record.experiment == "dream"
+    assert record.source == "hippocampus-nightly"
+    assert record.mode == "dream_cycle"
+    assert record.accepted is True
+    assert record.metrics["delta_anchor"] == 2 / 3
+    assert record.metrics["replays_run"] == 3.0
+    assert "hippocampal_replay" in record.knowledge_domains
+    assert "source_session:cx_20260406_064925" in record.knowledge_domains
+    assert "hypothesis:h_003" in record.knowledge_domains
+    assert "protocol:dream_h_002" in record.knowledge_domains
+    assert "basin_discovery" in record.emergence_signals
+    assert "basin_reinforcement" in record.emergence_signals
+    assert "stable_basin" in record.emergence_signals
+    assert "cross_session_replay" in record.emergence_signals
+    assert "multi_hypothesis_replay" in record.emergence_signals
+    assert "recurring_basin_signature" in record.emergence_signals
+    assert "basin_decay" in record.unknown_mechanics
 
 
 def test_build_index_summarizes_new_domain_and_signal_annotations(tmp_path):

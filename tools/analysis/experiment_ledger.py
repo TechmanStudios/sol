@@ -591,6 +591,127 @@ def _discover_cortex_records(cortex_root: Path) -> list[ExperimentRecord]:
     return records
 
 
+def _discover_dream_records(dream_root: Path) -> list[ExperimentRecord]:
+    records: list[ExperimentRecord] = []
+    if not dream_root.exists():
+        return records
+
+    for summary_path in dream_root.glob("*/summary.json"):
+        try:
+            session_dir = summary_path.parent
+            payload = _load_json_file(summary_path)
+            dream_rows = _load_jsonl_rows(session_dir / "dream_log.jsonl")
+            basin_signatures = _load_optional_json_list(session_dir / "basin_signatures.json")
+
+            sessions_replayed = int(payload.get("sessions_replayed", 0) or 0)
+            replays_run = int(payload.get("replays_run", len(dream_rows)) or len(dream_rows) or 0)
+            basins_discovered = int(payload.get("basins_discovered", 0) or 0)
+            basins_reinforced = int(payload.get("basins_reinforced", 0) or 0)
+            basins_decayed = int(payload.get("basins_decayed", 0) or 0)
+
+            stable_basins = 0
+            recurring_mass_hashes: set[str] = set()
+            seen_mass_hashes: set[str] = set()
+            knowledge_domains: list[str] = ["hippocampal_replay"]
+            emergence_signals: list[str] = []
+            unknown_mechanics: list[str] = []
+
+            source_sessions: set[str] = set()
+            hypothesis_ids: set[str] = set()
+            protocol_names: set[str] = set()
+
+            for row in dream_rows:
+                _append_token(knowledge_domains, row.get("source_session"), prefix="source_session")
+                _append_token(knowledge_domains, row.get("hypothesis_id"), prefix="hypothesis")
+                _append_token(knowledge_domains, row.get("protocol_name"), prefix="protocol")
+
+                source_session = _normalize_token(row.get("source_session"))
+                if source_session:
+                    source_sessions.add(source_session)
+                hypothesis_id = _normalize_token(row.get("hypothesis_id"))
+                if hypothesis_id:
+                    hypothesis_ids.add(hypothesis_id)
+                protocol_name = _normalize_token(row.get("protocol_name"))
+                if protocol_name:
+                    protocol_names.add(protocol_name)
+
+            for basin in basin_signatures:
+                if basin.get("is_stable"):
+                    stable_basins += 1
+                _append_token(knowledge_domains, basin.get("source_hypothesis"), prefix="hypothesis")
+                mass_hash = _normalize_token(basin.get("mass_hash"))
+                if mass_hash:
+                    if mass_hash in seen_mass_hashes:
+                        recurring_mass_hashes.add(mass_hash)
+                    seen_mass_hashes.add(mass_hash)
+
+            if basins_discovered > 0:
+                _append_token(emergence_signals, "basin_discovery")
+            if basins_reinforced > 0:
+                _append_token(emergence_signals, "basin_reinforcement")
+            if stable_basins > 0:
+                _append_token(emergence_signals, "stable_basin")
+            if len(source_sessions) > 1:
+                _append_token(emergence_signals, "cross_session_replay")
+            if len(hypothesis_ids) > 1:
+                _append_token(emergence_signals, "multi_hypothesis_replay")
+            if recurring_mass_hashes:
+                _append_token(emergence_signals, "recurring_basin_signature")
+
+            if basins_decayed > 0:
+                _append_token(unknown_mechanics, "basin_decay")
+            if replays_run > 0 and stable_basins == 0:
+                _append_token(unknown_mechanics, "unstable_replay")
+            if replays_run > 0 and not dream_rows:
+                _append_token(unknown_mechanics, "missing_dream_log")
+            if replays_run > 0 and not basin_signatures:
+                _append_token(unknown_mechanics, "missing_basin_signatures")
+
+            reason_parts = [
+                f"sessions_replayed={sessions_replayed}",
+                f"replays_run={replays_run}",
+                f"stable_basins={stable_basins}",
+            ]
+            if source_sessions:
+                reason_parts.append(f"source_sessions={len(source_sessions)}")
+            if hypothesis_ids:
+                reason_parts.append(f"hypotheses={len(hypothesis_ids)}")
+
+            records.append(
+                ExperimentRecord(
+                    experiment="dream",
+                    source="hippocampus-nightly",
+                    mode="dream_cycle",
+                    run_id=session_dir.name,
+                    generation=1,
+                    accepted=replays_run > 0 and (basins_discovered > 0 or basins_reinforced > 0 or stable_basins > 0),
+                    metrics={
+                        "delta_anchor": stable_basins / max(1, replays_run),
+                        "delta_full": float(replays_run),
+                        "sessions_replayed": float(sessions_replayed),
+                        "replays_run": float(replays_run),
+                        "basins_discovered": float(basins_discovered),
+                        "basins_reinforced": float(basins_reinforced),
+                        "basins_decayed": float(basins_decayed),
+                        "stable_basins": float(stable_basins),
+                        "source_sessions": float(len(source_sessions)),
+                        "hypotheses": float(len(hypothesis_ids)),
+                        "protocols": float(len(protocol_names)),
+                    },
+                    reason="; ".join(reason_parts),
+                    summary_path=str(summary_path).replace("\\", "/"),
+                    knowledge_domains=knowledge_domains,
+                    emergence_signals=emergence_signals,
+                    unknown_mechanics=unknown_mechanics,
+                )
+            )
+        except Exception:
+            continue
+
+    records.sort(key=lambda r: (r.experiment, r.source, r.mode, r.run_id, r.generation))
+    return records
+
+
 def _aggregate_runs(records: list[ExperimentRecord]) -> list[ExperimentRunSummary]:
     grouped: dict[tuple[str, str, str, str], list[ExperimentRecord]] = {}
     for record in records:
@@ -781,6 +902,12 @@ def parse_args() -> argparse.Namespace:
         help="Root directory for cortex autonomous session summaries",
     )
     parser.add_argument(
+        "--dream-root",
+        type=Path,
+        default=Path("data") / "dream_sessions",
+        help="Root directory for hippocampal dream session summaries",
+    )
+    parser.add_argument(
         "--out-dir",
         type=Path,
         default=Path("data") / "experiment_ledger",
@@ -798,6 +925,7 @@ def main() -> int:
     records.extend(_discover_resonance_records(args.resonance_phase1_root, args.resonance_phase2_root))
     records.extend(_discover_rsi_records(args.rsi_root))
     records.extend(_discover_cortex_records(args.cortex_root))
+    records.extend(_discover_dream_records(args.dream_root))
     records.sort(key=lambda r: (r.experiment, r.source, r.mode, r.run_id, r.generation))
     run_summaries = _aggregate_runs(records)
     index = _build_index(records, run_summaries)
