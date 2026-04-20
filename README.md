@@ -54,8 +54,11 @@ focused on reflective, self-organizing AI:
    (knowledge)    (dream / consolidation)   (recursive improvement)
 ```
 
-Foundational background on the reflective-AI layer lives in
-**[`KB/ThothStream_Knowledgebase.md`](KB/ThothStream_Knowledgebase.md)**.
+Foundational background on the reflective-AI layer lives in the **`KB/`
+directory**.  That folder is user-supplied (excluded from the public repo to
+protect proprietary content).  Forkers should add their own knowledge files
+there and point the config at them — see [`KB/README.md`](KB/README.md) and
+the minimal [`KB/sample_kb.md`](KB/sample_kb.md) template.
 
 ---
 
@@ -168,7 +171,7 @@ latest curated entry point is the highest-numbered file (e.g.
 ├── sandBox/                   ← scratch / playground specs
 ├── data/                      ← raw run outputs (cortex, dream, RSI, …)
 ├── knowledge/                 ← source corpora (e.g. youtube transcripts)
-├── KB/                        ← background knowledge bases (ThothStream, …)
+├── KB/                        ← user-supplied knowledge bases (see KB/README.md)
 ├── tests/                     ← pytest suites
 └── *.py / *.html              ← top-level experiments & versioned dashboards
 ```
