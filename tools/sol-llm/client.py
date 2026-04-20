@@ -202,11 +202,13 @@ class SolLLM:
             api_key = self._resolve_key(provider_cfg)
             if not api_key:
                 continue
-            endpoint = provider_cfg.get("endpoint", "")
-            # OpenAI direct API uses the default endpoint (no override needed)
-            if provider_key == "openai" and "api.openai.com" in endpoint:
+            # For the "openai" provider key, use the SDK's built-in default endpoint
+            # (https://api.openai.com/v1).  All other providers need an explicit
+            # base_url pointing at their OpenAI-compatible gateway.
+            if provider_key == "openai":
                 self._provider_clients[provider_key] = OpenAI(api_key=api_key)
             else:
+                endpoint = provider_cfg.get("endpoint", "")
                 self._provider_clients[provider_key] = OpenAI(
                     base_url=endpoint,
                     api_key=api_key,
