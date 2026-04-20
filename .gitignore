@@ -74,3 +74,11 @@ backUps/
 *.token.txt
 .github/*token*
 .github/*access*
+
+# Local agent / editor task history
+.copilot-tasks-history.json
+*.bak
+*.orig
+*.rej
+.idea/
+*.iml
