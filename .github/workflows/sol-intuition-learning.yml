@@ -56,6 +56,7 @@ jobs:
 
       - name: Run Intuition Learning Sequence (RSI Persistent Mode)
         env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MODAL_API_KEY: ${{ secrets.MODAL_API_KEY }}
         run: |

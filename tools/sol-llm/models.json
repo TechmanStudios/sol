@@ -1,11 +1,17 @@
 {
   "_comment": "SOL LLM Model Configuration — edit this file to swap models/keys/providers",
-  "_updated": "2026-02-12T2",
+  "_updated": "2026-04-20",
   "providers": {
     "github": {
       "name": "GitHub Models",
       "endpoint": "https://models.inference.ai.azure.com",
       "env_var": "GITHUB_TOKEN",
+      "sdk": "openai"
+    },
+    "openai": {
+      "name": "OpenAI (Direct)",
+      "endpoint": "https://api.openai.com/v1",
+      "env_var": "OPENAI_API_KEY",
       "sdk": "openai"
     },
     "anthropic": {
@@ -19,42 +25,64 @@
       "endpoint": "https://generativelanguage.googleapis.com",
       "env_var": "GOOGLE_API_KEY",
       "sdk": "google"
-    },
-    "openai": {
-      "name": "OpenAI (Direct)",
-      "endpoint": "https://api.openai.com/v1",
-      "env_var": "OPENAI_API_KEY",
-      "sdk": "openai"
     }
   },
   "slots": {
     "primary": {
-      "id": "Meta-Llama-3.1-405B-Instruct",
-      "name": "Llama 3.1 405B",
-      "provider": "github",
+      "id": "gpt-5.4-mini",
+      "name": "GPT-5.4 Mini",
+      "provider": "openai",
+      "github_fallback_id": "Meta-Llama-3.1-405B-Instruct",
       "context_window": 128000,
-      "cost_per_1k_input": 0.0,
-      "cost_per_1k_output": 0.0,
-      "is_reasoning": false
+      "cost_per_1k_input": 0.0005,
+      "cost_per_1k_output": 0.0015,
+      "is_reasoning": false,
+      "_note": "Mid-tier: analysis, synthesis, consolidation, claim drafting"
     },
-    "fallback": {
-      "id": "Mistral-large-2411",
-      "name": "Mistral Large 2411",
-      "provider": "github",
+    "lightweight": {
+      "id": "gpt-5.4-nano",
+      "name": "GPT-5.4 Nano",
+      "provider": "openai",
+      "github_fallback_id": "gpt-5-nano",
       "context_window": 128000,
-      "cost_per_1k_input": 0.0,
-      "cost_per_1k_output": 0.0,
-      "is_reasoning": false
+      "cost_per_1k_input": 0.0001,
+      "cost_per_1k_output": 0.0003,
+      "is_reasoning": false,
+      "_note": "Lightweight: reflection, question generation, simple extraction"
     },
     "reasoning": {
-      "id": "DeepSeek-R1-0528",
-      "name": "DeepSeek R1 0528",
-      "provider": "github",
-      "context_window": 163840,
-      "cost_per_1k_input": 0.0,
-      "cost_per_1k_output": 0.0,
-      "is_reasoning": true
+      "id": "gpt-5.4",
+      "name": "GPT-5.4",
+      "provider": "openai",
+      "github_fallback_id": "DeepSeek-R1-0528",
+      "context_window": 128000,
+      "cost_per_1k_input": 0.005,
+      "cost_per_1k_output": 0.015,
+      "is_reasoning": false,
+      "_note": "Heavy: hypothesis generation, deep research synthesis"
+    },
+    "fallback": {
+      "id": "gpt-5.4-nano",
+      "name": "GPT-5.4 Nano (fallback)",
+      "provider": "openai",
+      "github_fallback_id": "Mistral-large-2411",
+      "context_window": 128000,
+      "cost_per_1k_input": 0.0001,
+      "cost_per_1k_output": 0.0003,
+      "is_reasoning": false,
+      "_note": "Fallback: used when primary/routed slot fails"
     }
+  },
+  "task_routing": {
+    "_comment": "Maps task names to model slots. lightweight→nano, primary→mini, reasoning→full.",
+    "hypothesis":    "reasoning",
+    "reflection":    "lightweight",
+    "question_gen":  "lightweight",
+    "claim_draft":   "primary",
+    "interpretation":"primary",
+    "synthesis":     "primary",
+    "consolidation": "primary",
+    "general":       "primary"
   },
   "budget": {
     "max_tokens_per_call": 4096,
@@ -74,7 +102,28 @@
   },
   "model_catalog": {
     "_comment": "Known models per provider. 'update_models.py --scan' refreshes this.",
+    "openai": [
+      "gpt-5.4",
+      "gpt-5.4-mini",
+      "gpt-5.4-nano",
+      "gpt-5.3-codex",
+      "gpt-5",
+      "gpt-5-mini",
+      "gpt-5-nano",
+      "gpt-4.1",
+      "gpt-4.1-mini",
+      "gpt-4.1-nano",
+      "gpt-4o",
+      "gpt-4o-mini",
+      "o1",
+      "o3",
+      "o3-pro",
+      "o4-mini"
+    ],
     "github": [
+      "gpt-5.4",
+      "gpt-5.4-mini",
+      "gpt-5.4-nano",
       "gpt-5",
       "gpt-5-chat",
       "gpt-5-mini",
@@ -178,6 +227,34 @@
       "from": "gpt-4.1-nano",
       "to": "Mistral-large-2411",
       "reason": "max throughput: 150 req/day low-tier, separate rate pool"
+    },
+    {
+      "date": "2026-04-20",
+      "slot": "primary",
+      "from": "Meta-Llama-3.1-405B-Instruct",
+      "to": "gpt-5.4-mini",
+      "reason": "GPT-5.4 family integration: mini for mid-tier tasks (analysis, synthesis, consolidation)"
+    },
+    {
+      "date": "2026-04-20",
+      "slot": "reasoning",
+      "from": "DeepSeek-R1-0528",
+      "to": "gpt-5.4",
+      "reason": "GPT-5.4 full model for heavy reasoning tasks (hypothesis generation, deep synthesis)"
+    },
+    {
+      "date": "2026-04-20",
+      "slot": "fallback",
+      "from": "Mistral-large-2411",
+      "to": "gpt-5.4-nano",
+      "reason": "GPT-5.4 nano as cost-efficient fallback"
+    },
+    {
+      "date": "2026-04-20",
+      "slot": "lightweight",
+      "from": null,
+      "to": "gpt-5.4-nano",
+      "reason": "New lightweight slot: nano model for reflection, question_gen — minimal cost"
     }
   ]
 }

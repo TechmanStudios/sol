@@ -122,6 +122,9 @@ jobs:
 
       - name: Run cortex session
         id: cortex
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd tools/sol-cortex
           ARGS="--max-protocols ${{ needs.check-trigger.outputs.max_protocols }}"
@@ -144,6 +147,9 @@ jobs:
 
       - name: Run consolidation
         if: needs.check-trigger.outputs.dry_run != 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           SESSION_DIR="data/cortex_sessions/${{ steps.cortex.outputs.session_id }}"
           if [[ -d "$SESSION_DIR" ]]; then

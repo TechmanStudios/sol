@@ -6,8 +6,9 @@ CLI tool to manage LLM model configuration without editing Python code.
 
 Usage:
     python tools/sol-llm/update_models.py show
-    python tools/sol-llm/update_models.py set primary gpt-5.3-codex
-    python tools/sol-llm/update_models.py set reasoning claude-4.6 --provider anthropic
+    python tools/sol-llm/update_models.py set primary gpt-5.4-mini
+    python tools/sol-llm/update_models.py set lightweight gpt-5.4-nano --provider openai
+    python tools/sol-llm/update_models.py set reasoning gpt-5.4 --provider openai
     python tools/sol-llm/update_models.py scan
     python tools/sol-llm/update_models.py test
     python tools/sol-llm/update_models.py catalog
@@ -116,7 +117,10 @@ def cmd_set(cfg: dict, args) -> None:
 
     # Auto-detect reasoning for known model families
     if reasoning is None:
-        reasoning_prefixes = ("o1", "o3", "o4", "gpt-5-mini", "gpt-5-nano", "gpt-5 ", "DeepSeek-R1")
+        reasoning_prefixes = (
+            "o1", "o3", "o4", "DeepSeek-R1",
+            "gpt-5-mini", "gpt-5-nano", "gpt-5 ",
+        )
         reasoning_exact = {"gpt-5", "gpt-5-mini", "gpt-5-nano"}
         reasoning = model_id in reasoning_exact or any(model_id.startswith(p) for p in reasoning_prefixes)
 
@@ -171,9 +175,10 @@ def cmd_scan(cfg: dict, _args) -> None:
         known = set(catalog.get(provider_key, []))
         # Add some new candidates to always check
         new_candidates = {
+            "gpt-5.4", "gpt-5.4-mini", "gpt-5.4-nano",
+            "gpt-5.3", "gpt-5.3-codex",
             "gpt-5", "gpt-5-chat", "gpt-5-mini", "gpt-5-nano",
             "gpt-5.1", "gpt-5.1-mini", "gpt-5.1-nano",
-            "gpt-5.3", "gpt-5.3-codex",
             "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano",
             "gpt-4o", "gpt-4o-mini",
             "o1", "o1-mini", "o1-preview", "o3", "o3-mini", "o3-pro", "o4-mini",
@@ -384,9 +389,9 @@ def main():
 
     # set
     p_set = sub.add_parser("set", help="Swap a model slot")
-    p_set.add_argument("slot", choices=["primary", "fallback", "reasoning"],
+    p_set.add_argument("slot", choices=["primary", "fallback", "reasoning", "lightweight"],
                        help="Slot to update")
-    p_set.add_argument("model_id", help="New model ID (e.g. gpt-5.3-codex)")
+    p_set.add_argument("model_id", help="New model ID (e.g. gpt-5.4-mini)")
     p_set.add_argument("--provider", help="Provider key (default: keep current)")
     p_set.add_argument("--name", help="Human-readable name")
     p_set.add_argument("--reasoning", type=bool, default=None,
@@ -413,7 +418,7 @@ def main():
 
     # rollback
     p_roll = sub.add_parser("rollback", help="Rollback a slot to previous model")
-    p_roll.add_argument("slot", choices=["primary", "fallback", "reasoning"])
+    p_roll.add_argument("slot", choices=["primary", "fallback", "reasoning", "lightweight"])
 
     # add-provider
     p_prov = sub.add_parser("add-provider", help="Add or update a provider")

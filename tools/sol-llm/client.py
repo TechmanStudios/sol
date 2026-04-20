@@ -3,17 +3,14 @@ SOL LLM — Client
 ==================
 Unified LLM client for the SOL RSI pipeline.
 
-Uses GitHub Models API (OpenAI-compatible endpoint) with:
-  - Primary:   GPT-5 Chat
-  - Fallback:  GPT-5 Nano (reasoning model)
-  - Reasoning: OpenAI o3
+Supports multiple providers with task-based model routing:
+  - Lightweight (nano): reflection, question_gen  → cheapest, fastest
+  - Primary    (mini):  synthesis, consolidation  → balanced cost/quality
+  - Reasoning  (full):  hypothesis, deep analysis → highest quality
 
-Features:
-  - Automatic fallback on primary failure
-  - Cost tracking per call and cumulative
-  - Structured JSON output mode
-  - Rate limiting / budget enforcement
-  - Retry with backoff
+Provider priority:
+  1. OpenAI direct API  (OPENAI_API_KEY)   — preferred when key is present
+  2. GitHub Models      (GITHUB_TOKEN)     — free tier fallback
 
 Usage:
     from sol_llm import SolLLM
@@ -44,16 +41,20 @@ from typing import Any
 try:
     from .config import (
         GITHUB_MODELS_ENDPOINT,
+        PROVIDERS,
         MODELS,
         DEFAULT_BUDGET,
         TASK_TEMPERATURES,
+        TASK_ROUTING,
     )
 except ImportError:
     from config import (
         GITHUB_MODELS_ENDPOINT,
+        PROVIDERS,
         MODELS,
         DEFAULT_BUDGET,
         TASK_TEMPERATURES,
+        TASK_ROUTING,
     )
 
 
@@ -62,9 +63,15 @@ except ImportError:
 # ---------------------------------------------------------------------------
 
 def _load_dotenv():
-    """Load .env from SOL root if GITHUB_TOKEN is not already set."""
-    if os.environ.get("GITHUB_TOKEN") or os.environ.get("GITHUB_MODELS_TOKEN"):
-        return  # already configured
+    """Load .env from SOL root if API keys are not already set."""
+    needs_load = not (
+        os.environ.get("GITHUB_TOKEN")
+        or os.environ.get("GITHUB_MODELS_TOKEN")
+        or os.environ.get("GH_TOKEN")
+        or os.environ.get("OPENAI_API_KEY")
+    )
+    if not needs_load:
+        return
     env_path = Path(__file__).resolve().parent.parent.parent / ".env"
     if not env_path.exists():
         return
@@ -91,7 +98,8 @@ class LLMResponse:
     content: str = ""
     parsed: dict | list | None = None   # For JSON mode
     model: str = ""
-    role: str = ""                      # "primary" or "fallback"
+    role: str = ""                      # slot name used (e.g. "primary", "lightweight")
+    provider: str = ""                  # provider used (e.g. "openai", "github")
     input_tokens: int = 0
     output_tokens: int = 0
     cost_usd: float = 0.0
@@ -119,6 +127,7 @@ def _log_cost(response: LLMResponse):
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "model": response.model,
         "role": response.role,
+        "provider": response.provider,
         "task": response.task,
         "input_tokens": response.input_tokens,
         "output_tokens": response.output_tokens,
@@ -157,8 +166,13 @@ class SolLLM:
     """
     LLM client for the SOL RSI pipeline.
 
-    Wraps GitHub Models API with automatic fallback, cost tracking,
-    and budget enforcement.
+    Routes tasks to the most cost-appropriate model tier:
+      - lightweight  (gpt-5.4-nano):  reflection, question_gen
+      - primary      (gpt-5.4-mini):  synthesis, interpretation, claim_draft
+      - reasoning    (gpt-5.4):       hypothesis, deep analysis
+
+    Supports OpenAI direct API (OPENAI_API_KEY) and GitHub Models
+    (GITHUB_TOKEN) with automatic provider selection and fallback.
     """
 
     def __init__(
@@ -175,30 +189,88 @@ class SolLLM:
         self.session_tokens_in = 0
         self.session_tokens_out = 0
 
-        # Resolve API key — check multiple env var names
-        self.api_key = (
-            os.environ.get("GITHUB_TOKEN")
-            or os.environ.get("GITHUB_MODELS_TOKEN")
-            or os.environ.get("GH_TOKEN")
-        )
-        if not self.api_key:
-            raise EnvironmentError(
-                "No GitHub token found. Set GITHUB_TOKEN environment variable "
-                "with a fine-grained PAT that has GitHub Models API access."
-            )
-
-        # Lazy-import openai to avoid top-level dependency
+        # Build one OpenAI-compatible client per available provider
         try:
             from openai import OpenAI
         except ImportError:
-            raise ImportError(
-                "openai package required: pip install openai"
+            raise ImportError("openai package required: pip install openai")
+
+        self._provider_clients: dict[str, Any] = {}
+        for provider_key, provider_cfg in PROVIDERS.items():
+            if provider_cfg.get("sdk", "openai") != "openai":
+                continue  # Only openai-SDK providers supported in the client
+            api_key = self._resolve_key(provider_cfg)
+            if not api_key:
+                continue
+            endpoint = provider_cfg.get("endpoint", "")
+            # OpenAI direct API uses the default endpoint (no override needed)
+            if provider_key == "openai" and "api.openai.com" in endpoint:
+                self._provider_clients[provider_key] = OpenAI(api_key=api_key)
+            else:
+                self._provider_clients[provider_key] = OpenAI(
+                    base_url=endpoint,
+                    api_key=api_key,
+                )
+
+        if not self._provider_clients:
+            raise EnvironmentError(
+                "No API key found. Set OPENAI_API_KEY for OpenAI direct access, "
+                "or GITHUB_TOKEN for GitHub Models access."
             )
 
-        self._client = OpenAI(
-            base_url=GITHUB_MODELS_ENDPOINT,
-            api_key=self.api_key,
+        if self.verbose:
+            providers_str = ", ".join(self._provider_clients)
+            print(f"  [LLM] Active providers: {providers_str}")
+
+    @staticmethod
+    def _resolve_key(provider_cfg: dict) -> str | None:
+        """Resolve the API key for a provider from environment variables."""
+        env_var = provider_cfg.get("env_var", "GITHUB_TOKEN")
+        key = os.environ.get(env_var)
+        if not key and env_var == "GITHUB_TOKEN":
+            key = os.environ.get("GITHUB_MODELS_TOKEN") or os.environ.get("GH_TOKEN")
+        return key or None
+
+    def _get_client_for_slot(self, slot_key: str) -> tuple[Any, str, str]:
+        """
+        Return (client, model_id, provider_key) for a slot.
+
+        Prefers the slot's configured provider. Falls back to GitHub Models
+        using the slot's github_fallback_id if the preferred provider is
+        unavailable.
+        """
+        model_cfg = MODELS[slot_key]
+        preferred_provider = model_cfg.get("provider", "github")
+
+        if preferred_provider in self._provider_clients:
+            return (
+                self._provider_clients[preferred_provider],
+                model_cfg["id"],
+                preferred_provider,
+            )
+
+        # Preferred provider unavailable — fall back to GitHub Models
+        github_client = self._provider_clients.get("github")
+        if github_client:
+            fallback_id = model_cfg.get("github_fallback_id") or model_cfg["id"]
+            return github_client, fallback_id, "github"
+
+        # Any remaining available provider
+        for pkey, pclient in self._provider_clients.items():
+            return pclient, model_cfg["id"], pkey
+
+        raise EnvironmentError(
+            f"No available provider client for slot '{slot_key}' "
+            f"(preferred: {preferred_provider})."
         )
+
+    def _route_task(self, task: str) -> str:
+        """Map a task type to the best available model slot."""
+        desired_slot = TASK_ROUTING.get(task, "primary")
+        # If the desired slot doesn't exist in MODELS, fall back to primary
+        if desired_slot not in MODELS:
+            desired_slot = "primary"
+        return desired_slot
 
     # ------------------------------------------------------------------
     # Budget checks
@@ -227,14 +299,16 @@ class SolLLM:
         temperature: float,
         json_mode: bool = False,
     ) -> LLMResponse:
-        """Call a specific model and return a response."""
+        """Call a specific model slot and return a response."""
         model_cfg = MODELS[model_key]
-        model_id = model_cfg["id"]
         is_reasoning = model_cfg.get("is_reasoning", False)
+
+        client, model_id, provider_key = self._get_client_for_slot(model_key)
 
         response = LLMResponse(
             model=model_id,
             role=model_key,
+            provider=provider_key,
         )
 
         t0 = time.time()
@@ -244,7 +318,7 @@ class SolLLM:
                 "messages": messages,
             }
 
-            # Reasoning models (o-series, gpt-5 non-chat) use different params
+            # Reasoning models (o-series) use different params
             if is_reasoning:
                 kwargs["max_completion_tokens"] = max_tokens
                 # Reasoning models don't accept temperature or json response_format
@@ -254,7 +328,7 @@ class SolLLM:
                 if json_mode:
                     kwargs["response_format"] = {"type": "json_object"}
 
-            result = self._client.chat.completions.create(**kwargs)
+            result = client.chat.completions.create(**kwargs)
 
             response.content = result.choices[0].message.content or ""
             response.input_tokens = getattr(result.usage, "prompt_tokens", 0)
@@ -265,11 +339,11 @@ class SolLLM:
             response.success = False
             response.error = f"{type(e).__name__}: {e}"
             if self.verbose:
-                print(f"    [LLM] {model_key} ({model_id}) error: {response.error}")
+                print(f"    [LLM] {model_key}/{model_id} ({provider_key}) error: {response.error}")
 
         response.latency_sec = round(time.time() - t0, 2)
 
-        # Compute cost
+        # Compute cost using the slot's configured rates (not provider-specific)
         in_cost = (response.input_tokens / 1000) * model_cfg["cost_per_1k_input"]
         out_cost = (response.output_tokens / 1000) * model_cfg["cost_per_1k_output"]
         response.cost_usd = round(in_cost + out_cost, 6)
@@ -285,12 +359,19 @@ class SolLLM:
         max_tokens: int | None = None,
     ) -> LLMResponse:
         """
-        Send a prompt to the LLM with automatic fallback.
+        Send a prompt to the LLM with task-based routing and automatic fallback.
+
+        Task routing selects the cheapest model tier sufficient for the task:
+          - lightweight tasks (reflection, question_gen) → nano model
+          - standard tasks   (synthesis, consolidation) → mini model
+          - heavy tasks      (hypothesis)               → full model
+
+        Falls back to primary then fallback slot on failure.
 
         Args:
             prompt: User message content.
             system: System prompt (optional).
-            task: Task type for temperature/budget tracking.
+            task: Task type for routing and temperature selection.
             temperature: Override default temperature for this task.
             max_tokens: Override max output tokens.
 
@@ -313,11 +394,18 @@ class SolLLM:
             messages.append({"role": "system", "content": system})
         messages.append({"role": "user", "content": prompt})
 
-        # Try primary
-        response = self._try_with_retries(messages, "primary", max_tok, temp)
+        # Try the task-routed slot first
+        routed_slot = self._route_task(task)
+        response = self._try_with_retries(messages, routed_slot, max_tok, temp)
 
-        # Fallback if primary failed
-        if not response.success:
+        # If routed slot failed and it isn't primary, try primary
+        if not response.success and routed_slot != "primary":
+            if self.verbose:
+                print(f"    [LLM] {routed_slot} failed, trying primary...")
+            response = self._try_with_retries(messages, "primary", max_tok, temp)
+
+        # Final fallback
+        if not response.success and routed_slot != "fallback":
             if self.verbose:
                 print(f"    [LLM] Primary failed, trying fallback...")
             response = self._try_with_retries(messages, "fallback", max_tok, temp)
@@ -332,7 +420,7 @@ class SolLLM:
         _log_cost(response)
 
         if self.verbose and response.success:
-            print(f"    [LLM] {response.role}/{response.model}: "
+            print(f"    [LLM] {response.role}/{response.model} ({response.provider}): "
                   f"{response.input_tokens}+{response.output_tokens} tokens, "
                   f"${response.cost_usd:.4f}, {response.latency_sec}s")
 
@@ -348,7 +436,7 @@ class SolLLM:
         max_tokens: int | None = None,
     ) -> LLMResponse:
         """
-        Request structured JSON output from the LLM.
+        Request structured JSON output from the LLM with task-based routing.
 
         If a schema is provided, it's included in the system prompt as
         guidance. The response is parsed into response.parsed.
@@ -381,9 +469,16 @@ class SolLLM:
             {"role": "user", "content": prompt},
         ]
 
-        # Try primary with JSON mode
-        response = self._try_with_retries(messages, "primary", max_tok, temp, json_mode=True)
-        if not response.success:
+        # Try task-routed slot with JSON mode
+        routed_slot = self._route_task(task)
+        response = self._try_with_retries(messages, routed_slot, max_tok, temp, json_mode=True)
+
+        if not response.success and routed_slot != "primary":
+            if self.verbose:
+                print(f"    [LLM] {routed_slot} JSON failed, trying primary...")
+            response = self._try_with_retries(messages, "primary", max_tok, temp, json_mode=True)
+
+        if not response.success and routed_slot != "fallback":
             if self.verbose:
                 print(f"    [LLM] Primary JSON failed, trying fallback...")
             response = self._try_with_retries(messages, "fallback", max_tok, temp, json_mode=True)
@@ -414,7 +509,7 @@ class SolLLM:
         _log_cost(response)
 
         if self.verbose and response.success:
-            print(f"    [LLM] {response.role}/{response.model}: "
+            print(f"    [LLM] {response.role}/{response.model} ({response.provider}): "
                   f"{response.input_tokens}+{response.output_tokens} tokens, "
                   f"${response.cost_usd:.4f}, {response.latency_sec}s")
 
@@ -466,9 +561,11 @@ class SolLLM:
 
     @staticmethod
     def is_available() -> bool:
-        """Check if an LLM client can be created (API key present)."""
+        """Check if an LLM client can be created (any API key present)."""
         return bool(
-            os.environ.get("GITHUB_TOKEN")
+            os.environ.get("OPENAI_API_KEY")
+            or os.environ.get("GITHUB_TOKEN")
             or os.environ.get("GITHUB_MODELS_TOKEN")
             or os.environ.get("GH_TOKEN")
         )
+

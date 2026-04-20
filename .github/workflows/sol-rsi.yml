@@ -113,6 +113,8 @@ jobs:
 
       - name: Run RSI cycle
         env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MODAL_API_KEY: ${{ secrets.MODAL_API_KEY }}
         run: |
           MODE="${{ github.event.inputs.mode || 'cron' }}"
