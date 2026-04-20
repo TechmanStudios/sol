@@ -1,6 +1,14 @@
 # Secrets
 .env
 
+# Proprietary knowledge base files (user-supplied; see KB/README.md)
+KB/**
+!KB/README.md
+!KB/sample_kb.md
+
+# Generated KB index (derived from local KB files; not committed)
+data/kb_index.json
+
 # Python
 __pycache__/
 *.pyc
