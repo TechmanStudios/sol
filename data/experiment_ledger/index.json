@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-04-13T06:57:40.990621+00:00",
-  "records": 1501,
-  "runs": 82,
+  "generated_at": "2026-04-20T06:59:19.742697+00:00",
+  "records": 1502,
+  "runs": 83,
   "experiments": {
     "cortex": {
-      "runs": 63,
-      "generations": 63,
-      "accepted_generations": 46,
-      "acceptance_rate": 0.7301587301587301,
+      "runs": 64,
+      "generations": 64,
+      "accepted_generations": 47,
+      "acceptance_rate": 0.734375,
       "top_runs_by_anchor": [
         {
           "experiment": "cortex",
@@ -168,9 +168,9 @@
           "best_full_delta": 8.0
         },
         "open_question": {
-          "generations": 29,
-          "runs": 29,
-          "accepted_generations": 29,
+          "generations": 30,
+          "runs": 30,
+          "accepted_generations": 30,
           "acceptance_rate": 1.0,
           "best_anchor_delta": 1.0,
           "best_full_delta": 8.0
@@ -572,8 +572,8 @@
   },
   "knowledge_domains": {
     "sol_manifold": {
-      "records": 1201,
-      "accepted_generations": 71,
+      "records": 1202,
+      "accepted_generations": 72,
       "experiments": [
         "cortex",
         "self_train"
@@ -601,15 +601,15 @@
       ]
     },
     "injection:grail": {
-      "records": 62,
-      "accepted_generations": 46,
+      "records": 63,
+      "accepted_generations": 47,
       "experiments": [
         "cortex"
       ]
     },
     "damping": {
-      "records": 60,
-      "accepted_generations": 44,
+      "records": 61,
+      "accepted_generations": 45,
       "experiments": [
         "cortex"
       ]
@@ -708,29 +708,29 @@
   },
   "potential_emergence": {
     "threshold_transition": {
-      "records": 60,
-      "accepted_generations": 44,
+      "records": 61,
+      "accepted_generations": 45,
       "experiments": [
         "cortex"
       ]
     },
     "stable_replay": {
-      "records": 42,
-      "accepted_generations": 42,
+      "records": 43,
+      "accepted_generations": 43,
       "experiments": [
         "cortex"
       ]
     },
     "basin_migration": {
-      "records": 26,
-      "accepted_generations": 26,
+      "records": 27,
+      "accepted_generations": 27,
       "experiments": [
         "cortex"
       ]
     },
     "topological_reorganization": {
-      "records": 26,
-      "accepted_generations": 26,
+      "records": 27,
+      "accepted_generations": 27,
       "experiments": [
         "cortex"
       ]
@@ -787,29 +787,29 @@
       ]
     },
     "mechanistic_gap": {
+      "records": 39,
+      "accepted_generations": 39,
+      "experiments": [
+        "cortex"
+      ]
+    },
+    "unknown_mechanics": {
       "records": 38,
       "accepted_generations": 38,
       "experiments": [
         "cortex"
       ]
     },
-    "unknown_mechanics": {
-      "records": 37,
-      "accepted_generations": 37,
-      "experiments": [
-        "cortex"
-      ]
-    },
     "open_question": {
-      "records": 30,
-      "accepted_generations": 30,
+      "records": 31,
+      "accepted_generations": 31,
       "experiments": [
         "cortex"
       ]
     },
     "unmapped_regime": {
-      "records": 26,
-      "accepted_generations": 26,
+      "records": 27,
+      "accepted_generations": 27,
       "experiments": [
         "cortex"
       ]
