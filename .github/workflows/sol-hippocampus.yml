@@ -159,6 +159,12 @@ jobs:
           cd tools/sol-hippocampus
           python cli.py compact --json
 
+      - name: Refresh experiment ledger (dream)
+        if: needs.check-trigger.outputs.command == 'dream' && needs.check-trigger.outputs.dry_run != 'true'
+        run: |
+          python tools/analysis/experiment_ledger.py \
+            --out-dir "data/experiment_ledger"
+
       - name: Verify core immutability
         run: |
           CORE_HASH=$(sha256sum tools/sol-core/default_graph.json | cut -d' ' -f1)
@@ -174,6 +180,8 @@ jobs:
 
           # Stage only memory data files
           git add data/memory_graph.json data/memory_traces/ data/dream_sessions/ data/meta_learning_log.jsonl 2>/dev/null || true
+          # Include refreshed experiment ledger + promoted dream findings
+          git add data/experiment_ledger/ solKnowledge/working/dream_findings_candidates.md solKnowledge/consolidated/dream_findings.md 2>/dev/null || true
 
           if git diff --cached --quiet; then
             echo "No memory changes to commit"
