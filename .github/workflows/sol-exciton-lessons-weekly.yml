@@ -1,0 +1,90 @@
+name: SOL Exciton Lesson Compiler — Weekly
+
+on:
+  schedule:
+    # 10:00 UTC every Monday — runs after governance-weekly (08:00) and
+    # promotion-weekly (09:00) so cross-pocket lessons are computed against
+    # the freshest tilt evidence and promotion outcomes.
+    - cron: "0 10 * * 1"
+  workflow_dispatch: {}
+
+concurrency:
+  # Joins the snowball concurrency group so lesson_compiler never races
+  # the engine or other consumers when reading working_data ledgers.
+  group: sol-exciton-snowball-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  lesson_compiler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: Exciton-MoA/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r Exciton-MoA/requirements.txt
+
+      - name: Run lesson compiler
+        working-directory: Exciton-MoA
+        run: |
+          python scripts/lesson_compiler.py \
+            --ledger-tail 30 \
+            --min-corroboration 2 \
+            | tee lesson_compiler_outcome.json
+
+      - name: Commit lesson_compiler artifacts
+        run: |
+          git config user.name "sol-exciton-lesson[bot]"
+          git config user.email "sol-exciton-lesson@users.noreply.github.com"
+          git add Exciton-MoA/working_data/snowball/consumers/lesson_compiler || true
+          if git diff --cached --quiet; then
+            echo "No lesson_compiler artifacts to commit"
+            exit 0
+          fi
+          git commit -m "lesson_compiler(weekly): run=${{ github.run_id }}"
+          for attempt in 1 2 3; do
+            if git push; then break; fi
+            echo "Push attempt $attempt failed, rebasing..."
+            git pull --rebase
+          done
+
+      - name: Upload lesson_compiler artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sol-exciton-lessons-${{ github.run_id }}
+          path: |
+            Exciton-MoA/working_data/snowball/consumers/lesson_compiler
+            Exciton-MoA/lesson_compiler_outcome.json
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Job summary
+        if: always()
+        working-directory: Exciton-MoA
+        run: |
+          echo "## SOL Exciton Lesson Compiler — Weekly" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          if [ -f lesson_compiler_outcome.json ]; then
+            cat lesson_compiler_outcome.json >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo '{"status":"no_output"}' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
