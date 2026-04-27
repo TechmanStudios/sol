@@ -1,6 +1,6 @@
 # Dream Findings — Candidates
 
-Generated: 2026-04-27T05:12:14.331973+00:00
+Generated: 2026-04-27T07:07:19.169555+00:00
 
 Single-night anomalies and findings not yet stable across multiple nights or source sessions. These are follow-up candidates, not canonical claims.
 
