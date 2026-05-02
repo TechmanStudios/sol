@@ -130,6 +130,7 @@ class KBHit:
 # ---------------------------------------------------------------------------
 _BM25_K1 = 1.2
 _BM25_B = 0.75
+_VACUUM_NODE_COUNT = 1024
 
 
 # ---------------------------------------------------------------------------
@@ -172,12 +173,17 @@ class KBIndex:
         self._kb_sha256: str = ""
         self._n_chunks: int = 0
         self._built = False
+        self._source_mode = "kb"
+        self._fallback_reason = ""
+        self._vacuum_node_count = 0
 
         if auto_build:
             if self._load_cached():
                 self._built = True
             elif self.kb_path.exists():
                 self.build()
+            else:
+                self._build_vacuum_index("missing_kb")
 
     # ------------------------------------------------------------------
     # Build
@@ -192,6 +198,12 @@ class KBIndex:
         raw_lines = self._read_kb()
         self._kb_sha256 = self._hash_kb()
         chunks = self._chunk_lines(raw_lines)
+        if not chunks:
+            return self._build_vacuum_index("empty_kb")
+
+        self._source_mode = "kb"
+        self._fallback_reason = ""
+        self._vacuum_node_count = 0
         self._build_inverted_index(chunks)
         self._save()
         self._built = True
@@ -201,6 +213,7 @@ class KBIndex:
             "terms": len(self._inv_index),
             "avg_doc_len": round(self._avg_dl, 1),
             "index_path": str(self.index_path),
+            "source_mode": self._source_mode,
         }
 
     def _read_kb(self) -> list[str]:
@@ -275,6 +288,48 @@ class KBIndex:
                     pos = end
 
         return chunks
+
+    def _build_vacuum_index(self, reason: str) -> dict[str, Any]:
+        """
+        Build a deterministic null substrate when no KB text is available.
+
+        The 1024 chunks are intentionally marked as a pristine vacuum so
+        downstream callers can simulate retrieval space without mistaking the
+        fallback for real knowledge-base evidence.
+        """
+        chunks: list[KBChunk] = []
+        for node_id in range(_VACUUM_NODE_COUNT):
+            text = (
+                f"Pristine vacuum node {node_id:04d}. "
+                "Simulated knowledge substrate awaiting ingestion. "
+                "This epistemic null space is placeholder context, not evidence."
+            )
+            chunks.append(KBChunk(
+                chunk_id=node_id,
+                section="pristine_vacuum",
+                line_start=node_id + 1,
+                line_end=node_id + 1,
+                text=text,
+                tokens=tokenise(text),
+            ))
+
+        self._source_mode = "vacuum"
+        self._fallback_reason = reason
+        self._vacuum_node_count = _VACUUM_NODE_COUNT
+        if not self._kb_sha256:
+            self._kb_sha256 = f"vacuum:{reason}"
+        self._build_inverted_index(chunks)
+        self._built = True
+        return {
+            "kb_sha256": self._kb_sha256,
+            "chunks": self._n_chunks,
+            "terms": len(self._inv_index),
+            "avg_doc_len": round(self._avg_dl, 1),
+            "index_path": str(self.index_path),
+            "source_mode": self._source_mode,
+            "fallback_reason": self._fallback_reason,
+            "vacuum_node_count": self._vacuum_node_count,
+        }
 
     def _build_inverted_index(self, chunks: list[KBChunk]):
         """Build BM25 inverted index from chunks."""
@@ -384,6 +439,9 @@ class KBIndex:
             "chunk_token_counts": self._chunk_token_counts,
             "inv_index": inv_serial,
             "idf": self._idf,
+            "source_mode": self._source_mode,
+            "fallback_reason": self._fallback_reason,
+            "vacuum_node_count": self._vacuum_node_count,
         }
         with open(self.index_path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False)
@@ -417,6 +475,9 @@ class KBIndex:
         self._chunks = data["chunks"]
         self._chunk_texts = data["chunk_texts"]
         self._chunk_token_counts = data["chunk_token_counts"]
+        self._source_mode = data.get("source_mode", "kb")
+        self._fallback_reason = data.get("fallback_reason", "")
+        self._vacuum_node_count = int(data.get("vacuum_node_count", 0) or 0)
         # Restore inv_index (JSON stores lists of lists, convert to tuples)
         self._inv_index = {
             term: [(p[0], p[1]) for p in postings]
@@ -454,6 +515,9 @@ class KBIndex:
             "unique_terms": len(self._inv_index),
             "avg_doc_length": round(self._avg_dl, 1),
             "index_file_exists": self.index_path.exists(),
+            "source_mode": self._source_mode,
+            "fallback_reason": self._fallback_reason,
+            "vacuum_node_count": self._vacuum_node_count,
             "top_terms": [(t, df) for t, df in top_terms],
             "sections": section_counts,
         }
@@ -485,8 +549,10 @@ def get_kb_index(*, force_rebuild: bool = False) -> KBIndex:
     if _cached_index is not None and not force_rebuild:
         return _cached_index
     idx = KBIndex(auto_build=True)
-    if force_rebuild and idx._built:
+    if force_rebuild and idx._built and idx.kb_path.exists():
         idx.build()
+    elif force_rebuild and idx._built:
+        idx._build_vacuum_index("missing_kb")
     _cached_index = idx
     return idx
 
@@ -495,9 +561,18 @@ if __name__ == "__main__":
     # Quick self-test
     idx = KBIndex()
     info = idx.status()
-    print(f"KB Index: {info['chunks']} chunks, {info['unique_terms']} terms")
-    if idx._built:
-        hits = idx.query("Metatron spiral phi sacred geometry", top_k=3)
-        for h in hits:
-            print(f"  [{h.score:.2f}] {h.section} (L{h.line_start}-{h.line_end})")
-            print(f"    {h.text[:120]}...")
+    if not info.get("built"):
+        if not idx.kb_path.exists():
+            print(f"No such file: {idx.kb_path}", file=sys.stderr)
+        else:
+            print("KB Index: not built", file=sys.stderr)
+        sys.exit(0)
+
+    suffix = ""
+    if info.get("source_mode") == "vacuum":
+        suffix = f" ({info.get('vacuum_node_count', 0)}-node pristine vacuum)"
+    print(f"KB Index: {info['chunks']} chunks, {info['unique_terms']} terms{suffix}")
+    hits = idx.query("Metatron spiral phi sacred geometry", top_k=3)
+    for h in hits:
+        print(f"  [{h.score:.2f}] {h.section} (L{h.line_start}-{h.line_end})")
+        print(f"    {h.text[:120]}...")

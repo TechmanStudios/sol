@@ -356,7 +356,26 @@ class TestPersistence:
         idx = KBIndex(kb_path=tmp_path / "nonexistent.md",
                       index_path=tmp_path / "idx.json",
                       auto_build=True)
-        assert not idx._built
+        assert idx._built
+        status = idx.status()
+        assert status["source_mode"] == "vacuum"
+        assert status["fallback_reason"] == "missing_kb"
+        assert status["vacuum_node_count"] == 1024
+        assert status["chunks"] == 1024
+        assert idx.query("knowledge substrate", top_k=3)
+
+    def test_empty_kb_builds_vacuum_index(self, tmp_path):
+        from kb_index import KBIndex
+        kb_path = tmp_path / "empty.md"
+        kb_path.write_text("", encoding="utf-8")
+        idx = KBIndex(kb_path=kb_path,
+                      index_path=tmp_path / "idx.json",
+                      auto_build=True)
+        status = idx.status()
+        assert status["source_mode"] == "vacuum"
+        assert status["fallback_reason"] == "empty_kb"
+        assert status["vacuum_node_count"] == 1024
+        assert idx.query("epistemic null space", top_k=2)
 
     def test_corrupt_index_file(self, tmp_path):
         from kb_index import KBIndex
