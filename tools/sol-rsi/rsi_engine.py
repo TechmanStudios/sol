@@ -288,6 +288,12 @@ def _load_outcome_history(last_n: int = 20) -> list[dict]:
         pass
     return entries[-last_n:]
 
+
+def _is_rewardable_outcome(outcome: dict) -> bool:
+    """True when an outcome executed experiments and did not fail."""
+    return not outcome.get("error") and outcome.get("experiments_executed", 0) > 0
+
+
 def _compute_cooldown(cycles_remaining: int) -> float:
     """
     Compute how many seconds to wait before the next cycle so we don't
@@ -990,6 +996,8 @@ def mutate_genome(genome: dict, reflection: ReflectionReport) -> dict:
     # attribute +claim_delta to it.  Average over recent cycles.
     template_rewards: dict[str, list[float]] = defaultdict(list)
     for oc in outcomes:
+        if not _is_rewardable_outcome(oc):
+            continue
         claim_delta = oc.get("delta", {}).get("claims", 0)
         fitness_delta = oc.get("delta", {}).get("fitness", 0.0)
         # Composite reward: claims matter most, fitness delta secondary

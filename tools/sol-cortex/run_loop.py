@@ -49,6 +49,8 @@ from protocol_gen import (
 from sol_engine import SOLEngine
 from sol_intuition import get_intuition
 
+_GAP_KEY_DESC_LEN = 40
+
 # ---------------------------------------------------------------------------
 # Optional hippocampus integration (additive — cortex runs fine without it)
 # ---------------------------------------------------------------------------
@@ -75,6 +77,19 @@ def _gap_to_dict(gap: Gap) -> dict:
         "suggested_action": gap.suggested_action,
         "metadata": gap.metadata,
     }
+
+
+def _gap_key(gap_type: str | None, claim_id: str | None, description: str | None) -> str:
+    description_prefix = description[:_GAP_KEY_DESC_LEN] if description else ""
+    return f"{gap_type or ''}:{claim_id or description_prefix}"
+
+
+def _gap_key_from_dict(gap: dict) -> str:
+    return _gap_key(
+        gap.get("gap_type"),
+        gap.get("claim_id"),
+        gap.get("description"),
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -258,6 +273,31 @@ class CortexSession:
 
         all_gaps = scan_knowledge()
         self._gaps = rank_gaps(all_gaps)
+        if self._meta and self._gaps:
+            try:
+                gap_by_id: dict[str, list[Gap]] = {}
+                for gap in self._gaps:
+                    key = _gap_key(gap.gap_type, gap.claim_id, gap.description)
+                    gap_by_id.setdefault(key, []).append(gap)
+                boosted = self._meta.suggest_gap_priority_boost(
+                    [_gap_to_dict(g) for g in self._gaps]
+                )
+                reordered = []
+                for gap_dict in boosted:
+                    gap_id = _gap_key_from_dict(gap_dict)
+                    bucket = gap_by_id.get(gap_id)
+                    if bucket:
+                        reordered.append(bucket.pop(0))
+                reordered.extend(gap for bucket in gap_by_id.values() for gap in bucket)
+                self._gaps = reordered
+                if boosted:
+                    self._log(
+                        "meta_gap_prioritized",
+                        top_gap=_gap_key_from_dict(boosted[0]),
+                        boosted_priority=boosted[0].get("boosted_priority"),
+                    )
+            except Exception as e:
+                self._log("meta_gap_prioritization_error", error=str(e))
         self._log("knowledge_scan", total_gaps=len(self._gaps),
                   by_type={g.gap_type: sum(1 for x in self._gaps if x.gap_type == g.gap_type)
                            for g in self._gaps})
@@ -289,7 +329,7 @@ class CortexSession:
                 self._log("no_gaps_remaining")
                 break
 
-            gap_id = f"{gap.gap_type}:{gap.claim_id or gap.description[:40]}"
+            gap_id = _gap_key(gap.gap_type, gap.claim_id, gap.description)
             self._log("gap_selected", gap_id=gap_id, gap_type=gap.gap_type,
                       priority=gap.priority, description=gap.description[:120])
 
@@ -308,6 +348,18 @@ class CortexSession:
             # Generate hypothesis
             hypothesis_counter += 1
             h_id = f"H-{hypothesis_counter:03d}"
+            if self._meta:
+                try:
+                    suggested_template = self._meta.suggest_template(gap_dict)
+                    if suggested_template:
+                        gap_dict["preferred_template"] = suggested_template
+                        self._log(
+                            "meta_template_suggested",
+                            gap_id=gap_id,
+                            template=suggested_template,
+                        )
+                except Exception as e:
+                    self._log("meta_template_suggestion_error", gap_id=gap_id, error=str(e))
             try:
                 hypothesis = generate_hypothesis(
                     gap_dict, h_id, prior_hypotheses=self.hypotheses

@@ -269,7 +269,9 @@ def generate_hypothesis(
 
 def _select_diverse_template(gap: dict, prior_hypotheses: list[dict] | None = None) -> str:
     """Select a template that hasn't been used yet this session."""
-    preferred = select_template(gap)
+    preferred = gap.get("preferred_template")
+    if preferred not in TEMPLATES:
+        preferred = select_template(gap)
     if not prior_hypotheses:
         return preferred
 
