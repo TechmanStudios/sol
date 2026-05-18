@@ -78,7 +78,8 @@ def _gap_to_dict(gap: Gap) -> dict:
 
 
 def _gap_key(gap_type: str | None, claim_id: str | None, description: str | None) -> str:
-    return f"{gap_type}:{claim_id or (description or '')[:40]}"
+    description_prefix = description[:40] if description else ""
+    return f"{gap_type or ''}:{claim_id or description_prefix}"
 
 
 def _gap_key_from_dict(gap: dict) -> str:
@@ -272,7 +273,9 @@ class CortexSession:
         self._gaps = rank_gaps(all_gaps)
         if self._meta and self._gaps:
             try:
-                gap_by_id = {_gap_key(g.gap_type, g.claim_id, g.description): g for g in self._gaps}
+                gap_by_id = {}
+                for gap in self._gaps:
+                    gap_by_id[_gap_key(gap.gap_type, gap.claim_id, gap.description)] = gap
                 boosted = self._meta.suggest_gap_priority_boost(
                     [_gap_to_dict(g) for g in self._gaps]
                 )
