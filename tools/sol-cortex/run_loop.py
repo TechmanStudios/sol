@@ -49,6 +49,8 @@ from protocol_gen import (
 from sol_engine import SOLEngine
 from sol_intuition import get_intuition
 
+_GAP_KEY_DESC_LEN = 40
+
 # ---------------------------------------------------------------------------
 # Optional hippocampus integration (additive — cortex runs fine without it)
 # ---------------------------------------------------------------------------
@@ -78,7 +80,7 @@ def _gap_to_dict(gap: Gap) -> dict:
 
 
 def _gap_key(gap_type: str | None, claim_id: str | None, description: str | None) -> str:
-    description_prefix = description[:40] if description else ""
+    description_prefix = description[:_GAP_KEY_DESC_LEN] if description else ""
     return f"{gap_type or ''}:{claim_id or description_prefix}"
 
 
@@ -273,23 +275,20 @@ class CortexSession:
         self._gaps = rank_gaps(all_gaps)
         if self._meta and self._gaps:
             try:
-                gap_by_id = {}
+                gap_by_id: dict[str, list[Gap]] = {}
                 for gap in self._gaps:
-                    gap_by_id[_gap_key(gap.gap_type, gap.claim_id, gap.description)] = gap
+                    key = _gap_key(gap.gap_type, gap.claim_id, gap.description)
+                    gap_by_id.setdefault(key, []).append(gap)
                 boosted = self._meta.suggest_gap_priority_boost(
                     [_gap_to_dict(g) for g in self._gaps]
                 )
                 reordered = []
-                seen = set()
                 for gap_dict in boosted:
                     gap_id = _gap_key_from_dict(gap_dict)
-                    gap = gap_by_id.get(gap_id)
-                    if gap is not None:
-                        reordered.append(gap)
-                        seen.add(gap_id)
-                reordered.extend(
-                    gap for gap_id, gap in gap_by_id.items() if gap_id not in seen
-                )
+                    bucket = gap_by_id.get(gap_id)
+                    if bucket:
+                        reordered.append(bucket.pop(0))
+                reordered.extend(gap for bucket in gap_by_id.values() for gap in bucket)
                 self._gaps = reordered
                 if boosted:
                     self._log(
