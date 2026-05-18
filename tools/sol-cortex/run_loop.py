@@ -77,6 +77,18 @@ def _gap_to_dict(gap: Gap) -> dict:
     }
 
 
+def _gap_key(gap_type: str | None, claim_id: str | None, description: str | None) -> str:
+    return f"{gap_type}:{claim_id or (description or '')[:40]}"
+
+
+def _gap_key_from_dict(gap: dict) -> str:
+    return _gap_key(
+        gap.get("gap_type"),
+        gap.get("claim_id"),
+        gap.get("description"),
+    )
+
+
 # ---------------------------------------------------------------------------
 # Session configuration
 # ---------------------------------------------------------------------------
@@ -260,19 +272,14 @@ class CortexSession:
         self._gaps = rank_gaps(all_gaps)
         if self._meta and self._gaps:
             try:
-                gap_by_id = {
-                    f"{g.gap_type}:{g.claim_id or g.description[:40]}": g
-                    for g in self._gaps
-                }
+                gap_by_id = {_gap_key(g.gap_type, g.claim_id, g.description): g for g in self._gaps}
                 boosted = self._meta.suggest_gap_priority_boost(
                     [_gap_to_dict(g) for g in self._gaps]
                 )
                 reordered = []
                 seen = set()
                 for gap_dict in boosted:
-                    gap_id = (
-                        f"{gap_dict.get('gap_type')}:{gap_dict.get('claim_id') or gap_dict.get('description', '')[:40]}"
-                    )
+                    gap_id = _gap_key_from_dict(gap_dict)
                     gap = gap_by_id.get(gap_id)
                     if gap is not None:
                         reordered.append(gap)
@@ -284,14 +291,11 @@ class CortexSession:
                 if boosted:
                     self._log(
                         "meta_gap_prioritized",
-                        top_gap=(
-                            f"{boosted[0].get('gap_type')}:"
-                            f"{boosted[0].get('claim_id') or boosted[0].get('description', '')[:40]}"
-                        ),
+                        top_gap=_gap_key_from_dict(boosted[0]),
                         boosted_priority=boosted[0].get("boosted_priority"),
                     )
-            except Exception:
-                pass  # meta-learning is optional
+            except Exception as e:
+                self._log("meta_gap_prioritization_error", error=str(e))
         self._log("knowledge_scan", total_gaps=len(self._gaps),
                   by_type={g.gap_type: sum(1 for x in self._gaps if x.gap_type == g.gap_type)
                            for g in self._gaps})
@@ -323,7 +327,7 @@ class CortexSession:
                 self._log("no_gaps_remaining")
                 break
 
-            gap_id = f"{gap.gap_type}:{gap.claim_id or gap.description[:40]}"
+            gap_id = _gap_key(gap.gap_type, gap.claim_id, gap.description)
             self._log("gap_selected", gap_id=gap_id, gap_type=gap.gap_type,
                       priority=gap.priority, description=gap.description[:120])
 
@@ -352,8 +356,8 @@ class CortexSession:
                             gap_id=gap_id,
                             template=suggested_template,
                         )
-                except Exception:
-                    pass  # meta-learning is optional
+                except Exception as e:
+                    self._log("meta_template_suggestion_error", gap_id=gap_id, error=str(e))
             try:
                 hypothesis = generate_hypothesis(
                     gap_dict, h_id, prior_hypotheses=self.hypotheses
