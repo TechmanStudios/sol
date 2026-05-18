@@ -1,0 +1,25 @@
+{"ts": "2026-05-18T01:17:46.206996Z", "event": "session_start", "session_id": "CX-20260518-011746", "config": {"max_protocols": "3", "max_total_steps": "100000", "gap_type_filter": "None", "dry_run": "True", "out_dir": "/home/runner/work/sol/sol/data/cortex_sessions", "strict_guardrails": "True", "verbose": "False"}}
+{"ts": "2026-05-18T01:17:46.995361Z", "event": "meta_gap_prioritized", "top_gap": "unpromoted:CL-1", "boosted_priority": 4.7138}
+{"ts": "2026-05-18T01:17:47.006662Z", "event": "knowledge_scan", "total_gaps": 597, "by_type": {"unpromoted": 6, "unfalsified": 4, "replication": 301, "unexplored_param": 4, "open_question": 225, "weak_evidence": 56, "headless_baseline": 1}}
+{"ts": "2026-05-18T01:17:47.023825Z", "event": "gap_selected", "gap_id": "unpromoted:CL-1", "gap_type": "unpromoted", "priority": 2, "description": "CL-1 (Robust): Baseline restore is non-negotiable for comparability \u2014 no proof packet found"}
+{"ts": "2026-05-18T01:17:47.025312Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-1", "memory_context": "Memory nodes: 29 | Memory edges: 153 | Avg confidence: 0.380 | Tags: basin(29), entropy(29), rhoMax(29)"}
+{"ts": "2026-05-18T01:17:47.025445Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-1", "template": "threshold_scan"}
+{"ts": "2026-05-18T01:17:47.025471Z", "event": "hypothesis_generated", "hypothesis_id": "H-001", "template": "threshold_scan", "question": "At what value of damping does the system behavior qualitatively change?"}
+{"ts": "2026-05-18T01:17:47.025595Z", "event": "hypothesis_augmented", "hypothesis_id": "H-001", "memory_falsifiers": 2}
+{"ts": "2026-05-18T01:17:47.025940Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260518-011746/protocols/h-001_protocol.json"}
+{"ts": "2026-05-18T01:17:47.025953Z", "event": "dry_run_skip", "hypothesis_id": "H-001"}
+{"ts": "2026-05-18T01:17:47.042801Z", "event": "gap_selected", "gap_id": "unpromoted:CL-2", "gap_type": "unpromoted", "priority": 2, "description": "CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale \u2014 no proof "}
+{"ts": "2026-05-18T01:17:47.043904Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-2", "memory_context": "Memory nodes: 29 | Memory edges: 153 | Avg confidence: 0.380 | Tags: basin(29), entropy(29), rhoMax(29)"}
+{"ts": "2026-05-18T01:17:47.044041Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-2", "template": "replication"}
+{"ts": "2026-05-18T01:17:47.044066Z", "event": "hypothesis_generated", "hypothesis_id": "H-002", "template": "replication", "question": "Can headless sol-core reproduce: ?"}
+{"ts": "2026-05-18T01:17:47.044127Z", "event": "hypothesis_augmented", "hypothesis_id": "H-002", "memory_falsifiers": 2}
+{"ts": "2026-05-18T01:17:47.044336Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260518-011746/protocols/h-002_protocol.json"}
+{"ts": "2026-05-18T01:17:47.044348Z", "event": "dry_run_skip", "hypothesis_id": "H-002"}
+{"ts": "2026-05-18T01:17:47.061182Z", "event": "gap_selected", "gap_id": "unpromoted:CL-3", "gap_type": "unpromoted", "priority": 2, "description": "CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins \u2014 no p"}
+{"ts": "2026-05-18T01:17:47.062443Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-3", "memory_context": "Memory nodes: 29 | Memory edges: 153 | Avg confidence: 0.380 | Tags: basin(29), entropy(29), rhoMax(29)"}
+{"ts": "2026-05-18T01:17:47.062585Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-3", "template": "baseline_golden"}
+{"ts": "2026-05-18T01:17:47.062608Z", "event": "hypothesis_generated", "hypothesis_id": "H-003", "template": "baseline_golden", "question": "What are the canonical metric outputs for standard injection protocols?"}
+{"ts": "2026-05-18T01:17:47.062646Z", "event": "hypothesis_augmented", "hypothesis_id": "H-003", "memory_falsifiers": 1}
+{"ts": "2026-05-18T01:17:47.062851Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260518-011746/protocols/h-003_protocol.json"}
+{"ts": "2026-05-18T01:17:47.062863Z", "event": "dry_run_skip", "hypothesis_id": "H-003"}
+{"ts": "2026-05-18T01:17:47.062871Z", "event": "budget_stop", "reason": "max_protocols reached (3/3)"}

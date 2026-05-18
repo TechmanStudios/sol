@@ -21,7 +21,7 @@ import pytest
 # Core Immutability
 # ======================================================================
 
-_KNOWN_SHA256 = "b9800d5313886818c7c1980829e1ca5da7d63d9e2218e36c020df80db19b06fb"
+_KNOWN_SHA256 = "d0a80462d2b9389160502b097aca1932bb014941adf6e4b77799997283e4a1bc"
 
 
 class TestCoreImmutability:

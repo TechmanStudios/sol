@@ -990,6 +990,8 @@ def mutate_genome(genome: dict, reflection: ReflectionReport) -> dict:
     # attribute +claim_delta to it.  Average over recent cycles.
     template_rewards: dict[str, list[float]] = defaultdict(list)
     for oc in outcomes:
+        if oc.get("error") or oc.get("experiments_executed", 0) <= 0:
+            continue
         claim_delta = oc.get("delta", {}).get("claims", 0)
         fitness_delta = oc.get("delta", {}).get("fitness", 0.0)
         # Composite reward: claims matter most, fitness delta secondary

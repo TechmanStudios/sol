@@ -258,6 +258,40 @@ class CortexSession:
 
         all_gaps = scan_knowledge()
         self._gaps = rank_gaps(all_gaps)
+        if self._meta and self._gaps:
+            try:
+                gap_by_id = {
+                    f"{g.gap_type}:{g.claim_id or g.description[:40]}": g
+                    for g in self._gaps
+                }
+                boosted = self._meta.suggest_gap_priority_boost(
+                    [_gap_to_dict(g) for g in self._gaps]
+                )
+                reordered = []
+                seen = set()
+                for gap_dict in boosted:
+                    gap_id = (
+                        f"{gap_dict.get('gap_type')}:{gap_dict.get('claim_id') or gap_dict.get('description', '')[:40]}"
+                    )
+                    gap = gap_by_id.get(gap_id)
+                    if gap is not None:
+                        reordered.append(gap)
+                        seen.add(gap_id)
+                reordered.extend(
+                    gap for gap_id, gap in gap_by_id.items() if gap_id not in seen
+                )
+                self._gaps = reordered
+                if boosted:
+                    self._log(
+                        "meta_gap_prioritized",
+                        top_gap=(
+                            f"{boosted[0].get('gap_type')}:"
+                            f"{boosted[0].get('claim_id') or boosted[0].get('description', '')[:40]}"
+                        ),
+                        boosted_priority=boosted[0].get("boosted_priority"),
+                    )
+            except Exception:
+                pass  # meta-learning is optional
         self._log("knowledge_scan", total_gaps=len(self._gaps),
                   by_type={g.gap_type: sum(1 for x in self._gaps if x.gap_type == g.gap_type)
                            for g in self._gaps})
@@ -308,6 +342,18 @@ class CortexSession:
             # Generate hypothesis
             hypothesis_counter += 1
             h_id = f"H-{hypothesis_counter:03d}"
+            if self._meta:
+                try:
+                    suggested_template = self._meta.suggest_template(gap_dict)
+                    if suggested_template:
+                        gap_dict["preferred_template"] = suggested_template
+                        self._log(
+                            "meta_template_suggested",
+                            gap_id=gap_id,
+                            template=suggested_template,
+                        )
+                except Exception:
+                    pass  # meta-learning is optional
             try:
                 hypothesis = generate_hypothesis(
                     gap_dict, h_id, prior_hypotheses=self.hypotheses

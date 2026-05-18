@@ -1,0 +1,126 @@
+[
+  {
+    "id": "H-001",
+    "template": "dt_compression",
+    "question": "Does dt compress time-to-failure in headless sol-core as it does in the dashboard?",
+    "knob": "dt",
+    "knob_values": [
+      0.08,
+      0.1,
+      0.12,
+      0.16,
+      0.2
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 500,
+    "reps": 5,
+    "falsifiers": [
+      "Time-to-failure is constant across dt values",
+      "Relationship is non-monotonic (failure time increases then decreases)"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unpromoted",
+      "priority": 2,
+      "claim_id": "CL-1",
+      "description": "CL-1 (Robust): Baseline restore is non-negotiable for comparability \u2014 no proof packet found",
+      "suggested_action": "Design and run a protocol to test: Baseline restore is non-negotiable for comparability",
+      "metadata": {
+        "claim_status": "Robust",
+        "falsifier": "show long sweeps with identical metrics without restore across hard refreshes."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 29 | Memory edges: 153 | Avg confidence: 0.380 | Tags: basin(29), entropy(29), rhoMax(29)",
+      "kb_passages": [],
+      "preferred_template": "dt_compression"
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-002",
+    "template": "baseline_golden",
+    "question": "What are the canonical metric outputs for standard injection protocols?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 500,
+    "reps": 1,
+    "falsifiers": [
+      "Output changes between identical runs with same seed (non-determinism)"
+    ],
+    "notes": "Golden baseline for Phase 3 regression suite. Single rep, high step count, full trace.",
+    "source_gap": {
+      "gap_type": "unpromoted",
+      "priority": 2,
+      "claim_id": "CL-2",
+      "description": "CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale \u2014 no proof packet found",
+      "suggested_action": "Design and run a protocol to test: Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale",
+      "metadata": {
+        "claim_status": "Supported",
+        "falsifier": "wide-target failures at matched baseline when applying the same law."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 29 | Memory edges: 153 | Avg confidence: 0.380 | Tags: basin(29), entropy(29), rhoMax(29)",
+      "kb_passages": [],
+      "preferred_template": "baseline_golden"
+    }
+  },
+  {
+    "id": "H-003",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unpromoted",
+      "priority": 2,
+      "claim_id": "CL-3",
+      "description": "CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins \u2014 no proof packet found",
+      "suggested_action": "Design and run a protocol to test: The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins",
+      "metadata": {
+        "claim_status": "Robust",
+        "falsifier": "stable indefinitely at dt\u22650.12 under identical signature + detector."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [
+        0.04,
+        0.3
+      ],
+      "memory_context": "Memory nodes: 29 | Memory edges: 153 | Avg confidence: 0.380 | Tags: basin(29), entropy(29), rhoMax(29)",
+      "kb_passages": [],
+      "preferred_template": "threshold_scan"
+    },
+    "memory_augmented": true
+  }
+]
