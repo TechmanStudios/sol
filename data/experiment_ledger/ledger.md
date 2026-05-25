@@ -1,11 +1,11 @@
 # Experiment Ledger
 
-Generated: 2026-05-25T05:40:35.209484+00:00
-Records: 1652 | Runs: 233
+Generated: 2026-05-25T07:50:34.230733+00:00
+Records: 1653 | Runs: 234
 
 ## cortex
 
-- Runs: 68 | Generations: 68 | Accepted: 51 | Acceptance: 75.00%
+- Runs: 69 | Generations: 69 | Accepted: 52 | Acceptance: 75.36%
 
 ### Modes
 
@@ -16,7 +16,7 @@ Records: 1652 | Runs: 233
 | open_question | 33 | 33 | 33 | 100.00% | 1.0000 | 8.0000 |
 | unexplored_param | 2 | 2 | 2 | 100.00% | 1.0000 | 4.0000 |
 | unfalsified | 1 | 1 | 1 | 100.00% | 1.0000 | 1.0000 |
-| unpromoted | 13 | 13 | 13 | 100.00% | 1.0000 | 5.0000 |
+| unpromoted | 14 | 14 | 14 | 100.00% | 1.0000 | 5.0000 |
 | weak_evidence | 1 | 1 | 1 | 100.00% | 1.0000 | 10.0000 |
 
 ### Top Runs
@@ -134,7 +134,7 @@ Records: 1652 | Runs: 233
 
 | Signal | Records | Accepted | Experiments |
 |---|---:|---:|---|
-| sol_manifold | 1352 | 222 | cortex, dream, self_train |
+| sol_manifold | 1353 | 223 | cortex, dream, self_train |
 | policy_adaptation | 1138 | 25 | self_train |
 | adaptive_rsi | 293 | 168 | rsi |
 | dream_replay | 146 | 146 | dream |
@@ -142,7 +142,7 @@ Records: 1652 | Runs: 233
 | open_questions | 132 | 7 | rsi |
 | entropy_band:0p70 | 85 | 85 | dream |
 | entropy_band:0p80 | 80 | 80 | dream |
-| injection:grail | 67 | 51 | cortex |
+| injection:grail | 68 | 52 | cortex |
 | damping | 65 | 49 | cortex |
 | source:cx_20260316_064244 | 38 | 38 | dream |
 | source:cx_20260323_063706 | 38 | 38 | dream |
@@ -161,8 +161,8 @@ Records: 1652 | Runs: 233
 | entropy_band:0p60 | 22 | 22 | dream |
 | rho:1 | 22 | 22 | dream |
 | entropy_band:0p50 | 21 | 21 | dream |
+| dt | 20 | 20 | cortex |
 | entropy_band:0p10 | 20 | 20 | dream |
-| dt | 19 | 19 | cortex |
 | source:cx_20260214_074804 | 18 | 18 | dream |
 | entropy_band:0p20 | 16 | 16 | dream |
 | source:cx_20260511_072752 | 16 | 16 | dream |
@@ -2061,7 +2061,7 @@ Records: 1652 | Runs: 233
 | dominant_rho_persistent | 80 | 80 | dream |
 | threshold_transition | 64 | 48 | cortex |
 | high_replay_yield | 51 | 51 | dream |
-| stable_replay | 47 | 47 | cortex |
+| stable_replay | 48 | 48 | cortex |
 | basin_migration | 30 | 30 | cortex |
 | topological_reorganization | 30 | 30 | cortex |
 | basin_reinforced | 28 | 28 | dream |
@@ -2080,7 +2080,7 @@ Records: 1652 | Runs: 233
 | cycle_error | 125 | 0 | rsi |
 | entropy_band_drift | 53 | 53 | dream |
 | mechanistic_gap | 43 | 43 | cortex |
-| unknown_mechanics | 42 | 42 | cortex |
+| unknown_mechanics | 43 | 43 | cortex |
 | open_question | 34 | 34 | cortex |
 | unmapped_regime | 30 | 30 | cortex |
 | phase2_regression | 3 | 0 | resonance |
