@@ -775,3 +775,71 @@ Additional proof packets were promoted by tying claim-ledger items to on-disk CS
   - Question: Can headless sol-core reproduce: ?
   - Claim: exploratory | Sanity: PASS
   - Gap: Open Q: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?
+
+## Cortex Session: CX-20260504-071553 (consolidated 2026-05-04)
+
+- [PP-2026-05-04-cortex-CX-20260504-071553-h-001-damping.md](solKnowledge/proof_packets/PP-2026-05-04-cortex-CX-20260504-071553-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does basin migration (RhoMaxNode 132→43) at damping=0.5 signal the beginning of a topological reorganization?
+
+- [PP-2026-05-04-cortex-CX-20260504-071553-h-002-damping.md](solKnowledge/proof_packets/PP-2026-05-04-cortex-CX-20260504-071553-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: What happens in the unexplored gap between damping=0.5 and the known critical threshold?
+
+- [PP-2026-05-04-cortex-CX-20260504-071553-h-003-None.md](solKnowledge/proof_packets/PP-2026-05-04-cortex-CX-20260504-071553-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?
+
+## Cortex Session: CX-20260511-072752 (consolidated 2026-05-11)
+
+- [PP-2026-05-11-cortex-CX-20260511-072752-h-001-damping.md](solKnowledge/proof_packets/PP-2026-05-11-cortex-CX-20260511-072752-h-001-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: Does basin migration (RhoMaxNode 132→43) at damping=0.5 signal the beginning of a topological reorganization?
+
+- [PP-2026-05-11-cortex-CX-20260511-072752-h-002-damping.md](solKnowledge/proof_packets/PP-2026-05-11-cortex-CX-20260511-072752-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: What happens in the unexplored gap between damping=0.5 and the known critical threshold?
+
+- [PP-2026-05-11-cortex-CX-20260511-072752-h-003-None.md](solKnowledge/proof_packets/PP-2026-05-11-cortex-CX-20260511-072752-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: exploratory | Sanity: PASS
+  - Gap: Open Q: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?
+
+## Cortex Session: CX-20260518-073932 (consolidated 2026-05-18)
+
+- [PP-2026-05-18-cortex-CX-20260518-073932-h-001-psi_diffusion.md](solKnowledge/proof_packets/PP-2026-05-18-cortex-CX-20260518-073932-h-001-psi_diffusion.md)
+  - Question: How does psi_diffusion affect entropy distribution and basin selection?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-05-18-cortex-CX-20260518-073932-h-002-damping.md](solKnowledge/proof_packets/PP-2026-05-18-cortex-CX-20260518-073932-h-002-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-05-18-cortex-CX-20260518-073932-h-003-None.md](solKnowledge/proof_packets/PP-2026-05-18-cortex-CX-20260518-073932-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+## Cortex Session: CX-20260525-074955 (consolidated 2026-05-25)
+
+- [PP-2026-05-25-cortex-CX-20260525-074955-h-001-dt.md](solKnowledge/proof_packets/PP-2026-05-25-cortex-CX-20260525-074955-h-001-dt.md)
+  - Question: Does dt compress time-to-failure in headless sol-core as it does in the dashboard?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-05-25-cortex-CX-20260525-074955-h-002-None.md](solKnowledge/proof_packets/PP-2026-05-25-cortex-CX-20260525-074955-h-002-None.md)
+  - Question: What are the canonical metric outputs for standard injection protocols?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-05-25-cortex-CX-20260525-074955-h-003-None.md](solKnowledge/proof_packets/PP-2026-05-25-cortex-CX-20260525-074955-h-003-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found

@@ -49,6 +49,8 @@ from protocol_gen import (
 from sol_engine import SOLEngine
 from sol_intuition import get_intuition
 
+_GAP_KEY_DESC_LEN = 40
+
 # ---------------------------------------------------------------------------
 # Optional hippocampus integration (additive — cortex runs fine without it)
 # ---------------------------------------------------------------------------
@@ -75,6 +77,19 @@ def _gap_to_dict(gap: Gap) -> dict:
         "suggested_action": gap.suggested_action,
         "metadata": gap.metadata,
     }
+
+
+def _gap_key(gap_type: str | None, claim_id: str | None, description: str | None) -> str:
+    description_prefix = description[:_GAP_KEY_DESC_LEN] if description else ""
+    return f"{gap_type or ''}:{claim_id or description_prefix}"
+
+
+def _gap_key_from_dict(gap: dict) -> str:
+    return _gap_key(
+        gap.get("gap_type"),
+        gap.get("claim_id"),
+        gap.get("description"),
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -258,6 +273,31 @@ class CortexSession:
 
         all_gaps = scan_knowledge()
         self._gaps = rank_gaps(all_gaps)
+        if self._meta and self._gaps:
+            try:
+                gap_by_id: dict[str, list[Gap]] = {}
+                for gap in self._gaps:
+                    key = _gap_key(gap.gap_type, gap.claim_id, gap.description)
+                    gap_by_id.setdefault(key, []).append(gap)
+                boosted = self._meta.suggest_gap_priority_boost(
+                    [_gap_to_dict(g) for g in self._gaps]
+                )
+                reordered = []
+                for gap_dict in boosted:
+                    gap_id = _gap_key_from_dict(gap_dict)
+                    bucket = gap_by_id.get(gap_id)
+                    if bucket:
+                        reordered.append(bucket.pop(0))
+                reordered.extend(gap for bucket in gap_by_id.values() for gap in bucket)
+                self._gaps = reordered
+                if boosted:
+                    self._log(
+                        "meta_gap_prioritized",
+                        top_gap=_gap_key_from_dict(boosted[0]),
+                        boosted_priority=boosted[0].get("boosted_priority"),
+                    )
+            except Exception as e:
+                self._log("meta_gap_prioritization_error", error=str(e))
         self._log("knowledge_scan", total_gaps=len(self._gaps),
                   by_type={g.gap_type: sum(1 for x in self._gaps if x.gap_type == g.gap_type)
                            for g in self._gaps})
@@ -269,187 +309,193 @@ class CortexSession:
 
     def run(self) -> dict:
         """Execute the full cortex loop. Returns session summary."""
-        import telemetry
-        with telemetry.trace_span("sol.cortex.run", {"sol.cortex.session_id": self.session_id}) as run_span:
-            if not self._gaps:
-                self.init()
+        if not self._gaps:
+            self.init()
 
-            hypothesis_counter = 0
+        hypothesis_counter = 0
 
-            while True:
-                # Budget check
-                ok, reason = should_continue(self.total_steps, self.protocols_run, self.config)
-                if not ok:
-                    self._log("budget_stop", reason=reason)
-                    break
+        while True:
+            # Budget check
+            ok, reason = should_continue(self.total_steps, self.protocols_run, self.config)
+            if not ok:
+                self._log("budget_stop", reason=reason)
+                break
 
-                # Select next gap
-                engine = SOLEngine.from_default_graph()
-                gap = select_gap(self._gaps, self.completed_gaps,
-                                 self.config.gap_type_filter, engine=engine)
-                if gap is None:
-                    self._log("no_gaps_remaining")
-                    break
+            # Select next gap
+            engine = SOLEngine.from_default_graph()
+            gap = select_gap(self._gaps, self.completed_gaps,
+                             self.config.gap_type_filter, engine=engine)
+            if gap is None:
+                self._log("no_gaps_remaining")
+                break
 
-                gap_id = f"{gap.gap_type}:{gap.claim_id or gap.description[:40]}"
-                self._log("gap_selected", gap_id=gap_id, gap_type=gap.gap_type,
-                          priority=gap.priority, description=gap.description[:120])
+            gap_id = _gap_key(gap.gap_type, gap.claim_id, gap.description)
+            self._log("gap_selected", gap_id=gap_id, gap_type=gap.gap_type,
+                      priority=gap.priority, description=gap.description[:120])
 
-                with telemetry.trace_span("sol.cortex.gap", {"sol.cortex.gap_id": gap_id, "sol.cortex.gap_type": gap.gap_type}) as gap_span:
-                    # Enrich gap with memory context (hippocampus integration)
-                    gap_dict = _gap_to_dict(gap)
-                    if self._query:
-                        try:
-                            gap_dict = self._query.enrich_gap(gap_dict)
-                            mem_ctx = gap_dict.get("memory_context", "")
-                            if mem_ctx:
-                                self._log("gap_enriched", gap_id=gap_id,
-                                          memory_context=str(mem_ctx)[:200])
-                        except Exception:
-                            pass  # memory enrichment is optional
+            # Enrich gap with memory context (hippocampus integration)
+            gap_dict = _gap_to_dict(gap)
+            if self._query:
+                try:
+                    gap_dict = self._query.enrich_gap(gap_dict)
+                    mem_ctx = gap_dict.get("memory_context", "")
+                    if mem_ctx:
+                        self._log("gap_enriched", gap_id=gap_id,
+                                  memory_context=str(mem_ctx)[:200])
+                except Exception:
+                    pass  # memory enrichment is optional
 
-                    # Generate hypothesis
-                    hypothesis_counter += 1
-                    h_id = f"H-{hypothesis_counter:03d}"
-                    try:
-                        hypothesis = generate_hypothesis(
-                            gap_dict, h_id, prior_hypotheses=self.hypotheses
+            # Generate hypothesis
+            hypothesis_counter += 1
+            h_id = f"H-{hypothesis_counter:03d}"
+            if self._meta:
+                try:
+                    suggested_template = self._meta.suggest_template(gap_dict)
+                    if suggested_template:
+                        gap_dict["preferred_template"] = suggested_template
+                        self._log(
+                            "meta_template_suggested",
+                            gap_id=gap_id,
+                            template=suggested_template,
                         )
-                    except Exception as e:
-                        self._log("hypothesis_error", gap_id=gap_id, error=str(e))
-                        gap_span.set_status("ERROR", str(e))
-                        self.completed_gaps.add(gap_id)
-                        continue
+                except Exception as e:
+                    self._log("meta_template_suggestion_error", gap_id=gap_id, error=str(e))
+            try:
+                hypothesis = generate_hypothesis(
+                    gap_dict, h_id, prior_hypotheses=self.hypotheses
+                )
+            except Exception as e:
+                self._log("hypothesis_error", gap_id=gap_id, error=str(e))
+                self.completed_gaps.add(gap_id)
+                continue
 
-                    self._log("hypothesis_generated", hypothesis_id=h_id,
-                              template=hypothesis.template, question=hypothesis.question[:120])
-                    self.hypotheses.append(asdict(hypothesis))
+            self._log("hypothesis_generated", hypothesis_id=h_id,
+                      template=hypothesis.template, question=hypothesis.question[:120])
+            self.hypotheses.append(asdict(hypothesis))
 
-                    # Augment hypothesis with memory-informed falsifiers (hippocampus)
-                    if self._query:
-                        try:
-                            hyp_dict = self.hypotheses[-1]
-                            augmented = self._query.augment_hypothesis(hyp_dict)
-                            self.hypotheses[-1] = augmented
-                            self._log("hypothesis_augmented", hypothesis_id=h_id,
-                                      memory_falsifiers=len(augmented.get("falsifiers", [])))
-                        except Exception:
-                            pass  # augmentation is optional
+            # Augment hypothesis with memory-informed falsifiers (hippocampus)
+            if self._query:
+                try:
+                    hyp_dict = self.hypotheses[-1]
+                    augmented = self._query.augment_hypothesis(hyp_dict)
+                    self.hypotheses[-1] = augmented
+                    self._log("hypothesis_augmented", hypothesis_id=h_id,
+                              memory_falsifiers=len(augmented.get("falsifiers", [])))
+                except Exception:
+                    pass  # augmentation is optional
 
-                    # Generate protocol
-                    try:
-                        protocol = generate_protocol(
-                            hypothesis, strict=self.config.strict_guardrails)
-                    except ProtocolValidationError as e:
-                        self._log("protocol_rejected", hypothesis_id=h_id, error=str(e))
-                        gap_span.set_status("ERROR", str(e))
-                        self.completed_gaps.add(gap_id)
-                        continue
+            # Generate protocol
+            try:
+                protocol = generate_protocol(
+                    hypothesis, strict=self.config.strict_guardrails)
+            except ProtocolValidationError as e:
+                self._log("protocol_rejected", hypothesis_id=h_id, error=str(e))
+                self.completed_gaps.add(gap_id)
+                continue
 
-                    warnings = protocol.pop("_guard_rail_warnings", [])
-                    if warnings:
-                        self._log("guardrail_warnings", hypothesis_id=h_id, warnings=warnings)
+            warnings = protocol.pop("_guard_rail_warnings", [])
+            if warnings:
+                self._log("guardrail_warnings", hypothesis_id=h_id, warnings=warnings)
 
-                    # Save protocol
-                    protocol_dir = self.session_dir / "protocols"
-                    protocol_path = save_protocol(protocol, protocol_dir)
-                    self._log("protocol_saved", path=str(protocol_path))
+            # Save protocol
+            protocol_dir = self.session_dir / "protocols"
+            protocol_path = save_protocol(protocol, protocol_dir)
+            self._log("protocol_saved", path=str(protocol_path))
 
-                    # Execute (or skip in dry-run mode)
-                    if self.config.dry_run:
-                        self._log("dry_run_skip", hypothesis_id=h_id)
-                        self.completed_gaps.add(gap_id)
-                        self.protocols_run += 1
-                        continue
+            # Execute (or skip in dry-run mode)
+            if self.config.dry_run:
+                self._log("dry_run_skip", hypothesis_id=h_id)
+                self.completed_gaps.add(gap_id)
+                self.protocols_run += 1
+                continue
 
-                    # Late import to avoid loading engine unless needed
-                    from auto_run import execute_protocol as _execute
+            # Late import to avoid loading engine unless needed
+            from auto_run import execute_protocol as _execute
 
-                    run_out_dir = self.session_dir / "runs" / protocol["seriesName"]
-                    self._log("execution_start", hypothesis_id=h_id,
-                              series=protocol["seriesName"])
+            run_out_dir = self.session_dir / "runs" / protocol["seriesName"]
+            self._log("execution_start", hypothesis_id=h_id,
+                      series=protocol["seriesName"])
 
-                    t0 = time.time()
-                    try:
-                        results = _execute(protocol, run_out_dir)
-                    except Exception as e:
-                        self._log("execution_error", hypothesis_id=h_id, error=str(e))
-                        gap_span.set_status("ERROR", str(e))
-                        self.completed_gaps.add(gap_id)
-                        self.protocols_run += 1
-                        continue
+            t0 = time.time()
+            try:
+                results = _execute(protocol, run_out_dir)
+            except Exception as e:
+                self._log("execution_error", hypothesis_id=h_id, error=str(e))
+                self.completed_gaps.add(gap_id)
+                self.protocols_run += 1
+                continue
 
-                    elapsed = time.time() - t0
+            elapsed = time.time() - t0
 
-                    # Interpret results
-                    interpretation = interpret_results(results)
-                    self.total_steps += interpretation.get("total_steps", 0)
-                    self.protocols_run += 1
-                    self.completed_gaps.add(gap_id)
+            # Interpret results
+            interpretation = interpret_results(results)
+            self.total_steps += interpretation.get("total_steps", 0)
+            self.protocols_run += 1
+            self.completed_gaps.add(gap_id)
 
-                    self._log("execution_complete", hypothesis_id=h_id,
-                              elapsed_sec=round(elapsed, 2),
-                              sanity_passed=interpretation["sanity_passed"],
-                              anomalies=interpretation["anomalies"],
-                              total_session_steps=self.total_steps)
+            self._log("execution_complete", hypothesis_id=h_id,
+                      elapsed_sec=round(elapsed, 2),
+                      sanity_passed=interpretation["sanity_passed"],
+                      anomalies=interpretation["anomalies"],
+                      total_session_steps=self.total_steps)
 
-                    # Store slim results (no trace data)
-                    self.results.append({
-                        "hypothesis_id": h_id,
-                        "gap_id": gap_id,
-                        "series": protocol["seriesName"],
-                        "interpretation": interpretation,
-                        "exports": {k: str(v) for k, v in results.get("exports", {}).items()},
-                    })
+            # Store slim results (no trace data)
+            self.results.append({
+                "hypothesis_id": h_id,
+                "gap_id": gap_id,
+                "series": protocol["seriesName"],
+                "interpretation": interpretation,
+                "exports": {k: str(v) for k, v in results.get("exports", {}).items()},
+            })
 
-                    # Record in meta-learner (hippocampus integration)
-                    if self._meta:
-                        try:
-                            hyp_for_meta = asdict(hypothesis)
-                            interp_for_meta = {
-                                "sanity_passed": interpretation["sanity_passed"],
-                                "novel_basin_discovered": not interpretation.get("has_anomalies", False),
-                                "proof_packet_promoted": False,
-                                "informative_variation": interpretation.get("total_conditions", 0) > 1,
-                            }
-                            self._meta.record(self.session_id, hyp_for_meta, interp_for_meta)
-                            self._log("meta_recorded", hypothesis_id=h_id,
-                                      template=hypothesis.template, gap_type=gap.gap_type)
-                        except Exception:
-                            pass  # meta-learning is optional
+            # Record in meta-learner (hippocampus integration)
+            if self._meta:
+                try:
+                    hyp_for_meta = asdict(hypothesis)
+                    interp_for_meta = {
+                        "sanity_passed": interpretation["sanity_passed"],
+                        "novel_basin_discovered": not interpretation.get("has_anomalies", False),
+                        "proof_packet_promoted": False,
+                        "informative_variation": interpretation.get("total_conditions", 0) > 1,
+                    }
+                    self._meta.record(self.session_id, hyp_for_meta, interp_for_meta)
+                    self._log("meta_recorded", hypothesis_id=h_id,
+                              template=hypothesis.template, gap_type=gap.gap_type)
+                except Exception:
+                    pass  # meta-learning is optional
 
-                    # Add finding to memory overlay
-                    if self._memory and interpretation["sanity_passed"]:
-                        try:
-                            cond_data = interpretation.get("conditions", {})
-                            for label, cs in cond_data.items():
-                                self._memory.add_finding(
-                                    session_id=self.session_id,
-                                    label=f"{h_id}_{label}",
-                                    tags=[hypothesis.template, gap.gap_type, hypothesis.knob],
-                                    basin_node_id=None,  # set during dream cycle
-                                    confidence=0.5,
-                                )
-                            self._log("memory_trace_added", hypothesis_id=h_id,
-                                      conditions=len(cond_data))
-                        except Exception:
-                            pass  # memory overlay is optional
+            # Add finding to memory overlay
+            if self._memory and interpretation["sanity_passed"]:
+                try:
+                    cond_data = interpretation.get("conditions", {})
+                    for label, cs in cond_data.items():
+                        self._memory.add_finding(
+                            session_id=self.session_id,
+                            label=f"{h_id}_{label}",
+                            tags=[hypothesis.template, gap.gap_type, hypothesis.knob],
+                            basin_node_id=None,  # set during dream cycle
+                            confidence=0.5,
+                        )
+                    self._log("memory_trace_added", hypothesis_id=h_id,
+                              conditions=len(cond_data))
+                except Exception:
+                    pass  # memory overlay is optional
 
-                    # Check for problems that warrant stopping
-                    if interpretation.get("has_anomalies"):
-                        self._log("anomaly_detected",
-                                  anomalies=interpretation["anomalies"],
-                                  action="continue (non-fatal)")
+            # Check for problems that warrant stopping
+            if interpretation.get("has_anomalies"):
+                self._log("anomaly_detected",
+                          anomalies=interpretation["anomalies"],
+                          action="continue (non-fatal)")
 
-                    if not interpretation["sanity_passed"]:
-                        self._log("sanity_failure",
-                                  failures=interpretation["sanity_failures"],
-                                  action="continue (logged for review)")
+            if not interpretation["sanity_passed"]:
+                self._log("sanity_failure",
+                          failures=interpretation["sanity_failures"],
+                          action="continue (logged for review)")
 
-            # Save session
-            summary = self._build_summary()
-            self._save_session(summary)
-            return summary
+        # Save session
+        summary = self._build_summary()
+        self._save_session(summary)
+        return summary
 
     def _build_summary(self) -> dict:
         """Build final session summary."""

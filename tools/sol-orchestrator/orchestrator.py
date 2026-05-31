@@ -146,7 +146,7 @@ def _graph_sha256() -> str:
     return hashlib.sha256(_DEFAULT_GRAPH.read_bytes()).hexdigest()
 
 
-_EXPECTED_SHA = "b9800d5313886818c7c1980829e1ca5da7d63d9e2218e36c020df80db19b06fb"
+_EXPECTED_SHA = "d0a80462d2b9389160502b097aca1932bb014941adf6e4b77799997283e4a1bc"
 
 
 def verify_core_immutability() -> bool:
