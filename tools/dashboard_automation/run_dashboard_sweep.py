@@ -1092,27 +1092,27 @@ return {
 
                     outputs: list[dict[str, str]] = []
 
-                                        if kind == "sol.dashboard.smoke.v1":
-                                                # UI-neutral smoke test: validate that the dashboard booted,
-                                                # physics is present, and step() executes a few times.
-                                                smoke = cmd.get("smoke")
-                                                if smoke is not None and not isinstance(smoke, dict):
-                                                        raise ValueError("Command field 'smoke' must be an object for sol.dashboard.smoke.v1")
-                                                smoke = smoke or {}
+                    if kind == "sol.dashboard.smoke.v1":
+                        # UI-neutral smoke test: validate that the dashboard booted,
+                        # physics is present, and step() executes a few times.
+                        smoke = cmd.get("smoke")
+                        if smoke is not None and not isinstance(smoke, dict):
+                            raise ValueError("Command field 'smoke' must be an object for sol.dashboard.smoke.v1")
+                        smoke = smoke or {}
 
-                                                steps = int(smoke.get("steps") or 3)
-                                                steps = max(1, min(steps, 5000))
-                                                dt = float(smoke.get("dt") or 0.12)
-                                                press_c = float(smoke.get("pressureC") or 20.0)
-                                                damping = float(smoke.get("damping") or 4.0)
+                        steps = int(smoke.get("steps") or 3)
+                        steps = max(1, min(steps, 5000))
+                        dt = float(smoke.get("dt") or 0.12)
+                        press_c = float(smoke.get("pressureC") or 20.0)
+                        damping = float(smoke.get("damping") or 4.0)
 
-                                                if dashboard_cfg:
-                                                        _apply_dashboard_config(driver, dashboard_cfg)
+                        if dashboard_cfg:
+                            _apply_dashboard_config(driver, dashboard_cfg)
 
-                                                # One run == one smoke execution + report.
-                                                for _ in range(runs):
-                                                        report = driver.execute_script(
-                                                                """
+                        # One run == one smoke execution + report.
+                        for _ in range(runs):
+                            report = driver.execute_script(
+                                """
 function safe(x){ return (Number.isFinite(x) ? x : 0); }
 
 try {
@@ -1165,26 +1165,26 @@ return {
     rhoMax
 };
 """,
-                                                                steps,
-                                                                dt,
-                                                                press_c,
-                                                                damping,
-                                                        )
+                                steps,
+                                dt,
+                                press_c,
+                                damping,
+                            )
 
-                                                        if not isinstance(report, dict) or not report.get("ok"):
-                                                                raise RuntimeError(f"Smoke failed: {report}")
+                            if not isinstance(report, dict) or not report.get("ok"):
+                                raise RuntimeError(f"Smoke failed: {report}")
 
-                                                        outputs.append(
-                                                                {
-                                                                        "nodes": str(report.get("nodes")),
-                                                                        "edges": str(report.get("edges")),
-                                                                        "okSteps": str(report.get("okSteps")),
-                                                                        "rhoSum": str(report.get("rhoSum")),
-                                                                        "rhoMax": str(report.get("rhoMax")),
-                                                                }
-                                                        )
+                            outputs.append(
+                                {
+                                    "nodes": str(report.get("nodes")),
+                                    "edges": str(report.get("edges")),
+                                    "okSteps": str(report.get("okSteps")),
+                                    "rhoSum": str(report.get("rhoSum")),
+                                    "rhoMax": str(report.get("rhoMax")),
+                                }
+                            )
 
-                                                return CommandResult(ok=True, message="ok", dashboard=dashboard, runs=runs, outputs=outputs)
+                        return CommandResult(ok=True, message="ok", dashboard=dashboard, runs=runs, outputs=outputs)
 
                     if kind == "sol.dashboard.auto_map.v1":
                         plan = cmd.get("plan")

@@ -1575,124 +1575,133 @@ def rsi_cycle(cycle_id: int, mode: str = "interactive", dry_run: bool = False) -
     Execute one complete RSI cycle:
         EVALUATE -> REFLECT -> MUTATE -> PLAN -> EXECUTE -> COMPILE -> SYNTHESIZE -> COMMIT
     """
-    print(f"\n{'='*70}")
-    print(f"  RSI CYCLE {cycle_id}")
-    print(f"  Mode: {mode} | Dry-run: {dry_run}")
-    print(f"{'='*70}")
+    sys.path.insert(0, str(_SOL_ROOT / "tools" / "sol-core"))
+    import telemetry
+    telemetry.init_telemetry("sol-rsi")
 
-    # --- EVALUATE ---
-    print("\n  [1/8] EVALUATE: computing fitness score...")
-    fitness = evaluate_fitness(cycle_id)
-    pre_fitness = fitness  # snapshot for outcome delta
-    print(f"    Fitness: {fitness.fitness:.1f}/100")
-    print(f"    Claims: {fitness.claim_count} | Open Q: {fitness.open_questions} | "
-          f"Experiments: {fitness.experiment_count}")
-    print(f"    Trials: {fitness.trial_count} | Compute: {fitness.compute_minutes:.0f} min")
-    print(f"    Density: {fitness.claim_density:.2f} | Coverage: {fitness.coverage_score:.2f} | "
-          f"Productivity: {fitness.productivity:.2f}")
+    with telemetry.trace_span("sol.rsi.cycle", {"sol.rsi.cycle_id": cycle_id, "sol.rsi.mode": mode}) as span:
+        print(f"\n{'='*70}")
+        print(f"  RSI CYCLE {cycle_id}")
+        print(f"  Mode: {mode} | Dry-run: {dry_run}")
+        print(f"{'='*70}")
 
-    # --- REFLECT ---
-    print("\n  [2/8] REFLECT: analyzing trajectory...")
-    reflection = reflect(fitness)
-    print(f"    Delta: {reflection.fitness_delta:+.1f}")
-    print(f"    Improving: {reflection.is_improving} | Plateauing: {reflection.is_plateauing}")
-    for rec in reflection.recommendations:
-        print(f"    -> {rec}")
+        # --- EVALUATE ---
+        print("\n  [1/8] EVALUATE: computing fitness score...")
+        fitness = evaluate_fitness(cycle_id)
+        pre_fitness = fitness  # snapshot for outcome delta
+        span.set_attribute("sol.rsi.pre_fitness", fitness.fitness)
+        print(f"    Fitness: {fitness.fitness:.1f}/100")
+        print(f"    Claims: {fitness.claim_count} | Open Q: {fitness.open_questions} | "
+              f"Experiments: {fitness.experiment_count}")
+        print(f"    Trials: {fitness.trial_count} | Compute: {fitness.compute_minutes:.0f} min")
+        print(f"    Density: {fitness.claim_density:.2f} | Coverage: {fitness.coverage_score:.2f} | "
+              f"Productivity: {fitness.productivity:.2f}")
 
-    # --- MUTATE ---
-    print("\n  [3/8] MUTATE: evolving strategy genome...")
-    genome = _load_genome()
-    if genome.get("created", "") == "":
-        genome["created"] = datetime.now(timezone.utc).isoformat()
-    genome = mutate_genome(genome, reflection)
-    _save_genome(genome)
-    hist = genome.get("history", [])
-    if hist:
-        for m in hist[-1].get("mutations", []):
-            print(f"    >> {m}")
-    if not hist or not hist[-1].get("mutations"):
-        print("    (no mutations this cycle)")
+        # --- REFLECT ---
+        print("\n  [2/8] REFLECT: analyzing trajectory...")
+        reflection = reflect(fitness)
+        print(f"    Delta: {reflection.fitness_delta:+.1f}")
+        print(f"    Improving: {reflection.is_improving} | Plateauing: {reflection.is_plateauing}")
+        for rec in reflection.recommendations:
+            print(f"    -> {rec}")
 
-    # --- PLAN ---
-    print("\n  [4/8] PLAN: generating experiment plan...")
-    plan = generate_plan(genome, reflection, fitness, mode)
-    print(f"    Planned experiments: {len(plan.experiments)}")
-    for i, exp in enumerate(plan.experiments, 1):
-        print(f"    {i}. [{exp['priority']:>6s}] {exp['type']}: {exp['description']}")
+        # --- MUTATE ---
+        print("\n  [3/8] MUTATE: evolving strategy genome...")
+        genome = _load_genome()
+        if genome.get("created", "") == "":
+            genome["created"] = datetime.now(timezone.utc).isoformat()
+        genome = mutate_genome(genome, reflection)
+        _save_genome(genome)
+        hist = genome.get("history", [])
+        if hist:
+            for m in hist[-1].get("mutations", []):
+                print(f"    >> {m}")
+        if not hist or not hist[-1].get("mutations"):
+            print("    (no mutations this cycle)")
 
-    # --- EXECUTE ---
-    print("\n  [5/8] EXECUTE...")
-    execution = execute_plan(plan, dry_run=dry_run)
-    print(f"    Executed: {execution['experiments_executed']}/{len(plan.experiments)}")
+        # --- PLAN ---
+        print("\n  [4/8] PLAN: generating experiment plan...")
+        plan = generate_plan(genome, reflection, fitness, mode)
+        span.set_attribute("sol.rsi.planned_experiments", len(plan.experiments))
+        print(f"    Planned experiments: {len(plan.experiments)}")
+        for i, exp in enumerate(plan.experiments, 1):
+            print(f"    {i}. [{exp['priority']:>6s}] {exp['type']}: {exp['description']}")
 
-    # --- COMPILE ---
-    print("\n  [6/8] COMPILE: extracting claims from experiment data...")
-    compile_result = None
-    execution_produced_data = (
-        not dry_run
-        and execution.get("experiments_executed", 0) > 0
-        and not execution.get("error")
-    )
-    if not dry_run:
-        try:
-            _compile = _get_compiler()
-            compile_result = _compile(
-                update_proof_packet_flag=True,
-                verbose=True,
-            )
-            if compile_result and compile_result.proof_packet_updated:
-                print(f"    Proof packet updated: +{len(compile_result.new_claims)} claims, "
-                      f"+{compile_result.total_trials_added} trials")
-            else:
-                print("    No new claims from overnight data (checking cortex path...)")
-        except Exception as e:
-            print(f"    [WARNING] Claim compilation failed: {e}")
+        # --- EXECUTE ---
+        print("\n  [5/8] EXECUTE...")
+        execution = execute_plan(plan, dry_run=dry_run)
+        span.set_attribute("sol.rsi.experiments_executed", execution.get("experiments_executed", 0))
+        print(f"    Executed: {execution['experiments_executed']}/{len(plan.experiments)}")
 
-        # Always re-evaluate fitness after execution produced data,
-        # even if the claim compiler didn't find new overnight JSON.
-        # The orchestrator's consolidation stage may have created new
-        # raw proof packets with claims that evaluate_fitness() will see.
-        if execution_produced_data or (compile_result and compile_result.proof_packet_updated):
-            print("    Re-evaluating fitness after execution + compilation...")
-            fitness = evaluate_fitness(cycle_id)
-            print(f"    Updated fitness: {fitness.fitness:.1f}/100 "
-                  f"(claims={fitness.claim_count}, open_q={fitness.open_questions})")
-    else:
-        print("    [DRY RUN] Skipping compilation.")
+        # --- COMPILE ---
+        print("\n  [6/8] COMPILE: extracting claims from experiment data...")
+        compile_result = None
+        execution_produced_data = (
+            not dry_run
+            and execution.get("experiments_executed", 0) > 0
+            and not execution.get("error")
+        )
+        if not dry_run:
+            try:
+                _compile = _get_compiler()
+                compile_result = _compile(
+                    update_proof_packet_flag=True,
+                    verbose=True,
+                )
+                if compile_result and compile_result.proof_packet_updated:
+                    print(f"    Proof packet updated: +{len(compile_result.new_claims)} claims, "
+                          f"+{compile_result.total_trials_added} trials")
+                else:
+                    print("    No new claims from overnight data (checking cortex path...)")
+            except Exception as e:
+                print(f"    [WARNING] Claim compilation failed: {e}")
 
-    # --- SYNTHESIZE (Phase 4: every 5 cycles) ---
-    print("\n  [7/8] SYNTHESIZE: cross-experiment reasoning...")
-    if not dry_run and cycle_id % 5 == 0:
-        synthesis = _try_cross_experiment_synthesis(cycle_id)
-        if synthesis:
-            print(f"    Meta-patterns found: {len(synthesis.get('meta_patterns', []))}")
-            print(f"    Contradictions: {len(synthesis.get('contradictions', []))}")
-            print(f"    Critical experiments: {len(synthesis.get('critical_experiments', []))}")
-            # Inject insights into genome for future planning
-            genome = _load_genome()
-            genome["synthesis_insights"] = {
-                "cycle": cycle_id,
-                "meta_patterns": synthesis.get("meta_patterns", [])[:5],
-                "critical_experiments": synthesis.get("critical_experiments", [])[:3],
-                "unifying_principles": synthesis.get("unifying_principles", [])[:3],
-            }
-            _save_genome(genome)
+            # Always re-evaluate fitness after execution produced data,
+            # even if the claim compiler didn't find new overnight JSON.
+            # The orchestrator's consolidation stage may have created new
+            # raw proof packets with claims that evaluate_fitness() will see.
+            if execution_produced_data or (compile_result and compile_result.proof_packet_updated):
+                print("    Re-evaluating fitness after execution + compilation...")
+                fitness = evaluate_fitness(cycle_id)
+                print(f"    Updated fitness: {fitness.fitness:.1f}/100 "
+                      f"(claims={fitness.claim_count}, open_q={fitness.open_questions})")
         else:
-            print("    (LLM unavailable or insufficient data — skipped)")
-    else:
-        print(f"    (runs every 5 cycles — next at cycle {cycle_id + (5 - cycle_id % 5)})")
+            print("    [DRY RUN] Skipping compilation.")
 
-    # --- COMMIT ---
-    print("\n  [8/8] COMMIT: persisting results...")
-    log_fitness(fitness)
-    log_cycle(cycle_id, fitness, reflection, plan, execution)
-    _record_outcome(cycle_id, pre_fitness, fitness, plan, execution)
-    print(f"    Fitness logged to {_FITNESS_LOG}")
-    print(f"    Cycle logged to {_CYCLE_LOG}")
-    print(f"    Outcome logged to {_OUTCOME_LEDGER}")
-    print(f"    Genome saved to {_GENOME_FILE}")
+        # --- SYNTHESIZE (Phase 4: every 5 cycles) ---
+        print("\n  [7/8] SYNTHESIZE: cross-experiment reasoning...")
+        if not dry_run and cycle_id % 5 == 0:
+            synthesis = _try_cross_experiment_synthesis(cycle_id)
+            if synthesis:
+                print(f"    Meta-patterns found: {len(synthesis.get('meta_patterns', []))}")
+                print(f"    Contradictions: {len(synthesis.get('contradictions', []))}")
+                print(f"    Critical experiments: {len(synthesis.get('critical_experiments', []))}")
+                # Inject insights into genome for future planning
+                genome = _load_genome()
+                genome["synthesis_insights"] = {
+                    "cycle": cycle_id,
+                    "meta_patterns": synthesis.get("meta_patterns", [])[:5],
+                    "critical_experiments": synthesis.get("critical_experiments", [])[:3],
+                    "unifying_principles": synthesis.get("unifying_principles", [])[:3],
+                }
+                _save_genome(genome)
+            else:
+                print("    (LLM unavailable or insufficient data — skipped)")
+        else:
+            print(f"    (runs every 5 cycles — next at cycle {cycle_id + (5 - cycle_id % 5)})")
 
-    return fitness
+        # --- COMMIT ---
+        print("\n  [8/8] COMMIT: persisting results...")
+        log_fitness(fitness)
+        log_cycle(cycle_id, fitness, reflection, plan, execution)
+        _record_outcome(cycle_id, pre_fitness, fitness, plan, execution)
+        span.set_attribute("sol.rsi.post_fitness", fitness.fitness)
+        print(f"    Fitness logged to {_FITNESS_LOG}")
+        print(f"    Cycle logged to {_CYCLE_LOG}")
+        print(f"    Outcome logged to {_OUTCOME_LEDGER}")
+        print(f"    Genome saved to {_GENOME_FILE}")
+
+        return fitness
 
 
 def run_rsi(

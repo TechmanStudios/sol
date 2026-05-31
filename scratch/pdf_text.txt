@@ -1,0 +1,187 @@
+--- Page 1 ---
+Regarding self-organizing logos
+About the continuous and discrete models
+The notes introduced a space-time continuous system
+
+
+
+∂tρ+∇ M ·(ρv) =s ρ(x, t)
+ρ(∂tv+ (v· ∇ M)v) =−∇ Mp−αρv+µ∆ Mv+f(x, t;ψ)
+∂tψ=∇ M ·(K∇ Mψ) +R(ψ;ρ, ϕ)
+(0.1)
+closed withp= Π(ρ, ψ)and−∆ Mϕ=∇ M ·v. When the manifoldMis represented by a graph
+G= (V, E), the discrete dynamics was set up by
+
+
+
+˙ρ+B⊤j=s ρ(t),
+˙j+A(j, ρ) =−W eBp−αj+f e(t),
+˙ψ=−KLψ+R(ψ;ρ, ϕ).
+(0.2)
+Below are some comments about the modeling.
+1.Continuous momentum equations
+By the conservation of momentum, the left-hand side of the second equation of (0.1) should
+be
+∂t(ρv) +∇ M ·(ρv⊗v).
+Note that
+ρ(∂tv+ (v· ∇ M)v) =∂ t(ρv) +∇ M ·(ρv⊗v)−v(∂ tρ+∇ M ·(ρv))
+=∂ t(ρv) +∇ M ·(ρv⊗v)−vs ρ(x, t).
+In many discussions of fluid dynamics, it is assumed that there is no external source of mass,
+soρ(∂ tv+ (v· ∇ M)v)and∂ t(ρv) +∇ M ·(ρv⊗v)are often used interchangeably. However,
+when the source termsρ is nonzero, we must appy the latter expression.
+2.Velocity potential
+1
+--- Page 2 ---
+In the equations for semantic modesψ, the reaction termRinvolves the velocity potentialϕ,
+which is defined by decompositionv=−∇ Mϕ+win the continuous setting. Correspondly,
+the discrete version ofϕis solved fromj (c) =−W eBϕ, or, equivalently,
+B⊤j=−B ⊤WeBϕ(∇ G ·j=−Lϕ).
+A potential risk here is that then×nmatrixB⊤WeBis not invertible as1= (1,1,· · ·,1)is
+a nontrivial solution to the corresponding homogeneous system (note thatB1=0). Thus,
+for a certain value ofj, there could be either no solution or infinitely many solutions of
+ϕ(e.g, ifϕ 0 is a solution, thenϕ 0 +c1is also a solution). In Eq (10) of your notes, the
+reaction term from competitive logistic dynamics does not depend onϕ. But if we want
+to incorporateϕin reaction modeling more explicitly, further conditions may be needed to
+ensure solvability.
+3.Discretization of diffusion term
+In the third equation of (0.2), I think the more natural discrete analog to∇M ·(K∇ Mψ)
+should be−B ⊤KW eBψ, which, in the absence of reactionRterm, ensures the energy
+dissipation
+1
+2
+d
+dt |ψ|2 =−⟨ψ, B ⊤KW eBψ⟩=−⟨(W 1/2
+e B)ψ, K(W 1/2
+e B)ψ⟩ ≤0,(0.3)
+whenKis SPD. The current−KLψdoes not seem to ensure the dissipation property.
+4.Directed/Undirected graph and conservation of momentum
+From the notes, it is not clear to me whether the graph is directed or undirected. This
+could affect the conservation properties and the construction of numerical schemes. For
+convenience of notation, we assume that the edgeekl :k→lhas weightw kl and fluxj kl.
+In the continuous momentum equations, assumingρandpdecay rapidly at the far-field,
+the total momentum
+R
+M ρvdxwould be conserved when dissipation, viscosity, and external
+forcing are absent.
+However, the conservation of momentum does not seem to be guaranteed in the graph-based
+discretization. Note that the total momentumjtotal =
+X
+e∈E
+je =1 ⊤j, satisfies
+d
+dt jtotal =−1 ⊤A(j, ρ)−1 ⊤WeB⊤p−αj total −1 ⊤fe
+If one wants to inherit conservation of momentum, the following should be satisfied
+•1 ⊤A(j, ρ) = 0
+•1 ⊤WeB⊤p=
+X
+k,l∈V
+wkl(pl −p k) =
+X
+k,l∈V
+wlk(pk −p l) = 1
+2
+X
+k,l∈V
+(wkl −w lk)(pk −p l) = 0
+The first condition provides a criterion for appropriate advection modeling. The second
+condition is guaranteed for an undirected graph (wkl =w lk) but not for a directed graph.
+So I think it is necessary to state clearly whether the graph is directed.
+2
+--- Page 3 ---
+About discretization
+The major difficulty in maintaining the conservation of momentum in the discrete system arises
+from the ambiguous definition of the edge-wise fluxj. If one wants to mimic finite volume-like
+discretization, I believe it is necessary to formulate the flux with some node-wise quantities.
+In the context of undirected graphs where the weightswkl andw lk of the edgesk→land
+l→kare equal, we may obtain a finite volume-like discretization to the continuous dynamics
+(0.1). Assume that the vertexk∈Vhas a set of neighborsN k. For eachl∈ N k, we define the
+nodal velocity,v(k)
+l , to represent the strength of information flow from the vertexktol. Note that
+v(k)
+l ̸=v (l)
+k in general. Subsequently, we define the nodal momentum with
+m(k) ={m (k)
+l }l∈Nk ={ρ kv(k)
+l }l∈Nk ∈R |Nk|, k∈V.
+To mimic the continuous mass and momentum equations, a possible conservative discretization is
+given by the nodal formulation,
+
+
+
+d
+dt ρk +
+X
+l∈Nk
+
+ρkl(v(k)
+l −v (l)
+k )− γ1
+2 (ρk −ρ l)
+
+wkl =s ρk(t),
+d
+dt m(k)
+l +
+
+mkl(v(k)
+l −v (l)
+k )− γ2
+2 (m(l)
+k −m (k)
+l )
+
+wkl =−w kl(pl −p k)−αm (k)
+l +f kl(t),
+where the average density and momentum at the edgek→lare given by ρkl = ρk +ρ l
+2 and
+mkl = m(k)
+l +m (l)
+k
+2 .γ 1,γ 2 ≥0are the strengths of additional dissipation, whenever needed. In
+this situation, the fluxj kl from the original discretization (0.2) may be formulated withjkl =
+ρkl(v(k)
+l −v (l)
+k ).
+In the absence of external sources and viscosity, the above discretization satisfies conservation
+of mass and momentum,
+d
+dt
+X
+k
+ρk = 0, d
+dt
+X
+k,l
+m(k)
+l = 0,
+and the dissipation properties
+1
+2
+d
+dt |ρ|2 =− γ1
+2
+X
+k,l
+|ρk −ρ l|2 ≤0,
+1
+2
+d
+dt |m|2 =− γ2
+2
+X
+k,l
+|m(k)
+l −m (l)
+k |2 ≤0
+Note that this discretization will increase the number of variables and only works for undirected
+graphs. So it should be considered carefully whether the conservation properties are meaningful
+in a specific context.
+The formulation of the time step condition is not very clear yet. But following the heuristics
+from continuous dynamics, something worth trying might be
+max
+k∈V, l∈N k
+|v(k)
+l |
+wkl
+∆t≤CF L.
+3

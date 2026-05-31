@@ -73,6 +73,7 @@ Normalization examples:
 | run/protocol intent | RUN Intent Tag |
 | analysis intent, metrics intent | ANALYSIS Intent Tag |
 | promotion intent, proof packet intent | PROMOTION Intent Tag |
+| headless run, headless test, pme, pure engine | Pure Manifold Engine |
 
 ## Core SOL concepts
 
@@ -81,6 +82,9 @@ Meaning-centric architecture where concepts, processes, and agent outputs are mo
 
 ### Logos Engine
 Runtime layer that orchestrates SOL-aware agent/tool behavior against shared context and constraints.
+
+### Pure Manifold Engine (PME)
+Headless execution mode for the SOL physics engine where all browser DOM, UI, and visualization rendering layers (such as Vis.js) are completely bypassed to run continuous state-space calculations at maximum numerical execution speed. Activated in the dashboard by appending `?automation=1` to the URL.
 
 ### SOL Context Object
 The normalized context payload passed into tools/agents (active goals, artifacts, state, provenance, mode).

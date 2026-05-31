@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SOL — Live Manifold & Reasoning Telemetry</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js from CDN (fallback to SVG sparklines if offline) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --bg-color: #04060d;
+      --panel-bg: rgba(10, 16, 30, 0.65);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f0f4f8;
+      --text-muted: #8fa0be;
+      
+      --color-spirit: #d946ef;
+      --color-tech: #06b6d4;
+      --color-bridge: #f59e0b;
+      --color-neutral: #10b981;
+      
+      --glow-spirit: 0 0 15px rgba(217, 70, 239, 0.5);
+      --glow-tech: 0 0 15px rgba(6, 182, 212, 0.5);
+      --glow-bridge: 0 0 15px rgba(245, 158, 11, 0.5);
+      --glow-active: 0 0 20px rgba(16, 185, 129, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(217, 70, 239, 0.04) 0%, transparent 40%);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      height: 70px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      background: rgba(6, 10, 20, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #06b6d4 0%, #d946ef 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+    }
+
+    .brand span {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-color);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      font-family: 'Fira Code', monospace;
+      color: var(--text-muted);
+    }
+
+    .status-panel {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .status-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .status-lbl {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .status-val {
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Fira Code', monospace;
+    }
+
+    .status-val.online {
+      color: #10b981;
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Main Dashboard Grid */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 320px 1fr 340px;
+      height: calc(100vh - 70px);
+      position: relative;
+    }
+
+    /* Left Sidebar: Telemetry & Controls */
+    .left-sidebar {
+      border-right: 1px solid var(--border-color);
+      background: rgba(5, 8, 16, 0.5);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .trace-tree-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    .trace-node {
+      margin-left: 12px;
+      border-left: 1px dashed rgba(255, 255, 255, 0.1);
+      padding-left: 10px;
+      margin-top: 6px;
+      position: relative;
+    }
+
+    .trace-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .trace-header:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .trace-icon {
+      width: 12px;
+      height: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    .trace-name {
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .trace-dur {
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    .trace-status {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .status-running { background-color: var(--color-tech); box-shadow: var(--glow-tech); }
+    .status-completed { background-color: #10b981; }
+    .status-error { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
+
+    .control-panel {
+      padding: 16px;
+      border-top: 1px solid var(--border-color);
+      background: rgba(5, 8, 16, 0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(217, 70, 239, 0.2) 100%);
+      border-color: rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.3) 0%, rgba(217, 70, 239, 0.3) 100%);
+      border-color: rgba(6, 182, 212, 0.6);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+    .form-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+    .form-control {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-control:focus {
+      border-color: var(--color-tech);
+      background: rgba(6, 182, 212, 0.05);
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.2);
+    }
+    .form-row {
+      display: flex;
+      gap: 10px;
+    }
+    .form-row > * {
+      flex: 1;
+    }
+    .injection-status {
+      font-size: 12px;
+      min-height: 16px;
+      transition: all 0.2s;
+      text-align: left;
+    }
+
+    /* Middle Canvas Viewport */
+    .viewport {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      background: rgba(3, 5, 10, 0.3);
+    }
+
+    #manifold-canvas {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+    }
+
+    #manifold-canvas:active {
+      cursor: grabbing;
+    }
+
+    /* Details HUD Overlay on Canvas */
+    .hud-details {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      width: 320px;
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      padding: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      transition: opacity 0.3s;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .hud-details.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .hud-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+
+    .hud-title {
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+    }
+
+    /* Right Sidebar: Real-time Charts & Console */
+    .right-sidebar {
+      border-left: 1px solid var(--border-color);
+      background: rgba(5, 8, 16, 0.5);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .charts-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .chart-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px;
+      backdrop-filter: blur(8px);
+    }
+
+    .chart-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      height: 140px;
+      width: 100%;
+    }
+
+    /* Logs/Console Panel at Bottom of Right Sidebar */
+    .console-panel {
+      height: 280px;
+      border-top: 1px solid var(--border-color);
+      background: rgba(4, 6, 12, 0.95);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .console-logs {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      color: #a6b5c5;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .log-line {
+      line-height: 1.4;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      padding-bottom: 4px;
+    }
+
+    .log-tag {
+      color: var(--color-tech);
+      font-weight: 600;
+    }
+
+    .log-text {
+      color: var(--text-main);
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <h1>Sol Manifold Telemetry</h1>
+      <span>v4.0.0-agentic</span>
+    </div>
+    
+    <div class="status-panel">
+      <div class="status-item">
+        <span class="status-lbl">Telemetry Feed</span>
+        <span class="status-val online" id="feed-status">CONNECTED</span>
+      </div>
+      <div class="status-item">
+        <span class="status-lbl">Sim Clock (t)</span>
+        <span class="status-val" id="clock-t">0.00</span>
+      </div>
+      <div class="status-item">
+        <span class="status-lbl">Entropy</span>
+        <span class="status-val" id="entropy-val" style="color: var(--color-spirit)">0.000</span>
+      </div>
+      <div class="status-item">
+        <span class="status-lbl">Active Nodes</span>
+        <span class="status-val" id="active-nodes" style="color: var(--color-neutral)">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Grid Layout -->
+  <main>
+    
+    <!-- Left Sidebar: Traces & Controls -->
+    <section class="left-sidebar">
+      <div class="panel-header">
+        <span>Reasoning Spans</span>
+        <span style="font-size: 10px; color: var(--text-muted);" id="span-count">0 Spans</span>
+      </div>
+      
+      <div class="trace-tree-container" id="trace-tree">
+        <!-- Rendered dynamically -->
+        <div style="color: var(--text-muted); font-size: 13px; text-align: center; margin-top: 40px;">
+          Awaiting telemetry traces...
+        </div>
+      </div>
+      
+      <div class="control-panel">
+        <div class="form-group">
+          <label class="form-label" for="inject-node-select">Select Target Node</label>
+          <select class="form-control" id="inject-node-select">
+            <option value="grail" selected>grail</option>
+            <option value="metatron">metatron</option>
+            <option value="pyramid">pyramid</option>
+            <option value="christ">christ</option>
+            <option value="light codes">light codes</option>
+            <option value="custom">-- Custom Node --</option>
+          </select>
+        </div>
+        
+        <div class="form-group" id="custom-node-group" style="display: none;">
+          <label class="form-label" for="inject-node-custom">Custom Node Label</label>
+          <input class="form-control" type="text" id="inject-node-custom" placeholder="e.g. earth star" />
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="inject-amount">Density Amount</label>
+            <input class="form-control" type="number" id="inject-amount" value="50.0" step="5" min="1" max="500" />
+          </div>
+        </div>
+
+        <div id="injection-status" class="injection-status" style="color: var(--text-muted);"></div>
+
+        <button class="btn btn-primary" id="btn-inject-density">
+          <span style="font-size: 14px;">⚡</span> Inject Density
+        </button>
+        <button class="btn" id="btn-reset-view">
+          Center Graph View
+        </button>
+      </div>
+    </section>
+
+    <!-- Center: Manifold Visualizer -->
+    <section class="viewport">
+      <canvas id="manifold-canvas"></canvas>
+      
+      <!-- HUD Detail Overlay -->
+      <div class="hud-details" id="hud-panel">
+        <div class="hud-title" id="hud-node-label">Select a node</div>
+        <div class="hud-row">
+          <span style="color: var(--text-muted)">Group:</span>
+          <span id="hud-node-group">-</span>
+        </div>
+        <div class="hud-row">
+          <span style="color: var(--text-muted)">Density (ρ):</span>
+          <span id="hud-node-rho" style="font-weight: 600">-</span>
+        </div>
+        <div class="hud-row">
+          <span style="color: var(--text-muted)">Pressure (p):</span>
+          <span id="hud-node-p">-</span>
+        </div>
+        <div class="hud-row">
+          <span style="color: var(--text-muted)">Belief Field (ψ):</span>
+          <span id="hud-node-psi">-</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Sidebar: Charts & Logs -->
+    <section class="right-sidebar">
+      <div class="panel-header">Real-time Metrics</div>
+      
+      <div class="charts-container">
+        
+        <!-- Entropy Chart -->
+        <div class="chart-card">
+          <div class="chart-title">Manifold Entropy</div>
+          <div class="chart-wrapper">
+            <canvas id="chart-entropy"></canvas>
+          </div>
+        </div>
+        
+        <!-- Active Count & Flux Chart -->
+        <div class="chart-card">
+          <div class="chart-title">Total Edge Flux</div>
+          <div class="chart-wrapper">
+            <canvas id="chart-flux"></canvas>
+          </div>
+        </div>
+        
+        <!-- Total System Mass -->
+        <div class="chart-card">
+          <div class="chart-title">System Mass Conservation</div>
+          <div class="chart-wrapper">
+            <canvas id="chart-mass"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Logs Terminal -->
+      <div class="console-panel">
+        <div class="panel-header" style="background: rgba(3, 5, 8, 0.9)">System Thoughts Console</div>
+        <div class="console-logs" id="console-feed">
+          <div class="log-line">
+            <span class="log-tag">[SYSTEM]</span>
+            <span class="log-text">Dashboard initialized. Connecting to WebSocket telemetry server...</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Script Logic -->
+  <script>
+    // State Buffers
+    let graphNodes = [];
+    let graphEdges = [];
+    let activeParticles = []; // Flowing particles representing flux
+    
+    // Trace tree span buffers
+    let spansMap = new Map();
+    let traceRoot = null;
+    
+    // Canvas Pan/Zoom variables
+    let offsetX = 0;
+    let offsetY = 0;
+    let scale = 1.0;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let hoveredNode = null;
+    let selectedNode = null;
+
+    // WebSocket Config
+    const wsUrl = `ws://${window.location.host}/ws`;
+    let ws = null;
+    let reconnectInterval = 2000;
+
+    // Chart Handles
+    let charts = {};
+    const MAX_CHART_POINTS = 50;
+    let chartDataTimes = [];
+    let chartDataEntropy = [];
+    let chartDataFlux = [];
+    let chartDataMass = [];
+
+    // Canvas init
+    const canvas = document.getElementById("manifold-canvas");
+    const ctx = canvas.getContext("2d");
+
+    function resizeCanvas() {
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+      if (offsetX === 0 && offsetY === 0) {
+        offsetX = canvas.width / 2;
+        offsetY = canvas.height / 2;
+      }
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    // Chart init
+    function initCharts() {
+      const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { display: false },
+          y: { grid: { color: "rgba(255, 255, 255, 0.05)" }, ticks: { color: "#8fa0be", font: { size: 9 } } }
+        },
+        elements: {
+          point: { radius: 0 },
+          line: { tension: 0.3 }
+        }
+      };
+
+      const ctxEntropy = document.getElementById("chart-entropy").getContext("2d");
+      charts.entropy = new Chart(ctxEntropy, {
+        type: "line",
+        data: {
+          labels: [],
+          datasets: [{ data: [], borderColor: "#d946ef", backgroundColor: "rgba(217, 70, 239, 0.05)", fill: true, borderWidth: 1.5 }]
+        },
+        options: chartOptions
+      });
+
+      const ctxFlux = document.getElementById("chart-flux").getContext("2d");
+      charts.flux = new Chart(ctxFlux, {
+        type: "line",
+        data: {
+          labels: [],
+          datasets: [{ data: [], borderColor: "#06b6d4", backgroundColor: "rgba(6, 182, 212, 0.05)", fill: true, borderWidth: 1.5 }]
+        },
+        options: chartOptions
+      });
+
+      const ctxMass = document.getElementById("chart-mass").getContext("2d");
+      charts.mass = new Chart(ctxMass, {
+        type: "line",
+        data: {
+          labels: [],
+          datasets: [{ data: [], borderColor: "#f59e0b", backgroundColor: "rgba(245, 158, 11, 0.05)", fill: true, borderWidth: 1.5 }]
+        },
+        options: chartOptions
+      });
+    }
+
+    try {
+      initCharts();
+    } catch(e) {
+      console.warn("Chart.js failed to initialize. Falling back to console-only stats.", e);
+    }
+
+    function updateCharts(entropy, flux, mass) {
+      if (!charts.entropy) return;
+      
+      const nowLabel = new Date().toLocaleTimeString();
+      chartDataTimes.push(nowLabel);
+      chartDataEntropy.push(entropy);
+      chartDataFlux.push(flux);
+      chartDataMass.push(mass);
+
+      if (chartDataTimes.length > MAX_CHART_POINTS) {
+        chartDataTimes.shift();
+        chartDataEntropy.shift();
+        chartDataFlux.shift();
+        chartDataMass.shift();
+      }
+
+      charts.entropy.data.labels = chartDataTimes;
+      charts.entropy.data.datasets[0].data = chartDataEntropy;
+      charts.entropy.update("none");
+
+      charts.flux.data.labels = chartDataTimes;
+      charts.flux.data.datasets[0].data = chartDataFlux;
+      charts.flux.update("none");
+
+      charts.mass.data.labels = chartDataTimes;
+      charts.mass.data.datasets[0].data = chartDataMass;
+      charts.mass.update("none");
+    }
+
+    // Force Directed Layout logic for live rendering
+    function initializeForceLayout(nodes, edges) {
+      // If we already have positions, keep them, otherwise arrange in a circle
+      nodes.forEach((n, idx) => {
+        if (n.x === undefined) {
+          const angle = (idx / nodes.length) * Math.PI * 2;
+          const r = 180 + Math.random() * 80;
+          n.x = Math.cos(angle) * r;
+          n.y = Math.sin(angle) * r;
+          n.vx = 0;
+          n.vy = 0;
+        }
+      });
+    }
+
+    function updateForces() {
+      if (graphNodes.length === 0) return;
+
+      const kAttract = 0.0012;
+      const kRepel = 1200;
+      const kGravity = 0.008;
+      const damping = 0.88;
+
+      // 1. Repulsion between all nodes
+      for (let i = 0; i < graphNodes.length; i++) {
+        const ni = graphNodes[i];
+        for (let j = i + 1; j < graphNodes.length; j++) {
+          const nj = graphNodes[j];
+          const dx = nj.x - ni.x;
+          const dy = nj.y - ni.y;
+          const d2 = dx * dx + dy * dy + 1e-4;
+          const dist = Math.sqrt(d2);
+          
+          if (dist < 400) {
+            const force = kRepel / d2;
+            const fx = (dx / dist) * force;
+            const fy = (dy / dist) * force;
+            
+            ni.vx -= fx;
+            ni.vy -= fy;
+            nj.vx += fx;
+            nj.vy += fy;
+          }
+        }
+      }
+
+      // 2. Attraction along edges
+      graphEdges.forEach(e => {
+        const src = graphNodes.find(n => n.id === e.from);
+        const dst = graphNodes.find(n => n.id === e.to);
+        if (!src || !dst) return;
+        
+        const dx = dst.x - src.x;
+        const dy = dst.y - src.y;
+        const dist = Math.sqrt(dx * dx + dy * dy + 1e-4);
+        
+        // Target length: 80px
+        const force = (dist - 85) * kAttract * (e.conductance || 1.0);
+        const fx = (dx / dist) * force;
+        const fy = (dy / dist) * force;
+        
+        src.vx += fx;
+        src.vy += fy;
+        dst.vx -= fx;
+        dst.vy -= fy;
+      });
+
+      // 3. Gravity pulling to origin and integration
+      graphNodes.forEach(n => {
+        n.vx -= n.x * kGravity;
+        n.vy -= n.y * kGravity;
+        
+        n.x += n.vx;
+        n.y += n.vy;
+        
+        n.vx *= damping;
+        n.vy *= damping;
+      });
+    }
+
+    // Dynamic Edge Particle Flow simulation
+    function updateFlowParticles() {
+      // Clear expired particles
+      activeParticles = activeParticles.filter(p => p.progress < 1.0);
+      
+      // Spawn new particles along edges with high flux
+      graphEdges.forEach(e => {
+        const fluxVal = e.flux || 0;
+        if (Math.abs(fluxVal) < 0.1) return;
+        
+        // Spawn chance based on flux magnitude
+        if (Math.random() < Math.min(0.2, Math.abs(fluxVal) * 0.05)) {
+          const srcId = fluxVal > 0 ? e.from : e.to;
+          const dstId = fluxVal > 0 ? e.to : e.from;
+          const srcNode = graphNodes.find(n => n.id === srcId);
+          const dstNode = graphNodes.find(n => n.id === dstId);
+          
+          if (srcNode && dstNode) {
+            activeParticles.push({
+              src: srcNode,
+              dst: dstNode,
+              progress: 0.0,
+              speed: 0.02 + Math.min(0.08, Math.abs(fluxVal) * 0.003),
+              group: srcNode.group || "bridge"
+            });
+          }
+        }
+      });
+
+      // Update active particles progress
+      activeParticles.forEach(p => {
+        p.progress += p.speed;
+      });
+    }
+
+    // Canvas drawing function
+    function drawManifold() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.translate(offsetX, offsetY);
+      ctx.scale(scale, scale);
+
+      // 1. Draw Edges
+      graphEdges.forEach(e => {
+        const src = graphNodes.find(n => n.id === e.from);
+        const dst = graphNodes.find(n => n.id === e.to);
+        if (!src || !dst) return;
+        
+        const fluxVal = Math.abs(e.flux || 0);
+        ctx.beginPath();
+        ctx.moveTo(src.x, src.y);
+        ctx.lineTo(dst.x, dst.y);
+        
+        if (fluxVal > 0.5) {
+          ctx.strokeStyle = "rgba(6, 182, 212, 0.4)";
+          ctx.lineWidth = 1.5 + Math.min(3.0, fluxVal * 0.15);
+        } else {
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.06)";
+          ctx.lineWidth = 1.0;
+        }
+        ctx.stroke();
+      });
+
+      // 2. Draw Flowing Particles
+      activeParticles.forEach(p => {
+        const px = p.src.x + (p.dst.x - p.src.x) * p.progress;
+        const py = p.src.y + (p.dst.y - p.src.y) * p.progress;
+        
+        ctx.beginPath();
+        ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+        
+        if (p.group === "spirit") ctx.fillStyle = varColor("spirit");
+        else if (p.group === "tech") ctx.fillStyle = varColor("tech");
+        else if (p.group === "bridge") ctx.fillStyle = varColor("bridge");
+        else ctx.fillStyle = "#ffffff";
+        
+        ctx.fill();
+      });
+
+      // 3. Draw Nodes
+      graphNodes.forEach(n => {
+        const isHovered = n === hoveredNode;
+        const isSelected = n === selectedNode;
+        const rho = n.rho || 0;
+        const size = Math.max(5, Math.min(25, 6 + Math.sqrt(rho) * 1.6));
+        
+        // Node halo glow if active
+        if (rho > 5) {
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, size + 5, 0, Math.PI * 2);
+          ctx.fillStyle = groupToColor(n.group, 0.08 + Math.min(0.2, rho * 0.005));
+          ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = groupToColor(n.group, 1.0);
+        ctx.fill();
+
+        // Node borders
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, size, 0, Math.PI * 2);
+        ctx.strokeStyle = isSelected ? "#ffffff" : "rgba(0, 0, 0, 0.3)";
+        ctx.lineWidth = isSelected ? 2.5 : 1.0;
+        ctx.stroke();
+
+        // Label for hovered, selected, or very dense nodes
+        if (isHovered || isSelected || rho > 15) {
+          ctx.fillStyle = "#ffffff";
+          ctx.font = isHovered || isSelected ? "bold 13px Outfit" : "11px Outfit";
+          ctx.textAlign = "center";
+          ctx.fillText(n.label, n.x, n.y - size - 8);
+          
+          if (rho > 0) {
+            ctx.fillStyle = varColor("neutral");
+            ctx.font = "9px Fira Code";
+            ctx.fillText(rho.toFixed(1), n.x, n.y + size + 12);
+          }
+        }
+      });
+
+      ctx.restore();
+    }
+
+    function groupToColor(group, alpha = 1.0) {
+      if (group === "spirit") return `rgba(217, 70, 239, ${alpha})`;
+      if (group === "tech") return `rgba(6, 182, 212, ${alpha})`;
+      if (group === "bridge") return `rgba(245, 158, 11, ${alpha})`;
+      return `rgba(16, 185, 129, ${alpha})`;
+    }
+
+    function varColor(group) {
+      if (group === "spirit") return "#d946ef";
+      if (group === "tech") return "#06b6d4";
+      if (group === "bridge") return "#f59e0b";
+      return "#10b981";
+    }
+
+    // Telemetry trace processing and dynamic tree UI building
+    function rebuildTraceTreeUI() {
+      const treeContainer = document.getElementById("trace-tree");
+      const spanCount = document.getElementById("span-count");
+      
+      spanCount.textContent = `${spansMap.size} Spans`;
+      if (spansMap.size === 0) {
+        treeContainer.innerHTML = `<div style="color: var(--text-muted); font-size: 13px; text-align: center; margin-top: 40px;">Awaiting telemetry traces...</div>`;
+        return;
+      }
+
+      // Group spans by parent relationships
+      let roots = [];
+      let childrenMap = new Map();
+
+      spansMap.forEach(span => {
+        const parentId = span.parent_id;
+        if (!parentId || !spansMap.has(parentId)) {
+          roots.push(span);
+        } else {
+          if (!childrenMap.has(parentId)) {
+            childrenMap.set(parentId, []);
+          }
+          childrenMap.get(parentId).push(span);
+        }
+      });
+
+      // Sort spans by start time
+      const sortSpans = (a, b) => (a.start_time || 0) - (b.start_time || 0);
+      roots.sort(sortSpans);
+      childrenMap.forEach(list => list.sort(sortSpans));
+
+      function renderNode(span) {
+        const duration = span.end_time ? ((span.end_time - span.start_time) * 1000).toFixed(0) + "ms" : "running";
+        const children = childrenMap.get(span.context.span_id) || [];
+        const hasChildren = children.length > 0;
+        
+        let statusClass = "status-running";
+        if (span.status.status_code === "OK" || span.status.status_code === "UNSET" && span.end_time) {
+          statusClass = "status-completed";
+        } else if (span.status.status_code === "ERROR") {
+          statusClass = "status-error";
+        }
+
+        const detailsStr = span.attributes && span.attributes["sol.inject.label"] 
+          ? `(${span.attributes["sol.inject.label"]})` 
+          : "";
+
+        const nodeEl = document.createElement("div");
+        nodeEl.className = "trace-node";
+        nodeEl.innerHTML = `
+          <div class="trace-header">
+            <span class="trace-status ${statusClass}"></span>
+            <span class="trace-name" title="${span.name}">${span.name} <small style="color: var(--text-muted)">${detailsStr}</small></span>
+            <span class="trace-dur">${duration}</span>
+          </div>
+        `;
+
+        if (hasChildren) {
+          const childrenContainer = document.createElement("div");
+          childrenContainer.className = "trace-children";
+          children.forEach(child => {
+            childrenContainer.appendChild(renderNode(child));
+          });
+          nodeEl.appendChild(childrenContainer);
+        }
+
+        return nodeEl;
+      }
+
+      treeContainer.innerHTML = "";
+      roots.forEach(root => {
+        treeContainer.appendChild(renderNode(root));
+      });
+    }
+
+    function processIncomingSpans(spans) {
+      spans.forEach(span => {
+        spansMap.set(span.context.span_id, span);
+        
+        // Extract simulation state if embedded in step span attributes
+        if (span.name === "sol.engine.step" && span.attributes) {
+          const stepT = span.attributes["sol.t"];
+          const stepEntropy = span.attributes["sol.metrics.entropy"];
+          const stepFlux = span.attributes["sol.metrics.total_flux"];
+          const stepMass = span.attributes["sol.metrics.mass"];
+          const stepActive = span.attributes["sol.metrics.active_count"];
+
+          document.getElementById("clock-t").textContent = Number(stepT).toFixed(2);
+          document.getElementById("entropy-val").textContent = Number(stepEntropy).toFixed(3);
+          document.getElementById("active-nodes").textContent = stepActive;
+
+          updateCharts(stepEntropy, stepFlux, stepMass);
+
+          if (span.attributes["sol.graph.nodes"]) {
+            try {
+              const nodesData = JSON.parse(span.attributes["sol.graph.nodes"]);
+              const edgesData = JSON.parse(span.attributes["sol.graph.edges"] || "[]");
+              
+              // Merge physics state with local position map
+              nodesData.forEach(n => {
+                const existing = graphNodes.find(ex => ex.id === n.id);
+                if (existing) {
+                  existing.rho = n.rho;
+                  existing.p = n.p;
+                  existing.psi = n.psi;
+                } else {
+                  graphNodes.push(n);
+                }
+              });
+
+              // Ensure initial forces calculated
+              initializeForceLayout(graphNodes, edgesData);
+              graphEdges = edgesData;
+            } catch (err) {
+              console.error("Error parsing graph states: ", err);
+            }
+          }
+        }
+
+        // Add log messages to feed
+        let logMsg = "";
+        let logTag = "[TRACE]";
+        if (span.name === "sol.engine.inject") {
+          logMsg = `Injected ${span.attributes["sol.inject.amount"]} into node '${span.attributes["sol.inject.label"]}'`;
+          logTag = "[INJECT]";
+        } else if (span.name.startsWith("sol.orchestrator")) {
+          logMsg = `Orchestrator transition: ${span.name}`;
+          logTag = "[ORCHESTRATOR]";
+        } else if (span.name.startsWith("sol.rsi")) {
+          logMsg = `RSI Loop: ${span.name}`;
+          logTag = "[RSI]";
+        }
+
+        if (logMsg) {
+          const feed = document.getElementById("console-feed");
+          const line = document.createElement("div");
+          line.className = "log-line";
+          line.innerHTML = `<span class="log-tag">${logTag}</span> <span class="log-text">${logMsg}</span>`;
+          feed.appendChild(line);
+          feed.scrollTop = feed.scrollHeight;
+        }
+      });
+      rebuildTraceTreeUI();
+    }
+
+    // WebSocket Telemetry Connection management
+    function connectWebSocket() {
+      ws = new WebSocket(wsUrl);
+
+      ws.onopen = () => {
+        document.getElementById("feed-status").textContent = "CONNECTED";
+        document.getElementById("feed-status").className = "status-val online";
+        console.log("WebSocket connected!");
+      };
+
+      ws.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        if (msg.type === "init") {
+          spansMap.clear();
+          processIncomingSpans(msg.spans);
+        } else if (msg.type === "telemetry") {
+          processIncomingSpans(msg.spans);
+        }
+      };
+
+      ws.onclose = () => {
+        document.getElementById("feed-status").textContent = "DISCONNECTED";
+        document.getElementById("feed-status").className = "status-val";
+        console.warn("WebSocket disconnected, reconnecting in " + reconnectInterval + "ms...");
+        setTimeout(connectWebSocket, reconnectInterval);
+      };
+
+      ws.onerror = (err) => {
+        console.error("WebSocket error: ", err);
+      };
+    }
+
+    connectWebSocket();
+
+    // Canvas interactivity: dragging & clicking
+    canvas.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      dragStartX = e.clientX - offsetX;
+      dragStartY = e.clientY - offsetY;
+    });
+
+    canvas.addEventListener("mousemove", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.clientX - rect.left;
+      const clientY = e.clientY - rect.top;
+
+      if (isDragging) {
+        offsetX = e.clientX - dragStartX;
+        offsetY = e.clientY - dragStartY;
+      } else {
+        // Hover detection
+        const worldX = (clientX - offsetX) / scale;
+        const worldY = (clientY - offsetY) / scale;
+        
+        let found = null;
+        for (let i = 0; i < graphNodes.length; i++) {
+          const n = graphNodes[i];
+          const dx = n.x - worldX;
+          const dy = n.y - worldY;
+          const size = Math.max(5, 6 + Math.sqrt(n.rho || 0) * 1.6);
+          if (dx * dx + dy * dy <= (size + 3) * (size + 3)) {
+            found = n;
+            break;
+          }
+        }
+        hoveredNode = found;
+      }
+    });
+
+    canvas.addEventListener("mouseup", (e) => {
+      isDragging = false;
+    });
+
+    canvas.addEventListener("click", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.clientX - rect.left;
+      const clientY = e.clientY - rect.top;
+      
+      const worldX = (clientX - offsetX) / scale;
+      const worldY = (clientY - offsetY) / scale;
+      
+      let found = null;
+      for (let i = 0; i < graphNodes.length; i++) {
+        const n = graphNodes[i];
+        const dx = n.x - worldX;
+        const dy = n.y - worldY;
+        const size = Math.max(5, 6 + Math.sqrt(n.rho || 0) * 1.6);
+        if (dx * dx + dy * dy <= (size + 3) * (size + 3)) {
+          found = n;
+          break;
+        }
+      }
+      
+      selectedNode = found;
+      const hud = document.getElementById("hud-panel");
+      if (selectedNode) {
+        document.getElementById("hud-node-label").textContent = selectedNode.label;
+        document.getElementById("hud-node-group").textContent = selectedNode.group || "bridge";
+        document.getElementById("hud-node-rho").textContent = (selectedNode.rho || 0.0).toFixed(4);
+        document.getElementById("hud-node-p").textContent = (selectedNode.p || 0.0).toFixed(4);
+        document.getElementById("hud-node-psi").textContent = (selectedNode.psi || 0.0).toFixed(4);
+        hud.className = "hud-details active";
+      } else {
+        hud.className = "hud-details";
+      }
+    });
+
+    canvas.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const zoomFactor = 1.1;
+      if (e.deltaY < 0) {
+        scale *= zoomFactor;
+      } else {
+        scale /= zoomFactor;
+      }
+      scale = Math.max(0.15, Math.min(10.0, scale));
+    });
+
+    // Control panel hooks (sends REST requests to dashboard control or just registers triggers)
+    document.getElementById("btn-reset-view").onclick = () => {
+      offsetX = canvas.width / 2;
+      offsetY = canvas.height / 2;
+      scale = 1.0;
+    };
+
+    // Control panel interactive selection
+    const nodeSelect = document.getElementById("inject-node-select");
+    const customNodeGroup = document.getElementById("custom-node-group");
+    nodeSelect.onchange = () => {
+      if (nodeSelect.value === "custom") {
+        customNodeGroup.style.display = "flex";
+      } else {
+        customNodeGroup.style.display = "none";
+      }
+    };
+
+    document.getElementById("btn-inject-density").onclick = async () => {
+      let label = nodeSelect.value;
+      if (label === "custom") {
+        label = document.getElementById("inject-node-custom").value.trim();
+      }
+      
+      const amount = parseFloat(document.getElementById("inject-amount").value);
+      const statusEl = document.getElementById("injection-status");
+      
+      if (!label) {
+        statusEl.innerText = "Error: Specify a node label.";
+        statusEl.style.color = "#ef4444";
+        return;
+      }
+      if (isNaN(amount) || amount <= 0) {
+        statusEl.innerText = "Error: Amount must be > 0.";
+        statusEl.style.color = "#ef4444";
+        return;
+      }
+      
+      statusEl.innerText = `Injecting into '${label}'...`;
+      statusEl.style.color = "var(--text-muted)";
+      
+      try {
+        const response = await fetch("/api/inject", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ label, amount })
+        });
+        const result = await response.json();
+        if (result.status === "ok" && result.success) {
+          statusEl.innerText = `Successfully injected ${amount} density into '${label}'.`;
+          statusEl.style.color = "#10b981";
+        } else {
+          statusEl.innerText = `Failed: Node '${label}' not found on active graph.`;
+          statusEl.style.color = "#ef4444";
+        }
+      } catch (err) {
+        statusEl.innerText = "Error connecting to dashboard server.";
+        statusEl.style.color = "#ef4444";
+      }
+    };
+
+    // Main animation loop
+    function loop() {
+      updateForces();
+      updateFlowParticles();
+      drawManifold();
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+  </script>
+</body>
+</html>

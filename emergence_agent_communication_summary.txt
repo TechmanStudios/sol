@@ -1,0 +1,15 @@
+# Agent-to-Agent Topological Communication Sweep Report
+
+This report evaluates the Symbol Error Rate (SER) and Throughput of a three-channel mass-wave communication protocol. Senders inject mass, relays propagate density waves, and receivers decode messages via integrated density max-detection.
+
+| Sweep ID | Crosstalk ($w_{\text{cross}}$) | Damping ($\alpha$) | Silence ($T_{\text{silent}}$) | Inflow ($I_0$) | Sent Sequence | Decoded Sequence | Errors | SER | Throughput (Bits/Tick) | Topology Splitted? |
+|---|---|---|---|---|---|---|---|---|---|---|
+| high_inj_ideal_damp8_sil15 | 0.0 | 8.0 | 15 | 120.0 | `CAACBAAACACC` | `BBAABCABCCAC` | 7 | 58.3% | 0.0330 | Yes (9 → 227 nodes) |
+| high_inj_med_crosstalk_sil15 | 0.2 | 8.0 | 15 | 120.0 | `CAACBAAACACC` | `ACABCACCACCC` | 8 | 66.7% | 0.0264 | Yes (9 → 220 nodes) |
+| high_inj_med_crosstalk_sil25 | 0.2 | 8.0 | 25 | 120.0 | `CAACBAAACACC` | `ACCCBBBCCAAB` | 8 | 66.7% | 0.0176 | Yes (9 → 120 nodes) |
+| low_inj_ideal_damp8_sil15 | 0.0 | 8.0 | 15 | 15.0 | `CAACBAAACACC` | `CBBACAAAAABC` | 6 | 50.0% | 0.0396 | Yes (9 → 67 nodes) |
+| low_inj_med_crosstalk_sil15 | 0.2 | 8.0 | 15 | 15.0 | `CAACBAAACACC` | `CBAABBAAABBC` | 6 | 50.0% | 0.0396 | Yes (9 → 67 nodes) |
+| low_inj_med_crosstalk_sil25 | 0.2 | 8.0 | 25 | 15.0 | `CAACBAAACACC` | `CABCCCAACBAA` | 6 | 50.0% | 0.0264 | Yes (9 → 47 nodes) |
+| low_inj_high_crosstalk_sil25 | 0.5 | 8.0 | 25 | 15.0 | `CAACBAAACACC` | `CBBCBBACCBCC` | 5 | 41.7% | 0.0308 | Yes (9 → 47 nodes) |
+| low_inj_med_crosstalk_lowdamp_sil25 | 0.2 | 2.0 | 25 | 15.0 | `CAACBAAACACC` | `CBCAAABBCBAC` | 8 | 66.7% | 0.0176 | Yes (9 → 542 nodes) |
+| low_inj_med_crosstalk_hidamp_sil25 | 0.2 | 15.0 | 25 | 15.0 | `CAACBAAACACC` | `CACCCBAACABA` | 5 | 41.7% | 0.0308 | Yes (9 → 22 nodes) |

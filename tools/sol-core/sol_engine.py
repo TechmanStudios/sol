@@ -95,6 +95,10 @@ class SOLPhysics:
             base.setdefault("semanticMass0", base["semanticMass"])
             base.setdefault("lastInteractionTime", 0.0)
             base.setdefault("isSingularity", False)
+            base.setdefault("z_gate", 1.0)
+            base.setdefault("r_gate", 1.0)
+            base.setdefault("z_bias", 0.0)
+            base.setdefault("r_bias", 0.0)
 
             if base.get("isBattery"):
                 base.setdefault("b_q", 0.0)
@@ -118,6 +122,13 @@ class SOLPhysics:
             ed["background"] = bool(ed["background"])
             ed["flux"] = 0.0
             ed["conductance"] = 1.0
+            # Pre-resolve source and destination node references/indices for speed
+            from_id = ed["from"]
+            to_id = ed["to"]
+            ed["src_node"] = self.node_by_id.get(from_id)
+            ed["dst_node"] = self.node_by_id.get(to_id)
+            ed["from_idx"] = self.node_index_by_id.get(from_id)
+            ed["to_idx"] = self.node_index_by_id.get(to_id)
             self.edges.append(ed)
 
         self.global_bias = 0.0
@@ -184,6 +195,20 @@ class SOLPhysics:
         self._t = 0.0
         self._rng = _Rng(42)
 
+        # Integration configuration (forward_euler or rk4)
+        self.integration_mode = "forward_euler"
+
+        # Gated Recurrent Manifold Node configuration
+        self.gated_recurrent_cfg = {
+            "enabled": False,
+            "W_z": 0.0,
+            "U_z": 0.0,
+            "b_z": 10.0,
+            "W_r": 0.0,
+            "U_r": 0.0,
+            "b_r": 10.0,
+        }
+
     def seed_rng(self, seed: int):
         self._rng = _Rng(seed)
 
@@ -238,8 +263,8 @@ class SOLPhysics:
     def update_psi(self, dt: float):
         lap = [0.0] * len(self.nodes)
         for e in self.edges:
-            ia = self.node_index_by_id.get(e["from"])
-            ib = self.node_index_by_id.get(e["to"])
+            ia = e["from_idx"]
+            ib = e["to_idx"]
             if ia is None or ib is None:
                 continue
             d = self.nodes[ib]["psi"] - self.nodes[ia]["psi"]
@@ -333,8 +358,8 @@ class SOLPhysics:
     # ---- Edge Conductance (psi-shaped) ----
     def update_conductance(self):
         for e in self.edges:
-            src = self.node_by_id.get(e["from"])
-            dst = self.node_by_id.get(e["to"])
+            src = e["src_node"]
+            dst = e["dst_node"]
             if not src or not dst:
                 continue
             avg_psi = (src["psi"] + dst["psi"]) / 2
@@ -434,7 +459,271 @@ class SOLPhysics:
     # ==================================================================
     # SACRED MATH — transcribed verbatim from the dashboard.
     # ==================================================================
+    def _compute_derivatives(self, rho_vals: list[float], flux_vals: list[float], psi_vals: list[float], dt: float, c_press: float, damping: float) -> tuple[list[float], list[float], list[float]]:
+        # Save original states
+        orig_rho = [n["rho"] for n in self.nodes]
+        orig_flux = [e["flux"] for e in self.edges]
+        orig_psi = [n["psi"] for n in self.nodes]
+        
+        # Apply state S
+        for idx, val in enumerate(rho_vals):
+            self.nodes[idx]["rho"] = val
+        for idx, val in enumerate(flux_vals):
+            self.edges[idx]["flux"] = val
+        for idx, val in enumerate(psi_vals):
+            self.nodes[idx]["psi"] = val
+            
+        # Recompute derived pressures and conductances based on new rho and psi
+        self.compute_pressure(c_press)
+        self.update_conductance()
+        
+        # Phase active masks (based on self._t)
+        phase = math.cos(self.phase_cfg["omega"] * self._t * 10)
+        is_surface_active = phase > -0.2
+        is_deep_active = phase < 0.2
+        
+        # Compute gates if GRMN is enabled
+        z_gates = [1.0] * len(self.nodes)
+        r_gates = [1.0] * len(self.nodes)
+        if self.gated_recurrent_cfg and self.gated_recurrent_cfg.get("enabled"):
+            cfg = self.gated_recurrent_cfg
+            for idx, n in enumerate(self.nodes):
+                w_z = n.get("W_z", cfg.get("W_z", 0.0))
+                u_z = n.get("U_z", cfg.get("U_z", 0.0))
+                b_z = n.get("b_z", cfg.get("b_z", 10.0))
+                w_r = n.get("W_r", cfg.get("W_r", 0.0))
+                u_r = n.get("U_r", cfg.get("U_r", 0.0))
+                b_r = n.get("b_r", cfg.get("b_r", 10.0))
+                
+                z = 1.0 / (1.0 + math.exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
+                r = 1.0 / (1.0 + math.exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
+                z_gates[idx] = z
+                r_gates[idx] = r
+                n["z_gate"] = z
+                n["r_gate"] = r
+        else:
+            for idx, n in enumerate(self.nodes):
+                # Still check if node-specific overrides are set even if global weights are off
+                # Support node-specific weights and biases as overrides if defined on the node
+                w_z = n.get("W_z", 0.0)
+                u_z = n.get("U_z", 0.0)
+                b_z = n.get("b_z", 10.0)
+                w_r = n.get("W_r", 0.0)
+                u_r = n.get("U_r", 0.0)
+                b_r = n.get("b_r", 10.0)
+                
+                z = 1.0 / (1.0 + math.exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
+                r = 1.0 / (1.0 + math.exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
+                z_gates[idx] = z
+                r_gates[idx] = r
+                n["z_gate"] = z
+                n["r_gate"] = r
+                
+        # Modulate pressure with reset gates
+        orig_p = [n["p"] for n in self.nodes]
+        for idx, n in enumerate(self.nodes):
+            n["p"] = r_gates[idx] * n["p"]
+            
+        # Compute flux derivatives dF/dt
+        d_flux = [0.0] * len(self.edges)
+        d_rho_transport = [0.0] * len(self.nodes)
+        
+        for idx, e in enumerate(self.edges):
+            ia = e["from_idx"]
+            ib = e["to_idx"]
+            if ia is None or ib is None:
+                continue
+                
+            src = e["src_node"]
+            dst = e["dst_node"]
+            
+            src_group = src.get("group", "bridge")
+            dst_group = dst.get("group", "bridge")
+            
+            src_awake = True
+            dst_awake = True
+            
+            if src_group == "tech" and not is_surface_active:
+                src_awake = False
+            if src_group == "spirit" and not is_deep_active:
+                src_awake = False
+            if dst_group == "tech" and not is_surface_active:
+                dst_awake = False
+            if dst_group == "spirit" and not is_deep_active:
+                dst_awake = False
+                
+            if not src_awake and not dst_awake:
+                d_flux[idx] = -e["flux"]
+                continue
+                
+            delta_p = src["p"] - dst["p"]
+            
+            tension = 1.0
+            if src_group == "tech" or dst_group == "tech":
+                tension = self.phase_cfg["surfaceTension"]
+            if src_group == "spirit" or dst_group == "spirit":
+                tension = self.phase_cfg["deepViscosity"]
+                
+            diode_gain = 1.0
+            if self.battery_cfg and (src.get("isBattery") or dst.get("isBattery")) and not e.get("background"):
+                b_node = src if src.get("isBattery") else dst
+                b_s = b_node.get("b_state", 1)
+                if b_s not in (1, -1):
+                    b_s = 1
+                batt_is_src = src.get("isBattery")
+                outflow = (delta_p > 0) if batt_is_src else (delta_p < 0)
+                if b_s == 1:
+                    diode_gain = self.battery_cfg["diodeResonanceOut"] if outflow else self.battery_cfg["diodeResonanceIn"]
+                else:
+                    diode_gain = self.battery_cfg["diodeDampingOut"] if outflow else self.battery_cfg["diodeDampingIn"]
+                    
+            target_flux = (e["conductance"] * tension * diode_gain) * delta_p
+            d_flux[idx] = target_flux - e["flux"]
+            
+            flow_amt_rate = e["flux"] * 0.5
+            if src_awake:
+                d_rho_transport[ia] -= flow_amt_rate
+            if dst_awake:
+                d_rho_transport[ib] += flow_amt_rate
+                
+        # Restore original pressures
+        for idx, n in enumerate(self.nodes):
+            n["p"] = orig_p[idx]
+            
+        # Compute drho/dt
+        d_rho = [0.0] * len(self.nodes)
+        for idx, n in enumerate(self.nodes):
+            star_factor = 1.0
+            if n.get("isStellar") and self.jeans_cfg:
+                star_factor = self.jeans_cfg.get("starDampingFactor", 0.18)
+            decay_rate = -damping * 0.1 * star_factor * n["rho"]
+            d_rho[idx] = z_gates[idx] * (d_rho_transport[idx] + decay_rate)
+            
+        # Compute dpsi/dt
+        lap = [0.0] * len(self.nodes)
+        for e in self.edges:
+            ia = e["from_idx"]
+            ib = e["to_idx"]
+            if ia is None or ib is None:
+                continue
+            d = self.nodes[ib]["psi"] - self.nodes[ia]["psi"]
+            lap[ia] += d
+            lap[ib] -= d
+            
+        d_psi = [0.0] * len(self.nodes)
+        for idx, n in enumerate(self.nodes):
+            if n.get("isBattery"):
+                d_psi[idx] = 0.0
+                continue
+            rho_norm = n["rho"] / (n["rho"] + 40)
+            relax_to_bias = (self.psi_relax_base * (0.35 + 0.65 * rho_norm)) * (n["psi_bias"] - n["psi"])
+            relax_to_global = self.psi_global_nudge * (self.global_bias - n["psi"])
+            diffusion = self.psi_diffusion * lap[idx]
+            d_psi[idx] = diffusion + relax_to_bias + relax_to_global
+            
+        # Restore original states
+        for idx, val in enumerate(orig_rho):
+            self.nodes[idx]["rho"] = val
+        for idx, val in enumerate(orig_flux):
+            self.edges[idx]["flux"] = val
+        for idx, val in enumerate(orig_psi):
+            self.nodes[idx]["psi"] = val
+        self.compute_pressure(c_press)
+        self.update_conductance()
+        
+        return d_rho, d_flux, d_psi
+
+    def step_rk4(self, dt: float, c_press: float, damping: float) -> dict:
+        # Standard dynamic updates at step boundary
+        self.apply_semantic_mass_decay(dt)
+        self.update_batteries(dt)
+
+        # Save state at start of RK4 step
+        rho_0 = [n["rho"] for n in self.nodes]
+        flux_0 = [e["flux"] for e in self.edges]
+        psi_0 = [n["psi"] for n in self.nodes]
+        
+        # RK4 Integration Stages
+        # 1. k1
+        d_rho1, d_flux1, d_psi1 = self._compute_derivatives(rho_0, flux_0, psi_0, dt, c_press, damping)
+        
+        # 2. k2 at t + 0.5*dt
+        rho_1 = [max(0.0, rho_0[i] + 0.5 * dt * d_rho1[i]) for i in range(len(self.nodes))]
+        flux_1 = [flux_0[i] + 0.5 * dt * d_flux1[i] for i in range(len(self.edges))]
+        psi_1 = [_clamp(psi_0[i] + 0.5 * dt * d_psi1[i], -self.psi_clamp, self.psi_clamp) for i in range(len(self.nodes))]
+        
+        orig_t = self._t
+        self._t = orig_t + 0.5 * dt
+        d_rho2, d_flux2, d_psi2 = self._compute_derivatives(rho_1, flux_1, psi_1, dt, c_press, damping)
+        
+        # 3. k3 at t + 0.5*dt
+        rho_2 = [max(0.0, rho_0[i] + 0.5 * dt * d_rho2[i]) for i in range(len(self.nodes))]
+        flux_2 = [flux_0[i] + 0.5 * dt * d_flux2[i] for i in range(len(self.edges))]
+        psi_2 = [_clamp(psi_0[i] + 0.5 * dt * d_psi2[i], -self.psi_clamp, self.psi_clamp) for i in range(len(self.nodes))]
+        
+        d_rho3, d_flux3, d_psi3 = self._compute_derivatives(rho_2, flux_2, psi_2, dt, c_press, damping)
+        
+        # 4. k4 at t + dt
+        rho_3 = [max(0.0, rho_0[i] + dt * d_rho3[i]) for i in range(len(self.nodes))]
+        flux_3 = [flux_0[i] + dt * d_flux3[i] for i in range(len(self.edges))]
+        psi_3 = [_clamp(psi_0[i] + dt * d_psi3[i], -self.psi_clamp, self.psi_clamp) for i in range(len(self.nodes))]
+        
+        self._t = orig_t + dt
+        d_rho4, d_flux4, d_psi4 = self._compute_derivatives(rho_3, flux_3, psi_3, dt, c_press, damping)
+        
+        # Final RK4 update
+        for i in range(len(self.nodes)):
+            self.nodes[i]["rho"] = max(0.0, rho_0[i] + (dt / 6.0) * (d_rho1[i] + 2.0 * d_rho2[i] + 2.0 * d_rho3[i] + d_rho4[i]))
+            self.nodes[i]["psi"] = _clamp(psi_0[i] + (dt / 6.0) * (d_psi1[i] + 2.0 * d_psi2[i] + 2.0 * d_psi3[i] + d_psi4[i]), -self.psi_clamp, self.psi_clamp)
+            
+        for i in range(len(self.edges)):
+            self.edges[i]["flux"] = flux_0[i] + (dt / 6.0) * (d_flux1[i] + 2.0 * d_flux2[i] + 2.0 * d_flux3[i] + d_flux4[i])
+            
+        # Recompute final pressure, gates, and conductances
+        self.compute_pressure(c_press)
+        self.update_conductance()
+        
+        if self.gated_recurrent_cfg and self.gated_recurrent_cfg.get("enabled"):
+            cfg = self.gated_recurrent_cfg
+            for n in self.nodes:
+                w_z = n.get("W_z", cfg.get("W_z", 0.0))
+                u_z = n.get("U_z", cfg.get("U_z", 0.0))
+                b_z = n.get("b_z", cfg.get("b_z", 10.0))
+                w_r = n.get("W_r", cfg.get("W_r", 0.0))
+                u_r = n.get("U_r", cfg.get("U_r", 0.0))
+                b_r = n.get("b_r", cfg.get("b_r", 10.0))
+                
+                z = 1.0 / (1.0 + math.exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
+                r = 1.0 / (1.0 + math.exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
+                n["z_gate"] = z
+                n["r_gate"] = r
+        else:
+            for n in self.nodes:
+                w_z = n.get("W_z", 0.0)
+                u_z = n.get("U_z", 0.0)
+                b_z = n.get("b_z", 10.0)
+                w_r = n.get("W_r", 0.0)
+                u_r = n.get("U_r", 0.0)
+                b_r = n.get("b_r", 10.0)
+                
+                z = 1.0 / (1.0 + math.exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
+                r = 1.0 / (1.0 + math.exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
+                n["z_gate"] = z
+                n["r_gate"] = r
+
+        # Post-integration updates
+        self.update_magnetic_field(dt)
+        self.compute_pressure(c_press)
+        self.jeans_collapse_and_accrete(dt, c_press, damping)
+        
+        total_flux = sum(abs(e["flux"]) for e in self.edges)
+        active_count = sum(1 for n in self.nodes if n["rho"] > 0.1)
+        return {"totalFlux": total_flux, "activeCount": active_count}
+
     def step(self, dt: float, c_press: float, damping: float) -> dict:
+        if self.integration_mode == "rk4":
+            return self.step_rk4(dt, c_press, damping)
+
         # --- A. THE HEARTBEAT ---
         self._t += dt
 
@@ -450,13 +739,48 @@ class SOLPhysics:
         self.update_batteries(dt)
         self.compute_pressure(c_press)
 
+        # Compute gates if GRMN is enabled
+        z_gates = [1.0] * len(self.nodes)
+        r_gates = [1.0] * len(self.nodes)
+        if self.gated_recurrent_cfg and self.gated_recurrent_cfg.get("enabled"):
+            cfg = self.gated_recurrent_cfg
+            for idx, n in enumerate(self.nodes):
+                w_z = n.get("W_z", cfg.get("W_z", 0.0))
+                u_z = n.get("U_z", cfg.get("U_z", 0.0))
+                b_z = n.get("b_z", cfg.get("b_z", 10.0))
+                w_r = n.get("W_r", cfg.get("W_r", 0.0))
+                u_r = n.get("U_r", cfg.get("U_r", 0.0))
+                b_r = n.get("b_r", cfg.get("b_r", 10.0))
+                
+                z = 1.0 / (1.0 + math.exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
+                r = 1.0 / (1.0 + math.exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
+                z_gates[idx] = z
+                r_gates[idx] = r
+                n["z_gate"] = z
+                n["r_gate"] = r
+        else:
+            for idx, n in enumerate(self.nodes):
+                w_z = n.get("W_z", 0.0)
+                u_z = n.get("U_z", 0.0)
+                b_z = n.get("b_z", 10.0)
+                w_r = n.get("W_r", 0.0)
+                u_r = n.get("U_r", 0.0)
+                b_r = n.get("b_r", 10.0)
+                
+                z = 1.0 / (1.0 + math.exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
+                r = 1.0 / (1.0 + math.exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
+                z_gates[idx] = z
+                r_gates[idx] = r
+                n["z_gate"] = z
+                n["r_gate"] = r
+
         # --- C. PHASE-GATED FLUX TRANSPORT ---
         total_flux = 0.0
         d_rho = [0.0] * len(self.nodes)
 
         for e in self.edges:
-            ia = self.node_index_by_id.get(e["from"])
-            ib = self.node_index_by_id.get(e["to"])
+            ia = e["from_idx"]
+            ib = e["to_idx"]
             if ia is None or ib is None:
                 continue
 
@@ -481,7 +805,10 @@ class SOLPhysics:
             if not src_awake and not dst_awake:
                 continue
 
-            delta_p = src["p"] - dst["p"]
+            # Modulate pressure with reset gates
+            p_src = r_gates[ia] * src["p"]
+            p_dst = r_gates[ib] * dst["p"]
+            delta_p = p_src - p_dst
 
             tension = 1.0
             if src_group == "tech" or dst_group == "tech":
@@ -514,11 +841,12 @@ class SOLPhysics:
 
         # Apply mass changes
         for idx, n in enumerate(self.nodes):
-            n["rho"] += d_rho[idx]
+            n["rho"] += z_gates[idx] * d_rho[idx]
             star_factor = 1.0
             if n.get("isStellar") and self.jeans_cfg:
                 star_factor = self.jeans_cfg.get("starDampingFactor", 0.18)
-            n["rho"] *= (1.0 - (damping * dt * 0.1 * star_factor))
+            decay_coeff = damping * dt * 0.1 * star_factor * z_gates[idx]
+            n["rho"] *= (1.0 - decay_coeff)
             if n["rho"] < 0:
                 n["rho"] = 0.0
 
@@ -736,14 +1064,22 @@ def compute_metrics(physics: SOLPhysics) -> dict:
 def snapshot_state(physics: SOLPhysics) -> dict:
     node_snap = {}
     for n in physics.nodes:
-        node_snap[str(n["id"])] = {
+        snap_dict = {
             "rho": n["rho"], "p": n["p"], "psi": n["psi"],
             "psi_bias": n["psi_bias"],
             "semanticMass": n.get("semanticMass", 1.0),
             "semanticMass0": n.get("semanticMass0", 1.0),
             "b_q": n.get("b_q"), "b_charge": n.get("b_charge"),
             "b_state": n.get("b_state"),
+            "z_gate": n.get("z_gate", 1.0),
+            "r_gate": n.get("r_gate", 1.0),
+            "z_bias": n.get("z_bias", 0.0),
+            "r_bias": n.get("r_bias", 0.0),
         }
+        for k in ["W_z", "U_z", "b_z", "W_r", "U_r", "b_r"]:
+            if k in n:
+                snap_dict[k] = n[k]
+        node_snap[str(n["id"])] = snap_dict
     edge_flux = [e.get("flux", 0.0) for e in physics.edges]
     return {"nodeSnap": node_snap, "edgeFlux": edge_flux}
 
@@ -761,6 +1097,15 @@ def restore_state(physics: SOLPhysics, snap: dict, cap_law: dict | None = None):
         n["psi_bias"] = s["psi_bias"]
         n["semanticMass"] = s["semanticMass"]
         n["semanticMass0"] = s["semanticMass0"]
+        n["z_gate"] = s.get("z_gate", 1.0)
+        n["r_gate"] = s.get("r_gate", 1.0)
+        n["z_bias"] = s.get("z_bias", 0.0)
+        n["r_bias"] = s.get("r_bias", 0.0)
+        for k in ["W_z", "U_z", "b_z", "W_r", "U_r", "b_r"]:
+            if k in s:
+                n[k] = s[k]
+            else:
+                n.pop(k, None)
         if n.get("isBattery"):
             n["b_q"] = s.get("b_q")
             n["b_charge"] = s.get("b_charge")
@@ -820,6 +1165,26 @@ def create_engine(raw_nodes: list[dict], raw_edges: list[dict], *,
     return physics, cap_law_info
 
 
+# ---- Metrics & Telemetry Setup -----------------------------------------
+
+_meter = None
+_entropy_gauge = None
+_flux_counter = None
+_mass_gauge = None
+_active_count_gauge = None
+
+def _get_metrics():
+    global _meter, _entropy_gauge, _flux_counter, _mass_gauge, _active_count_gauge
+    if _meter is None:
+        import telemetry
+        _meter = telemetry.get_meter("sol-engine")
+        _entropy_gauge = _meter.create_gauge("sol.engine.entropy", unit="1", description="Entropy of semantic manifold density distribution")
+        _flux_counter = _meter.create_counter("sol.engine.flux_total", unit="1", description="Cumulative sum of absolute fluxes along edges")
+        _mass_gauge = _meter.create_gauge("sol.engine.mass", unit="1", description="Total mass/density in the system")
+        _active_count_gauge = _meter.create_gauge("sol.engine.active_count", unit="1", description="Number of nodes with density > 0.1")
+    return _entropy_gauge, _flux_counter, _mass_gauge, _active_count_gauge
+
+
 # ---- High-Level Convenience Wrapper ------------------------------------
 
 class SOLEngine:
@@ -869,13 +1234,58 @@ class SOLEngine:
                    cap_law=kwargs.get("cap_law"))
 
     def step(self, dt=None, c_press=None, damping=None) -> dict:
-        result = self.physics.step(
-            dt or self.dt,
-            c_press if c_press is not None else self.c_press,
-            damping if damping is not None else self.damping,
-        )
-        self._step_count += 1
-        return result
+        import telemetry
+        if not telemetry._TELEMETRY_ENABLED:
+            result = self.physics.step(
+                dt or self.dt,
+                c_press if c_press is not None else self.c_press,
+                damping if damping is not None else self.damping,
+            )
+            self._step_count += 1
+            return result
+
+        with telemetry.trace_span("sol.engine.step") as span:
+            result = self.physics.step(
+                dt or self.dt,
+                c_press if c_press is not None else self.c_press,
+                damping if damping is not None else self.damping,
+            )
+            self._step_count += 1
+            
+            # Compute current metrics
+            metrics = self.compute_metrics()
+            
+            # Record metrics
+            try:
+                entropy_gauge, flux_counter, mass_gauge, active_count_gauge = _get_metrics()
+                entropy_gauge.set(metrics.get("entropy", 0.0))
+                flux_counter.add(result.get("totalFlux", 0.0))
+                mass_gauge.set(metrics.get("mass", 0.0))
+                active_count_gauge.set(result.get("activeCount", 0))
+            except Exception:
+                pass
+            
+            # Set span attributes
+            span.set_attribute("sol.step_count", self._step_count)
+            span.set_attribute("sol.t", self.t)
+            span.set_attribute("sol.metrics.entropy", metrics.get("entropy", 0.0))
+            span.set_attribute("sol.metrics.total_flux", result.get("totalFlux", 0.0))
+            span.set_attribute("sol.metrics.mass", metrics.get("mass", 0.0))
+            span.set_attribute("sol.metrics.active_count", result.get("activeCount", 0))
+            
+            # Serialise and append compact graph state snapshot for the live visualizer
+            try:
+                node_states = self.get_node_states()
+                edge_states = [
+                    {"from": e["from"], "to": e["to"], "flux": e.get("flux", 0.0), "conductance": e.get("conductance", 1.0)}
+                    for e in self.physics.edges if abs(e.get("flux", 0.0)) > 1e-4 or not e.get("background")
+                ]
+                span.set_attribute("sol.graph.nodes", json.dumps(node_states))
+                span.set_attribute("sol.graph.edges", json.dumps(edge_states))
+            except Exception:
+                pass
+            
+            return result
 
     def run(self, steps: int, *, dt=None, c_press=None, damping=None) -> list[dict]:
         """Run multiple steps, return list of per-step results."""
@@ -884,11 +1294,50 @@ class SOLEngine:
             results.append(self.step(dt, c_press, damping))
         return results
 
+    def run_until_halt(self, max_steps: int, flux_threshold: float = 1e-3, *,
+                       dt=None, c_press=None, damping=None) -> dict:
+        """
+        Runs simulation steps until total flux falls below flux_threshold,
+        indicating that self-routing logic has halted the thought loop.
+        
+        Returns a dict with:
+          - "steps_run": number of steps executed
+          - "halted": True if it halted before max_steps, False otherwise
+          - "final_flux": total flux at the last step
+        """
+        dt_val = dt or self.dt
+        c_press_val = c_press if c_press is not None else self.c_press
+        damping_val = damping if damping is not None else self.damping
+        
+        flux = 0.0
+        for step_idx in range(1, max_steps + 1):
+            res = self.step(dt_val, c_press_val, damping_val)
+            flux = res.get("totalFlux", 0.0)
+            if flux < flux_threshold:
+                return {
+                    "steps_run": step_idx,
+                    "halted": True,
+                    "final_flux": flux
+                }
+        return {
+            "steps_run": max_steps,
+            "halted": False,
+            "final_flux": flux
+        }
+
     def inject(self, label: str, amount: float = 50.0) -> bool:
-        return self.physics.inject(label, amount)
+        import telemetry
+        with telemetry.trace_span("sol.engine.inject", {"sol.inject.label": label, "sol.inject.amount": amount}) as span:
+            success = self.physics.inject(label, amount)
+            span.set_attribute("sol.inject.success", success)
+            return success
 
     def inject_by_id(self, node_id, amount: float = 50.0) -> bool:
-        return self.physics.inject_by_id(node_id, amount)
+        import telemetry
+        with telemetry.trace_span("sol.engine.inject_by_id", {"sol.inject.node_id": node_id, "sol.inject.amount": amount}) as span:
+            success = self.physics.inject_by_id(node_id, amount)
+            span.set_attribute("sol.inject.success", success)
+            return success
 
     def compute_metrics(self) -> dict:
         return compute_metrics(self.physics)
@@ -915,3 +1364,58 @@ class SOLEngine:
     @property
     def step_count(self) -> int:
         return self._step_count
+
+    @property
+    def integration_mode(self) -> str:
+        return self.physics.integration_mode
+
+    @integration_mode.setter
+    def integration_mode(self, val: str):
+        self.physics.integration_mode = val
+
+    @property
+    def gated_recurrent_cfg(self) -> dict:
+        return self.physics.gated_recurrent_cfg
+
+    @gated_recurrent_cfg.setter
+    def gated_recurrent_cfg(self, val: dict):
+        self.physics.gated_recurrent_cfg = val
+
+    def _find_node(self, label_or_id) -> dict | None:
+        if label_or_id in self.physics.node_by_id:
+            return self.physics.node_by_id[label_or_id]
+        q = str(label_or_id).strip().lower()
+        if not q:
+            return None
+        for n in self.physics.nodes:
+            if n["label"].lower() == q:
+                return n
+        if len(q) >= 2:
+            matches = [n for n in self.physics.nodes if q in n["label"].lower()]
+            if len(matches) == 1:
+                return matches[0]
+        return None
+
+    def write_enable(self, label_or_id) -> bool:
+        node = self._find_node(label_or_id)
+        if not node:
+            return False
+        node["z_bias"] = 10.0
+        node["r_bias"] = 0.0
+        return True
+
+    def write_lock(self, label_or_id) -> bool:
+        node = self._find_node(label_or_id)
+        if not node:
+            return False
+        node["z_bias"] = -20.0
+        node["r_bias"] = -20.0
+        return True
+
+    def read_enable(self, label_or_id) -> bool:
+        node = self._find_node(label_or_id)
+        if not node:
+            return False
+        node["z_bias"] = 0.0
+        node["r_bias"] = 10.0
+        return True

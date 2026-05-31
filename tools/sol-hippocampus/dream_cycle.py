@@ -255,90 +255,96 @@ class DreamCycle:
 
         Returns a summary dict with basins discovered, reinforced, decayed.
         """
-        now = datetime.now(timezone.utc)
-        session_id = f"DS-{now.strftime('%Y%m%d-%H%M%S')}"
+        sys.path.insert(0, str(_SOL_CORE))
+        import telemetry
+        telemetry.init_telemetry("sol-hippocampus")
 
-        print(f"\n{'='*60}")
-        print(f"Dream Cycle: {session_id}")
-        print(f"{'='*60}")
+        with telemetry.trace_span("sol.hippocampus.dream", {"sol.hippocampus.max_sessions": self._max_sessions}) as span:
+            now = datetime.now(timezone.utc)
+            session_id = f"DS-{now.strftime('%Y%m%d-%H%M%S')}"
+            span.set_attribute("sol.hippocampus.session_id", session_id)
 
-        # 1. Load and score sessions
-        sessions = _load_sessions(self._sessions_dir)
-        scored = []
-        for sid, summary, hypotheses in sessions:
-            score = _score_session(summary, now, self._cfg)
-            scored.append((score, sid, summary, hypotheses))
-        scored.sort(reverse=True)
+            print(f"\n{'='*60}")
+            print(f"Dream Cycle: {session_id}")
+            print(f"{'='*60}")
 
-        selected = scored[:self._max_sessions]
-        print(f"\n  Selected {len(selected)} sessions for replay:")
-        for score, sid, _, _ in selected:
-            print(f"    {sid} (score={score:.3f})")
+            # 1. Load and score sessions
+            sessions = _load_sessions(self._sessions_dir)
+            scored = []
+            for sid, summary, hypotheses in sessions:
+                score = _score_session(summary, now, self._cfg)
+                scored.append((score, sid, summary, hypotheses))
+            scored.sort(reverse=True)
 
-        if self._dry_run:
-            print("\n  [DRY RUN] Would replay the above sessions.")
-            return {"session_id": session_id, "dry_run": True,
-                    "selected": [s[1] for s in selected]}
+            selected = scored[:self._max_sessions]
+            print(f"\n  Selected {len(selected)} sessions for replay:")
+            for score, sid, _, _ in selected:
+                print(f"    {sid} (score={score:.3f})")
 
-        # 2. Generate dream protocols and replay
-        all_basins: list[dict] = []
-        dream_log: list[dict] = []
-        replay_count = 0
+            if self._dry_run:
+                print("\n  [DRY RUN] Would replay the above sessions.")
+                return {"session_id": session_id, "dry_run": True,
+                        "selected": [s[1] for s in selected]}
 
-        for score, sid, summary, hypotheses in selected:
-            if not hypotheses:
-                continue
-            for hyp in hypotheses:
-                protocol = _generate_dream_protocol(hyp, self._cfg)
-                basins_for_hyp = self._replay(protocol, hyp, session_id)
-                all_basins.extend(basins_for_hyp)
-                replay_count += 1
+            # 2. Generate dream protocols and replay
+            all_basins: list[dict] = []
+            dream_log: list[dict] = []
+            replay_count = 0
 
-                dream_log.append({
-                    "source_session": sid,
-                    "hypothesis_id": hyp.get("id"),
-                    "protocol_name": protocol["meta"]["name"],
-                    "basins_found": len(basins_for_hyp),
-                    "score": score,
-                })
+            for score, sid, summary, hypotheses in selected:
+                if not hypotheses:
+                    continue
+                for hyp in hypotheses:
+                    protocol = _generate_dream_protocol(hyp, self._cfg)
+                    basins_for_hyp = self._replay(protocol, hyp, session_id)
+                    all_basins.extend(basins_for_hyp)
+                    replay_count += 1
 
-        # 3. Consolidate basins into memory
-        consolidation = self._consolidate_basins(all_basins, session_id)
+                    dream_log.append({
+                        "source_session": sid,
+                        "hypothesis_id": hyp.get("id"),
+                        "protocol_name": protocol["meta"]["name"],
+                        "basins_found": len(basins_for_hyp),
+                        "score": score,
+                    })
 
-        # 4. Compact memory
-        compact_memory()
+            # 3. Consolidate basins into memory
+            consolidation = self._consolidate_basins(all_basins, session_id)
 
-        # 5. Save dream session output
-        output_dir = self._dream_dir / session_id
-        output_dir.mkdir(parents=True, exist_ok=True)
+            # 4. Compact memory
+            compact_memory()
 
-        dream_summary = {
-            "session_id": session_id,
-            "completed_at": datetime.now(timezone.utc).isoformat(),
-            "sessions_replayed": len(selected),
-            "replays_run": replay_count,
-            "basins_discovered": consolidation["new"],
-            "basins_reinforced": consolidation["reinforced"],
-            "basins_decayed": consolidation["decayed"],
-            "memory_stats": memory_stats(),
-        }
+            # 5. Save dream session output
+            output_dir = self._dream_dir / session_id
+            output_dir.mkdir(parents=True, exist_ok=True)
 
-        with open(output_dir / "summary.json", "w", encoding="utf-8") as f:
-            json.dump(dream_summary, f, indent=2)
-        with open(output_dir / "dream_log.jsonl", "w", encoding="utf-8") as f:
-            for entry in dream_log:
-                f.write(json.dumps(entry) + "\n")
-        with open(output_dir / "basin_signatures.json", "w", encoding="utf-8") as f:
-            json.dump(all_basins, f, indent=2)
+            dream_summary = {
+                "session_id": session_id,
+                "completed_at": datetime.now(timezone.utc).isoformat(),
+                "sessions_replayed": len(selected),
+                "replays_run": replay_count,
+                "basins_discovered": consolidation["new"],
+                "basins_reinforced": consolidation["reinforced"],
+                "basins_decayed": consolidation["decayed"],
+                "memory_stats": memory_stats(),
+            }
 
-        print(f"\n  Dream cycle complete:")
-        print(f"    Replays: {replay_count}")
-        print(f"    New basins: {consolidation['new']}")
-        print(f"    Reinforced: {consolidation['reinforced']}")
-        print(f"    Decayed: {consolidation['decayed']}")
-        print(f"    Output: {output_dir.relative_to(_SOL_ROOT)}")
+            with open(output_dir / "summary.json", "w", encoding="utf-8") as f:
+                json.dump(dream_summary, f, indent=2)
+            with open(output_dir / "dream_log.jsonl", "w", encoding="utf-8") as f:
+                for entry in dream_log:
+                    f.write(json.dumps(entry) + "\n")
+            with open(output_dir / "basin_signatures.json", "w", encoding="utf-8") as f:
+                json.dump(all_basins, f, indent=2)
 
-        return dream_summary
+            print(f"\n  Dream cycle complete:")
+            print(f"    Replays: {replay_count}")
+            print(f"    New basins: {consolidation['new']}")
+            print(f"    Reinforced: {consolidation['reinforced']}")
+            print(f"    Decayed: {consolidation['decayed']}")
+            print(f"    Output: {output_dir.relative_to(_SOL_ROOT)}")
+
+            return dream_summary
 
     def _replay(self, protocol: dict, hypothesis: dict, dream_session_id: str) -> list[dict]:
         """
@@ -346,8 +352,13 @@ class DreamCycle:
 
         Returns a list of basin signatures extracted from the replays.
         """
-        reps = protocol["run"]["reps"]
-        steps = protocol["run"]["steps"]
+        import telemetry
+        with telemetry.trace_span("sol.hippocampus.replay", {
+            "sol.hippocampus.hypothesis_id": hypothesis.get("id", ""),
+            "sol.hippocampus.protocol_name": protocol["meta"]["name"]
+        }):
+            reps = protocol["run"]["reps"]
+            steps = protocol["run"]["steps"]
         knobs = protocol.get("knobs", {})
         injections = protocol.get("injections", [])
         invariants = protocol.get("invariants", {})

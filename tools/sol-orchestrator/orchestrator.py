@@ -365,134 +365,143 @@ class PipelineRunner:
 
     def run(self) -> dict:
         """Execute the full pipeline. Returns the final summary."""
-        active = self.config.active_stages
-        self._print_header(active)
+        sys.path.insert(0, str(_CORE_DIR))
+        import telemetry
+        telemetry.init_telemetry("sol-orchestrator")
 
-        # Pre-flight: core immutability
-        if not verify_core_immutability():
-            raise RuntimeError(
-                "ABORT: Core graph SHA256 mismatch before pipeline start! "
-                "The sacred graph has been corrupted."
-            )
+        with telemetry.trace_span("sol.orchestrator.run", {"sol.run_id": self.run_id}) as run_span:
+            active = self.config.active_stages
+            self._print_header(active)
 
-        cortex_result: dict = {}
-
-        for stage_name in active:
-            if stage_name == "report":
-                continue  # Report is always last
-
-            result = StageResult(stage=stage_name)
-            self.results[stage_name] = result
-            contract = build_stage_contract(stage_name, self.run_id)
-            self.delegation_events.append(
-                {
-                    "event": "contract_issued",
-                    "ts": datetime.now(timezone.utc).isoformat(),
-                    "stage": stage_name,
-                    "contract": contract.to_dict(),
-                }
-            )
-
-            self._print_stage_start(stage_name)
-            result.status = "running"
-            result.started_at = datetime.now(timezone.utc).isoformat()
-            t0 = time.time()
-
-            try:
-                if stage_name == "smoke":
-                    result.output = stage_smoke(self.config)
-
-                elif stage_name == "cortex":
-                    result.output = stage_cortex(self.config)
-
-                elif stage_name == "consolidate":
-                    if not cortex_result:
-                        result.output = {"status": "skipped",
-                                         "reason": "no cortex result to consolidate"}
-                        result.status = "skipped"
-                    else:
-                        result.output = stage_consolidate(self.config, cortex_result)
-
-                elif stage_name == "hippocampus":
-                    result.output = stage_hippocampus(self.config)
-
-                elif stage_name == "evolve":
-                    result.output = stage_evolve(self.config)
-                    if result.output.get("status") == "skipped":
-                        result.status = "skipped"
-
-                if result.status == "running":
-                    result.status = "passed"
-
-            except Exception as e:
-                result.status = "failed"
-                result.error = f"{type(e).__name__}: {e}"
-                if self.config.verbose:
-                    traceback.print_exc()
-
-                if stage_name in self.CRITICAL_STAGES:
-                    self._print_abort(stage_name, result.error)
-                    break
-
-            result.elapsed_sec = round(time.time() - t0, 2)
-            result.completed_at = datetime.now(timezone.utc).isoformat()
-
-            result.output = result.output or {}
-            result.output["delegation_contract"] = contract.to_dict()
-
-            triggers = self.trigger_engine.evaluate(
-                stage=stage_name,
-                status=result.status,
-                output=result.output,
-                elapsed_sec=result.elapsed_sec,
-                contract=contract,
-            )
-
-            if stage_name == "cortex":
-                result, triggers = self._apply_cortex_adaptation(
-                    result=result,
-                    triggers=triggers,
-                    contract=contract,
-                )
-            elif stage_name in {"consolidate", "hippocampus", "evolve"}:
-                result, triggers = self._apply_non_cortex_adaptation(
-                    stage_name=stage_name,
-                    result=result,
-                    triggers=triggers,
-                    contract=contract,
-                    cortex_result=cortex_result,
+            # Pre-flight: core immutability
+            if not verify_core_immutability():
+                raise RuntimeError(
+                    "ABORT: Core graph SHA256 mismatch before pipeline start! "
+                    "The sacred graph has been corrupted."
                 )
 
-            if triggers:
-                result.output["delegation_triggers"] = triggers
+            cortex_result: dict = {}
+
+            for stage_name in active:
+                if stage_name == "report":
+                    continue  # Report is always last
+
+                result = StageResult(stage=stage_name)
+                self.results[stage_name] = result
+                contract = build_stage_contract(stage_name, self.run_id)
                 self.delegation_events.append(
                     {
-                        "event": "triggers_detected",
+                        "event": "contract_issued",
                         "ts": datetime.now(timezone.utc).isoformat(),
                         "stage": stage_name,
-                        "triggers": triggers,
+                        "contract": contract.to_dict(),
                     }
                 )
 
-            self.trust_ledger.record(
-                stage=stage_name,
-                status=result.status,
-                elapsed_sec=result.elapsed_sec,
-                trigger_types=[t["type"] for t in triggers],
-                run_id=self.run_id,
-            )
+                self._print_stage_start(stage_name)
+                result.status = "running"
+                result.started_at = datetime.now(timezone.utc).isoformat()
+                t0 = time.time()
 
-            if stage_name == "cortex" and result.status in {"passed", "skipped"}:
-                cortex_result = result.output
+                with telemetry.trace_span(f"sol.orchestrator.stage.{stage_name}", {"sol.run_id": self.run_id}) as stage_span:
+                    try:
+                        if stage_name == "smoke":
+                            result.output = stage_smoke(self.config)
 
-            self._print_stage_result(stage_name, result)
+                        elif stage_name == "cortex":
+                            result.output = stage_cortex(self.config)
 
-            # Post-stage: verify core immutability
-            if not verify_core_immutability():
-                result.status = "failed"
-                result.error = "Core graph was MODIFIED by this stage — FORBIDDEN"
-                self._print_abort(stage_name, result.error)
-                break
+                        elif stage_name == "consolidate":
+                            if not cortex_result:
+                                result.output = {"status": "skipped",
+                                                 "reason": "no cortex result to consolidate"}
+                                result.status = "skipped"
+                            else:
+                                result.output = stage_consolidate(self.config, cortex_result)
+
+                        elif stage_name == "hippocampus":
+                            result.output = stage_hippocampus(self.config)
+
+                        elif stage_name == "evolve":
+                            result.output = stage_evolve(self.config)
+                            if result.output.get("status") == "skipped":
+                                result.status = "skipped"
+
+                        if result.status == "running":
+                            result.status = "passed"
+
+                    except Exception as e:
+                        result.status = "failed"
+                        result.error = f"{type(e).__name__}: {e}"
+                        stage_span.set_status("ERROR", result.error)
+                        if self.config.verbose:
+                            traceback.print_exc()
+
+                        if stage_name in self.CRITICAL_STAGES:
+                            self._print_abort(stage_name, result.error)
+                            break
+
+                result.elapsed_sec = round(time.time() - t0, 2)
+                result.completed_at = datetime.now(timezone.utc).isoformat()
+
+                result.output = result.output or {}
+                result.output["delegation_contract"] = contract.to_dict()
+
+                triggers = self.trigger_engine.evaluate(
+                    stage=stage_name,
+                    status=result.status,
+                    output=result.output,
+                    elapsed_sec=result.elapsed_sec,
+                    contract=contract,
+                )
+
+                if stage_name == "cortex":
+                    result, triggers = self._apply_cortex_adaptation(
+                        result=result,
+                        triggers=triggers,
+                        contract=contract,
+                    )
+                elif stage_name in {"consolidate", "hippocampus", "evolve"}:
+                    result, triggers = self._apply_non_cortex_adaptation(
+                        stage_name=stage_name,
+                        result=result,
+                        triggers=triggers,
+                        contract=contract,
+                        cortex_result=cortex_result,
+                    )
+
+                if triggers:
+                    result.output["delegation_triggers"] = triggers
+                    self.delegation_events.append(
+                        {
+                            "event": "triggers_detected",
+                            "ts": datetime.now(timezone.utc).isoformat(),
+                            "stage": stage_name,
+                            "triggers": triggers,
+                        }
+                    )
+
+                self.trust_ledger.record(
+                    stage=stage_name,
+                    status=result.status,
+                    elapsed_sec=result.elapsed_sec,
+                    trigger_types=[t["type"] for t in triggers],
+                    run_id=self.run_id,
+                )
+
+                if stage_name == "cortex" and result.status in {"passed", "skipped"}:
+                    cortex_result = result.output
+
+                self._print_stage_result(stage_name, result)
+
+                # Post-stage: verify core immutability
+                if not verify_core_immutability():
+                    result.status = "failed"
+                    result.error = "Core graph was MODIFIED by this stage — FORBIDDEN"
+                    self._print_abort(stage_name, result.error)
+                    break
+
+
 
         # Final report
         report_result = StageResult(stage="report")
