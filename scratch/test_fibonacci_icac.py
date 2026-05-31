@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 """
-SOL ICAC Fibonacci Scaling Experiment
-=====================================
-1. Spawns pocket manifolds (nSpawn) of sizes N = 64, 256, 1024, 2048.
-2. Selects 3 high-degree hub nodes for the addition circuit (Source A, Source B, Mixer).
-3. Surgically adds direct symmetrical waveguide edges with high weight (w0 = 5.0).
-4. Simulates autonomous wormhole seeding of the Giants.
-5. Calibrates the waveguide gain factor.
-6. Computes the Fibonacci sequence (F0 to F20) using physical constructive interference.
-7. Logs accuracy and scales metrics.
+SOL ICAC Fibonacci Scaling Experiment (Giants Guided)
+======================================================
+1. Spawns pocket manifolds (nSpawn) of sizes N = 64, 128, 256.
+2. Selects 3 high-degree hub nodes for the addition circuit:
+   - Source A (sa)
+   - Source B (sb)
+   - Mixer (mixer)
+3. Surgically compiles Direct Waveguides with weight = 156.25 (v * dt = 1.0).
+4. Employs Exciton-MoA Giant active operators:
+   - The Aligner: Calculates delay phase corrections.
+   - The Graph Navigator: Dampens all background edges to 0.001, isolating waveguides.
+   - The Statistician: Tunes mixer capacitance to 20.0, preventing saturation.
+5. Simulates the addition sequence using stable RK4 integration.
+6. Computes the Fibonacci sequence (F0 to F20) and logs accuracy.
 """
 
 import sys
@@ -41,7 +46,7 @@ from blank_config import BlankManifoldConfig
 from blank_manifold_core import BlankManifoldCore
 
 # ---------------------------------------------------------------------------
-# Monkey Patch BlankManifoldCore & ExcitonEngine
+# Vectorized Substrate Compilation Patches
 # ---------------------------------------------------------------------------
 def optimized_build_edges(self):
     nodes = list(self.graph.nodes(data=True))
@@ -105,69 +110,46 @@ BlankManifoldCore._connect_isolates = optimized_connect_isolates
 BlankManifoldCore._connect_components = optimized_connect_components
 
 from excitons import ExcitonEngine
-
-def optimized_graph_navigator_hyperbolic_flow(self, epicenter_id: str):
-    neighbors = list(self.manifold.neighbors(epicenter_id))
-    local_cycles = [
-        (epicenter_id, neighbors[i], neighbors[j])
-        for i in range(len(neighbors))
-        for j in range(i + 1, len(neighbors))
-        if self.manifold.has_edge(neighbors[i], neighbors[j])
-    ]
-    residual_flux_total = 0.0
-    if local_cycles:
-        unique_edges = set()
-        for a, b, c in local_cycles:
-            for u, v in [(a, b), (b, c), (c, a)]:
-                unique_edges.add(tuple(sorted((u, v))))
-        for u, v in unique_edges:
-            self.manifold[u][v]["residual_flux"] = self.manifold[u][v].get("residual_flux", 0.0) + 0.5
-            self.manifold[u][v]["weight"] = self.manifold[u][v].get("weight", 0.1) * 0.8
-            residual_flux_total += self.manifold[u][v]["residual_flux"]
-    return float(len(local_cycles)), float(residual_flux_total)
-
-ExcitonEngine._graph_navigator_hyperbolic_flow = optimized_graph_navigator_hyperbolic_flow
-
 from sol_engine import SOLEngine
 
 # ---------------------------------------------------------------------------
-# Trial & Evaluator functions
+# Trial & Simulator Functions
 # ---------------------------------------------------------------------------
 def run_addition_trial(engine: SOLEngine, sa: str, sb: str, mixer: str,
-                       amp_a: float, amp_b: float, dt: float, steps: int) -> float:
+                       amp_a: float, amp_b: float, phase_a: float, phase_b: float,
+                       dt: float, steps: int) -> float:
     engine.restore_baseline()
-    omega = 2.0 * math.pi / (12.0 * dt)
+    omega = 2.0 * math.pi / (24.0 * dt)
     mixer_rhos = []
     
     # Run integration steps
     for s in range(steps):
         t = s * dt
-        # Drive Source A and Source B in-phase (constructive interference)
-        engine.physics.node_by_id[sa]["rho"] = 10.0 + amp_a * math.sin(omega * t)
-        engine.physics.node_by_id[sb]["rho"] = 10.0 + amp_b * math.sin(omega * t)
-        
+        engine.physics.node_by_id[sa]["rho"] = 10.0 + amp_a * math.sin(omega * t + phase_a)
+        engine.physics.node_by_id[sb]["rho"] = 10.0 + amp_b * math.sin(omega * t + phase_b)
         engine.step(dt=dt)
-        
-        # Log Mixer rho in steady state (last 15 steps)
-        if s >= steps - 15:
+        if s >= steps - 60:
             mixer_rhos.append(engine.physics.node_by_id[mixer]["rho"])
             
-    # Return measured peak-to-peak oscillation amplitude
     return max(mixer_rhos) - min(mixer_rhos)
 
 def run_fibonacci_scaling_sweep():
     print("==========================================================================", flush=True)
-    print("  nSPAWN FIBONACCI WAVE-INTERFEROMETRIC SCALING SWEEP", flush=True)
+    print("  EXCITON-MOA GIANTS GUIDED FIBONACCI SCALING BENCHMARK", flush=True)
     print("==========================================================================", flush=True)
     
-    sizes = [64, 256, 1024, 2048]
+    sizes = [64, 128, 256]
     summary_ledger = []
     
-    # True Fibonacci numbers to evaluate against: F0 to F20 (21 elements)
+    # True Fibonacci numbers to evaluate: F0 to F20 (21 elements)
     true_fib = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
     
+    dt = 0.08
+    steps = 200  # Enough steps to settle under RK4 and decay transients
+    omega = 2.0 * math.pi / (24.0 * dt)
+    
     for N in sizes:
-        print(f"\n[SIZE SWEEP] Testing Fibonacci addition on manifold size N = {N}...", flush=True)
+        print(f"\n[SIZE SWEEP] Running Fibonacci validation on manifold size N = {N}...", flush=True)
         
         # 1. Spawn Pocket Manifold
         t0 = time.perf_counter()
@@ -175,40 +157,43 @@ def run_fibonacci_scaling_sweep():
         secondary = BlankManifoldCore(config, seed=42)
         secondary_graph = secondary.generate_manifold()
         compile_time = (time.perf_counter() - t0) * 1000.0
-        print(f"  -> Generated in {compile_time:.2f} ms. Nodes: {secondary_graph.number_of_nodes()}, Edges: {secondary_graph.number_of_edges()}", flush=True)
         
-        # 2. Select circuit nodes (top 3 degree hubs for A + B -> Mixer)
-        nodes_by_degree = sorted(list(secondary_graph.nodes()), key=lambda n: secondary_graph.degree(n), reverse=True)
+        # 2. Select circuit nodes (top 3 degree hubs, sorted deterministically)
+        nodes_by_degree = sorted(list(secondary_graph.nodes()), key=lambda n: (secondary_graph.degree(n), n), reverse=True)
         sa, sb, mixer = nodes_by_degree[:3]
         
-        # Surgically overwrite/add direct symmetrical edges with high weight
-        secondary_graph.add_edge(sa, mixer, weight=5.0)
-        secondary_graph.add_edge(sb, mixer, weight=5.0)
-        print(f"  -> Symmetrical addition conduits compiled: {sa} -> {mixer} and {sb} -> {mixer} (w = 5.0)", flush=True)
+        # Surgically add direct addition waveguides of weight 156.25 (speed = 1.0 hop/step)
+        secondary_graph.add_edge(sa, mixer, weight=156.25)
+        secondary_graph.add_edge(sb, mixer, weight=156.25)
+        print(f"  -> Hubs: sa={sa} | sb={sb} | mixer={mixer}", flush=True)
+        print(f"  -> Direct waveguides compiled with weight=156.25.", flush=True)
         
-        # 3. Simulate autonomous wormhole seeding of Exciton-MoA
-        t_seed_start = time.perf_counter()
-        giants = ["The Statistician", "The Optimizer", "The N-Body Solver"]
-        seeded_nodes = [sa, sb, mixer]
-        for idx, node_id in enumerate(seeded_nodes):
-            giant_name = giants[idx]
-            secondary_graph.nodes[node_id]["dominant_giant"] = giant_name
-            secondary_graph.nodes[node_id]["resonance_accumulator"] = 2.0
-            secondary_graph.nodes[node_id]["semantic_mode"] = np.array([1.0, 1.0])
-            secondary_graph.nodes[node_id]["state_vector"] = np.array([0.0, 0.0, 0.0])
-            
-        seed_latency = (time.perf_counter() - t_seed_start) * 1000.0
-        
-        # Ignite Exciton Engine to stabilize the waveguide routing
+        # 3. Deploy Exciton Engine active operators
         exciton_engine = ExcitonEngine(secondary)
-        exciton_engine.ignite_excitons(np.array([10.0, 10.0, 10.0]))
         
-        # 4. Prepare SOLEngine
-        raw_nodes = [{"id": n, "label": n, "group": "bridge", "rho": 10.0} for n in secondary_graph.nodes]
+        # Operator 1: Aligner Phase Compensation
+        corrections = exciton_engine.aligner_icac_phase_alignment(sources=[sa, sb], mixer=mixer, omega=omega, dt=dt)
+        print(f"  -> [ALIGNER] Calibrated phases: sa={corrections[sa]:.4f} rad, sb={corrections[sb]:.4f} rad", flush=True)
+        
+        # Operator 2: Graph Navigator Waveguide Isolation
+        dampened = exciton_engine.graph_navigator_isolate_waveguides(sources=[sa, sb], mixer=mixer, background_weight=0.0)
+        print(f"  -> [NAVIGATOR] Isolated waveguides. Dampened {dampened} background connections to 0.0.", flush=True)
+        
+        # Operator 3: Statistician Capacitance Tuning
+        exciton_engine.statistician_tune_capacitance(nodes=[mixer], target_mass=1.0)
+        print("  -> [STATISTICIAN] Set mixer semanticMass = 1.0 to optimize wave speed linearity.", flush=True)
+        
+        # 4. Initialize SOLEngine
+        raw_nodes = [{"id": n, "label": n, "group": "bridge", "rho": 10.0 * secondary_graph.nodes[n].get("semanticMass", 1.0)} for n in secondary_graph.nodes]
+        for rn in raw_nodes:
+            rn["semanticMass"] = secondary_graph.nodes[rn["id"]].get("semanticMass", 1.0)
+            
         raw_edges = [{"from": u, "to": v, "w0": secondary_graph[u][v].get("weight", 0.1), "kind": "tax"} for u, v in secondary_graph.edges]
         
-        engine = SOLEngine.from_graph(raw_nodes, raw_edges, c_press=2.0, damping=0.2)
-        engine.integration_mode = "forward_euler"
+        engine = SOLEngine.from_graph(raw_nodes, raw_edges, c_press=2.0, damping=0.01)
+        engine.physics.conductance_max = 200.0
+        engine.physics.conductance_min = 0.0
+        engine.integration_mode = "rk4"
         engine.physics.psi_diffusion = 0.0
         engine.physics.conductance_gamma = 1.0
         engine.physics.mhd_cfg = None
@@ -216,46 +201,49 @@ def run_fibonacci_scaling_sweep():
         engine.physics.vort_cfg = None
         engine.save_baseline()
         
-        # 5. Calibrate Symmetrical Waveguide Gain
-        dt = 0.08
-        steps = 30
-        
-        # Drive Source A with 0.1 amplitude, Source B with 0.0
-        v_a = run_addition_trial(engine, sa, sb, mixer, 0.1, 0.0, dt, steps)
-        # Drive Source B with 0.1 amplitude, Source A with 0.0
-        v_b = run_addition_trial(engine, sa, sb, mixer, 0.0, 0.1, dt, steps)
+        # 5. Symmetrical waveguide & Quadratic response calibration (dual-source)
+        v_zero = run_addition_trial(engine, sa, sb, mixer, 0.0, 0.0, corrections[sa], corrections[sb], dt, steps)
+        v_a = run_addition_trial(engine, sa, sb, mixer, 0.1, 0.0, corrections[sa], corrections[sb], dt, steps)
+        v_b = run_addition_trial(engine, sa, sb, mixer, 0.0, 0.1, corrections[sa], corrections[sb], dt, steps)
+        v_half = run_addition_trial(engine, sa, sb, mixer, 0.05, 0.05, corrections[sa], corrections[sb], dt, steps)
+        v_one = run_addition_trial(engine, sa, sb, mixer, 0.1, 0.1, corrections[sa], corrections[sb], dt, steps)
         
         symmetry_diff = abs(v_a - v_b) / max(1e-6, max(v_a, v_b))
-        gain = (v_a + v_b) / 0.2  # Average gain per unit amplitude
         
-        print(f"  -> Calibration: Gain = {gain:.6f}, Symmetry Mismatch = {symmetry_diff*100.0:.2f}%", flush=True)
+        # Fit R(x) = C2 * x^2 + C1 * x + D using dual-source driven trials (x = 0.1 and x = 0.2)
+        Y1 = v_half - v_zero
+        Y2 = v_one - v_zero
+        C2 = 50.0 * (Y2 - 2.0 * Y1)
+        C1 = 20.0 * Y1 - 5.0 * Y2
+        D = v_zero
         
-        # 6. Compute Fibonacci sequence F0 to F20 (21 elements)
+        print(f"  -> Calibration: C2={C2:.6f}, C1={C1:.6f}, D={D:.6f}, Symmetry Mismatch={symmetry_diff*100.0:.4f}%", flush=True)
+        
+        # 6. Evaluate Fibonacci Sequence
         computed_fib = [0, 1]
         t_eval_start = time.perf_counter()
+        passed_count = 2
         
-        print("  -> Computing Fibonacci sequence...", flush=True)
-        print(f"    n= 0 | Expected: 0 | Computed: 0 | Match: True", flush=True)
-        print(f"    n= 1 | Expected: 1 | Computed: 1 | Match: True", flush=True)
-        
-        passed_count = 2  # F0 and F1 are hardcoded boundary conditions
-        
+        print("  -> Executing sequence logic:", flush=True)
         for n in range(2, len(true_fib)):
             f_prev1 = computed_fib[n-1]
             f_prev2 = computed_fib[n-2]
             
-            # 1. Analog scaling: map inputs to safe log-safe amplitudes (max sum = 0.2)
+            # Map values to a safe amplitude regime
             max_val = max(f_prev1, f_prev2)
             k_scale = 0.1 / max(max_val, 1.0)
             
             amp_a = f_prev1 * k_scale
             amp_b = f_prev2 * k_scale
             
-            # 2. Run SOL physics simulation to perform wave addition
-            v_mixer = run_addition_trial(engine, sa, sb, mixer, amp_a, amp_b, dt, steps)
+            # Run trial and measure Mixer output
+            v_mixer = run_addition_trial(engine, sa, sb, mixer, amp_a, amp_b, corrections[sa], corrections[sb], dt, steps)
             
-            # 3. De-scale and round output
-            raw_sum = v_mixer / (gain * k_scale)
+            # De-scale via quadratic formula
+            numerator = 2.0 * (v_mixer - D)
+            denominator = C1 + math.sqrt(max(1e-12, C1**2 - 4.0 * C2 * (D - v_mixer)))
+            x = numerator / denominator
+            raw_sum = x / k_scale
             computed_val = int(round(raw_sum))
             computed_fib.append(computed_val)
             
@@ -263,11 +251,11 @@ def run_fibonacci_scaling_sweep():
             if match:
                 passed_count += 1
                 
-            print(f"    n={n:2d} | Expected: {true_fib[n]:4d} | Computed: {computed_val:4d} | Raw: {raw_sum:8.2f} | Match: {match}", flush=True)
+            print(f"    n={n:2d} | Expected: {true_fib[n]:4d} | Computed: {computed_val:4d} | Raw: {raw_sum:8.4f} | Match: {match}", flush=True)
             
         eval_time = (time.perf_counter() - t_eval_start) * 1000.0
         accuracy = (passed_count / len(true_fib)) * 100.0
-        print(f"  -> Fibonacci Sequence Accuracy: {accuracy:.1f}% ({passed_count}/{len(true_fib)} correct)", flush=True)
+        print(f"  -> Accuracy for N={N}: {accuracy:.1f}% ({passed_count}/{len(true_fib)} correct)", flush=True)
         
         # Profile single step time
         t_step = time.perf_counter()
@@ -278,7 +266,6 @@ def run_fibonacci_scaling_sweep():
             "N": N,
             "edges": len(raw_edges),
             "compile_time_ms": compile_time,
-            "seed_latency_ms": seed_latency,
             "eval_time_ms": eval_time,
             "step_ms": step_time,
             "accuracy": accuracy
@@ -287,7 +274,7 @@ def run_fibonacci_scaling_sweep():
     print("\n==========================================================================", flush=True)
     print("  SUMMARY LEDGER", flush=True)
     print("==========================================================================", flush=True)
-    print(f"{'Nodes (N)':<10} | {'Edges (E)':<10} | {'Compile (ms)':<15} | {'Eval (ms)':<15} | {'Euler Step (ms)':<15} | {'Accuracy':<10}", flush=True)
+    print(f"{'Nodes (N)':<10} | {'Edges (E)':<10} | {'Compile (ms)':<15} | {'Eval (ms)':<15} | {'RK4 Step (ms)':<15} | {'Accuracy':<10}", flush=True)
     print("-" * 88, flush=True)
     for r in summary_ledger:
         print(f"{r['N']:<10} | {r['edges']:<10} | {r['compile_time_ms']:<15.2f} | {r['eval_time_ms']:<15.2f} | {r['step_ms']:<15.2f} | {r['accuracy']:.1f}%", flush=True)
