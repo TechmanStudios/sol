@@ -1,6 +1,6 @@
 # Dream Ledger
 
-Generated: 2026-06-01T05:47:13.382513+00:00
+Generated: 2026-06-01T08:05:39.598422+00:00
 Nights analyzed: 154 | Cross-night findings: 2066
 
 ## Latest nights
