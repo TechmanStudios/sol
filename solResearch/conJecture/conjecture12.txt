@@ -1,0 +1,30 @@
+Conjecture 12: Sequential Logic & Register Copy (Conjecture 12)
+==============================================================
+
+Conjecture:
+The SOL micro-architecture can execute multi-cycle sequential logical programs by resetting inputs and copying intermediate accumulator results physically under a multi-phase gating timeline, such that:
+1. Accumulator Register C correctly stores the intermediate logic result (e.g. OR).
+2. A target register (Register A or B) is physically cleared (reset to state -1.0 and mass drained to ~0) while preserving other registers' states.
+3. The intermediate result in C is physically copied to the cleared target register (from C to A/B) without destroying the source state in C.
+4. Accumulator C is cleared and primes its belief to receive a second computation.
+5. The system performs a second logical operation (e.g. AND) using the copied register state and the other register state, latching the final result correctly.
+
+Specifically:
+1. Topology: 11-node graph (Registers A, B, C; Gates A, B, C; BUS; READOUT).
+2. Timeline Gating Schedule (360 steps, dt=0.05):
+   - Write (0-50): Prime initial inputs A and B. Priming C bias.
+   - Hold 1 (50-100): Verify initial inputs.
+   - Compute 1 (100-130): Compute C = A OR B (or AND).
+   - Hold 2 (130-160): Verify C has latched.
+   - Clear Phase (160-190): Physically reset target register (A or B).
+   - Hold 3 (190-220): Ground and verify target register is cleared.
+   - Copy Phase (220-250): Physical transfer C -> target Register using copy bias.
+   - Hold 4 / Clear C (250-280): Verify copied state, clear C, and prime C bias.
+   - Compute 2 (280-310): Ground BUS/gates/accumulator, normalize masses, and compute C = A AND B (or OR).
+   - Hold 5 (310-330): Verify second latch result.
+   - Readout (330-360): Measure final accumulator state.
+
+Success Criteria:
+- Verify Sequence 1: (1 OR 0) -> C=1. Clear A. Copy C->A (A=1). AND: (1 AND 0) -> C=0. (Reads low readout mass).
+- Verify Sequence 2: (1 AND 1) -> C=1. Clear A. Copy C->A (A=1). AND: (1 AND 1) -> C=1. (Reads high readout mass).
+- Verify Sequence 3: (0 AND 1) -> C=0. Clear B. Copy C->B (B=0). OR: (0 OR 0) -> C=0. (Reads low readout mass).

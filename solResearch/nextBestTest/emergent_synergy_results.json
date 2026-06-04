@@ -1,0 +1,25 @@
+{
+  "case_1": {
+    "peak_write_cond": 5.0,
+    "baseline_cond": 0.002436559143207733,
+    "end_settle_cond": 0.001,
+    "min_hold_z": 2.2110848992102117e-07,
+    "leakage": -4.288928655427071e-05,
+    "passed": true
+  },
+  "case_2": {
+    "max_write_j_val": 22.10424620654127,
+    "buffer_transferred": 96.87197453278628,
+    "final_stellar": false,
+    "final_battery": -1,
+    "passed": true
+  },
+  "case_3": {
+    "dest_a_mass": 12.407834152620573,
+    "dest_b_mass": 8.756747272924095,
+    "delta_a": 2.4078341526205733,
+    "delta_b": -1.2432527270759053,
+    "passed": true
+  },
+  "all_passed": true
+}

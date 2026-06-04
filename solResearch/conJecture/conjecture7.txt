@@ -1,0 +1,30 @@
+SOL Analog Register-to-Register threshold ALU Conjecture (Conjecture 7)
+========================================================================
+
+Conjecture:
+In a hierarchical multi-substrate manifold tree (FMSM), we can perform logic operations 
+(such as OR and AND) directly between memory registers (Pocket A and Pocket B) and 
+write the result into an accumulator register (Pocket C) by utilizing **simultaneous gated 
+discharge and threshold-gated battery latching**.
+
+Specifically:
+1. **State Storage**: Pocket A and Pocket B hold input binary states (0 or 1, represented 
+   by unlatched or latched batteries) via their respective active battery latches.
+2. **ALU Gated Threshold Routing**: The coordinator dynamically reads the input register 
+   battery states. If the conditions for the logic gate (OR or AND) are met, the 
+   coordinator drives positive belief (psi = 1.0) at the waveguide input of Pocket C 
+   (sb_cC) during the compute phase.
+3. **Threshold-Gated Accumulator Latching**: The local positive belief driver inside Pocket C 
+   overcomes the negative bias and the unlatched battery's feedback loop, charging and 
+   latching Battery C to state 1.0. If the conditions are not met, Pocket C remains 
+   at state -1.0.
+4. **Decoupled Hold & Readout**: Close all wormholes to isolate Pocket C during hold, 
+   then open only Wormhole C to read out the logic result at the parent mixer.
+
+Verification Status:
+Empirically verified. Running `test_arr_alu.py` successfully computed the complete truth 
+tables for both OR and AND logic configurations:
+- OR Gate Config: (0,0) -> False, (1,0) -> True, (0,1) -> True, (1,1) -> True.
+- AND Gate Config: (0,0) -> False, (1,0) -> False, (0,1) -> False, (1,1) -> True.
+Accumulator Register C successfully latched to state 1.0 and sustained the state throughout 
+the decoupled hold phase, yielding distinct recalled pulses during readout.

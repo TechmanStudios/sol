@@ -1,0 +1,22 @@
+Conjecture 22: Jeans Cosmology & Spawning / Structural Growth (Conjecture 22)
+=============================================================================
+
+Conjecture:
+In the SOL engine, Jeans gravitational collapse physics can drive autonomous structural growth (spawning of new nodes and edges) and mass accretion (tractor beam pulling) from localized high density. The density-to-collapse threshold J_crit and the injection strategy (blast, drizzle, cluster spray) shape the topology of the emergent structures, demonstrating a sharp phase transition (bifurcation) at J_crit \approx 10 separating a fully collapsed "stellar explosion" from a localized "Goldilocks" cosmology.
+
+Specifically:
+1. Topology: Dynamic spawner network starting from the default graph (140 nodes, 845 edges).
+2. Spawning of Synth Nodes:
+   - When a node collapses into a "Star" (isStellar = True) based on Jeans threshold J_val = rho / (|p| + epsilon) >= Jcrit, it births a new "Synth" (Gold) node.
+   - The synth node inherits 5% of the parent's mass, is connected directly to the parent, and is connected to up to 3 of the parent's neighbors, dynamically growing the graph.
+3. Tractor Beam Accretion:
+   - Stellar nodes actively pull a fraction (e.g. 5%) of neighbor nodes' mass per tick, concentrating mass in gravity wells.
+4. Cosmology Bifurcation & Plateau:
+   - Jcrit < 10: The Jeans threshold is satisfied by trace amounts of diffused mass, causing all 140 nodes to collapse into 280 stars and spawn 140 synths (the "Big Bang" explosion).
+   - Jcrit in [10, 50]: Only heavily injected nodes collapse. The topology is shaped by the strategy (e.g. blast creates radial structure; cluster spray creates a rich star web).
+   - Jcrit > 50: Drizzle is too weak to trigger collapse at step 0, delaying the first collapse to tick 20 where mass accumulates.
+
+Success Criteria:
+- Verification of the Jcrit \approx 10 phase transition wall.
+- Successful synth node births and edge additions recorded in the logs.
+- Validation that the cluster spray strategy retains the highest final mass and active node count above the threshold wall.

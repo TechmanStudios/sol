@@ -1,0 +1,28 @@
+Conjecture 18: Emergent Cognition (Conjecture 18)
+=================================================
+
+Conjecture:
+Combining Gated Registers (Primitive 1), Context Gating Routers (Primitive 2), and Self-Terminating Thought Loops (Primitive 3) into a unified network yields an emergent, autonomous state machine. This state machine can route input stimulus contextually to a specific register, lock it during a rehearsal phase, self-terminate the rehearsal process once the loop converges, and read out the memory contents upon external demand with zero cross-talk leakage.
+
+Specifically:
+1. Topology: 11-node gated memory network:
+   - Stimulus Input: Node `Input` (group: "bridge")
+   - Context Gating Routers (Primitive 2): Nodes `Router_A` and `Router_B` (group: "bridge")
+   - Registers (Primitive 1): Nodes `Reg_A` and `Reg_B` (group: "bridge")
+   - Rehearsal Loops (Primitive 3): Nodes `Loop_A` and `Loop_B` (group: "bridge")
+   - Readout Control Gates (Primitive 1): Nodes `Read_Gate_A` and `Read_Gate_B` (group: "bridge")
+   - Final Cognition Readout: Node `Output` (group: "bridge")
+2. Routing & Latching Dynamics:
+   - Context is set by setting `psi` and `psi_bias` of the targeted Router (e.g. `Router_A` to `1.0` and `Router_B` to `-1.0` for Context A).
+   - Input stimulus is injected into `Input`. The active Router node allows mass to pass to its respective register while the inactive Router node blocks flow.
+   - Write-enable opens target register paths. Readout control gates are write-locked during routing.
+3. Thought Rehearsal & Self-Termination:
+   - Mass entering the loop ($Reg <-> Loop$) circulates, simulating active thought dwell.
+   - The negative feedback loop gates ($W_r = -2.0, U_r = 80.0, b_r = 9.0$) close naturally once the loop is fully charged, stopping circulation and dumping mass back into the register.
+4. Readout:
+   - Reading out is triggered by opening the readout control gate of the active register and applying a belief override to the loop, forcing mass to exit the loop and transfer to the final `Output` node.
+
+Success Criteria:
+- Routing Success: Zero mass leak into the inactive register (100% routing insulation).
+- Self-Termination: Rehearsal loop halts on convergence before the step limit is reached.
+- Readout Fidelity: Successful readout of stored memory to `Output` node.

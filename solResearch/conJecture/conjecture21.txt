@@ -1,0 +1,20 @@
+Conjecture 21: Adaptive Handshake & Self-Clocked Bus (Conjecture 21)
+=====================================================================
+
+Conjecture:
+In the SOL temporal precedence protocol, the first-stage arbitration timing (first max-flux bus edge event) varies with the environmental damping level \kappa. However, the dual-rail handshake ("136_then_114_fast") can be made robust and self-clocking by dynamically detecting the arbitration tick and applying a handshake nudge on the subsequent tick ("arbiter_tick + 1"). This self-clocked bus protocol preserves correct precedence ("136_first") and timing alignment without requiring manual tuning across heavy friction regimes up to \kappa = 20.
+
+Specifically:
+1. Topology: Default canonical graph featuring sender nodes 136 and 114, bus edges "114 -> 89", "114 -> 79", "136 -> 89", "136 -> 79", and receiver-rail stitch "89 -> 79".
+2. Self-Clocking Dynamics:
+   - Precedence: 136 is injected at tick 0 (ampD = 126.5), 114 is injected at tick 1 (ampB0 = 100.672).
+   - Arbitration detection: The system detects the first tick ("arbiter_tick") where a bus edge becomes the maximum flux edge in the non-background graph.
+   - Handshake nudge: If 136 wins arbitration (first bus edge is a 136-rail), a nudge of ampB_nudge = 20.1344 is injected into 114 on tick "arbiter_tick + 1" to stabilize the second rail.
+3. High Damping Timing Drift & Stitch:
+   - Damping shifts the arbitration timing outward.
+   - The "89 -> 79" stitch edge flux acts as a transient cross-coupling corridor that preserves the precedence state, preventing dual-rail collision and maintaining memory insulation during high friction.
+
+Success Criteria:
+- Successful detection of arbiter tick and application of self-timed handshake.
+- Maintenance of "136_then_114_fast" main packet class across the damping sweep.
+- Precedence remains "136_first" with zero collapse modes (no "114_solo" or "136_solo") up to \kappa = 20.

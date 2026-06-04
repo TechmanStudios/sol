@@ -1,0 +1,21 @@
+{
+  "gru": {
+    "max_write_z": 0.9203889719299388,
+    "min_hold_z": 2.0611536181902037e-09,
+    "end_reset_z": 0.9999999979388463,
+    "host_leakage": 0.0005387308696995774,
+    "battery_leakage": 0.0001795485706285807,
+    "total_leakage": 0.0007182794403281581,
+    "final_battery_state": -1
+  },
+  "baseline": {
+    "max_write_z": 0.9999546021312976,
+    "min_hold_z": 0.9999546021312976,
+    "end_reset_z": 0.9999546021312976,
+    "host_leakage": -1.8579170125740543,
+    "battery_leakage": -1.5395313372995947,
+    "total_leakage": -3.397448349873649,
+    "final_battery_state": -1
+  },
+  "passed": true
+}

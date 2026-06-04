@@ -1,0 +1,98 @@
+{
+  "short_test": {
+    "compile_time_ms": 32.92430000146851,
+    "sim_time_ms": 632.8374999866355,
+    "snr": 120.59570293042617,
+    "max_bg_leakage": 10.0,
+    "edges": 169,
+    "nodes": 96
+  },
+  "medium_test": {
+    "fmsm_compile_ms": 7.262400002218783,
+    "mono_compile_ms": 4.712299996754155,
+    "fmsm_step_ms": 5.317745004140306,
+    "mono_step_ms": 8.061049997922964,
+    "fmsm_edges": 209,
+    "mono_edges": 418
+  },
+  "long_test": {
+    "sweep": [
+      {
+        "damping": 0.01,
+        "soliton_freq": 2.617993877991495,
+        "fmsm_snr": 88.17647692825165,
+        "fmsm_leakage": 10.0,
+        "mono_snr": 229.8903723127696,
+        "mono_leakage": 10.0
+      },
+      {
+        "damping": 0.01,
+        "soliton_freq": 3.272492347489368,
+        "fmsm_snr": 197.99040057988606,
+        "fmsm_leakage": 10.0,
+        "mono_snr": 231.53962628257736,
+        "mono_leakage": 10.0
+      },
+      {
+        "damping": 0.01,
+        "soliton_freq": 3.9269908169872414,
+        "fmsm_snr": 95.19117930158079,
+        "fmsm_leakage": 10.0,
+        "mono_snr": 245.64689271504625,
+        "mono_leakage": 10.0
+      },
+      {
+        "damping": 0.05,
+        "soliton_freq": 2.617993877991495,
+        "fmsm_snr": 89.37491115474883,
+        "fmsm_leakage": 10.0,
+        "mono_snr": 238.01481351525473,
+        "mono_leakage": 10.0
+      },
+      {
+        "damping": 0.05,
+        "soliton_freq": 3.272492347489368,
+        "fmsm_snr": 199.74981413654294,
+        "fmsm_leakage": 10.0,
+        "mono_snr": 239.7313069008245,
+        "mono_leakage": 10.0
+      },
+      {
+        "damping": 0.05,
+        "soliton_freq": 3.9269908169872414,
+        "fmsm_snr": 96.7898638524654,
+        "fmsm_leakage": 10.0,
+        "mono_snr": 253.7277324148891,
+        "mono_leakage": 10.0
+      },
+      {
+        "damping": 0.1,
+        "soliton_freq": 2.617993877991495,
+        "fmsm_snr": 91.19322715455951,
+        "fmsm_leakage": 10.0,
+        "mono_snr": 248.56212801113523,
+        "mono_leakage": 10.0
+      },
+      {
+        "damping": 0.1,
+        "soliton_freq": 3.272492347489368,
+        "fmsm_snr": 201.86049843030048,
+        "fmsm_leakage": 10.0,
+        "mono_snr": 250.3658062807712,
+        "mono_leakage": 10.0
+      },
+      {
+        "damping": 0.1,
+        "soliton_freq": 3.9269908169872414,
+        "fmsm_snr": 98.54728619380796,
+        "fmsm_leakage": 10.0,
+        "mono_snr": 264.20171345828726,
+        "mono_leakage": 10.0
+      }
+    ],
+    "fmsm_step_ms": 19.403881997568533,
+    "mono_step_ms": 58.31741799833253,
+    "fmsm_edges": 865,
+    "mono_edges": 3583
+  }
+}

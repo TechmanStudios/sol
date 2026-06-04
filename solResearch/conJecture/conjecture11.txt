@@ -1,0 +1,29 @@
+Conjecture 11: Non-Destructive Readout Physical ALU (NDRO-ALU)
+=============================================================
+
+Conjecture:
+A purely physical, analog logic computation (OR or AND) can be executed from input registers (Registers A and B) to an accumulator (Register C) via a shared central BUS node under short-pulse gating (30-step compute window, dt=0.05), such that:
+1. The logical result is successfully computed and latched at the accumulator register C (state 1.0 if triggered).
+2. The input registers A and B preserve their memory states (latch state remains 1.0 if active) and retain significant mass (>= 14.0 mass units) after computation.
+
+Specifically:
+1. Topology: 11-node graph (Registers A, B, C; Gates A, B, C; BUS; READOUT):
+   - Register A: BUS <-> GATE_A <-> HOST_A <-> BATTERY_A
+   - Register B: BUS <-> GATE_B <-> HOST_B <-> BATTERY_B
+   - Register C: BUS <-> GATE_C <-> HOST_C <-> BATTERY_C (Accumulator)
+   - Readout channel: BUS <-> READOUT
+2. Short-Pulse Gating: Limit the compute phase to a 30-step pulse window, which limits the outflux from the active input registers A and B.
+3. Self-Healing / State Preservation:
+   - Setting the compute window short prevents the registers' mass from depleting below their critical holding threshold.
+   - Using high charging rates (resonanceDrive = 50.0) ensures the accumulator battery can charge and latch rapidly, even during a short gating pulse.
+   - Eliminating the READOUT node bias sink (setting READOUT bias to 0.0 instead of -1.0) during Compute prevents belief degradation across the BUS.
+4. Memory Cycle Timeline:
+   - Write Phase (0-50): Statically write inputs A and B. Keep gates closed (psi_bias = -1.0).
+   - Hold 1 Phase (50-100): Close all gates. Reset fluxes. Verify state isolation.
+   - Compute Phase (100-130): Open GATE_A, GATE_B, and GATE_C. Set BUS bias to 0.0. Stored mass/belief sums physically at the BUS and charges HOST_C.
+   - Hold 2 Phase (130-180): Close all gates. Reset fluxes. Verify accumulator C is latched and inputs A & B remain latched.
+   - Readout Phase (180-210): Open GATE_C and READOUT. Verify mass transfer to READOUT.
+
+Success Criteria:
+- OR Gate Config (HOST_C psi_bias = 0.21) resolves the OR truth table, with active inputs preserving state and retaining >= 14.0 mass units.
+- AND Gate Config (HOST_C psi_bias = 0.19) resolves the AND truth table, with active inputs preserving state and retaining >= 14.0 mass units.

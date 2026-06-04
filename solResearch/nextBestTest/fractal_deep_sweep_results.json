@@ -1,0 +1,3650 @@
+[
+  {
+    "damping": 0.01,
+    "frequency": 1.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 81.27381236358362,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6830158150471703
+    },
+    "mono": {
+      "snr_active": 801.1423621539453,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.5674660494955521
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 1.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 107.11032279087576,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.343225359045464
+    },
+    "mono": {
+      "snr_active": 1245.864994256563,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8825555030257135
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 1.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 119.06144686920165,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.111314211244471
+    },
+    "mono": {
+      "snr_active": 1920.0714842571626,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.358996093175394
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 2.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 210.09782564389923,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.599748483904456
+    },
+    "mono": {
+      "snr_active": 1820.845652278061,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.2900947735896189
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 2.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 414.5115333377737,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.069520388298047
+    },
+    "mono": {
+      "snr_active": 3394.7343733717917,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.40680013389626
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 2.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 502.9720640880447,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.547194234932106
+    },
+    "mono": {
+      "snr_active": 5176.792829043336,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.669806124986861
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 2.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 136.81994233225348,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.0251785571008156
+    },
+    "mono": {
+      "snr_active": 1203.092909908554,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8513107618408178
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 2.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 309.29154439818603,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.6788046839092914
+    },
+    "mono": {
+      "snr_active": 2767.845518853651,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.9546681923313294
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 2.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 367.958636832947,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.33444996602580546,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.31419819599043
+    },
+    "mono": {
+      "snr_active": 4547.63439160138,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.202294487396517
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 3.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 221.59877350934488,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.1347621660766129,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7670175977066993
+    },
+    "mono": {
+      "snr_active": 904.4400238539363,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6404373256932931
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 3.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 390.27771768090304,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.09910407591068163,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.399638969707098
+    },
+    "mono": {
+      "snr_active": 2237.862093300094,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5837359248064828
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 3.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 419.17539551100896,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.058670237964291556,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.970445014190988
+    },
+    "mono": {
+      "snr_active": 3840.3391939259504,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.7136394699055497
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 3.27,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 214.67233185674576,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.8731719175281913
+    },
+    "mono": {
+      "snr_active": 1722.1379578709889,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.2195427505295235
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 3.27,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 328.77869021205953,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.3115544029585954,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.066491794894491
+    },
+    "mono": {
+      "snr_active": 4041.9846850377585,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.8611710587389005
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 3.27,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 365.76642604485164,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.2555491234778202,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.585977062424808
+    },
+    "mono": {
+      "snr_active": 6282.318749960855,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.440987260503169
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 3.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 190.8216589464652,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7819857211551486
+    },
+    "mono": {
+      "snr_active": 2749.8527920761017,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.947079786855653
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 3.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 310.60166331810274,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.9192661755096941,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.159376409606551
+    },
+    "mono": {
+      "snr_active": 6073.422671031994,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.297556335274912
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 3.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 357.09102136443283,
+      "leakage_decay": 10.0,
+      "decay_rate": 2.933417907769181,
+      "persistence": 0.34089926203542015,
+      "mixer_amp_active": 8.936511806239952
+    },
+    "mono": {
+      "snr_active": 9121.099441435183,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.443874330160655
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 4.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 155.4539636997128,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.454052958359327
+    },
+    "mono": {
+      "snr_active": 2295.021507053312,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.6246598232392628
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 4.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 258.94738351247184,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.361589491708854
+    },
+    "mono": {
+      "snr_active": 6364.758541828661,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.500788441449483
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 4.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 306.4083816542763,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.1966595685714186,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.730479948033725
+    },
+    "mono": {
+      "snr_active": 10243.889026540208,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.229648717862785
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 4.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 113.16280582690415,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.9395703124925756
+    },
+    "mono": {
+      "snr_active": 2091.382962252702,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4807066209584843
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 4.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 168.59618391687255,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.3891665659185453
+    },
+    "mono": {
+      "snr_active": 8437.842456866816,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.15956898333184008,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.969654628776133
+    }
+  },
+  {
+    "damping": 0.01,
+    "frequency": 4.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 202.7804820895283,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.17217060811209237,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.377708929869546
+    },
+    "mono": {
+      "snr_active": 14413.728689316878,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.12433663920608705,
+      "persistence": Infinity,
+      "mixer_amp_active": 10.182011060767861
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 1.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 81.24694786730312,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6816356557338743
+    },
+    "mono": {
+      "snr_active": 803.2105795059658,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.5660334337944324
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 1.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 107.20587912841862,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3435755076088558
+    },
+    "mono": {
+      "snr_active": 1251.5201153297735,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8820636482641238
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 1.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 119.11580631062156,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.111415193557015
+    },
+    "mono": {
+      "snr_active": 1929.0933067965805,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3584869770166481
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 2.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 210.34706620573883,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5978727996516717
+    },
+    "mono": {
+      "snr_active": 1827.3921405920867,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.2881327367817814
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 2.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 414.6447588446429,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.065440377302384
+    },
+    "mono": {
+      "snr_active": 3409.7049637232794,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.405114296286298
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 2.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 502.93261501936365,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.540686017566331
+    },
+    "mono": {
+      "snr_active": 5201.2171808825005,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.6684111637729924
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 2.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 137.02386269821577,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.023957660762596
+    },
+    "mono": {
+      "snr_active": 1207.6218786833183,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8501529051500185
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 2.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 309.7366414883649,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.675627956965984
+    },
+    "mono": {
+      "snr_active": 2780.9847811925483,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.9539097813610145
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 2.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 368.4161446413229,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.2544338103718314,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.309369043664725
+    },
+    "mono": {
+      "snr_active": 4569.504123821381,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.2012394996820195
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 3.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 222.15183956446782,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7670018972392434
+    },
+    "mono": {
+      "snr_active": 907.0628669075585,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6390182227940517
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 3.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 390.82306287864213,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.03518279869788112,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.397468624654666
+    },
+    "mono": {
+      "snr_active": 2249.6444698127707,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5839583155238106
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 3.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 419.660790323056,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.09224820435234111,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.965936853156848
+    },
+    "mono": {
+      "snr_active": 3862.0898348381734,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.715113629243664
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 3.27,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 215.0895107921766,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.8721400412569889
+    },
+    "mono": {
+      "snr_active": 1728.100783602133,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.2175234589810717
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 3.27,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 329.2241769117759,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.2465652959518512,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.06400558737225
+    },
+    "mono": {
+      "snr_active": 4060.123024730972,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.8593634109020076
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 3.27,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 366.16050801799867,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.31275731891859143,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.5811380322421
+    },
+    "mono": {
+      "snr_active": 6311.713686838,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.439060107528981
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 3.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 191.26217016119685,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7817771351475091
+    },
+    "mono": {
+      "snr_active": 2760.56013130692,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.9446900473273203
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 3.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 311.0498757164862,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.157813819880811
+    },
+    "mono": {
+      "snr_active": 6099.852713190285,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.294251892024313
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 3.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 357.5250004185544,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.4862797096449965,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.933685938425295
+    },
+    "mono": {
+      "snr_active": 9162.516478564325,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.440170058432134
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 4.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 155.6697396188503,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4528690478393536
+    },
+    "mono": {
+      "snr_active": 2305.0195131875143,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.6234116243406849
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 4.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 259.34615996842723,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.361703856662146
+    },
+    "mono": {
+      "snr_active": 6393.974584147462,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.498379834919819
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 4.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 306.8312306778666,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.18253880034484202,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.73102405996514
+    },
+    "mono": {
+      "snr_active": 10290.873972386913,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.225779086492577
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 4.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 113.30916537134848,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.9388633109787072
+    },
+    "mono": {
+      "snr_active": 2102.1286442545274,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4807216435850936
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 4.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 169.02218564570393,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.3929569359430793
+    },
+    "mono": {
+      "snr_active": 8477.965239391995,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.967452176214732
+    }
+  },
+  {
+    "damping": 0.02,
+    "frequency": 4.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 203.18943294744054,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.18093638221971362,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.383422470565022
+    },
+    "mono": {
+      "snr_active": 14481.270454296524,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.12858642094837006,
+      "persistence": Infinity,
+      "mixer_amp_active": 10.177605706286373
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 1.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 81.18635610969852,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.678851094452833
+    },
+    "mono": {
+      "snr_active": 807.3559738950894,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.5631775769850513
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 1.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 107.39699257910864,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3442711907706641
+    },
+    "mono": {
+      "snr_active": 1262.8982638043578,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8810801779363064
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 1.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 119.22613212905806,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.1116188762102013
+    },
+    "mono": {
+      "snr_active": 1947.2493565290285,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3574686507891318
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 2.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 210.83017776541024,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.594105156813388
+    },
+    "mono": {
+      "snr_active": 1840.5466575768892,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.284218915532838
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 2.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 414.8945115080991,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.057279306269185
+    },
+    "mono": {
+      "snr_active": 3439.832451244677,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.40175249115687
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 2.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 502.8485107409951,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.527684999132514
+    },
+    "mono": {
+      "snr_active": 5250.384435124368,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.665626746131167
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 2.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 137.42560779524223,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.021529222703732
+    },
+    "mono": {
+      "snr_active": 1216.7229075576674,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8478412494838565
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 2.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 310.62021345670024,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.6692898953336464
+    },
+    "mono": {
+      "snr_active": 2807.43298910901,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.9523928940189048
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 2.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 369.3256583809285,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.29971733450559
+    },
+    "mono": {
+      "snr_active": 4613.533201405498,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.1991308655152837
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 3.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 223.2448066231834,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7669437432351192
+    },
+    "mono": {
+      "snr_active": 912.3244103826653,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6361883652304723
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 3.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 391.9017133588146,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.09412314429235966,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.393095876045525
+    },
+    "mono": {
+      "snr_active": 2273.375174011366,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5843984934889708
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 3.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 420.6243185460226,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.026877864507722,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.956884330961966
+    },
+    "mono": {
+      "snr_active": 3905.917789889063,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.71805081888877
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 3.27,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 216.00061848213667,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.8708253507771104
+    },
+    "mono": {
+      "snr_active": 1740.6062104422303,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.2138632179125928
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 3.27,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 330.1062092312461,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.18061695327635727,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.059003851336705
+    },
+    "mono": {
+      "snr_active": 4096.630126317552,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.8557589953140816
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 3.27,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 366.9437246596363,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.2541148037496685,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.571438553186603
+    },
+    "mono": {
+      "snr_active": 6370.885251312681,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.435213889241062
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 3.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 192.13723894317445,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7813612223569955
+    },
+    "mono": {
+      "snr_active": 2782.0874221144854,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.9399221062435323
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 3.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 311.9414344599424,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.154684557502369
+    },
+    "mono": {
+      "snr_active": 6153.03199709282,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.2876580865795315
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 3.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 358.38968564877945,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.928001279775163
+    },
+    "mono": {
+      "snr_active": 9245.872070510179,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.432777191651256
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 4.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 156.09469624608337,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4504986493226841
+    },
+    "mono": {
+      "snr_active": 2325.128921151165,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.6209155470214327
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 4.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 260.1380859628231,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.361880034191934
+    },
+    "mono": {
+      "snr_active": 6452.767605444977,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.493564029413345
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 4.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 307.6724915749835,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.732012880454348
+    },
+    "mono": {
+      "snr_active": 10385.430792980642,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.218047614719454
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 4.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 113.58926127140586,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.9373923878123929
+    },
+    "mono": {
+      "snr_active": 2123.7674233451776,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4807475904044374
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 4.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 169.86755729869896,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.40045218311505
+    },
+    "mono": {
+      "snr_active": 8558.733651611008,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.96305036152638
+    }
+  },
+  {
+    "damping": 0.04,
+    "frequency": 4.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 204.00281067437822,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.394727417647812
+    },
+    "mono": {
+      "snr_active": 14617.218729729988,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.14242047185978376,
+      "persistence": Infinity,
+      "mixer_amp_active": 10.168802896172117
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 1.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 81.11682401535518,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6760349606869216
+    },
+    "mono": {
+      "snr_active": 811.5132881852824,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.5603341914369633
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 1.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 107.58813151602976,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.344960187028203
+    },
+    "mono": {
+      "snr_active": 1274.3674786264203,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8800970572571618
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 1.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 119.33857371573191,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.1118241968181017
+    },
+    "mono": {
+      "snr_active": 1965.556145072532,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3564502284862776
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 2.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 211.29319579065265,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5903161833862267
+    },
+    "mono": {
+      "snr_active": 1853.7835987364606,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.280318748098388
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 2.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 415.1230267283573,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.049117022805557
+    },
+    "mono": {
+      "snr_active": 3470.2098970951592,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.398403802488275
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 2.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 502.75787679944887,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.514704619307397
+    },
+    "mono": {
+      "snr_active": 5299.97911923368,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.6628496457197652
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 2.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 137.81943955081078,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.0191188917505603
+    },
+    "mono": {
+      "snr_active": 1225.881653109623,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8455350274630273
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 2.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 311.49513560083074,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.662972537308293
+    },
+    "mono": {
+      "snr_active": 2834.1088842553377,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.9508759511500298
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 2.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 370.22795044819225,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.290074690797145
+    },
+    "mono": {
+      "snr_active": 4657.950968295156,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.1970240408180954
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 3.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 224.3203332890475,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7668498818082803
+    },
+    "mono": {
+      "snr_active": 917.6071271635501,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.633369625756421
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 3.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 392.96454391829377,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.3886805093321755
+    },
+    "mono": {
+      "snr_active": 2297.328630214431,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5848325558661323
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 3.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 421.5782792031219,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.0686625269909429,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.947783835867401
+    },
+    "mono": {
+      "snr_active": 3950.184387485459,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.7209731904890084
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 3.27,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 216.92138647156315,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.8696971007947205
+    },
+    "mono": {
+      "snr_active": 1753.1978404762929,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.2102206519668322
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 3.27,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 330.9764532152891,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.05396299471947
+    },
+    "mono": {
+      "snr_active": 4133.446394763566,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.8521690198244833
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 3.27,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 367.7204094734179,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.21775453913575696,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.561710436291033
+    },
+    "mono": {
+      "snr_active": 6430.568947648284,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.431378408325298
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 3.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 193.00445781311993,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.780946498396812
+    },
+    "mono": {
+      "snr_active": 2803.7656353027987,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.9351695293367435
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 3.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 312.82664935863016,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.151549584163032
+    },
+    "mono": {
+      "snr_active": 6206.639416587854,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.281084344327557
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 3.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 359.25010106078105,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.922273337061622
+    },
+    "mono": {
+      "snr_active": 9329.927297871453,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.425405168590977
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 4.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 156.51110472804052,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.448125506867358
+    },
+    "mono": {
+      "snr_active": 2345.390331313054,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.6184199503545376
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 4.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 260.9226837356999,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.361987283546748
+    },
+    "mono": {
+      "snr_active": 6512.044724067116,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.488750154002148
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 4.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 308.5079502141694,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.732870806367111
+    },
+    "mono": {
+      "snr_active": 10480.774901671344,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.210326553369616
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 4.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 113.85281295232498,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.935847217756816
+    },
+    "mono": {
+      "snr_active": 2145.604005663355,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4807680749849492
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 4.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 170.7042366848695,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.407834260841552
+    },
+    "mono": {
+      "snr_active": 8640.203558801693,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.95865264416622
+    }
+  },
+  {
+    "damping": 0.06,
+    "frequency": 4.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 204.81025223829187,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.405870628923918
+    },
+    "mono": {
+      "snr_active": 14754.327071065838,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.1643349948975891,
+      "persistence": Infinity,
+      "mixer_amp_active": 10.160010598102868
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 1.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 81.03860151122645,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6731881532604582
+    },
+    "mono": {
+      "snr_active": 815.6824902704633,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.5575032432088314
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 1.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 107.779323187282,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3456418721165662
+    },
+    "mono": {
+      "snr_active": 1285.9283921777376,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8791143226557221
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 1.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 119.45309853148474,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.112030391192196
+    },
+    "mono": {
+      "snr_active": 1984.0147155727407,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3554317446858661
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 2.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 211.73660593170567,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5865063292092465
+    },
+    "mono": {
+      "snr_active": 1867.103410330239,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.276432215047123
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 2.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 415.33149799852214,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.040953758632847
+    },
+    "mono": {
+      "snr_active": 3500.839170303531,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.3950681780178016
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 2.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 502.6611739757336,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.5017449842663275
+    },
+    "mono": {
+      "snr_active": 5350.545954687553,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.6604502694556764
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 2.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 138.20561835802212,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.0167270137414572
+    },
+    "mono": {
+      "snr_active": 1235.0984306332812,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8432342666418009
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 2.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 312.3616242452447,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.6566760887300447
+    },
+    "mono": {
+      "snr_active": 2861.0142078022764,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.9493589903907722
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 2.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 371.12315690670437,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.280441430371135
+    },
+    "mono": {
+      "snr_active": 4702.760488229202,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.1949190506232474
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 3.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 225.3785684609045,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7667202823029982
+    },
+    "mono": {
+      "snr_active": 922.9110533927056,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6305619886721772
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 3.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 394.0118358190817,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.384222687396457
+    },
+    "mono": {
+      "snr_active": 2321.5066286590145,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5852605294472752
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 3.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 422.522808902658,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.08934463357705111,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.938635729267858
+    },
+    "mono": {
+      "snr_active": 3994.893342410199,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.723880769048936
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 3.27,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 217.82574622636113,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.868527325845914
+    },
+    "mono": {
+      "snr_active": 1765.8762342737923,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.206595679402703
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 3.27,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 331.83506901882436,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.048883001408946
+    },
+    "mono": {
+      "snr_active": 4170.57416696914,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.84859340477772
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 3.27,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 368.4906386725406,
+      "leakage_decay": 10.0,
+      "decay_rate": -0.18630146029897146,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.551953593680205
+    },
+    "mono": {
+      "snr_active": 6490.768648439078,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.427553609638023
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 3.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 193.86393721061611,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7805323839689073
+    },
+    "mono": {
+      "snr_active": 2825.5957020630217,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.9304322926508295
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 3.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 313.7056903001951,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.148408576050773
+    },
+    "mono": {
+      "snr_active": 6260.678030219577,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.274530611376722
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 3.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 360.1063562002831,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.916502823395465
+    },
+    "mono": {
+      "snr_active": 9414.687320584884,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.418053919161206
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 4.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 156.91926067944956,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4457504348481098
+    },
+    "mono": {
+      "snr_active": 2365.804717429689,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.6159248977609764
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 4.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 261.7001613154933,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.362026961273511
+    },
+    "mono": {
+      "snr_active": 6571.809374602069,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.483938272182145
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 4.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 309.3377419953982,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.733599795317767
+    },
+    "mono": {
+      "snr_active": 10576.911985643404,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.202615929001463
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 4.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 114.10016908552437,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.9342297643018806
+    },
+    "mono": {
+      "snr_active": 2167.6398982519217,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.480783100415099
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 4.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 171.53240282139078,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.415104161920185
+    },
+    "mono": {
+      "snr_active": 8722.380225781242,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.954258996540543
+    }
+  },
+  {
+    "damping": 0.08,
+    "frequency": 4.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 205.61187108584895,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.41685344295694
+    },
+    "mono": {
+      "snr_active": 14892.60400577384,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 10.151228788543722
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 1.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 80.95193588332944,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6703115678243368
+    },
+    "mono": {
+      "snr_active": 819.8635474819356,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.5546846982405782
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 1.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 107.97059255271955,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3463156417603024
+    },
+    "mono": {
+      "snr_active": 1297.5816401448953,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8781320100660519
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 1.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 119.56967367845192,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.1122367167646345
+    },
+    "mono": {
+      "snr_active": 2002.6261157522492,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3544132335260457
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 2.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 212.1608999736519,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5826760524335608
+    },
+    "mono": {
+      "snr_active": 1880.5065407052325,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.272559296697077
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 2.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 415.5210737322986,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.032789754549894
+    },
+    "mono": {
+      "snr_active": 3531.7221512970154,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.3917455656303854
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 2.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 502.5588270952309,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.488806206841279
+    },
+    "mono": {
+      "snr_active": 5401.581369928528,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.6580741308331834
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 2.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 138.58440794453264,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.0143539173145388
+    },
+    "mono": {
+      "snr_active": 1244.3735570309361,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8409389940356409
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 2.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 313.2198961303781,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.6504007433071726
+    },
+    "mono": {
+      "snr_active": 2888.150712022259,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.94784204895333
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 2.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 372.01141266953874,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.270817862249375
+    },
+    "mono": {
+      "snr_active": 4747.964845145885,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.1928159196108883
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 3.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 226.41967539147413,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7665549290216518
+    },
+    "mono": {
+      "snr_active": 928.2362251736165,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6277654380166346
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 3.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 395.0438714116247,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.379722585449929
+    },
+    "mono": {
+      "snr_active": 2345.9109707078424,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5856824409627581
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 3.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 423.45804354114955,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.929440382270933
+    },
+    "mono": {
+      "snr_active": 4040.0483933836413,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.7267735798087145
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 3.27,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 218.71383476254994,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.8673160729708567
+    },
+    "mono": {
+      "snr_active": 1778.6419555745945,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.2029882187687662
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 3.27,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 332.6822170926695,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.043763872170006
+    },
+    "mono": {
+      "snr_active": 4208.0157937991125,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.845032070932568
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 3.27,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 369.25448702166955,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.542167946369915
+    },
+    "mono": {
+      "snr_active": 6551.488248620997,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.423739438338698
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 3.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 194.7157922753273,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7801183100099482
+    },
+    "mono": {
+      "snr_active": 2847.578558269213,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.92571037199043
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 3.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 314.5787234301242,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.145261205991965
+    },
+    "mono": {
+      "snr_active": 6315.150913911912,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.267996833799836
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 3.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 360.9585569303653,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.910690426463566
+    },
+    "mono": {
+      "snr_active": 9500.157328062,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.410723373417777
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 4.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 157.3194604289352,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4433742284726598
+    },
+    "mono": {
+      "snr_active": 2386.373058103178,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.6134304519835414
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 4.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 262.4707252276243,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.362000408442597
+    },
+    "mono": {
+      "snr_active": 6632.065010484547,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.479128446842335
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 4.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 310.1620007510868,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.734201788368411
+    },
+    "mono": {
+      "snr_active": 10673.847763815638,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.1949157677171796
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 4.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 114.33168285617747,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.9325419761107536
+    },
+    "mono": {
+      "snr_active": 2189.876616521141,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4807926701007563
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 4.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 172.35223329170785,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.4222628872414624
+    },
+    "mono": {
+      "snr_active": 8805.268947511206,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.949869391404546
+    }
+  },
+  {
+    "damping": 0.1,
+    "frequency": 4.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 206.4077789099325,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.427677205365713
+    },
+    "mono": {
+      "snr_active": 15032.058108424028,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 10.1424574441516
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 1.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 80.6999292656777,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6629956697539843
+    },
+    "mono": {
+      "snr_active": 830.367837207109,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.5476923755262941
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 1.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 108.4492503555923,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3479616478067964
+    },
+    "mono": {
+      "snr_active": 1327.1229246698779,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8756783062988482
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 1.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 119.86986331454169,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.112748423764341
+    },
+    "mono": {
+      "snr_active": 2049.830162821487,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3518670560419928
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 2.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 213.14126777430437,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.573014088225106
+    },
+    "mono": {
+      "snr_active": 1914.3818475156602,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.2629364337534792
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 2.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 415.9194721123985,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.012378165966789
+    },
+    "mono": {
+      "snr_active": 3615.0891168088133,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.3868213081998864
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 2.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 502.28075801836394,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.4565513143590705
+    },
+    "mono": {
+      "snr_active": 5531.120037365762,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.6521511995174443
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 2.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 139.54351935407433,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.0088141269566915
+    },
+    "mono": {
+      "snr_active": 1267.81874362777,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8352249959464846
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 2.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 315.55175127105707,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.637349877278938
+    },
+    "mono": {
+      "snr_active": 2957.014988032202,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.944050020309291
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 2.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 374.2025167430604,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.246803297332172
+    },
+    "mono": {
+      "snr_active": 4862.723570917306,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.1875663848214817
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 3.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 228.94869674519256,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.765985151252476
+    },
+    "mono": {
+      "snr_active": 941.6423405200704,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6208224574396208
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 3.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 397.55907188398373,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.368288613460454
+    },
+    "mono": {
+      "snr_active": 2407.924001316108,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5867108730711639
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 3.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 425.7563487018203,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.906247858479112
+    },
+    "mono": {
+      "snr_active": 4154.912443184542,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.733941165310579
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 3.27,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 220.8638628763222,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.8641069443600422
+    },
+    "mono": {
+      "snr_active": 1810.9420449253005,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.1940456499645808
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 3.27,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 334.75096923711897,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.030794983136881
+    },
+    "mono": {
+      "snr_active": 4303.008528858835,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.8361907002743436
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 3.27,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 371.1366694695569,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.51757737141887
+    },
+    "mono": {
+      "snr_active": 6705.58757153878,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.414250147739814
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 3.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 196.81286592855815,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7790796612254205
+    },
+    "mono": {
+      "snr_active": 2903.210336684738,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.9139724170487789
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 3.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 316.7360775579194,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.137362775676001
+    },
+    "mono": {
+      "snr_active": 6453.253397769403,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.251749340425647
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 3.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 363.071983052631,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.895980487169714
+    },
+    "mono": {
+      "snr_active": 9716.972852329363,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.392487130002736
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 4.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 158.2870965297728,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4374337967528312
+    },
+    "mono": {
+      "snr_active": 2438.4739269044226,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.607197398047008
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 4.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 264.3682275255826,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.361652927497362
+    },
+    "mono": {
+      "snr_active": 6784.874994847051,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.467113287870302
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 4.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 312.1993042326065,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.735163750114099
+    },
+    "mono": {
+      "snr_active": 10919.719313996622,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.175711307717156
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 4.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 114.84350587996896,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.9280274383188782
+    },
+    "mono": {
+      "snr_active": 2246.357045107307,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4807927505989724
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 4.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 174.36649200064815,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.4396799414618737
+    },
+    "mono": {
+      "snr_active": 9015.64101236671,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.938912888776247
+    }
+  },
+  {
+    "damping": 0.15,
+    "frequency": 4.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 208.37328000496439,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.454049648047489
+    },
+    "mono": {
+      "snr_active": 15385.900171389745,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 10.120574716801118
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 1.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 80.40040160526344,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6555130458891014
+    },
+    "mono": {
+      "snr_active": 840.9454774762241,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.5407768222582767
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 1.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 108.92883226959664,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3495459776069403
+    },
+    "mono": {
+      "snr_active": 1357.2553768270557,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8732280009215057
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 1.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 120.1821351728677,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.1132458046943388
+    },
+    "mono": {
+      "snr_active": 2098.0125502674446,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.3493214319120668
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 2.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 214.01309168842837,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5632348929974302
+    },
+    "mono": {
+      "snr_active": 1948.7878135481728,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.2533982194608928
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 2.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 416.22254522773824,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.9919676620522466
+    },
+    "mono": {
+      "snr_active": 3700.6793997207583,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.3821944138829814
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 2.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 501.9750703298416,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.424429582503227
+    },
+    "mono": {
+      "snr_active": 5663.48685840158,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.646253095184365
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 2.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 140.5896321834849,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.0043000760627905
+    },
+    "mono": {
+      "snr_active": 1291.6356273167166,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.8295458626789074
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 2.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 317.8742205689246,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.624804515496299
+    },
+    "mono": {
+      "snr_active": 3027.3630558016066,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.9402589047489034
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 2.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 376.353061723877,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.222855638246491
+    },
+    "mono": {
+      "snr_active": 4980.018547733616,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 3.1823289917997233
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 3.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 231.37488970265767,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7651923133444338
+    },
+    "mono": {
+      "snr_active": 955.1820285478195,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.6139484046568988
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 3.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 399.98511166293184,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.3565948371004595
+    },
+    "mono": {
+      "snr_active": 2471.391665602207,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.5877019987514096
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 3.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 427.9994875366179,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.882768682015293
+    },
+    "mono": {
+      "snr_active": 4272.647628397993,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.741017016112446
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 3.27,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 222.9157103215876,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.860640517433282
+    },
+    "mono": {
+      "snr_active": 1843.8004287426213,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.1852107639971639
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 3.27,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 336.75155344576467,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.017582356790324
+    },
+    "mono": {
+      "snr_active": 4400.015009843513,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.8274368750719674
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 3.27,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 372.9805338338789,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.492805517703644
+    },
+    "mono": {
+      "snr_active": 6863.022632500933,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.404826094276647
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 3.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 198.86500245981676,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.7780293586356173
+    },
+    "mono": {
+      "snr_active": 2959.817765930835,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.902329645898762
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 3.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 318.85931432078115,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.129417301150298
+    },
+    "mono": {
+      "snr_active": 6594.1382629279,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.235625386851247
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 3.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 365.1622009710196,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 8.881022575983787
+    },
+    "mono": {
+      "snr_active": 9938.340837603317,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 6.374378762248213
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 4.0,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 159.2114747355042,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4315026874696208
+    },
+    "mono": {
+      "snr_active": 2491.558671489372,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.6009694744684726
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 4.0,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 266.22694262784023,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.3609200265398265
+    },
+    "mono": {
+      "snr_active": 6940.830165296501,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.455112326447249
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 4.0,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 314.20486784493755,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.7353735655058795
+    },
+    "mono": {
+      "snr_active": 11170.709460494645,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 7.1565727896221265
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 4.5,
+    "amplitude": 1.0,
+    "fmsm": {
+      "snr_active": 115.26419316376821,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 0.923115104137791
+    },
+    "mono": {
+      "snr_active": 2304.126220048093,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 1.4807588232644182
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 4.5,
+    "amplitude": 3.0,
+    "fmsm": {
+      "snr_active": 176.332451479205,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 2.456424405767633
+    },
+    "mono": {
+      "snr_active": 9230.580819784716,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 5.92798107355225
+    }
+  },
+  {
+    "damping": 0.2,
+    "frequency": 4.5,
+    "amplitude": 5.0,
+    "fmsm": {
+      "snr_active": 210.30544035025378,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 4.479457761464276
+    },
+    "mono": {
+      "snr_active": 15747.289558093451,
+      "leakage_decay": 10.0,
+      "decay_rate": 0.0,
+      "persistence": Infinity,
+      "mixer_amp_active": 10.098756895924698
+    }
+  }
+]

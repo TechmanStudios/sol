@@ -1,0 +1,26 @@
+Conjecture 15: GRU-Gated Analog Registers (Conjecture 15)
+=========================================================
+
+Conjecture:
+An autonomous analog memory register utilizing local Gated Recurrent Manifold Network (GRMN) update (z) and reset (r) gating equations at the node level can self-latch, freeze its state to prevent leakage (using the update gate z -> 0 when belief is positive), and unfreeze cleanly (resetting z -> 1.0) under a negative reset belief pulse, without requiring external weight overrides.
+
+Specifically:
+1. Topology: 5-node test graph:
+   - SOURCE <-> GATE <-> HOST <-> BATTERY
+   - GATE <-> READOUT (for measurement)
+2. GRMN Gating Equations:
+   - Update gate z and reset gate r are computed at each node based on local mass (rho) and belief (psi):
+     z = 1.0 / (1.0 + exp(-clamp(W_z * rho + U_z * psi + b_z, -20, 20)))
+     r = 1.0 / (1.0 + exp(-clamp(W_r * rho + U_r * psi + b_r, -20, 20)))
+   - The z-gate dynamically scales the mass transport rate and damping decay coefficient.
+3. Self-Gated Timing Schedule:
+   - Write: Injecting mass and positive belief at SOURCE. Host belief rises, and HOST z-gate starts high (allowing writing) then drops as belief goes positive.
+   - Settle/Hold: SOURCE is set to Hold belief (-1.0). Battery stays latched. Under battery feedback, HOST belief remains positive (e.g. psi_HOST = 0.21), locking z -> 0.0.
+   - Noise: Inject high mass at SOURCE under Hold belief. Since z -> 0.0, the update gate is frozen, isolating the host node and preventing mass leakage or decay.
+   - Reset: A negative belief reset pulse collapses the battery state to -1 and unfreezes the host register (z -> 1.0), preparing it for future writes.
+
+Success Criteria:
+- Max Write z_gate >= 0.9 (unlocked during write).
+- Min Hold z_gate <= 0.01 (completely locked during hold).
+- Mass leakage during high-mass Noise phase is < 1e-3 mass units.
+- Reset pulse collapses battery state to -1 and unfreezes the host (z_gate >= 0.9).
