@@ -1,0 +1,99 @@
+name: SOL Exciton Decision Report Monitor — Weekly
+
+on:
+  schedule:
+    # 09:30 UTC every Wednesday — runs 30 minutes after the decision report workflow
+    # to check for any weekly regression incidents and alert the operator.
+    - cron: "30 9 * * 3"
+  workflow_dispatch: {}
+
+concurrency:
+  # Joins the snowball concurrency group so the monitor never collides with
+  # the nightly snowball or decision report writes.
+  group: sol-exciton-snowball-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  monitor_report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: Frontier_OS/Exciton-MoA/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r Frontier_OS/Exciton-MoA/requirements.txt
+
+      - name: Run decision report monitor
+        working-directory: Frontier_OS/Exciton-MoA
+        run: |
+          python scripts/decision_report_monitor.py \
+            --K 4 \
+            | tee decision_report_monitor_outcome.json
+
+      - name: Commit monitor artifacts
+        run: |
+          git config user.name "sol-exciton-monitor[bot]"
+          git config user.email "sol-exciton-monitor@users.noreply.github.com"
+          git add \
+            Frontier_OS/Exciton-MoA/working_data/snowball/consumers/decision_report_monitor \
+            || true
+          if git diff --cached --quiet; then
+            echo "No monitor artifacts to commit"
+            exit 0
+          fi
+          git commit -m "decision_report_monitor(weekly): run=${{ github.run_id }}"
+          for attempt in 1 2 3; do
+            if git push; then break; fi
+            echo "Push attempt $attempt failed, rebasing..."
+            git pull --rebase
+          done
+
+      - name: Upload monitor artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sol-exciton-decision-monitor-${{ github.run_id }}
+          path: |
+            Frontier_OS/Exciton-MoA/working_data/snowball/consumers/decision_report_monitor
+            Frontier_OS/Exciton-MoA/decision_report_monitor_outcome.json
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Job summary
+        if: always()
+        working-directory: Frontier_OS/Exciton-MoA
+        run: |
+          echo "## SOL Exciton Decision Report Monitor — Weekly" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f decision_report_monitor_outcome.json ]; then
+            if grep -q '"incident_fired": true' decision_report_monitor_outcome.json; then
+              echo "⚠️ **CRITICAL REGRESSION DETECTED!** An incident report has been filed." >> "$GITHUB_STEP_SUMMARY"
+              echo "" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "✅ No regressions detected in the weekly decision metrics." >> "$GITHUB_STEP_SUMMARY"
+              echo "" >> "$GITHUB_STEP_SUMMARY"
+            fi
+            echo '### Monitor Execution Summary' >> "$GITHUB_STEP_SUMMARY"
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            cat decision_report_monitor_outcome.json >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "❌ Monitor failed to output results." >> "$GITHUB_STEP_SUMMARY"
+          fi
