@@ -1347,6 +1347,7 @@ Each mechanism is defined consistently and includes “first validated in” and
 - **Metastability exists and dt compresses time-to-failure**: long-horizon flips occur even after hundreds/thousands of steps; dt≥0.12 is high risk under the Phase 3.9 signature (Phase 3.9).
 - **Afterstates are classifiable and controllable**: DreamState produces reproducible basin signatures; latch identity `lastInjected` selects t0 basin (Phases 3.10.5–3.10.6).
 - **Readout rails exist**: temporal packets compile into a coherent dual-bus broadcast with a sharp ridge and a metastable band (Phase 3.11.16).
+- **Attractor-Induced Latency Modulation (AILM) exists**: Latching memory states dynamically shifts transmission onset latency on the dual-bus broadcast rails due to localized pressure alignment (Phase 3.11.16z).
 
 ### 2) Active Hypotheses (with falsification tests)
 - **Hψ (ψ as slow-variable ramp driver):** $\psi$ concentration/structure is the hidden variable that drifts and triggers metastable flips (Phase 3.9→3.10 suspicion).
@@ -1361,15 +1362,17 @@ Each mechanism is defined consistently and includes “first validated in” and
    - Goal: P(bothOn | ampD) across 5.50→5.75; compute onset distributions and “pre-flip glow” evidence.
    - Outputs: written to `data/fine_boundary_sigmoid_map/` with 100% stable dual-rail readout at threshold 0.5.
 
-2. **Adaptive handshake (16y) across high damping**
+2. **Adaptive handshake (16y) across high damping** [COMPLETE]
    - Goal: test multistage timing bands up to damp 20 using self-timed nudge (arbiter+1).
    - Readout: Δ timing modes, cross-coupler behavior (89→79), and failure modes.
+   - Outcome: Verified that self-timed handshake clocks itself reliably, maintaining `136_first` precedence across the entire damping sweep up to damp 20.
 
-3. **Bridge control: latch + ψ trim into readout**
+3. **Bridge control: latch + ψ trim into readout** [COMPLETE]
    - Goal: combine deterministic mode-select (lastInjected latch) with packet readout; check whether basin selection alters bus reliability or ridge location.
    - Readout: ridge shift, onset stability, basin integrity under readout.
+   - Outcome: **Attractor-Induced Latency Modulation (AILM) Law verified.** Latching Basin 90 (spirit) delays Transmitter 136 (spirit) onset (arbiter tick shifts from 14.0 to 31.0 at d=4.0) due to localized pressure alignment, reducing the pressure gradient. Modulating Node 114 belief trim shifts the timing boundary.
 
-4. **Phonon sweep for speed-limit acceleration**
+4. **Phonon sweep for speed-limit acceleration** [COMPLETE]
    - Goal: Sweep acoustic-like density perturbations ("phonons") to accelerate flow propagation across high-pressure manifolds without inducing instability under high damping.
    - Readout: flow propagation velocity, stabilization metrics.
 
