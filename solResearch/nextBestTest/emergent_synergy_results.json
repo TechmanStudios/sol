@@ -21,5 +21,17 @@
     "delta_b": -1.2432527270759053,
     "passed": true
   },
+  "case_4": {
+    "v_fib_opt": 0.4738401141172748,
+    "v_pow_opt": 0.030742584879937307,
+    "v_fib_low": 0.04603211522525541,
+    "v_fib_high": 0.02993585914600394,
+    "passed": true
+  },
+  "case_5": {
+    "synths_count": 1,
+    "final_e_rho": 5.411138633690754,
+    "passed": true
+  },
   "all_passed": true
 }

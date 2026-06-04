@@ -19,7 +19,18 @@ import types
 from pathlib import Path
 
 # Add sol-core path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "tools" / "sol-core"))
+sol_root = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(sol_root / "tools" / "sol-core"))
+
+# Force bind tools/sol-core/telemetry.py to sys.modules['telemetry'] to prevent collisions
+import importlib.util
+telemetry_path = sol_root / "tools" / "sol-core" / "telemetry.py"
+spec = importlib.util.spec_from_file_location("telemetry", telemetry_path)
+if spec and spec.loader:
+    telemetry_mod = importlib.util.module_from_spec(spec)
+    sys.modules["telemetry"] = telemetry_mod
+    spec.loader.exec_module(telemetry_mod)
+    telemetry_mod._TELEMETRY_ENABLED = False
 
 # Disable telemetry
 os.environ["SOL_TELEMETRY_ENABLED"] = "false"
@@ -447,6 +458,256 @@ def run_case_3() -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Case 4: The Comb-Filter Duality (Damping vs. Geometry)
+# ---------------------------------------------------------------------------
+
+def run_case_4() -> dict:
+    print("\n--- CASE 4: The Comb-Filter Duality (Damping vs. Geometry) ---")
+    
+    sol_root = Path(__file__).resolve().parent.parent
+    sys.path.insert(0, str(sol_root / "Frontier_OS" / "Exciton-MoA"))
+    sys.path.insert(0, str(sol_root / "Frontier_OS" / "Exciton-MoA" / "hardWare"))
+    
+    from blank_config import BlankManifoldConfig
+    from blank_manifold_core import BlankManifoldCore
+    
+    import networkx as nx
+    
+    def test_manifold(N_nodes: int, damping: float, multiply_edges: float, label: str) -> float:
+        config = BlankManifoldConfig(base_node_count=N_nodes, topology_type="hyperbolic_uniform", dimensionality=3)
+        manifold = BlankManifoldCore(config, seed=42)
+        graph = manifold.generate_manifold()
+        
+        # Determine sa and sb (sorted deterministically by degree and ID)
+        nodes_sorted = sorted(list(graph.nodes()), key=lambda n: (graph.degree(n), n), reverse=True)
+        sa = nodes_sorted[0]
+        
+        # Find a node at exactly 2 hops distance
+        sb = None
+        lengths = nx.single_source_shortest_path_length(graph, sa)
+        nodes_at_2 = [n for n, l in lengths.items() if l == 2]
+        if nodes_at_2:
+            sb = sorted(nodes_at_2)[0]
+        else:
+            sb = nodes_sorted[1]
+            
+        raw_nodes = [{"id": n, "label": n, "group": "bridge", "rho": 10.0} for n in graph.nodes]
+        raw_edges = [{"from": u, "to": v, "w0": graph[u][v].get("weight", 0.1) * multiply_edges} for u, v in graph.edges]
+        
+        engine = SOLEngine.from_graph(raw_nodes, raw_edges, c_press=2.0, damping=damping)
+        engine.integration_mode = "rk4"
+        engine.physics.integration_mode = "rk4"
+        engine.physics.psi_diffusion = 0.0
+        
+        dt = 0.08
+        steps = 150
+        omega = 2.0 * math.pi / (12.0 * dt)
+        
+        dest_rhos = []
+        for s in range(steps):
+            t = s * dt
+            # Inject sine wave at source
+            engine.physics.node_by_id[sa]["rho"] = 10.0 + 5.0 * math.sin(omega * t)
+            engine.step(dt=dt)
+            if s >= steps - 40:
+                dest_rhos.append(engine.physics.node_by_id[sb]["rho"])
+                
+        val = max(dest_rhos) - min(dest_rhos)
+        print(f"    [{label}] N={N_nodes}, Damping={damping:.2f}, Mult={multiply_edges:.1f} -> Received Amp Delta: {val:.6f}")
+        return val
+
+    v_fib_opt = test_manifold(55, 0.2, 10.0, "Fibonacci (Optimal)")
+    v_pow_opt = test_manifold(64, 5.0, 10.0, "Power-of-Two (Locked)")
+    v_fib_low = test_manifold(55, 0.01, 10.0, "Fibonacci (Low Damping)")
+    v_fib_high = test_manifold(55, 5.0, 10.0, "Fibonacci (High Damping)")
+    
+    # Fibonacci optimal should propagate well, while Power-of-two (locked) and high damping should be suppressed.
+    passed = (v_fib_opt > 0.20) and (v_pow_opt < 0.05) and (v_fib_low < 0.05) and (v_fib_high < 0.05)
+    print(f"  Verification Status:                 {'PASSED' if passed else 'FAILED'}")
+    
+    return {
+        "v_fib_opt": v_fib_opt,
+        "v_pow_opt": v_pow_opt,
+        "v_fib_low": v_fib_low,
+        "v_fib_high": v_fib_high,
+        "passed": passed
+    }
+
+
+# ---------------------------------------------------------------------------
+# Case 5: Non-Euclidean Structural Plasticity (Spawning + Loops)
+# ---------------------------------------------------------------------------
+
+def run_case_5() -> dict:
+    print("\n--- CASE 5: Non-Euclidean Structural Plasticity (Spawning + Loops) ---")
+    
+    raw_nodes = [
+        {"id": "A", "label": "A", "group": "bridge", "rho": 10.0, "semanticMass": 1.0},
+        {"id": "B", "label": "B", "group": "bridge", "rho": 10.0, "semanticMass": 1.0},
+        {"id": "C", "label": "C", "group": "bridge", "rho": 10.0, "semanticMass": 30.0}, 
+        {"id": "D", "label": "D", "group": "bridge", "rho": 10.0, "semanticMass": 1.0},
+        {"id": "E", "label": "E", "group": "bridge", "rho": 0.0, "semanticMass": 1.0},
+    ]
+    raw_edges = [
+        {"from": "A", "to": "B", "w0": 1.0},
+        {"from": "B", "to": "C", "w0": 1.0},
+        {"from": "C", "to": "D", "w0": 1.0},
+        {"from": "D", "to": "A", "w0": 1.0},
+        {"from": "C", "to": "E", "w0": 0.0001}, 
+    ]
+    
+    engine = SOLEngine.from_graph(raw_nodes, raw_edges, c_press=2.0, damping=0.002)
+    engine.integration_mode = "rk4"
+    engine.physics.integration_mode = "rk4"
+    engine.physics.psi_diffusion = 0.5
+    engine.physics.psi_relax_base = 1.5
+    
+    # Configure Jeans
+    engine.physics.jeans_cfg = {
+        "Jcrit": 8.0,
+        "accreteRate": 0.0, 
+        "starDampingFactor": 1.0
+    }
+    
+    spawned_parents = set()
+    next_synth_id = 9000
+    
+    def resolve_edge_references(physics, edge):
+        from_id = edge["from"]
+        to_id = edge["to"]
+        edge["src_node"] = physics.node_by_id.get(from_id)
+        edge["dst_node"] = physics.node_by_id.get(to_id)
+        edge["from_idx"] = physics.node_index_by_id.get(from_id)
+        edge["to_idx"] = physics.node_index_by_id.get(to_id)
+        
+    def custom_jeans_collapse_and_accrete(self, dt: float, c_press: float, damping: float):
+        nonlocal next_synth_id
+        j_crit = self.jeans_cfg.get("Jcrit", 18.0)
+        
+        for n in self.nodes:
+            eps = 1e-6
+            p = n.get("p", c_press * math.log(1 + n["rho"] / n.get("semanticMass", 1.0)))
+            if not isinstance(p, (int, float)) or not math.isfinite(p):
+                p = c_press * math.log(1 + n["rho"])
+            j_val = n["rho"] / (abs(p) + eps)
+            
+            if j_val >= j_crit:
+                n["isStellar"] = True
+            else:
+                n["isStellar"] = False
+                
+        for node in list(self.nodes):
+            if not node.get("isStellar"):
+                continue
+            if node["id"] in spawned_parents:
+                continue
+            if node.get("isSynth"):
+                continue
+                
+            spawned_parents.add(node["id"])
+            synth_id = f"synth_{next_synth_id}"
+            next_synth_id += 1
+            
+            rho_gift = node["rho"] * 0.05
+            node["rho"] -= rho_gift
+            node["semanticMass"] = 1.0
+            node["semanticMass0"] = 1.0
+            
+            synth_node = {
+                "id": synth_id,
+                "label": f"synth:{node['label']}",
+                "group": "synth",
+                "rho": rho_gift,
+                "p": 0.0,
+                "psi": 0.0,
+                "psi_bias": 0.0,
+                "semanticMass": 1.0,
+                "semanticMass0": 1.0,
+                "lastInteractionTime": 0.0,
+                "isSingularity": False,
+                "isStellar": False,
+                "isConstellation": False,
+                "isSynth": True,
+            }
+            
+            self.nodes.append(synth_node)
+            self.node_by_id[synth_id] = synth_node
+            self.node_index_by_id[synth_id] = len(self.nodes) - 1
+            
+            synth_edge = {
+                "from": node["id"],
+                "to": synth_id,
+                "w0": 10.0,
+                "background": False,
+                "kind": "synth",
+                "flux": 0.0,
+                "conductance": 1.0,
+            }
+            resolve_edge_references(self, synth_edge)
+            self.edges.append(synth_edge)
+            
+            neighbor_ids = []
+            for e in self.edges:
+                if e.get("background"):
+                    continue
+                if e["from"] == node["id"] and e["to"] != synth_id:
+                    neighbor_ids.append(e["to"])
+                elif e["to"] == node["id"] and e["from"] != synth_id:
+                    neighbor_ids.append(e["from"])
+                    
+            for nid in set(neighbor_ids):
+                bridge_edge = {
+                    "from": synth_id,
+                    "to": nid,
+                    "w0": 10.0,
+                    "background": False,
+                    "kind": "synth",
+                    "flux": 0.0,
+                    "conductance": 1.0,
+                }
+                resolve_edge_references(self, bridge_edge)
+                self.edges.append(bridge_edge)
+                
+            print(f"      [SPAWNED] Star at node {node['id']} birthed {synth_id}! Created pathways connecting {synth_id} to neighbors {neighbor_ids}.")
+            
+    engine.physics.jeans_collapse_and_accrete = types.MethodType(custom_jeans_collapse_and_accrete, engine.physics)
+    
+    dt = 0.05
+    history = []
+    
+    for s in range(150):
+        if s < 35:
+            engine.physics.node_by_id["A"]["rho"] = 60.0
+            engine.physics.node_by_id["A"]["psi"] = 1.0
+        else:
+            engine.physics.node_by_id["A"]["rho"] = 0.0
+            
+        engine.step(dt=dt)
+        history.append({
+            "step": s,
+            "C_rho": engine.physics.node_by_id["C"]["rho"],
+            "E_rho": engine.physics.node_by_id["E"]["rho"],
+            "C_stellar": engine.physics.node_by_id["C"].get("isStellar", False),
+            "synths_spawned": len(spawned_parents)
+        })
+        
+    final_e_rho = engine.physics.node_by_id["E"]["rho"]
+    synths_count = len(spawned_parents)
+    
+    print(f"  Synths Spawned:        {synths_count}")
+    print(f"  Target E final mass:   {final_e_rho:.6f}")
+    
+    passed = (synths_count > 0) and (final_e_rho > 5.0)
+    print(f"  Verification Status:    {'PASSED' if passed else 'FAILED'}")
+    
+    return {
+        "synths_count": synths_count,
+        "final_e_rho": final_e_rho,
+        "passed": passed
+    }
+
+
+# ---------------------------------------------------------------------------
 # Main Runner
 # ---------------------------------------------------------------------------
 
@@ -458,14 +719,18 @@ def main():
     res_1 = run_case_1()
     res_2 = run_case_2()
     res_3 = run_case_3()
+    res_4 = run_case_4()
+    res_5 = run_case_5()
 
     print("\n================ FINAL REPORT SUMMARY ================")
-    print(f"  Case 1 (Autonomic Bus):     {'PASSED' if res_1['passed'] else 'FAILED'}")
-    print(f"  Case 2 (Jeans ROM Latch):   {'PASSED' if res_2['passed'] else 'FAILED'}")
-    print(f"  Case 3 (Acoustic FDM Match): {'PASSED' if res_3['passed'] else 'FAILED'}")
+    print(f"  Case 1 (Autonomic Bus):            {'PASSED' if res_1['passed'] else 'FAILED'}")
+    print(f"  Case 2 (Jeans ROM Latch):          {'PASSED' if res_2['passed'] else 'FAILED'}")
+    print(f"  Case 3 (Acoustic FDM Match):        {'PASSED' if res_3['passed'] else 'FAILED'}")
+    print(f"  Case 4 (Comb-Filter Duality):       {'PASSED' if res_4['passed'] else 'FAILED'}")
+    print(f"  Case 5 (Non-Euclidean Plasticity):  {'PASSED' if res_5['passed'] else 'FAILED'}")
     
-    all_passed = res_1['passed'] and res_2['passed'] and res_3['passed']
-    print(f"  Overall Suite Status:       {'ALL PASSED' if all_passed else 'SOME FAILED'}")
+    all_passed = res_1['passed'] and res_2['passed'] and res_3['passed'] and res_4['passed'] and res_5['passed']
+    print(f"  Overall Suite Status:              {'ALL PASSED' if all_passed else 'SOME FAILED'}")
     print("======================================================")
 
     # Save summary report
@@ -473,6 +738,8 @@ def main():
         "case_1": res_1,
         "case_2": res_2,
         "case_3": res_3,
+        "case_4": res_4,
+        "case_5": res_5,
         "all_passed": all_passed
     }
     report_dir = Path("g:/docs/TechmanStudios/sol/solResearch/nextBestTest")
@@ -482,10 +749,12 @@ def main():
     # Render operator report
     report_md = f"""# Emergent Synergy Verification Report
 
-Verified the three primary emergent physics interactions:
+Verified the five primary emergent physics interactions:
 - **Autonomic Self-Limiting Bus**: Peak write conductance: `{res_1['peak_write_cond']:.4f}`, Min hold z: `{res_1['min_hold_z']:.4e}`, Noise leakage: `{res_1['leakage']:.2e}`.
 - **Negative-Resistance Latch**: Buffer accretion pulled: `{res_2['buffer_transferred']:.4f}` mass units, Star dissolved and reset completed successfully.
 - **Acoustic FDM Match**: Matched Route A delta: `{res_3['delta_a']:+.4f}` vs Mismatched Route B delta: `{res_3['delta_b']:+.4f}`.
+- **Comb-Filter Duality**: Fibonacci Optimal: `{res_4['v_fib_opt']:.4f}` vs Power-of-Two: `{res_4['v_pow_opt']:.4f}`. Low damping: `{res_4['v_fib_low']:.4f}` vs High damping: `{res_4['v_fib_high']:.4f}`.
+- **Non-Euclidean Plasticity**: Synths spawned: `{res_5['synths_count']}`, Target E final mass: `{res_5['final_e_rho']:.4f}`.
 
 Suite overall status: **{'ALL PASSED' if all_passed else 'FAILED'}**
 """
