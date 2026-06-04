@@ -8,6 +8,7 @@ under high damping, compared to standard constant or single-pulse injections.
 """
 
 import sys
+sys.stdout.reconfigure(encoding='utf-8')
 import os
 import math
 import json

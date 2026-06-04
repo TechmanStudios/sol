@@ -8,6 +8,7 @@ simultaneously over a shared transmission channel.
 """
 
 import sys
+sys.stdout.reconfigure(encoding='utf-8')
 import os
 import math
 from pathlib import Path

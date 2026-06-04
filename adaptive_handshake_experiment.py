@@ -8,6 +8,7 @@ nudges node 114 on arbiter_tick + 1 (self-timed handshake).
 """
 
 import sys
+sys.stdout.reconfigure(encoding='utf-8')
 import os
 import math
 import csv
