@@ -1035,20 +1035,20 @@ Each entry links to its detailed phase section.
 ## Phase 4.0 — Level 6 Basic Software: Symbolic Compilation, LogosVM, and Procedural Subroutines
 
 **Metadata**
-- Date: 2026-06-04 (precision: exact)
-- Sources: `scratch/logos_compiler.py`, `scratch/test_logos_vm.py`, `scratch/test_logos_vm_integration.py`, `scratch/test_logos_vm_loop.py`, `scratch/test_logos_vm_subroutines.py`, `scratch/test_logos_vm_cmove.py`, `solKnowledge/agent_coding_guide/`
-- Primary artifacts: `scratch/logos_compiler.py`, `scratch/test_logos_vm.py`, `solResearch/nextBestTest/logos_vm_integration_results.json`, `solResearch/nextBestTest/logos_vm_loop_results.json`, `solResearch/nextBestTest/logos_vm_subroutine_results.json`, `solResearch/nextBestTest/logos_vm_cmove_results.json`
+- Date: 2026-06-05 (precision: exact)
+- Sources: `scratch/logos_compiler.py`, `scratch/test_logos_vm.py`, `scratch/test_logos_vm_integration.py`, `scratch/test_logos_vm_loop.py`, `scratch/test_logos_vm_subroutines.py`, `scratch/test_logos_vm_cmove.py`, `scratch/test_logos_vm_serial_adder.py`, `solKnowledge/agent_coding_guide/`
+- Primary artifacts: `scratch/logos_compiler.py`, `scratch/test_logos_vm.py`, `solResearch/nextBestTest/logos_vm_integration_results.json`, `solResearch/nextBestTest/logos_vm_loop_results.json`, `solResearch/nextBestTest/logos_vm_subroutine_results.json`, `solResearch/nextBestTest/logos_vm_cmove_results.json`, `solResearch/nextBestTest/logos_vm_serial_adder_results.json`
 - Versions: Engine = Headless Python SOL Engine (with RK4 integration)
 
 ### Scope / Objective
 - Design and implement **Level 6: Basic Software** layer on top of Level 5 register ALU.
-- Build a symbolic compiler (`LogosCompiler`) supporting dynamic register allocation, liveness analysis, register evac-spills, procedural compilation, and branchless conditional assignments.
-- Build a Virtual Machine (`LogosVM`) with program pointer control (`pc`), dynamic branching, a procedural call stack with analog context switching, and physical conditional move routing.
-- Verify end-to-end execution of compiled arithmetic (1-bit Full-Adder), counter loops, recursive subroutine call-returns, and branchless conditional moves.
+- Build a symbolic compiler (`LogosCompiler`) supporting dynamic register allocation, liveness analysis, register evac-spills, procedural compilation, branchless conditional assignments, and indirect memory addressing.
+- Build a Virtual Machine (`LogosVM`) with program pointer control (`pc`), dynamic branching, a procedural call stack with analog context switching, physical conditional moves, and dynamic memory pointers.
+- Verify end-to-end execution of compiled arithmetic (1-bit Full-Adder), counter loops, recursive subroutine call-returns, branchless conditional moves, and a looping 2-bit Serial Adder.
 
 ### Instrumentation & Harnesses
 - Python `SOLEngine` execution under RK4 integration.
-- Compiler & VM verification scripts: `test_logos_vm_integration.py`, `test_logos_vm_loop.py`, `test_logos_vm_subroutines.py`, `test_logos_vm_cmove.py`.
+- Compiler & VM verification scripts: `test_logos_vm_integration.py`, `test_logos_vm_loop.py`, `test_logos_vm_subroutines.py`, `test_logos_vm_cmove.py`, `test_logos_vm_serial_adder.py`.
 
 ### Experiments
 
@@ -1083,11 +1083,20 @@ Each entry links to its detailed phase section.
 - Measurements:
   - **100% Passed**. When the condition register is active, `Basin_SUM` stored the true value `1`. When collapsed, `Basin_SUM` stored the false value `0` branchlessly. Active registers preserved masses $\ge 14.0$.
 
+#### 5. 2-Bit Serial Adder Loop & Dynamic Memory Pointers
+- Setup:
+  - Implement dynamic addressing (`LOAD_INDIRECT`, `STORE_INDIRECT`) driven by the battery state of Register D (0/collapsed maps to index 0, 1/active maps to index 1).
+  - Construct a 14-basin manifold supporting inputs `X0`/`X1`/`Y0`/`Y1`/`Cin`, outputs `S0`/`S1`/`Cout`, and temporaries including a loop counter context-save basin `Basin_LoopCounterBTemp`.
+  - Write a 2-iteration loop adding two 2-bit numbers bit-by-bit, storing the carry state in `Basin_Carry` and restoring Register B from `Basin_LoopCounterBTemp` to avoid register collisions.
+- Measurements:
+  - **100% Passed**. Tested across 6 key boundary combinations (including ripple carry, carry-in, and zero bounds). SUM bits and carry-out stored in semantic basins perfectly matched the expected sums. All register states successfully collapsed to `-1` at program exit.
+
 ### Phase Conclusions
 - Locked in:
   - **Symbolic Compilation on Analog Substrates**: High-level boolean logic can be compiled into register-allocated micro-instructions automatically.
-  - **Analog Context Switching**: Physical register node properties can be backed up and restored across procedure call boundaries, solving register-scarcity bottlenecks and allowing complex nested algorithms.
+  - **Analog Context Switching**: Physical register node properties can be backed up and restored across procedure call boundaries (using stacks or temporary semantic basins), solving register-scarcity bottlenecks and allowing complex nested algorithms.
   - **Register-State Loop Control**: Draining register mass acts as an autonomic loop decrement timer.
+  - **Physical Dynamic Pointers**: Using register battery states to select edge connections implements physical pointers, enabling index-based array access and looping multi-digit arithmetic.
 
 ---
 

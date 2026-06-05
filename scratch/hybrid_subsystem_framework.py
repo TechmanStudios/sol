@@ -176,8 +176,8 @@ class ManifoldGroup:
         
         # Add gated wormholes linking Semantic bridges to P_Sum dynamically
         for b_name, b_cfg in semantic.basins.items():
-            # Robust input/output basin classification (inputs: Basin_A/B/Cin; outputs: Basin_C/SUM/CARRY/Cout)
-            is_input = b_name in ("Basin_A", "Basin_B", "Basin_Cin") or b_name.endswith("A") or b_name.endswith("B") or "in" in b_name.lower()
+            # Robust input/output basin classification (inputs: Basin_A/B/Cin/X0/X1/Y0/Y1; outputs: Basin_C/SUM/CARRY/Cout/S0/S1)
+            is_input = b_name in ("Basin_A", "Basin_B", "Basin_Cin") or b_name.startswith("Basin_X") or b_name.startswith("Basin_Y") or b_name.lower().endswith("cin") or b_name.lower().endswith("_a") or b_name.lower().endswith("_b")
             if is_input:
                 self.raw_edges.append({
                     "from": b_cfg.bridge_id, "to": "P_Sum",
@@ -291,8 +291,8 @@ class MicroInstructionSequencer:
         
     def set_wormhole_connections(self, active_basin_name: Optional[str] = None, is_load: bool = True):
         for b_name, b_cfg in self.group.semantic.basins.items():
-            # Robust input/output basin classification (inputs: Basin_A/B/Cin; outputs: Basin_C/SUM/CARRY/Cout)
-            is_input = b_name in ("Basin_A", "Basin_B", "Basin_Cin") or b_name.endswith("A") or b_name.endswith("B") or "in" in b_name.lower()
+            # Robust input/output basin classification (inputs: Basin_A/B/Cin/X0/X1/Y0/Y1; outputs: Basin_C/SUM/CARRY/Cout/S0/S1)
+            is_input = b_name in ("Basin_A", "Basin_B", "Basin_Cin") or b_name.startswith("Basin_X") or b_name.startswith("Basin_Y") or b_name.lower().endswith("cin") or b_name.lower().endswith("_a") or b_name.lower().endswith("_b")
             if is_input: # input basin
                 conn = (is_load and b_name == active_basin_name)
                 self.group.set_edge_connection(b_cfg.bridge_id, "P_Sum", conn)
@@ -378,7 +378,7 @@ class MicroInstructionSequencer:
                 self.group.get_node(target_reg)["psi_bias"] = bridge_bias
                 
                 self.apply_holding_biases_semantic()
-                self.group.step(dt=self.dt)
+                self.group.step(self.dt)
                 self.record_telemetry()
                 
             # Phase 2: Close gate (15 steps)
@@ -400,7 +400,74 @@ class MicroInstructionSequencer:
                         pass
                 self.apply_holding_biases_processing()
                 self.apply_holding_biases_semantic()
-                self.group.step(dt=self.dt)
+                self.group.step(self.dt)
+                self.record_telemetry()
+
+        elif op == "LOAD_INDIRECT":
+            reg, array_prefix, addr_reg = inst.args[0], inst.args[1], inst.args[2]
+            # Read battery state of addr_reg
+            addr_state = self.group.get_node(f"S_R{addr_reg}_B")["b_state"]
+            index = 1 if addr_state == 1 else 0
+            basin_name = f"Basin_{array_prefix}{index}"
+            
+            gate_name = f"GATE_{reg}"
+            target_reg = f"S_R{reg}"
+            bridge_id = self.group.semantic.basins[basin_name].bridge_id
+            
+            # Phase 1: Open gate and load (40 steps)
+            for _ in range(40):
+                for r in ['A', 'B', 'C', 'D']:
+                    g_id = f"GATE_{r}"
+                    if g_id in self.group.engine.physics.node_by_id:
+                        self.group.get_node(g_id)["psi_bias"] = 1.0 if reg == r else -1.0
+                
+                self.configure_alu_output_routing(reg)
+                
+                # Dynamic wormhole connection
+                self.set_wormhole_connections(basin_name, is_load=True)
+                for b_name, b_cfg in self.group.semantic.basins.items():
+                    try:
+                        self.group.get_edge(b_cfg.bridge_id, "P_Sum")["w0"] = 15.0 if b_name == basin_name else 0.0001
+                    except StopIteration:
+                        pass
+                    try:
+                        self.group.get_edge("P_Sum", b_cfg.bridge_id)["w0"] = 0.0001
+                    except StopIteration:
+                        pass
+                
+                # Drive bridge belief to transfer value
+                hub_val = self.group.get_node(self.group.semantic.basins[basin_name].hub_id)["psi"]
+                bridge_bias = 1.0 if hub_val >= 0 else -1.0
+                self.group.get_node(bridge_id)["psi_bias"] = bridge_bias
+                
+                # Maintain non-target registers holding states
+                self.apply_holding_biases_processing()
+                self.group.get_node(target_reg)["psi_bias"] = bridge_bias
+                
+                self.apply_holding_biases_semantic()
+                self.group.step(self.dt)
+                self.record_telemetry()
+                
+            # Phase 2: Close gate (15 steps)
+            for _ in range(15):
+                for r in ['A', 'B', 'C', 'D']:
+                    g_id = f"GATE_{r}"
+                    if g_id in self.group.engine.physics.node_by_id:
+                        self.group.get_node(g_id)["psi_bias"] = -1.0
+                self.configure_alu_output_routing(None)
+                self.set_wormhole_connections(None, is_load=True)
+                for b_name, b_cfg in self.group.semantic.basins.items():
+                    try:
+                        self.group.get_edge(b_cfg.bridge_id, "P_Sum")["w0"] = 0.0001
+                    except StopIteration:
+                        pass
+                    try:
+                        self.group.get_edge("P_Sum", b_cfg.bridge_id)["w0"] = 0.0001
+                    except StopIteration:
+                        pass
+                self.apply_holding_biases_processing()
+                self.apply_holding_biases_semantic()
+                self.group.step(self.dt)
                 self.record_telemetry()
 
         elif op == "STORE":
@@ -436,6 +503,68 @@ class MicroInstructionSequencer:
                     self.group.get_node(nid)["psi_bias"] = state_val
                 
                 self.group.step(dt=self.dt)
+                self.record_telemetry()
+                
+            # Phase 2: Close gate and hold (20 steps)
+            for _ in range(20):
+                for r in ['A', 'B', 'C', 'D']:
+                    g_id = f"GATE_{r}"
+                    if g_id in self.group.engine.physics.node_by_id:
+                        self.group.get_node(g_id)["psi_bias"] = -1.0
+                self.configure_alu_output_routing(None)
+                self.set_wormhole_connections(None, is_load=False)
+                for b_name, b_cfg in self.group.semantic.basins.items():
+                    try:
+                        self.group.get_edge(b_cfg.bridge_id, "P_Sum")["w0"] = 0.0001
+                    except StopIteration:
+                        pass
+                    try:
+                        self.group.get_edge("P_Sum", b_cfg.bridge_id)["w0"] = 0.0001
+                    except StopIteration:
+                        pass
+                self.apply_holding_biases_processing()
+                self.apply_holding_biases_semantic()
+                self.group.step(dt=self.dt)
+                self.record_telemetry()
+
+        elif op == "STORE_INDIRECT":
+            reg, array_prefix, addr_reg = inst.args[0], inst.args[1], inst.args[2]
+            # Read battery state of addr_reg
+            addr_state = self.group.get_node(f"S_R{addr_reg}_B")["b_state"]
+            index = 1 if addr_state == 1 else 0
+            basin_name = f"Basin_{array_prefix}{index}"
+            
+            bridge_id = self.group.semantic.basins[basin_name].bridge_id
+            
+            # Phase 1: Open write gate and store (30 steps)
+            for _ in range(30):
+                for r in ['A', 'B', 'C', 'D']:
+                    g_id = f"GATE_{r}"
+                    if g_id in self.group.engine.physics.node_by_id:
+                        self.group.get_node(g_id)["psi_bias"] = 1.0 if reg == r else -1.0
+                
+                self.configure_alu_output_routing(reg)
+                self.set_wormhole_connections(basin_name, is_load=False)
+                for b_name, b_cfg in self.group.semantic.basins.items():
+                    try:
+                        self.group.get_edge(b_cfg.bridge_id, "P_Sum")["w0"] = 0.0001
+                    except StopIteration:
+                        pass
+                    try:
+                        self.group.get_edge("P_Sum", b_cfg.bridge_id)["w0"] = 15.0 if b_name == basin_name else 0.0001
+                    except StopIteration:
+                        pass
+                
+                self.apply_holding_biases_processing()
+                self.apply_holding_biases_semantic()
+                
+                reg_state = self.group.get_node(f"S_R{reg}_B")["b_state"]
+                state_val = 1.0 if reg_state == 1 else -1.0
+                self.group.get_node(f"S_R{reg}")["psi_bias"] = state_val
+                for nid in self.group.semantic.basins[basin_name].node_ids:
+                    self.group.get_node(nid)["psi_bias"] = state_val
+                
+                self.group.step(self.dt)
                 self.record_telemetry()
                 
             # Phase 2: Close gate and hold (20 steps)

@@ -284,6 +284,92 @@ class LogosCompiler:
                 program.append(Instruction("CMOVE", [dest_reg, reg_true, reg_cond]))
                 
                 self.register_map[dest_reg] = dest_var
+                
+            elif op_type == "LOAD_INDIRECT":
+                dest_var, array_prefix, addr_var = stmt[1], stmt[2], stmt[3]
+                
+                # 1. Allocate addr_var to a register (D preferred)
+                reg_addr = next((r for r, v in self.register_map.items() if v == addr_var), None)
+                if reg_addr is None:
+                    reg_addr = 'D'
+                    val_in_d = self.register_map['D']
+                    if val_in_d and self._is_live(val_in_d, idx, statements):
+                        free_reg = self._find_free_register(idx, statements)
+                        if free_reg:
+                            program.append(Instruction("COPY", ['D', free_reg]))
+                            self.register_map[free_reg] = val_in_d
+                        else:
+                            spill_basin = self.var_destinations.get(val_in_d) or self.var_sources.get(val_in_d)
+                            if spill_basin:
+                                program.append(Instruction("STORE", ['D', spill_basin]))
+                            else:
+                                raise RuntimeError("Register spill failed for addr_var allocation")
+                    basin = self.var_sources.get(addr_var)
+                    if not basin:
+                        raise ValueError(f"Unknown variable source for {addr_var}")
+                    program.append(Instruction("LOAD", ['D', basin]))
+                    self.register_map['D'] = addr_var
+                    reg_addr = 'D'
+                    
+                # 2. Allocate dest_var to a register (C preferred)
+                dest_reg = 'C'
+                val_in_c = self.register_map['C']
+                if val_in_c and self._is_live(val_in_c, idx, statements):
+                    other_reg = next((r for r, v in self.register_map.items() if r != 'C' and v == val_in_c), None)
+                    if other_reg is None:
+                        free_reg = self._find_free_register(idx, statements)
+                        if free_reg:
+                            program.append(Instruction("COPY", ['C', free_reg]))
+                            self.register_map[free_reg] = val_in_c
+                        else:
+                            spill_basin = self.var_destinations.get(val_in_c) or self.var_sources.get(val_in_c)
+                            if spill_basin:
+                                program.append(Instruction("STORE", ['C', spill_basin]))
+                            else:
+                                raise RuntimeError("Register spill failed for dest_var allocation")
+                
+                # Emit LOAD_INDIRECT dest_reg, array_prefix, reg_addr
+                program.append(Instruction("LOAD_INDIRECT", [dest_reg, array_prefix, reg_addr]))
+                self.register_map[dest_reg] = dest_var
+                
+            elif op_type == "STORE_INDIRECT":
+                src_var, array_prefix, addr_var = stmt[1], stmt[2], stmt[3]
+                
+                # 1. Locate src_var register
+                reg_src = next((r for r, v in self.register_map.items() if v == src_var), None)
+                if not reg_src:
+                    raise ValueError(f"Cannot store variable {src_var}: Not loaded in any register")
+                    
+                # 2. Allocate addr_var to a register (D preferred)
+                reg_addr = next((r for r, v in self.register_map.items() if v == addr_var), None)
+                if reg_addr is None:
+                    reg_addr = 'D'
+                    val_in_d = self.register_map['D']
+                    if val_in_d and self._is_live(val_in_d, idx, statements):
+                        free_reg = self._find_free_register(idx, statements)
+                        if free_reg:
+                            program.append(Instruction("COPY", ['D', free_reg]))
+                            self.register_map[free_reg] = val_in_d
+                        else:
+                            spill_basin = self.var_destinations.get(val_in_d) or self.var_sources.get(val_in_d)
+                            if spill_basin:
+                                program.append(Instruction("STORE", ['D', spill_basin]))
+                            else:
+                                raise RuntimeError("Register spill failed for addr_var allocation")
+                    basin = self.var_sources.get(addr_var)
+                    if not basin:
+                        raise ValueError(f"Unknown variable source for {addr_var}")
+                    program.append(Instruction("LOAD", ['D', basin]))
+                    self.register_map['D'] = addr_var
+                    reg_addr = 'D'
+                
+                # Emit STORE_INDIRECT reg_src, array_prefix, reg_addr
+                program.append(Instruction("STORE_INDIRECT", [reg_src, array_prefix, reg_addr]))
+                
+                # If variable is no longer live, clear it
+                if not self._is_live(src_var, idx, statements):
+                    program.append(Instruction("CLEAR", [reg_src]))
+                    self.register_map[reg_src] = None
         
         if subroutines:
             program.append(Instruction("JUMP", ["L_COMPILER_EXIT"]))
