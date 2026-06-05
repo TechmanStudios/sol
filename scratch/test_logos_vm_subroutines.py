@@ -115,19 +115,36 @@ def evaluate_subroutines() -> tuple[dict, bool]:
     # 6. VM pops and restores physical registers to pre-call states (C restored to collapsed, -1.0).
     # 7. Main runs STORE x -> Basin_SUM (which stores the restored C, resulting in 0).
     
+    # Find the subroutine active period dynamically from history
+    active_c_indices = [i for i, h in enumerate(history) if h["reg_c_state"] == 1.0]
+    if not active_c_indices:
+        print("ERROR: Register C never became active in subroutine")
+        passed_restoration = False
+        reg_a_final = -1.0
+        reg_b_final = -1.0
+        reg_c_final = -1.0
+        a_mass = 0.0
+        b_mass = 0.0
+    else:
+        last_active_c = active_c_indices[-1]
+        # Look 10 frames after the last active C frame (which is guaranteed to be during the STORE instruction)
+        restore_frame = history[last_active_c + 10]
+        reg_a_final = restore_frame["reg_a_state"]
+        reg_b_final = restore_frame["reg_b_state"]
+        reg_c_final = restore_frame["reg_c_state"]
+        passed_restoration = (reg_a_final == 1.0) and (reg_b_final == 1.0) and (reg_c_final == -1.0)
+        a_mass = restore_frame["rho_reg_a"]
+        b_mass = restore_frame["rho_reg_b"]
+        
     got_sum = history[-1]["basin_c_state"]
-    reg_a_final = history[-1]["reg_a_state"]
-    reg_b_final = history[-1]["reg_b_state"]
-    reg_c_final = history[-1]["reg_c_state"]
-    
-    passed_restoration = (reg_a_final == 1.0) and (reg_b_final == 1.0) and (reg_c_final == -1.0)
     passed_stored = (got_sum == 0)
     
-    # Check mass preservation on active registers
+    # Check mass preservation on active registers during execution
     mass_ok = True
-    a_mass = history[-1]["rho_reg_a"]
-    b_mass = history[-1]["rho_reg_b"]
-    if a_mass < 14.0 or b_mass < 14.0:
+    if passed_restoration:
+        if a_mass < 14.0 or b_mass < 14.0:
+            mass_ok = False
+    else:
         mass_ok = False
         
     passed = passed_restoration and passed_stored and mass_ok

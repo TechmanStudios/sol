@@ -14,8 +14,8 @@ This report verifies physical context switching and the call/return subroutine a
 | **Resumed Register A State** | `1.0` | `1.0` | OK |
 | **Resumed Register B State** | `1.0` | `1.0` | OK |
 | **Resumed Register C State** | `-1.0` | `-1.0` | OK |
-| **Register A Mass** | `> 14.0` | `67.97` | OK |
-| **Register B Mass** | `> 14.0` | `70.96` | OK |
+| **Register A Mass** | `> 14.0` | `66.75` | OK |
+| **Register B Mass** | `> 14.0` | `69.87` | OK |
 
 ## 3. Analysis & Key Discoveries
 - **Physical Context Swapping**: The VM successfully copies and caches the exact physical variables (mass, belief, and bias state) of the 4 registers during a `CALL`, restoring them during a `RET`.
