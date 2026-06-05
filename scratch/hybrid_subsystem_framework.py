@@ -405,9 +405,16 @@ class MicroInstructionSequencer:
 
         elif op == "LOAD_INDIRECT":
             reg, array_prefix, addr_reg = inst.args[0], inst.args[1], inst.args[2]
-            # Read battery state of addr_reg
-            addr_state = self.group.get_node(f"S_R{addr_reg}_B")["b_state"]
-            index = 1 if addr_state == 1 else 0
+            # Decode 1-bit or 2-bit address registers
+            if isinstance(addr_reg, list):
+                msb_state = self.group.get_node(f"S_R{addr_reg[0]}_B")["b_state"]
+                lsb_state = self.group.get_node(f"S_R{addr_reg[1]}_B")["b_state"]
+                msb = 1 if msb_state == 1 else 0
+                lsb = 1 if lsb_state == 1 else 0
+                index = (msb << 1) | lsb
+            else:
+                addr_state = self.group.get_node(f"S_R{addr_reg}_B")["b_state"]
+                index = 1 if addr_state == 1 else 0
             basin_name = f"Basin_{array_prefix}{index}"
             
             gate_name = f"GATE_{reg}"
@@ -529,9 +536,16 @@ class MicroInstructionSequencer:
 
         elif op == "STORE_INDIRECT":
             reg, array_prefix, addr_reg = inst.args[0], inst.args[1], inst.args[2]
-            # Read battery state of addr_reg
-            addr_state = self.group.get_node(f"S_R{addr_reg}_B")["b_state"]
-            index = 1 if addr_state == 1 else 0
+            # Decode 1-bit or 2-bit address registers
+            if isinstance(addr_reg, list):
+                msb_state = self.group.get_node(f"S_R{addr_reg[0]}_B")["b_state"]
+                lsb_state = self.group.get_node(f"S_R{addr_reg[1]}_B")["b_state"]
+                msb = 1 if msb_state == 1 else 0
+                lsb = 1 if lsb_state == 1 else 0
+                index = (msb << 1) | lsb
+            else:
+                addr_state = self.group.get_node(f"S_R{addr_reg}_B")["b_state"]
+                index = 1 if addr_state == 1 else 0
             basin_name = f"Basin_{array_prefix}{index}"
             
             bridge_id = self.group.semantic.basins[basin_name].bridge_id

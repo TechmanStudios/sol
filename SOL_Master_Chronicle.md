@@ -1091,12 +1091,21 @@ Each entry links to its detailed phase section.
 - Measurements:
   - **100% Passed**. Tested across 6 key boundary combinations (including ripple carry, carry-in, and zero bounds). SUM bits and carry-out stored in semantic basins perfectly matched the expected sums. All register states successfully collapsed to `-1` at program exit.
 
+#### 6. 2-Bit Physical Address Bus & 4-Bit Serial Adder Loop
+- Setup:
+  - Modify `LOAD_INDIRECT` and `STORE_INDIRECT` to support 2-bit pointers by passing a list of two registers (e.g., `['C', 'D']`), decoding the MSB/LSB binary values, and dynamically routing memory to indices 0 to 3 (`Basin_X0` to `Basin_X3`).
+  - Construct a 21-basin semantic manifold (Inputs X/Y, Output S, initial/final carry, pointer & loop counter context-save basins).
+  - Write a 4-iteration loop program using a two-phase check sequence (`LOOP_START_1` for iterations 0/1, and `LOOP_START_2` for iterations 2/3) to ensure deterministic loop termination.
+  - Implement 2-bit pointer incrementing and register context-saving to manage register scarcity.
+- Measurements:
+  - **100% Passed**. Verified correctness across 8 boundary cases (no-carry, partial carries, full ripple carry overflow, and maximum addition bounds). SUM bits and final Carry-out matched expected values exactly. Active registers maintained physical mass above the critical limit, and register states collapsed cleanly to `-1` at program exit.
+
 ### Phase Conclusions
 - Locked in:
   - **Symbolic Compilation on Analog Substrates**: High-level boolean logic can be compiled into register-allocated micro-instructions automatically.
   - **Analog Context Switching**: Physical register node properties can be backed up and restored across procedure call boundaries (using stacks or temporary semantic basins), solving register-scarcity bottlenecks and allowing complex nested algorithms.
   - **Register-State Loop Control**: Draining register mass acts as an autonomic loop decrement timer.
-  - **Physical Dynamic Pointers**: Using register battery states to select edge connections implements physical pointers, enabling index-based array access and looping multi-digit arithmetic.
+  - **Physical Dynamic Pointers**: Using register battery states to select edge connections implements physical pointers, enabling index-based array access. This supports 1-bit and 2-bit pointer address buses for multi-digit looping arithmetic.
 
 ---
 

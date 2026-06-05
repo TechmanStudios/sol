@@ -1391,9 +1391,30 @@ We have successfully expanded the Level 6 basic software layer to support **phys
 - **Serial Adder results JSON**: [logos_vm_serial_adder_results.json](file:///g:/docs/TechmanStudios/sol/solResearch/nextBestTest/logos_vm_serial_adder_results.json)
 - **Serial Adder report MD**: [logos_vm_serial_adder_report.md](file:///g:/docs/TechmanStudios/sol/solResearch/nextBestTest/logos_vm_serial_adder_report.md)
 
+---
 
+## Part 43: Level 6 2-Bit Physical Address Bus & 4-Bit Serial Adder Loop
 
+We have successfully expanded the Level 6 basic software capabilities by implementing a **2-bit physical address bus** and verifying a compiled 4-bit Serial Adder loop program running on a 21-basin semantic manifold.
 
+### 1. 2-Bit Gated Pointer & Two-Phase Loop Control Flow
+- **2-Bit Address Bus Decoding**: We updated `LOAD_INDIRECT` and `STORE_INDIRECT` to check if the address register argument is a list of two registers (MSB/LSB). By reading the binary states of both registers (e.g. `C` and `D`), the micro-sequencer dynamically decodes the address index (0 to 3), routing memory access to basins `Basin_X0` through `Basin_X3`.
+- **Two-Phase Loop Control**: Rather than relying on recursive memory write-backs which risk infinite loops if state accumulation delays occur, we split the 4-iteration loop into two sequential 2-iteration check phases (`LOOP_START_1` for iterations 0/1, and `LOOP_START_2` for iterations 2/3), ensuring deterministic loop termination.
+- **Symmetric Register Context-Saving**: Address and loop registers were successfully preserved using temporary semantic basins (`Basin_PtrTempC`, `Basin_PtrTempD`, and `Basin_LoopCounterBTemp`) during computation, bypassing register scarcity and collapsing registers to `-1` cleanly upon program completion.
 
+### 2. Quantitative Verification Results (`test_logos_vm_4bit_adder.py`)
+- We verified correctness across 8 representative boundary test trials:
+  - **Trial 1 ($0 + 0 + 0 = 0$)**: Got SUM = 0 (S3=0, S2=0, S1=0, S0=0, Cout=0) | Expected: 0 | Verdict: **PASSED**
+  - **Trial 2 ($5 + 3 + 0 = 8$)**: Got SUM = 8 (S3=1, S2=0, S1=0, S0=0, Cout=0) | Expected: 8 | Verdict: **PASSED**
+  - **Trial 3 ($7 + 8 + 0 = 15$)**: Got SUM = 15 (S3=1, S2=1, S1=1, S0=1, Cout=0) | Expected: 15 | Verdict: **PASSED**
+  - **Trial 4 ($15 + 1 + 0 = 16$)**: Got SUM = 16 (S3=0, S2=0, S1=0, S0=0, Cout=1) | Expected: 16 | Verdict: **PASSED**
+  - **Trial 5 ($12 + 10 + 1 = 23$)**: Got SUM = 23 (S3=0, S2=1, S1=1, S0=1, Cout=1) | Expected: 23 | Verdict: **PASSED**
+  - **Trial 6 ($15 + 15 + 1 = 31$)**: Got SUM = 31 (S3=1, S2=1, S1=1, S0=1, Cout=1) | Expected: 31 | Verdict: **PASSED**
+  - **Trial 7 ($9 + 6 + 0 = 15$)**: Got SUM = 15 (S3=1, S2=1, S1=1, S0=1, Cout=0) | Expected: 15 | Verdict: **PASSED**
+  - **Trial 8 ($2 + 2 + 0 = 4$)**: Got SUM = 4 (S3=0, S2=1, S1=0, S0=0, Cout=0) | Expected: 4 | Verdict: **PASSED**
+- **Verdict**: **100% Passed**. All register battery states collapsed cleanly to `-1` at program exit.
 
-
+### Artifacts Produced
+- **4-Bit Serial Adder verification script**: [test_logos_vm_4bit_adder.py](file:///g:/docs/TechmanStudios/sol/scratch/test_logos_vm_4bit_adder.py)
+- **4-Bit Serial Adder results JSON**: [logos_vm_4bit_adder_results.json](file:///g:/docs/TechmanStudios/sol/solResearch/nextBestTest/logos_vm_4bit_adder_results.json)
+- **4-Bit Serial Adder report MD**: [logos_vm_4bit_adder_report.md](file:///g:/docs/TechmanStudios/sol/solResearch/nextBestTest/logos_vm_4bit_adder_report.md)

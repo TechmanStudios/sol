@@ -1,0 +1,157 @@
+{
+  "results": [
+    {
+      "x": 0,
+      "y": 0,
+      "cin": 0,
+      "expected_sum": 0,
+      "actual_sum": 0,
+      "got_s0": 0,
+      "got_s1": 0,
+      "got_s2": 0,
+      "got_s3": 0,
+      "got_cout": 0,
+      "states": {
+        "A": -1,
+        "B": -1,
+        "C": -1,
+        "D": -1
+      },
+      "passed": true
+    },
+    {
+      "x": 5,
+      "y": 3,
+      "cin": 0,
+      "expected_sum": 8,
+      "actual_sum": 8,
+      "got_s0": 0,
+      "got_s1": 0,
+      "got_s2": 0,
+      "got_s3": 1,
+      "got_cout": 0,
+      "states": {
+        "A": -1,
+        "B": -1,
+        "C": -1,
+        "D": -1
+      },
+      "passed": true
+    },
+    {
+      "x": 7,
+      "y": 8,
+      "cin": 0,
+      "expected_sum": 15,
+      "actual_sum": 15,
+      "got_s0": 1,
+      "got_s1": 1,
+      "got_s2": 1,
+      "got_s3": 1,
+      "got_cout": 0,
+      "states": {
+        "A": -1,
+        "B": -1,
+        "C": -1,
+        "D": -1
+      },
+      "passed": true
+    },
+    {
+      "x": 15,
+      "y": 1,
+      "cin": 0,
+      "expected_sum": 16,
+      "actual_sum": 16,
+      "got_s0": 0,
+      "got_s1": 0,
+      "got_s2": 0,
+      "got_s3": 0,
+      "got_cout": 1,
+      "states": {
+        "A": -1,
+        "B": -1,
+        "C": -1,
+        "D": -1
+      },
+      "passed": true
+    },
+    {
+      "x": 12,
+      "y": 10,
+      "cin": 1,
+      "expected_sum": 23,
+      "actual_sum": 23,
+      "got_s0": 1,
+      "got_s1": 1,
+      "got_s2": 1,
+      "got_s3": 0,
+      "got_cout": 1,
+      "states": {
+        "A": -1,
+        "B": -1,
+        "C": -1,
+        "D": -1
+      },
+      "passed": true
+    },
+    {
+      "x": 15,
+      "y": 15,
+      "cin": 1,
+      "expected_sum": 31,
+      "actual_sum": 31,
+      "got_s0": 1,
+      "got_s1": 1,
+      "got_s2": 1,
+      "got_s3": 1,
+      "got_cout": 1,
+      "states": {
+        "A": -1,
+        "B": -1,
+        "C": -1,
+        "D": -1
+      },
+      "passed": true
+    },
+    {
+      "x": 9,
+      "y": 6,
+      "cin": 0,
+      "expected_sum": 15,
+      "actual_sum": 15,
+      "got_s0": 1,
+      "got_s1": 1,
+      "got_s2": 1,
+      "got_s3": 1,
+      "got_cout": 0,
+      "states": {
+        "A": -1,
+        "B": -1,
+        "C": -1,
+        "D": -1
+      },
+      "passed": true
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "cin": 0,
+      "expected_sum": 4,
+      "actual_sum": 4,
+      "got_s0": 0,
+      "got_s1": 0,
+      "got_s2": 1,
+      "got_s3": 0,
+      "got_cout": 0,
+      "states": {
+        "A": -1,
+        "B": -1,
+        "C": -1,
+        "D": -1
+      },
+      "passed": true
+    }
+  ],
+  "suite_passed": true
+}
