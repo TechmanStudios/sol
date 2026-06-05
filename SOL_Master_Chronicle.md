@@ -1032,6 +1032,57 @@ Each entry links to its detailed phase section.
 
 ---
 
+## Phase 4.0 — Level 6 Basic Software: Symbolic Compilation, LogosVM, and Procedural Subroutines
+
+**Metadata**
+- Date: 2026-06-04 (precision: exact)
+- Sources: `scratch/logos_compiler.py`, `scratch/test_logos_vm.py`, `scratch/test_logos_vm_integration.py`, `scratch/test_logos_vm_loop.py`, `scratch/test_logos_vm_subroutines.py`, `solKnowledge/agent_coding_guide/`
+- Primary artifacts: `scratch/logos_compiler.py`, `scratch/test_logos_vm.py`, `solResearch/nextBestTest/logos_vm_integration_results.json`, `solResearch/nextBestTest/logos_vm_loop_results.json`, `solResearch/nextBestTest/logos_vm_subroutine_results.json`
+- Versions: Engine = Headless Python SOL Engine (with RK4 integration)
+
+### Scope / Objective
+- Design and implement **Level 6: Basic Software** layer on top of Level 5 register ALU.
+- Build a symbolic compiler (`LogosCompiler`) supporting dynamic register allocation, liveness analysis, register evac-spills, and procedural compilation.
+- Build a Virtual Machine (`LogosVM`) with program pointer control (`pc`), dynamic branching, and a procedural call stack with analog context switching.
+- Verify end-to-end execution of compiled arithmetic (1-bit Full-Adder), counter loops, and recursive subroutine call-returns.
+
+### Instrumentation & Harnesses
+- Python `SOLEngine` execution under RK4 integration.
+- Compiler & VM verification scripts: `test_logos_vm_integration.py`, `test_logos_vm_loop.py`, `test_logos_vm_subroutines.py`.
+
+### Experiments
+
+#### 1. End-to-End Compiler Integration (1-bit Full-Adder)
+- Setup:
+  - Feed dynamic output instruction list of `LogosCompiler.compile()` directly into `LogosVM.run()`.
+  - Compile the 19-instruction register-reuse program for a 1-bit Full-Adder.
+  - Test all 8 binary combinations of (A, B, Cin) on a 5-basin semantic manifold.
+- Measurements:
+  - **100% Passed**. Verified that SUM and Cout states stored in semantic basins match the expected truth table. Register liveness properly evicted and spilled registers without data loss, and active registers preserved mass $\ge 14.0$.
+
+#### 2. Register-State-Driven Loops
+- Setup:
+  - Initialize counter Registers A and B active.
+  - Implement a VM loop executing `JUMP_IF_ACTIVE` checking register battery states, decrementing counters via `CLEAR` inside the loop body, and terminating when collapsed.
+- Measurements:
+  - **100% Passed**. Loop executed exactly 2 iterations before terminating and saving final state SUM to memory.
+
+#### 3. Subroutine CALL/RET & Context-Switching
+- Setup:
+  - Implement a call stack `self.stack` in `LogosVM`.
+  - When `CALL` executes, backup and serialize registers A, B, C, D (mass, belief, bias, battery state) onto the stack. When `RET` executes, pop and restore this context.
+  - Main runs `A XOR B -> C = 0`, calls subroutine `SUB_COMPUTE` (which overwrites C with `1`), returns, and stores C.
+- Measurements:
+  - **100% Passed**. Main stored restored C = `0` to memory, confirming Register C was context-swapped, and registers A and B preserved mass and states.
+
+### Phase Conclusions
+- Locked in:
+  - **Symbolic Compilation on Analog Substrates**: High-level boolean logic can be compiled into register-allocated micro-instructions automatically.
+  - **Analog Context Switching**: Physical register node properties can be backed up and restored across procedure call boundaries, solving register-scarcity bottlenecks and allowing complex nested algorithms.
+  - **Register-State Loop Control**: Draining register mass acts as an autonomic loop decrement timer.
+
+---
+
 ## D) Canonical Mechanisms Glossary
 
 Each mechanism is defined consistently and includes “first validated in” and “best measurement proxy.”

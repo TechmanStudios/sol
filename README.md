@@ -14,8 +14,15 @@
 
 **SOL (Self-Organizing Logos)** is an experimental engine that treats a concept
 graph as a **coupled dynamical system** — nodes carry density, pressure, and
-belief-field state; edges carry flux. Out of those simple primitives we get
-measurable, shape-able **memory, control, and readout** behaviors:
+belief-field state; edges carry flux. 
+
+Rather than separating storage and logic, **SOL fuses memory, routing, and computation into a single physical process**:
+- **Physical Memory**: Attractor basins (DRAM-like states) and Jeans ROM collapse points (SRAM-like states) store knowledge directly as localized density and pressure configurations.
+- **Autonomic Routing**: Signal wave packets carry belief fields that dynamically open and close gating channels (Psi-Transistors, MHD waveguides), routing themselves based on semantic resonance rather than fixed hardware buses.
+- **In-Memory Computation**: Logic is computed physically through wave-interferometric superposition and analog threshold summation.
+- **Structural Plasticity**: The network learns by physically growing new pathways (neurogenesis/synaptogenesis) in response to thought circulation density.
+
+Out of those simple primitives we get measurable, shape-able **memory, control, and readout** behaviors:
 
 | Pillar       | What we measure                                        |
 | ------------ | ------------------------------------------------------ |

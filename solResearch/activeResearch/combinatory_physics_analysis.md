@@ -171,4 +171,55 @@ Based on the intuitive sketch in `subSystemManifoldCore.jpg`, we define a hybrid
 3. **The Sub-system Processing Core**: A dedicated **blank manifold** linked via a **wormhole waveguide** to the Semantic Manifold. Because the processing manifold is blank, it has clean wave propagation, low noise, and predictable eigenvalues—making it ideal for executing fast logical, clock, or FDM computations.
 4. **The Manifold Group**: The container that orchestrates this hybrid system, enabling memory to remain stable in the semantic layer while computation runs fast in the blank layer, with states exchanged through wormhole gates.
 
+---
 
+## 10. The Basic & Sequential Hybrid ALU: Dynamic Gating & Pulsed Logic (Phase E5)
+*Cross-referencing Conjecture 5 (Battery Latch), Conjecture 11 (NDRO-ALU), & Conjecture 12 (Sequential Logic)*
+
+- **Unweighted Belief Leakage**: In the SOL engine, belief diffusion is unweighted and is determined purely by connection existence, ignoring the physical edge conductance. Introducing a dedicated copy-back gate `GATE_CA` between `S_RC` and `S_RA` creates a persistent topological leakage channel. Even when closed, it pulls the active register's belief down to $\approx 0.15$ during hold phases. Eliminating `GATE_CA` and dynamically routing the copy-back by opening `GATE_C` and `GATE_A` together solves this, maintaining active register belief at $\approx 0.76$.
+- **Residual Conductance Latency**: Since edge conductance is a static function of the average of its endpoint beliefs, closed gates relax exponentially. In multi-cycle sequential programs, if a gate is closed for only a short period (e.g. 20 steps), its belief does not fully relax to its minimum. This leaves a residual conductance (e.g. `0.266` vs `1e-7`) that allows subsequent compute cycles to build conductance faster, initiating battery charging 2 steps earlier.
+- **Pulsed Logic Temporal Filtering**: Because logic thresholds are narrow, an input combination like `(1,0)` under AND logic can spurious-flip Register C if allowed to compute too long. Restricting the active compute phase to exactly **27 steps** acts as a temporal low-pass filter: it allows `(1,1)` to latch (as it charges extremely rapidly) while pinching off `(1,0)` before its battery charge can cross the `0.65` flip threshold (which takes 29 steps).
+- **Reset Boundary Conditions**: Residual edge fluxes and battery charges act as inertia, carrying over and corrupting subsequent cycles. Programmatically grounding core edge fluxes and clearing residual battery charges at the clock boundaries is essential to restore identical, deterministic starting states.
+
+---
+
+## 11. The Hybrid Sub-system Processor (Phase E5+ Expansion)
+*Cross-referencing the subSystemManifoldCore.jpg sketch & Sub-system Manifold Processor (SMP)*
+
+- **Whole-Basin Consistency**: Because belief diffusion in the SOL engine is unweighted, spoke nodes inside a semantic basin must share the same initial belief and bias state as the hub. If spokes are left at a negative bias, they act as a belief drag that collapses the hub's active state. Consistent whole-basin initialization and holding biases guarantee memory state insulation.
+- **Neutral Gate Biasing**: Open gates should have their belief bias set to `0.0` (neutral routing) rather than `1.0`. Biasing open gates to `1.0` actively injects positive belief into the summing junction, causing false flips for `(0,0)` configurations. Neutral biasing resolves this belief leakage.
+- **Calibrated OR Threshold**: With gates neutral-biased, setting the accumulator logic bias to `or_bias = 0.40` ensures that Register C flips to `1` if and only if at least one input register is active.
+- **Timing & Timing Sweep Results**:
+  - `(0,0)`: Expected Basin C=0 | Got Basin C=0 (OK)
+  - `(1,0)`: Expected Basin C=1 | Got Basin C=1 (OK)
+  - `(0,1)`: Expected Basin C=1 | Got Basin C=1 (OK)
+  - `(1,1)`: Expected Basin C=1 | Got Basin C=1 (OK)
+  - **Register Mass Preservation**: Nominally $\ge 14.0$, active registers retained masses of `240` to `260` due to active latch gain.
+  - **Semantic Insulation**: All source basins maintained their initial state (`Insulation=True` across all trials).
+
+---
+
+## 12. The Level 5 Programmable Hybrid Sub-system Framework
+
+- **Core Decoupling**: Disabling the global belief nudge (`psi_global_nudge = 0.0`) in the manifold group decouples the processing core from the average belief of the semantic memory nodes. This resolves the threshold shift caused by the presence of collapsed semantic basins, which would otherwise pull down the core's belief.
+- **Conductance Optimization**: Biasing active routing gates to `1.0` during operations maximizes their physical conductance to `200.0`. This enables efficient analog mass and belief transport, ensuring correct latching within short compute windows.
+- **Logic Gate Calibration**: Under decoupled physics and maximized gate conductances, logic thresholds calibrate to `or_bias = 0.18` (triggerable by a single active input) and `and_bias = 0.20` (requiring both inputs).
+- **Sequential Program Stability**: Using a multi-phase clock schedule with dynamic destination biases (`0.5` copy assist) and programmatic register resets achieves stable, multi-cycle logical programs (e.g. `(A OR B) AND B -> C`) without signal degradation or destructive readout.
+
+---
+
+## 13. Mitotic Wave-Logic & Reintegration Physics (Level 5 Manifold-Systems)
+*Cross-referencing nSpawn.md, Jeans Collapse, and Dual-Path Reintegration*
+
+- **Mitosis & Mirrored Seeding**: Budding orthogonal pocket manifolds prevents gridlock and interference in the primary coordinator substrate. Seeding these pockets with the 7 Giants provides critical gravitational anchors. By isolating the dynamic pocket from the primary coordinator, waves propagate without interference.
+- **Topological Collapse (Hawking Mass Dissipation)**: In low-density pockets, the computational lifetime ends in Topological Collapse. We project the logical output back to the coordinator `P_Coord` and dissipate the remaining pocket mass to the primary thermal sink `P_Thermal` as "Hawking radiation" heat dissipation. This process satisfies exact 100% mass conservation ($\sum \rho_{\text{pocket}} = \Delta \rho_{\text{P\_Thermal}} + \Delta \rho_{\text{P\_Coord}}$), showing that analog calculation can be transiently executed and completely dissolved without leaving residual information or mass leaks.
+- **Jeans Lobe Crystallization & Permanent Suturing**: In high-density pockets, Jeans stellar collapse ($j_{val} \ge j_{crit}$) triggers accretion that concentrates mass at the pocket hub. Instead of dissolving, the pocket undergoes Manifold Gluing: the internal edge conductances are crystallized (frozen in place), and permanent suture edges connect its highest-degree hubs to the primary coordinator `P_Coord`.
+- **Suture Two-Way Transport Dynamics**: The sutures act as permanent bi-directional wormholes. Pulsing the coordinator node pushes mass into the memory lobe, while driving coordinator belief propagates to flip the pocket's belief state. This establishes a stable, permanent physical network interface that turns the pocket into a permanent memory lobe of the primary engine.
+
+## 14. Active Gated Memory & Transistor Physics
+*Cross-referencing Conjecture 8 (Psi-Transistor), Conjecture 10 (NDRO-Register), & Experiment D (Active Gated Memory)*
+
+- **Inertial Mass Generation (The Clamped Sink Problem)**: In the SOL engine's numerical formulation, node-level mass variables are clamped (`max(0.0, rho_0[i] + ...)`) to prevent non-physical negative values. If an edge advective flux ($F > 0$) remains active across a boundary node clamped to `0.0`, the system creates mass out of thin air. Zeroing the flux dynamically when the gate closes replicates a physical circuit breaker, enforcing mass conservation:
+  $$\sum \rho_{\text{nodes}}(t) \approx \text{const}$$
+- **Subthreshold Insulation**: Pinching off the Psi Transistor gate (setting endpoint beliefs to $-1.0$) drops its channel conductance to the subthreshold limit ($1e-7$). Under zero damping, this establishes perfect thermal and advective insulation, ensuring zero-leak retention (leakage $< 0.001\%$).
+- **Discharge Readout Efficiency**: Upon re-opening the gate, the high internal pressure of the capacitor pocket discharges back to the primary coordinator node, achieving readout transfer efficiencies exceeding **$32.7\%$**.

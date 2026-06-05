@@ -1,0 +1,65 @@
+{
+  "results": [
+    {
+      "A": 0,
+      "B": 0,
+      "expected_sum": 0,
+      "expected_carry": 0,
+      "reg_c_comp": -1.0,
+      "reg_d_comp": -1.0,
+      "basin_sum_stored": 0,
+      "basin_carry_stored": 0,
+      "mass_a": 4.850576836150266,
+      "mass_b": 4.8489698841086595,
+      "mass_c": 4.844181390342797,
+      "mass_d": 4.835459670683073,
+      "passed": true
+    },
+    {
+      "A": 1,
+      "B": 0,
+      "expected_sum": 1,
+      "expected_carry": 0,
+      "reg_c_comp": 1.0,
+      "reg_d_comp": -1.0,
+      "basin_sum_stored": 1,
+      "basin_carry_stored": 0,
+      "mass_a": 230.62845631308727,
+      "mass_b": 6.394819460111135,
+      "mass_c": 208.21469802475275,
+      "mass_d": 6.621104631330936,
+      "passed": true
+    },
+    {
+      "A": 0,
+      "B": 1,
+      "expected_sum": 1,
+      "expected_carry": 0,
+      "reg_c_comp": 1.0,
+      "reg_d_comp": -1.0,
+      "basin_sum_stored": 1,
+      "basin_carry_stored": 0,
+      "mass_a": 4.862496079182007,
+      "mass_b": 226.0100751903866,
+      "mass_c": 235.8295179715863,
+      "mass_d": 6.358822216669472,
+      "passed": true
+    },
+    {
+      "A": 1,
+      "B": 1,
+      "expected_sum": 0,
+      "expected_carry": 1,
+      "reg_c_comp": -1.0,
+      "reg_d_comp": 1.0,
+      "basin_sum_stored": 0,
+      "basin_carry_stored": 1,
+      "mass_a": 231.1944780815834,
+      "mass_b": 229.99493059516607,
+      "mass_c": 7.971521726055592,
+      "mass_d": 206.12437565849734,
+      "passed": true
+    }
+  ],
+  "suite_passed": true
+}
