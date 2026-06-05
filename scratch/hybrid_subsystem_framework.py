@@ -609,6 +609,63 @@ class MicroInstructionSequencer:
                 self.group.step(dt=self.dt)
                 self.record_telemetry()
 
+        elif op == "CMOVE":
+            dest, src, cond = inst.args[0], inst.args[1], inst.args[2]
+            src_reg = f"S_R{src}"
+            src_reg_b = f"S_R{src}_B"
+            dest_reg = f"S_R{dest}"
+            cond_reg_b = f"S_R{cond}_B"
+            
+            # Read condition battery state
+            cond_active = (self.group.get_node(cond_reg_b)["b_state"] == 1)
+            
+            # Phase 1: Route through Summing Junction (30 steps)
+            for _ in range(30):
+                for r in ['A', 'B', 'C', 'D']:
+                    g_id = f"GATE_{r}"
+                    if g_id in self.group.engine.physics.node_by_id:
+                        if cond_active and (r == src or r == dest):
+                            self.group.get_node(g_id)["psi_bias"] = 1.0
+                        else:
+                            self.group.get_node(g_id)["psi_bias"] = -1.0
+                            
+                self.configure_alu_output_routing(dest if dest in ('C', 'D') else (src if src in ('C', 'D') else None))
+                self.set_wormhole_connections(None, is_load=True)
+                
+                src_state = self.group.get_node(src_reg_b)["b_state"]
+                if cond_active:
+                    self.group.get_node(src_reg)["psi_bias"] = 1.0 if src_state == 1 else -1.0
+                    self.group.get_node(dest_reg)["psi_bias"] = 0.5 if src_state == 1 else -1.0
+                else:
+                    self.group.get_node(src_reg)["psi_bias"] = 1.0 if src_state == 1 else -1.0
+                    dest_state = self.group.get_node(dest_reg + "_B")["b_state"]
+                    self.group.get_node(dest_reg)["psi_bias"] = 1.0 if dest_state == 1 else -1.0
+                
+                # Keep other registers holding
+                for r in ['A', 'B', 'C', 'D']:
+                    if r != src and r != dest:
+                        other_reg = f"S_R{r}"
+                        if other_reg + "_B" in self.group.engine.physics.node_by_id:
+                            other_state = self.group.get_node(other_reg + "_B")["b_state"]
+                            self.group.get_node(other_reg)["psi_bias"] = 1.0 if other_state == 1 else -1.0
+                
+                self.apply_holding_biases_semantic()
+                self.group.step(dt=self.dt)
+                self.record_telemetry()
+                
+            # Phase 2: Close Gates and Hold (15 steps)
+            for _ in range(15):
+                for r in ['A', 'B', 'C', 'D']:
+                    g_id = f"GATE_{r}"
+                    if g_id in self.group.engine.physics.node_by_id:
+                        self.group.get_node(g_id)["psi_bias"] = -1.0
+                self.configure_alu_output_routing(None)
+                self.set_wormhole_connections(None, is_load=True)
+                self.apply_holding_biases_processing()
+                self.apply_holding_biases_semantic()
+                self.group.step(dt=self.dt)
+                self.record_telemetry()
+
         elif op == "CLEAR":
             reg = inst.args[0]  # Expect 'C'
             reg_host = f"S_R{reg}"

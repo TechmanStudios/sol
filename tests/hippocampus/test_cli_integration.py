@@ -29,7 +29,7 @@ class TestCoreImmutability:
 
     def test_sha256_matches(self, core_graph_path):
         """Hash of default_graph.json must equal the frozen constant."""
-        data = core_graph_path.read_bytes()
+        data = core_graph_path.read_bytes().replace(b"\r\n", b"\n")
         digest = hashlib.sha256(data).hexdigest()
         assert digest == _KNOWN_SHA256, (
             f"Core graph SHA256 mismatch!\n"

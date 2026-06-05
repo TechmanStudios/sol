@@ -7,9 +7,13 @@ the real data/ or the immutable core graph on disk.
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import sys
 from pathlib import Path
+
+# Disable telemetry to prevent network timeouts during testing
+os.environ["SOL_TELEMETRY_ENABLED"] = "false"
 
 import pytest
 

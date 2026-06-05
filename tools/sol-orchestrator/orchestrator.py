@@ -143,7 +143,7 @@ class PipelineConfig:
 # ---------------------------------------------------------------------------
 
 def _graph_sha256() -> str:
-    return hashlib.sha256(_DEFAULT_GRAPH.read_bytes()).hexdigest()
+    return hashlib.sha256(_DEFAULT_GRAPH.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 _EXPECTED_SHA = "d0a80462d2b9389160502b097aca1932bb014941adf6e4b77799997283e4a1bc"

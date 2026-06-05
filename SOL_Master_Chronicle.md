@@ -1036,19 +1036,19 @@ Each entry links to its detailed phase section.
 
 **Metadata**
 - Date: 2026-06-04 (precision: exact)
-- Sources: `scratch/logos_compiler.py`, `scratch/test_logos_vm.py`, `scratch/test_logos_vm_integration.py`, `scratch/test_logos_vm_loop.py`, `scratch/test_logos_vm_subroutines.py`, `solKnowledge/agent_coding_guide/`
-- Primary artifacts: `scratch/logos_compiler.py`, `scratch/test_logos_vm.py`, `solResearch/nextBestTest/logos_vm_integration_results.json`, `solResearch/nextBestTest/logos_vm_loop_results.json`, `solResearch/nextBestTest/logos_vm_subroutine_results.json`
+- Sources: `scratch/logos_compiler.py`, `scratch/test_logos_vm.py`, `scratch/test_logos_vm_integration.py`, `scratch/test_logos_vm_loop.py`, `scratch/test_logos_vm_subroutines.py`, `scratch/test_logos_vm_cmove.py`, `solKnowledge/agent_coding_guide/`
+- Primary artifacts: `scratch/logos_compiler.py`, `scratch/test_logos_vm.py`, `solResearch/nextBestTest/logos_vm_integration_results.json`, `solResearch/nextBestTest/logos_vm_loop_results.json`, `solResearch/nextBestTest/logos_vm_subroutine_results.json`, `solResearch/nextBestTest/logos_vm_cmove_results.json`
 - Versions: Engine = Headless Python SOL Engine (with RK4 integration)
 
 ### Scope / Objective
 - Design and implement **Level 6: Basic Software** layer on top of Level 5 register ALU.
-- Build a symbolic compiler (`LogosCompiler`) supporting dynamic register allocation, liveness analysis, register evac-spills, and procedural compilation.
-- Build a Virtual Machine (`LogosVM`) with program pointer control (`pc`), dynamic branching, and a procedural call stack with analog context switching.
-- Verify end-to-end execution of compiled arithmetic (1-bit Full-Adder), counter loops, and recursive subroutine call-returns.
+- Build a symbolic compiler (`LogosCompiler`) supporting dynamic register allocation, liveness analysis, register evac-spills, procedural compilation, and branchless conditional assignments.
+- Build a Virtual Machine (`LogosVM`) with program pointer control (`pc`), dynamic branching, a procedural call stack with analog context switching, and physical conditional move routing.
+- Verify end-to-end execution of compiled arithmetic (1-bit Full-Adder), counter loops, recursive subroutine call-returns, and branchless conditional moves.
 
 ### Instrumentation & Harnesses
 - Python `SOLEngine` execution under RK4 integration.
-- Compiler & VM verification scripts: `test_logos_vm_integration.py`, `test_logos_vm_loop.py`, `test_logos_vm_subroutines.py`.
+- Compiler & VM verification scripts: `test_logos_vm_integration.py`, `test_logos_vm_loop.py`, `test_logos_vm_subroutines.py`, `test_logos_vm_cmove.py`.
 
 ### Experiments
 
@@ -1074,6 +1074,14 @@ Each entry links to its detailed phase section.
   - Main runs `A XOR B -> C = 0`, calls subroutine `SUB_COMPUTE` (which overwrites C with `1`), returns, and stores C.
 - Measurements:
   - **100% Passed**. Main stored restored C = `0` to memory, confirming Register C was context-swapped, and registers A and B preserved mass and states.
+
+#### 4. Gated Conditional Move (Branchless CMOVE)
+- Setup:
+  - Implement a physical Conditional Move (`CMOVE dest, src, cond`) instruction in the micro-sequencer.
+  - Compile the `COND_ASSIGN` statement representing ternary selection `out = cond ? true_val : false_val` into a branchless COPY and CMOVE sequence.
+  - Test active vs collapsed condition inputs.
+- Measurements:
+  - **100% Passed**. When the condition register is active, `Basin_SUM` stored the true value `1`. When collapsed, `Basin_SUM` stored the false value `0` branchlessly. Active registers preserved masses $\ge 14.0$.
 
 ### Phase Conclusions
 - Locked in:

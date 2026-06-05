@@ -1,0 +1,25 @@
+{
+  "results": [
+    {
+      "cond_active": false,
+      "expected_sum": 0,
+      "basin_sum_stored": 0,
+      "mass_a": 4.860615692561658,
+      "mass_b": 225.39009959572087,
+      "mass_c": 9.60688085410783,
+      "mass_d": 7.105567703996514,
+      "passed": true
+    },
+    {
+      "cond_active": true,
+      "expected_sum": 1,
+      "basin_sum_stored": 1,
+      "mass_a": 229.20426033772662,
+      "mass_b": 195.0554775638722,
+      "mass_c": 10.501547512798401,
+      "mass_d": 312.64803250457356,
+      "passed": true
+    }
+  ],
+  "suite_passed": true
+}

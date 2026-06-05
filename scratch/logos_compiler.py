@@ -188,6 +188,102 @@ class LogosCompiler:
                 
             elif op_type == "RETURN":
                 program.append(Instruction("RET", []))
+                
+            elif op_type == "COND_ASSIGN":
+                dest_var, cond_var, true_var, false_var = stmt[1], stmt[2], stmt[3], stmt[4]
+                
+                # 1. Allocate cond_var to a register (A preferred)
+                reg_cond = next((r for r, v in self.register_map.items() if v == cond_var), None)
+                if reg_cond is None:
+                    reg_cond = 'A'
+                    val_in_a = self.register_map['A']
+                    if val_in_a and self._is_live(val_in_a, idx, statements):
+                        free_reg = self._find_free_register(idx, statements)
+                        if free_reg:
+                            program.append(Instruction("COPY", ['A', free_reg]))
+                            self.register_map[free_reg] = val_in_a
+                        else:
+                            spill_basin = self.var_destinations.get(val_in_a) or self.var_sources.get(val_in_a)
+                            if spill_basin:
+                                program.append(Instruction("STORE", ['A', spill_basin]))
+                            else:
+                                raise RuntimeError("Register spill failed for cond_var allocation")
+                    basin = self.var_sources.get(cond_var)
+                    if not basin:
+                        raise ValueError(f"Unknown variable source for {cond_var}")
+                    program.append(Instruction("LOAD", ['A', basin]))
+                    self.register_map['A'] = cond_var
+                    reg_cond = 'A'
+                
+                # 2. Allocate true_var to a register (B preferred)
+                reg_true = next((r for r, v in self.register_map.items() if v == true_var), None)
+                if reg_true is None:
+                    reg_true = 'B'
+                    val_in_b = self.register_map['B']
+                    if val_in_b and self._is_live(val_in_b, idx, statements):
+                        free_reg = self._find_free_register(idx, statements)
+                        if free_reg:
+                            program.append(Instruction("COPY", ['B', free_reg]))
+                            self.register_map[free_reg] = val_in_b
+                        else:
+                            spill_basin = self.var_destinations.get(val_in_b) or self.var_sources.get(val_in_b)
+                            if spill_basin:
+                                program.append(Instruction("STORE", ['B', spill_basin]))
+                            else:
+                                raise RuntimeError("Register spill failed for true_var allocation")
+                    basin = self.var_sources.get(true_var)
+                    if not basin:
+                        raise ValueError(f"Unknown variable source for {true_var}")
+                    program.append(Instruction("LOAD", ['B', basin]))
+                    self.register_map['B'] = true_var
+                    reg_true = 'B'
+                    
+                # 3. Allocate false_var to a register (C preferred)
+                reg_false = next((r for r, v in self.register_map.items() if v == false_var), None)
+                if reg_false is None:
+                    reg_false = 'C'
+                    val_in_c = self.register_map['C']
+                    if val_in_c and self._is_live(val_in_c, idx, statements):
+                        free_reg = self._find_free_register(idx, statements)
+                        if free_reg:
+                            program.append(Instruction("COPY", ['C', free_reg]))
+                            self.register_map[free_reg] = val_in_c
+                        else:
+                            spill_basin = self.var_destinations.get(val_in_c) or self.var_sources.get(val_in_c)
+                            if spill_basin:
+                                program.append(Instruction("STORE", ['C', spill_basin]))
+                            else:
+                                raise RuntimeError("Register spill failed for false_var allocation")
+                    basin = self.var_sources.get(false_var)
+                    if not basin:
+                        raise ValueError(f"Unknown variable source for {false_var}")
+                    program.append(Instruction("LOAD", ['C', basin]))
+                    self.register_map['C'] = false_var
+                    reg_false = 'C'
+                
+                # 4. Allocate dest_var to a register (D preferred)
+                dest_reg = 'D'
+                val_in_d = self.register_map['D']
+                if val_in_d and self._is_live(val_in_d, idx, statements):
+                    other_reg = next((r for r, v in self.register_map.items() if r != 'D' and v == val_in_d), None)
+                    if other_reg is None:
+                        free_reg = self._find_free_register(idx, statements)
+                        if free_reg:
+                            program.append(Instruction("COPY", ['D', free_reg]))
+                            self.register_map[free_reg] = val_in_d
+                        else:
+                            spill_basin = self.var_destinations.get(val_in_d) or self.var_sources.get(val_in_d)
+                            if spill_basin:
+                                program.append(Instruction("STORE", ['D', spill_basin]))
+                            else:
+                                raise RuntimeError("Register spill failed for dest_var allocation")
+                
+                # Emit COPY false_var -> dest_reg
+                program.append(Instruction("COPY", [reg_false, dest_reg]))
+                # Emit CMOVE dest_reg, true_var, cond_var
+                program.append(Instruction("CMOVE", [dest_reg, reg_true, reg_cond]))
+                
+                self.register_map[dest_reg] = dest_var
         
         if subroutines:
             program.append(Instruction("JUMP", ["L_COMPILER_EXIT"]))
