@@ -1,0 +1,387 @@
+{
+  "schema": "sol.level7.verification.v1",
+  "run_id": "logos_vm_level7_20260606_010356",
+  "primitive": "8bit_carry_select_adder",
+  "level": "7.0",
+  "cases_total": 16,
+  "cases_passed": 16,
+  "failure_rate": 0.0,
+  "runtime_seconds": 764.0098536014557,
+  "worst_cases": {
+    "min_active_register_mass": 97.8809950824978,
+    "max_source_basin_delta": 2.220446049250313e-16,
+    "max_residual_flux_exit": 0.0007477347943626485,
+    "max_bus_rho_exit": 1.869235299486217e-05
+  },
+  "failures": [],
+  "results": [
+    {
+      "x": 0,
+      "y": 0,
+      "cin": 0,
+      "expected_sum": 0,
+      "actual_sum": 0,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 97.8809950824978,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.000351137290642448,
+        "max_bus_rho_exit": 8.777954745228613e-06,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "cin": 1,
+      "expected_sum": 1,
+      "actual_sum": 1,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 97.8809950824978,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0003514164262046856,
+        "max_bus_rho_exit": 8.784932754680764e-06,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 255,
+      "y": 0,
+      "cin": 0,
+      "expected_sum": 255,
+      "actual_sum": 255,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 162.30984987844354,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0006500152282748633,
+        "max_bus_rho_exit": 1.6249496734074412e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 255,
+      "y": 0,
+      "cin": 1,
+      "expected_sum": 256,
+      "actual_sum": 256,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 148.11902260882334,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0007436695229214862,
+        "max_bus_rho_exit": 1.859072673730262e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 0,
+      "y": 255,
+      "cin": 0,
+      "expected_sum": 255,
+      "actual_sum": 255,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 183.52497454018942,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0006334307663499678,
+        "max_bus_rho_exit": 1.5834907739597784e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 0,
+      "y": 255,
+      "cin": 1,
+      "expected_sum": 256,
+      "actual_sum": 256,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 173.99738211047338,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0007425827424021188,
+        "max_bus_rho_exit": 1.8563558702259832e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 255,
+      "y": 255,
+      "cin": 0,
+      "expected_sum": 510,
+      "actual_sum": 510,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 160.38151506663195,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0007477347943626485,
+        "max_bus_rho_exit": 1.869235299486217e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 255,
+      "y": 255,
+      "cin": 1,
+      "expected_sum": 511,
+      "actual_sum": 511,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 154.56577128185674,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0007477338700817682,
+        "max_bus_rho_exit": 1.869232988909712e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 127,
+      "y": 128,
+      "cin": 0,
+      "expected_sum": 255,
+      "actual_sum": 255,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 162.30984987844354,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0006363381395609736,
+        "max_bus_rho_exit": 1.5907588116059672e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 127,
+      "y": 128,
+      "cin": 1,
+      "expected_sum": 256,
+      "actual_sum": 256,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 148.11902260882334,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0007432949908188443,
+        "max_bus_rho_exit": 1.8581363944072623e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 128,
+      "y": 127,
+      "cin": 0,
+      "expected_sum": 255,
+      "actual_sum": 255,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 183.52497454018942,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.00063030923684328,
+        "max_bus_rho_exit": 1.575687374698063e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 128,
+      "y": 127,
+      "cin": 1,
+      "expected_sum": 256,
+      "actual_sum": 256,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 173.99738211047338,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0007430011637779538,
+        "max_bus_rho_exit": 1.857401866763348e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 128,
+      "y": 128,
+      "cin": 0,
+      "expected_sum": 256,
+      "actual_sum": 256,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 97.8809950824978,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0007019615250923629,
+        "max_bus_rho_exit": 1.7548083511377245e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 255,
+      "y": 1,
+      "cin": 1,
+      "expected_sum": 257,
+      "actual_sum": 257,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 154.56577128185674,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0007436680607223581,
+        "max_bus_rho_exit": 1.8590690184312903e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 57,
+      "y": 12,
+      "cin": 1,
+      "expected_sum": 70,
+      "actual_sum": 70,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 162.13334904555867,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0007456353637059613,
+        "max_bus_rho_exit": 1.8639870083515936e-05,
+        "steps": 7160
+      }
+    },
+    {
+      "x": 125,
+      "y": 114,
+      "cin": 0,
+      "expected_sum": 239,
+      "actual_sum": 239,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 160.38151506663195,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0004900382397790575,
+        "max_bus_rho_exit": 1.2250289578591555e-05,
+        "steps": 7160
+      }
+    }
+  ]
+}

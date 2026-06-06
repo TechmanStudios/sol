@@ -1,0 +1,57 @@
+{
+  "schema": "sol.level8.verification.v1",
+  "run_id": "logos_vm_level8_20260606_020502",
+  "primitive": "spectral_parallel_register_bus",
+  "level": "8.0",
+  "cases_total": 4,
+  "cases_passed": 4,
+  "worst_cases": {
+    "min_active_register_mass": 15.069953432406608
+  },
+  "results": [
+    {
+      "ina": false,
+      "inb": false,
+      "delta_A": -12.2878298943958,
+      "delta_B": -8.10274040166151,
+      "passed": true,
+      "metrics": {
+        "min_active_register_mass": 15.069953432406608,
+        "steps": 215
+      }
+    },
+    {
+      "ina": true,
+      "inb": false,
+      "delta_A": 4.874588723676265,
+      "delta_B": -2.2779523562482336,
+      "passed": true,
+      "metrics": {
+        "min_active_register_mass": 15.069953432406608,
+        "steps": 215
+      }
+    },
+    {
+      "ina": false,
+      "inb": true,
+      "delta_A": -3.669210595490318,
+      "delta_B": 1.6196917669111741,
+      "passed": true,
+      "metrics": {
+        "min_active_register_mass": 15.069953432406608,
+        "steps": 215
+      }
+    },
+    {
+      "ina": true,
+      "inb": true,
+      "delta_A": 3.977227974487718,
+      "delta_B": 0.6002772075470997,
+      "passed": true,
+      "metrics": {
+        "min_active_register_mass": 15.069953432406608,
+        "steps": 215
+      }
+    }
+  ]
+}

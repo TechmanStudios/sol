@@ -42,6 +42,18 @@ This document defines the architectural stack of the SOL computing system (Level
 - **Key Primitives**: CFG liveness analysis, register allocation, indirect addressing, context-switching call/return loops.
 - **Promotion Gate**: Can a physical program be compiled, stored, and executed on the substrate while maintaining arithmetic correctness, memory insulation, and complete register collapse at termination?
 
+### Level 7: Parallel Wave-Multiplexed Substrate Processing (Multi-Core Layer)
+- **Role**: High-throughput SIMD parallel processing and speculative execution.
+- **Physical Carrier**: Multi-core (three-lobe) register manifolds, gated wormhole select routing.
+- **Key Primitives**: SIMD instruction broadcasting, speculative carry-select branching, dynamic selection multiplexing (`CMOVE` selection sequence).
+- **Promotion Gate**: Can a multi-core program be executed simultaneously across parallel lobes and dynamically routed to output attractor basins without physical bleed, register interference, or mass collapse failures?
+
+### Level 8: Spectral Parallelism (Frequency-Division Multiplexed Substrate)
+- **Role**: Superimposed simultaneous calculations and frequency-selective routing.
+- **Physical Carrier**: Single-core register manifold, shared ALU summing core, and parametric resonant routers.
+- **Key Primitives**: Frequency-domain carrier modulation, linear wave superposition, acoustic resonant gating (phase-locked lock-in sorting).
+- **Promotion Gate**: Can multiple data streams modulated at distinct carrier frequencies ($f_A$, $f_B$) coexist in a single set of registers, process simultaneously, and sort into separate output basins with active channel delta $> 0.2$ and inactive channel delta $< 0.1$, while maintaining register mass safety ($\ge 14.0$)?
+
 ---
 
 ## 2. Primitive Status Map
@@ -59,6 +71,10 @@ This document defines the architectural stack of the SOL computing system (Level
 | **6** | Liveness Compiler | Evacuation-spill code generation correctness | Integrated |
 | **6** | VM Call Stack | Nested CALL/RET register context backup | Integrated |
 | **6** | Pointer Addressing | indirect index load/store (`['C', 'D']` decoding) | Sim-local robust |
+| **7** | SIMD Instruction Broadcast | Core-to-core state isolation | Noise-hardened |
+| **7** | Carry-Select Multiplexing | Actual $C_4$ carry-select sum routing | Sim-local robust |
+| **8** | Resonant Gating | Phase-locked lock-in mixing delta sorting | Noise-hardened |
+| **8** | Carrier Modulation | Superimposed wave packet LOAD/STORE | Sim-local robust |
 
 ---
 
@@ -67,6 +83,16 @@ This document defines the architectural stack of the SOL computing system (Level
 ```mermaid
 graph TD
     %% Levels
+    subgraph Level 8: Spectral Parallelism
+        L8_Mod[Carrier Modulation]
+        L8_Res[Resonant Gating]
+    end
+
+    subgraph Level 7: Multi-Core Parallelism
+        L7_Broad[SIMD Broadcast]
+        L7_CS[Carry-Select Selector]
+    end
+
     subgraph Level 6: Basic Software
         L6_VM[LogosVM Runtime]
         L6_Comp[Liveness Compiler]
@@ -110,6 +136,13 @@ graph TD
     L6_Comp --> L6_VM
     L5_Reg --> L6_Ptr
     L6_Ptr --> L6_VM
+    L6_VM --> L7_Broad
+    L5_CMove --> L7_CS
+    L7_Broad --> L7_CS
+    
+    L6_VM --> L8_Mod
+    L5_Reg --> L8_Mod
+    L8_Mod --> L8_Res
 ```
 
 ---
@@ -127,3 +160,24 @@ graph TD
   - $dt$ integration stability drift limit ($\pm 10\%$).
   - Damping tolerance envelope ($[0.75 \times, 1.25 \times]$).
   - Timing jitter immunity ($\pm 2$ steps).
+
+### Gate 7.1: Multi-Core Carry-Select Integration
+- **Required Invariants**:
+  - $100\%$ arithmetic correctness across boundary and random multi-core cases.
+  - Speculative high-nibble evaluation ($S'_{4..7}$ and $S''_{4..7}$) executes concurrently with Lobe 0 sum ($S_{0..3}$).
+  - Gated selection routes correct sum without sign flips in destination basins.
+  - Active battery register mass during SIMD broadcast window $\ge 14.0$.
+  - Residual bus density $< 1.0$ and residual routing edge flux $< 0.01$ at termination.
+- **Robustness Envelope**:
+  - Max 2 concurrent execution threads on the host simulation engine.
+  - Integrator timestep stability cap ($dt \le 0.05$).
+
+### Gate 8.1: Spectral Parallelism Resonant Gating
+- **Required Invariants**:
+  - $100\%$ demultiplexing correctness across all channel configuration states (Case 00, 10, 01, 11).
+  - Active channels delta $> 0.2$ and inactive channels delta $< 0.1$ at target basins.
+  - Active register mass during FDM computation window $\ge 14.0$ (measured $\ge 15.0$ at baseline 15.0).
+  - Neutralized belief-bias `psi_bias = 0.0` to eliminate DC belief-gradient diode pumping.
+  - Matched baseline pressure `baseline_rho = 15.0` to block DC pressure leakage while preserving mass safety.
+
+
