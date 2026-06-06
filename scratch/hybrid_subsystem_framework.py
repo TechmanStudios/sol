@@ -415,6 +415,13 @@ class MicroInstructionSequencer:
             else:
                 addr_state = self.group.get_node(f"S_R{addr_reg}_B")["b_state"]
                 index = 1 if addr_state == 1 else 0
+                
+            # Apply Bank Paging: if Basin_Page exists and is active, offset by 4
+            if "Basin_Page" in self.group.semantic.basins:
+                page_hub = self.group.semantic.basins["Basin_Page"].hub_id
+                page_active = self.group.get_node(page_hub)["psi"] >= 0
+                if page_active:
+                    index += 4
             basin_name = f"Basin_{array_prefix}{index}"
             
             gate_name = f"GATE_{reg}"
@@ -546,6 +553,13 @@ class MicroInstructionSequencer:
             else:
                 addr_state = self.group.get_node(f"S_R{addr_reg}_B")["b_state"]
                 index = 1 if addr_state == 1 else 0
+                
+            # Apply Bank Paging: if Basin_Page exists and is active, offset by 4
+            if "Basin_Page" in self.group.semantic.basins:
+                page_hub = self.group.semantic.basins["Basin_Page"].hub_id
+                page_active = self.group.get_node(page_hub)["psi"] >= 0
+                if page_active:
+                    index += 4
             basin_name = f"Basin_{array_prefix}{index}"
             
             bridge_id = self.group.semantic.basins[basin_name].bridge_id
