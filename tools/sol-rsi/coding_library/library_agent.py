@@ -179,6 +179,24 @@ class LuminaLibraryAgent:
             from coding_library.cognitive_experts import CognitiveExpertTeam
             team = CognitiveExpertTeam(library_dir=self.lib_dir)
             return team.ask_expert(expert_name_lower, query, context)
+        elif expert_name_lower in ["ranger", "substrate_ranger", "hotfix_dispatcher", "payload_courier", "telemetry_collector", "ledger_archivist", "substrate_scout"]:
+            from coding_library.roaming_agents import (
+                LuminaSubstrateRanger, LuminaHotfixDispatcher, LuminaPayloadCourier,
+                LuminaTelemetryCollector, LuminaLedgerArchivist, LuminaSubstrateScout
+            )
+            if expert_name_lower in ["ranger", "substrate_ranger"]:
+                agent = LuminaSubstrateRanger(self)
+            elif expert_name_lower == "hotfix_dispatcher":
+                agent = LuminaHotfixDispatcher(self)
+            elif expert_name_lower == "payload_courier":
+                agent = LuminaPayloadCourier(self)
+            elif expert_name_lower == "telemetry_collector":
+                agent = LuminaTelemetryCollector(self)
+            elif expert_name_lower == "ledger_archivist":
+                agent = LuminaLedgerArchivist(self)
+            else:
+                agent = LuminaSubstrateScout(self)
+            return agent.query(query, context)
         else:
             m = re.match(r"^level_?(\d+)$", expert_name_lower)
             if expert_name_lower in ["level_agent", "level"] or m:

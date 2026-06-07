@@ -891,5 +891,86 @@ class TestCodingLibrary(unittest.TestCase):
         finally:
             shutil.rmtree(temp_dir)
 
+    def test_substrate_ranger_diagnostics(self):
+        """Test that LuminaSubstrateRanger can travel to a running sequencer and run diagnostics."""
+        from coding_library.roaming_agents import LuminaSubstrateRanger
+        from unittest.mock import MagicMock
+        
+        ranger = LuminaSubstrateRanger()
+        mock_sequencer = MagicMock()
+        mock_group = MagicMock()
+        mock_sequencer.group = mock_group
+        
+        # Setup mock nodes
+        mock_bat = {"rho": 4.0} # critically low
+        mock_host = {"rho": 10.0} # total 14.0 (< 14.5)
+        mock_group.get_node.side_effect = lambda n: mock_bat if "_B" in n else mock_host
+        
+        ranger.travel(mock_sequencer)
+        self.assertEqual(ranger.current_context, mock_sequencer)
+        
+        res = ranger.run_diagnostics()
+        self.assertEqual(res["status"], "DANGER")
+        self.assertTrue(len(res["warnings"]) > 0)
+        self.assertIn("Register A mass is critically low", res["warnings"][0])
+        
+    def test_hotfix_dispatcher_injection(self):
+        """Test that LuminaHotfixDispatcher can travel to a sequencer and inject hotfix instructions."""
+        from coding_library.roaming_agents import LuminaHotfixDispatcher
+        from unittest.mock import MagicMock
+        
+        dispatcher = LuminaHotfixDispatcher()
+        mock_sequencer = MagicMock()
+        mock_group = MagicMock()
+        mock_sequencer.group = mock_group
+        
+        # Setup low mass node
+        mock_bat = {"rho": 4.0}
+        mock_host = {"rho": 10.0} # total 14.0 (< 14.2)
+        mock_group.get_node.side_effect = lambda n: mock_bat if "_B" in n else mock_host
+        
+        patched = dispatcher.intercept_and_patch(mock_sequencer)
+        self.assertTrue(patched)
+        self.assertTrue(mock_sequencer.execute_instruction.call_count >= 2)
+        # Check that the hotfix for Register A was logged in state history
+        self.assertTrue(any("boosted Register A" in log for log in dispatcher.state_history))
+        
+    def test_ledger_archivist_doc_compilation(self):
+        """Test that LuminaLedgerArchivist can read JSONL files and compile a markdown report."""
+        import tempfile
+        import shutil
+        import json
+        from pathlib import Path
+        from coding_library.roaming_agents import LuminaLedgerArchivist
+        
+        temp_dir = Path(tempfile.mkdtemp())
+        try:
+            # Write mock cost ledger entries
+            ledger_file = temp_dir / "llm_cost_ledger.jsonl"
+            with open(ledger_file, "w", encoding="utf-8") as f:
+                f.write(json.dumps({"cost": 0.05, "prompt_tokens": 100}) + "\n")
+                f.write(json.dumps({"cost": 0.02, "prompt_tokens": 50}) + "\n")
+                
+            archivist = LuminaLedgerArchivist()
+            report = archivist.synthesize_reports(temp_dir)
+            
+            self.assertIn("Lumina Archivist Synthesized Report", report)
+            self.assertIn("**Cumulative USD Cost**: $0.07000", report)
+            self.assertIn("**Total Cost Ledger Entries**: 2", report)
+            
+        finally:
+            shutil.rmtree(temp_dir)
+            
+    def test_roaming_agents_routing(self):
+        """Test that library agent can route expert queries to roaming agents."""
+        from unittest.mock import patch, MagicMock
+        from coding_library.library_agent import LuminaLibraryAgent
+        
+        lib = LuminaLibraryAgent()
+        with patch("coding_library.roaming_agents.LuminaSubstrateRanger.query", return_value="Ranger query active") as mock_q:
+            ans = lib.ask_expert("ranger", "What is status?")
+            self.assertEqual(ans, "Ranger query active")
+            mock_q.assert_called_once_with("What is status?", None)
+
 if __name__ == "__main__":
     unittest.main()
