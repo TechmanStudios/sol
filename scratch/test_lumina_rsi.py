@@ -972,5 +972,102 @@ class TestCodingLibrary(unittest.TestCase):
             self.assertEqual(ans, "Ranger query active")
             mock_q.assert_called_once_with("What is status?", None)
 
+    def test_lessons_ledger_archiving(self):
+        """Test that LuminaLedgerArchivist compiles lessons and level agents load them in context."""
+        import tempfile
+        import shutil
+        import json
+        from pathlib import Path
+        from coding_library.roaming_agents import LuminaLedgerArchivist
+        from coding_library.level_agents import LuminaLevelAgent
+        
+        temp_dir = Path(tempfile.mkdtemp())
+        try:
+            # Create a mock error log
+            error_log = temp_dir / "rsi_run_error.log"
+            with open(error_log, "w", encoding="utf-8") as f:
+                f.write("AssertionError: Mass preservation failure on Register A: expected >= 14.0, got 13.5\n")
+                f.write("Error: PLL synchronization lost in crossbar\n")
+                
+            archivist = LuminaLedgerArchivist()
+            # Set library dir of archivist to temp_dir so it writes level_lessons.json there
+            archivist.lib_agent.lib_dir = temp_dir
+            
+            lessons = archivist.extract_level_lessons(temp_dir)
+            self.assertIn("3", lessons)
+            self.assertIn("11", lessons)
+            self.assertIn("Mass preservation failure on Register A", lessons["3"][0]["error"])
+            
+            # Verify level agent context loads the lesson
+            level_agent = LuminaLevelAgent(3, "Sub-manifolds", "Memory layer", ["SETTLE_BASIN"], lib_agent=archivist.lib_agent)
+            ctx = level_agent._get_context()
+            self.assertIn("Historical Failures & Lessons Learned for this Level", ctx)
+            self.assertIn("Mass preservation failure on Register A", ctx)
+            
+        finally:
+            shutil.rmtree(temp_dir)
+            
+    def test_compiler_static_safety_proofing(self):
+        """Test that LuminaCompiler triggers StaticVerificationError when safety is breached."""
+        from lumina_compiler import LuminaCompiler, LuminaAgent, StaticVerificationError
+        
+        # 1. Flow that decays Register A too much (settle 120 steps)
+        class BadAgent(LuminaAgent):
+            def configure(self):
+                self.inputs = {"x": "Basin_A"}
+                self.outputs = {"z": "Basin_SUM"}
+            def flow(self):
+                self.z = self.x
+                self.settle(120)  # active register z will decay below 14.0
+                
+        with self.assertRaises(StaticVerificationError) as context:
+            LuminaCompiler.compile_agent(BadAgent, verify_mass=True)
+            
+        self.assertIn("drains Register", str(context.exception))
+        
+        # 2. Flow that compiles successfully with compensatory nudge
+        class GoodAgent(LuminaAgent):
+            def configure(self):
+                self.inputs = {"x": "Basin_A"}
+                self.outputs = {"z": "Basin_SUM"}
+            def flow(self):
+                self.z = self.x
+                self.nudge("Basin_SUM", 10.0) # boost mass to 25.0
+                self.settle(50)  # decays to 20.0 (still >= 14.0)
+                
+        program = LuminaCompiler.compile_agent(GoodAgent, verify_mass=True)
+        self.assertTrue(len(program) > 0)
+        
+    def test_level_simulation_chambers(self):
+        """Test that Level 1, 3, and 11 simulation chambers run operations correctly."""
+        from coding_library.level_chambers import Level1Chamber, Level3Chamber, Level11Chamber
+        
+        # Test Level 1
+        c1 = Level1Chamber()
+        res1 = c1.execute([
+            {"op": "CHARGE", "args": ["Cell_A"]},
+            {"op": "READ_CELL", "args": ["Cell_A"]}
+        ])
+        self.assertEqual(res1["final_cells"]["Cell_A"], 10.0)
+        self.assertIn("Charged cell Cell_A", res1["results"][0])
+        
+        # Test Level 3
+        c3 = Level3Chamber(damping=0.02)
+        res3 = c3.execute([
+            {"op": "SETTLE_BASIN", "args": [10]},
+            {"op": "MEASURE_RHO", "args": ["A"]}
+        ])
+        # Register A decays by 0.02 * 10 = 0.2 -> 14.8
+        self.assertEqual(res3["final_registers"]["A"], 14.8)
+        
+        # Test Level 11
+        c11 = Level11Chamber()
+        res11 = c11.execute([
+            {"op": "PDM_MODULATE", "args": [2, 0.75]},
+            {"op": "PLL_SYNC", "args": []}
+        ])
+        self.assertEqual(res11["final_lanes"][2], [0.75])
+        self.assertTrue(res11["pll_locked"])
+
 if __name__ == "__main__":
     unittest.main()
