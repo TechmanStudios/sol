@@ -795,35 +795,149 @@ class MultiCoreSequencer(MicroInstructionSequencer):
                 self.record_telemetry()
 
         elif op == "RESET_CORE":
-            for _ in range(20):
-                self.set_wormhole_connections([None, None, None], is_load=True)
+            # Clear all core routing states and isolate cores
+            for c in range(3):
                 self.configure_alu_output_routing([None, None, None], default_w0=5.0)
                 
+                for r in ['A', 'B', 'C', 'D']:
+                    self.group.get_node(f"GATE_{r}{c}")["psi_bias"] = -1.0
+                    
+                for node_id in [f"GATE_A{c}", f"GATE_B{c}", f"GATE_C{c}", f"GATE_D{c}", f"P_Sum{c}", f"S_RC{c}", f"S_RC{c}_B", f"S_RD{c}", f"S_RD{c}_B"]:
+                    node = self.group.get_node(node_id)
+                    node["psi"] = -1.0 if node_id != f"P_Sum{c}" else 0.0
+                    if node_id in (f"S_RC{c}", f"S_RD{c}"):
+                        node["rho"] = 5.0
+                    elif node_id in (f"S_RC{c}_B", f"S_RD{c}_B"):
+                        node["rho"] = 0.0
+                        node["b_state"] = -1
+                        node["b_charge"] = 0.0
+                        node["psi_bias"] = -1.0
+                    else:
+                        node["rho"] = 0.0
+            
+            # Reset carry-select gates and edges to background state
+            for i in range(4, 8):
+                g_prime = f"Gate_Match_prime{i}"
+                g_double = f"Gate_Match_double_prime{i}"
+                
+                self.group.get_node(g_prime)["psi_bias"] = -1.0
+                self.group.get_node(g_prime)["psi"] = -1.0
+                self.group.get_node(g_double)["psi_bias"] = -1.0
+                self.group.get_node(g_double)["psi"] = -1.0
+                
+                self.group.get_edge(self.group.semantic.basins[f"Basin_S_prime{i}"].bridge_id, g_prime)["w0"] = 0.0001
+                self.group.get_edge(g_prime, self.group.semantic.basins[f"Basin_S{i}"].bridge_id)["w0"] = 0.0001
+                self.group.get_edge(self.group.semantic.basins[f"Basin_S_double_prime{i}"].bridge_id, g_double)["w0"] = 0.0001
+                self.group.get_edge(g_double, self.group.semantic.basins[f"Basin_S{i}"].bridge_id)["w0"] = 0.0001
+                
+            self.group.get_node("Gate_Match_cout_prime")["psi_bias"] = -1.0
+            self.group.get_node("Gate_Match_cout_prime")["psi"] = -1.0
+            self.group.get_node("Gate_Match_cout_double_prime")["psi_bias"] = -1.0
+            self.group.get_node("Gate_Match_cout_double_prime")["psi"] = -1.0
+            
+            self.group.get_edge(self.group.semantic.basins["Basin_Carry1"].bridge_id, "Gate_Match_cout_prime")["w0"] = 0.0001
+            self.group.get_edge("Gate_Match_cout_prime", self.group.semantic.basins["Basin_Cout"].bridge_id)["w0"] = 0.0001
+            self.group.get_edge(self.group.semantic.basins["Basin_Carry2"].bridge_id, "Gate_Match_cout_double_prime")["w0"] = 0.0001
+            self.group.get_edge("Gate_Match_cout_double_prime", self.group.semantic.basins["Basin_Cout"].bridge_id)["w0"] = 0.0001
+                            
+            for edge in self.group.engine.physics.edges:
+                edge["flux"] = 0.0
+                
+            self.normalize_register_masses()
+            self.apply_holding_biases_processing()
+            self.apply_holding_biases_semantic()
+            self.group.step(self.dt)
+            self.record_telemetry()
+
+        elif op == "CSELECT_PHYSICAL":
+            # Read carry-out from Core 0 (Basin_Carry0)
+            carry_hub = self.group.get_node(self.group.semantic.basins["Basin_Carry0"].hub_id)
+            carry_psi = carry_hub["psi"]
+            
+            # Settle phase (35 steps)
+            for _ in range(35):
+                self.apply_holding_biases_processing()
+                self.apply_holding_biases_semantic()
+                
+                # Close all core gates except the connection for carry-select
                 for c in range(3):
                     for r in ['A', 'B', 'C', 'D']:
                         self.group.get_node(f"GATE_{r}{c}")["psi_bias"] = -1.0
-                        
-                    for node_id in [f"GATE_A{c}", f"GATE_B{c}", f"GATE_C{c}", f"GATE_D{c}", f"P_Sum{c}", f"S_RC{c}", f"S_RC{c}_B", f"S_RD{c}", f"S_RD{c}_B"]:
-                        node = self.group.get_node(node_id)
-                        node["psi"] = -1.0 if node_id != f"P_Sum{c}" else 0.0
-                        if node_id in (f"S_RC{c}", f"S_RD{c}"):
-                            node["rho"] = 5.0
-                        elif node_id in (f"S_RC{c}_B", f"S_RD{c}_B"):
-                            node["rho"] = 0.0
-                            node["b_state"] = -1
-                            node["b_charge"] = 0.0
-                            node["psi_bias"] = -1.0
-                        else:
-                            node["rho"] = 0.0
-                            
-                for edge in self.group.engine.physics.edges:
-                    edge["flux"] = 0.0
+                
+                # Dynamic bias based on carry_psi:
+                # If carry_psi is high (+1.0), double_prime is open (bias +1.0) and prime is closed (bias -1.0)
+                # If carry_psi is low (-1.0), double_prime is closed (bias -1.0) and prime is open (bias +1.0)
+                state_double_prime = carry_psi
+                state_prime = -carry_psi
+                
+                # Biasing and opening the gates in parallel
+                for i in range(4, 8):
+                    g_prime = f"Gate_Match_prime{i}"
+                    self.group.engine.write_enable(g_prime)
+                    self.group.get_node(g_prime)["psi_bias"] = state_prime
+                    self.group.get_edge(self.group.semantic.basins[f"Basin_S_prime{i}"].bridge_id, g_prime)["w0"] = 15.0
+                    self.group.get_edge(g_prime, self.group.semantic.basins[f"Basin_S{i}"].bridge_id)["w0"] = 15.0
                     
-                self.normalize_register_masses()
-                self.apply_holding_biases_processing()
-                self.apply_holding_biases_semantic()
+                    g_double = f"Gate_Match_double_prime{i}"
+                    self.group.engine.write_enable(g_double)
+                    self.group.get_node(g_double)["psi_bias"] = state_double_prime
+                    self.group.get_edge(self.group.semantic.basins[f"Basin_S_double_prime{i}"].bridge_id, g_double)["w0"] = 15.0
+                    self.group.get_edge(g_double, self.group.semantic.basins[f"Basin_S{i}"].bridge_id)["w0"] = 15.0
+                    
+                    # Write-enable the sum basins themselves
+                    self.group.engine.write_enable(self.group.semantic.basins[f"Basin_S_prime{i}"].bridge_id)
+                    self.group.engine.write_enable(self.group.semantic.basins[f"Basin_S_double_prime{i}"].bridge_id)
+                    self.group.engine.write_enable(self.group.semantic.basins[f"Basin_S{i}"].bridge_id)
+                    
+                    # Nudge the destination bridge and nodes towards the chosen source's hub value
+                    chosen_src = f"Basin_S_double_prime{i}" if carry_psi >= 0 else f"Basin_S_prime{i}"
+                    src_hub_val = self.group.get_node(self.group.semantic.basins[chosen_src].hub_id)["psi"]
+                    dest_state = 1.0 if src_hub_val >= 0 else -1.0
+                    
+                    self.group.get_node(self.group.semantic.basins[f"Basin_S{i}"].bridge_id)["psi_bias"] = dest_state
+                    for nid in self.group.semantic.basins[f"Basin_S{i}"].node_ids:
+                        self.group.get_node(nid)["psi_bias"] = dest_state
+                
+                # Cout gate
+                self.group.engine.write_enable("Gate_Match_cout_prime")
+                self.group.get_node("Gate_Match_cout_prime")["psi_bias"] = state_prime
+                self.group.get_edge(self.group.semantic.basins["Basin_Carry1"].bridge_id, "Gate_Match_cout_prime")["w0"] = 15.0
+                self.group.get_edge("Gate_Match_cout_prime", self.group.semantic.basins["Basin_Cout"].bridge_id)["w0"] = 15.0
+                
+                self.group.engine.write_enable("Gate_Match_cout_double_prime")
+                self.group.get_node("Gate_Match_cout_double_prime")["psi_bias"] = state_double_prime
+                self.group.get_edge(self.group.semantic.basins["Basin_Carry2"].bridge_id, "Gate_Match_cout_double_prime")["w0"] = 15.0
+                self.group.get_edge("Gate_Match_cout_double_prime", self.group.semantic.basins["Basin_Cout"].bridge_id)["w0"] = 15.0
+                
+                self.group.engine.write_enable(self.group.semantic.basins["Basin_Carry1"].bridge_id)
+                self.group.engine.write_enable(self.group.semantic.basins["Basin_Carry2"].bridge_id)
+                self.group.engine.write_enable(self.group.semantic.basins["Basin_Cout"].bridge_id)
+                
+                chosen_cout = "Basin_Carry2" if carry_psi >= 0 else "Basin_Carry1"
+                cout_hub_val = self.group.get_node(self.group.semantic.basins[chosen_cout].hub_id)["psi"]
+                cout_state = 1.0 if cout_hub_val >= 0 else -1.0
+                
+                self.group.get_node(self.group.semantic.basins["Basin_Cout"].bridge_id)["psi_bias"] = cout_state
+                for nid in self.group.semantic.basins["Basin_Cout"].node_ids:
+                    self.group.get_node(nid)["psi_bias"] = cout_state
+                
                 self.group.step(self.dt)
                 self.record_telemetry()
+                
+            # Clean up after routing (reset weights to 0.0001)
+            for i in range(4, 8):
+                g_prime = f"Gate_Match_prime{i}"
+                self.group.get_edge(self.group.semantic.basins[f"Basin_S_prime{i}"].bridge_id, g_prime)["w0"] = 0.0001
+                self.group.get_edge(g_prime, self.group.semantic.basins[f"Basin_S{i}"].bridge_id)["w0"] = 0.0001
+                
+                g_double = f"Gate_Match_double_prime{i}"
+                self.group.get_edge(self.group.semantic.basins[f"Basin_S_double_prime{i}"].bridge_id, g_double)["w0"] = 0.0001
+                self.group.get_edge(g_double, self.group.semantic.basins[f"Basin_S{i}"].bridge_id)["w0"] = 0.0001
+                
+            self.group.get_edge(self.group.semantic.basins["Basin_Carry1"].bridge_id, "Gate_Match_cout_prime")["w0"] = 0.0001
+            self.group.get_edge("Gate_Match_cout_prime", self.group.semantic.basins["Basin_Cout"].bridge_id)["w0"] = 0.0001
+            self.group.get_edge(self.group.semantic.basins["Basin_Carry2"].bridge_id, "Gate_Match_cout_double_prime")["w0"] = 0.0001
+            self.group.get_edge("Gate_Match_cout_double_prime", self.group.semantic.basins["Basin_Cout"].bridge_id)["w0"] = 0.0001
 
 class MultiCoreLogosVM(LogosVM):
     def run(self, program: list[Instruction]) -> list[dict]:
@@ -983,6 +1097,30 @@ def build_level7_group() -> MultiCoreManifoldGroup:
         nodes.extend(ns)
         edges.extend(es)
         start_idx += 10
+        
+    # Add physical wave-gated routing junctions for carry-select
+    for i in range(4, 8):
+        nodes.extend([
+            {"id": f"Gate_Match_prime{i}", "label": f"Gate_Match_prime{i}", "group": "bridge", "rho": 15.0, "psi": 0.0, "psi_bias": 0.0, "semanticMass": 1.0},
+            {"id": f"Gate_Match_double_prime{i}", "label": f"Gate_Match_double_prime{i}", "group": "bridge", "rho": 15.0, "psi": 0.0, "psi_bias": 0.0, "semanticMass": 1.0}
+        ])
+        edges.extend([
+            {"from": basins[f"Basin_S_prime{i}"].bridge_id, "to": f"Gate_Match_prime{i}", "w0": 0.0001, "kind": "wormhole", "background": False},
+            {"from": f"Gate_Match_prime{i}", "to": basins[f"Basin_S{i}"].bridge_id, "w0": 0.0001, "kind": "wormhole", "background": False},
+            {"from": basins[f"Basin_S_double_prime{i}"].bridge_id, "to": f"Gate_Match_double_prime{i}", "w0": 0.0001, "kind": "wormhole", "background": False},
+            {"from": f"Gate_Match_double_prime{i}", "to": basins[f"Basin_S{i}"].bridge_id, "w0": 0.0001, "kind": "wormhole", "background": False}
+        ])
+        
+    nodes.extend([
+        {"id": "Gate_Match_cout_prime", "label": "Gate_Match_cout_prime", "group": "bridge", "rho": 15.0, "psi": 0.0, "psi_bias": 0.0, "semanticMass": 1.0},
+        {"id": "Gate_Match_cout_double_prime", "label": "Gate_Match_cout_double_prime", "group": "bridge", "rho": 15.0, "psi": 0.0, "psi_bias": 0.0, "semanticMass": 1.0}
+    ])
+    edges.extend([
+        {"from": basins["Basin_Carry1"].bridge_id, "to": "Gate_Match_cout_prime", "w0": 0.0001, "kind": "wormhole", "background": False},
+        {"from": "Gate_Match_cout_prime", "to": basins["Basin_Cout"].bridge_id, "w0": 0.0001, "kind": "wormhole", "background": False},
+        {"from": basins["Basin_Carry2"].bridge_id, "to": "Gate_Match_cout_double_prime", "w0": 0.0001, "kind": "wormhole", "background": False},
+        {"from": "Gate_Match_cout_double_prime", "to": basins["Basin_Cout"].bridge_id, "w0": 0.0001, "kind": "wormhole", "background": False}
+    ])
         
     semantic = SemanticManifold(nodes=nodes, edges=edges, basins=list(basins.values()))
     processing = MultiCoreProcessingManifold()
@@ -1218,30 +1356,8 @@ def get_level7_program() -> list[Instruction]:
         Instruction("LABEL", ["LOOP_EXIT"]),
     ]
     
-    # 1. Carry-select multiplexing for S_4 .. S_7 (executed on Core 1)
-    for i in range(4, 8):
-        program.extend([
-            Instruction("LOAD", ["C1", "Basin_Carry0"]),
-            Instruction("LOAD", ["A1", f"Basin_S_prime{i}"]),
-            Instruction("LOAD", ["B1", f"Basin_S_double_prime{i}"]),
-            Instruction("CMOVE", ["A1", "B1", "C1"]),
-            Instruction("STORE", ["A1", f"Basin_S{i}"]),
-            Instruction("CLEAR", ["A1"]),
-            Instruction("CLEAR", ["B1"]),
-            Instruction("CLEAR", ["C1"]),
-        ])
-        
-    # 2. Cout select
-    program.extend([
-        Instruction("LOAD", ["C1", "Basin_Carry0"]),
-        Instruction("LOAD", ["A1", "Basin_Carry1"]),
-        Instruction("LOAD", ["B1", "Basin_Carry2"]),
-        Instruction("CMOVE", ["A1", "B1", "C1"]),
-        Instruction("STORE", ["A1", "Basin_Cout"]),
-        Instruction("CLEAR", ["A1"]),
-        Instruction("CLEAR", ["B1"]),
-        Instruction("CLEAR", ["C1"]),
-    ])
+    # 1. Physical Carry-select multiplexing (executed on Core 1)
+    program.append(Instruction("CSELECT_PHYSICAL", []))
     
     return program
 

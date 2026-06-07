@@ -1,0 +1,68 @@
+{
+  "schema": "sol.level10.verification.v1",
+  "run_id": "logos_vm_level10_20260607_014645",
+  "primitive": "multi_head_resonant_attention",
+  "level": "10.0",
+  "cases_total": 5,
+  "cases_passed": 5,
+  "worst_cases": {
+    "min_active_register_mass": 15.034497857568393
+  },
+  "results": [
+    {
+      "query_A": "A",
+      "query_B": "NULL",
+      "delta_A": 2.470894205827591,
+      "delta_B": -0.8793201137561688,
+      "passed": true,
+      "metrics": {
+        "min_active_register_mass": 15.069953432406608,
+        "steps": 215
+      }
+    },
+    {
+      "query_A": "NULL",
+      "query_B": "B",
+      "delta_A": -1.9173480458760679,
+      "delta_B": 11.47610164290392,
+      "passed": true,
+      "metrics": {
+        "min_active_register_mass": 15.069953432406608,
+        "steps": 215
+      }
+    },
+    {
+      "query_A": "A",
+      "query_B": "B",
+      "delta_A": 3.0364161607762767,
+      "delta_B": 4.178079433114728,
+      "passed": true,
+      "metrics": {
+        "min_active_register_mass": 15.034497857568393,
+        "steps": 290
+      }
+    },
+    {
+      "query_A": "PHASE_REV_A",
+      "query_B": "NULL",
+      "delta_A": -3.364063362315518,
+      "delta_B": -3.367135360220022,
+      "passed": true,
+      "metrics": {
+        "min_active_register_mass": 15.069953432406608,
+        "steps": 215
+      }
+    },
+    {
+      "query_A": "NULL",
+      "query_B": "NULL",
+      "delta_A": -7.685394806690137,
+      "delta_B": -7.626852270680566,
+      "passed": true,
+      "metrics": {
+        "min_active_register_mass": 0.0,
+        "steps": 140
+      }
+    }
+  ]
+}

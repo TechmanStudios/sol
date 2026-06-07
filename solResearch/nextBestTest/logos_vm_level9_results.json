@@ -1,8 +1,8 @@
 {
-  "schema": "sol.level8.verification.v1",
-  "run_id": "logos_vm_level8_20260606_023149",
-  "primitive": "spectral_parallel_register_bus",
-  "level": "8.0",
+  "schema": "sol.level9.verification.v1",
+  "run_id": "logos_vm_level9_20260607_014640",
+  "primitive": "holographic_content_addressable_memory",
+  "level": "9.0",
   "cases_total": 4,
   "cases_passed": 4,
   "worst_cases": {
@@ -10,10 +10,9 @@
   },
   "results": [
     {
-      "ina": false,
-      "inb": false,
-      "delta_A": -12.2878298943958,
-      "delta_B": -8.10274040166151,
+      "query": "A",
+      "delta_A": 0.9500232541731197,
+      "delta_B": -5.026123562308399,
       "passed": true,
       "metrics": {
         "min_active_register_mass": 15.069953432406608,
@@ -21,10 +20,9 @@
       }
     },
     {
-      "ina": true,
-      "inb": false,
-      "delta_A": 4.874588723676265,
-      "delta_B": -2.2779523562482336,
+      "query": "B",
+      "delta_A": -2.299805135269791,
+      "delta_B": 2.710925533851853,
       "passed": true,
       "metrics": {
         "min_active_register_mass": 15.069953432406608,
@@ -32,10 +30,9 @@
       }
     },
     {
-      "ina": false,
-      "inb": true,
-      "delta_A": -3.669210595490318,
-      "delta_B": 1.6196917669111741,
+      "query": "NULL",
+      "delta_A": -3.449038881011653,
+      "delta_B": -5.123593236349047,
       "passed": true,
       "metrics": {
         "min_active_register_mass": 15.069953432406608,
@@ -43,10 +40,9 @@
       }
     },
     {
-      "ina": true,
-      "inb": true,
-      "delta_A": 3.977227974487718,
-      "delta_B": 0.6002772075470997,
+      "query": "PHASE_REV_A",
+      "delta_A": -2.639452539138677,
+      "delta_B": -4.896962846025167,
       "passed": true,
       "metrics": {
         "min_active_register_mass": 15.069953432406608,

@@ -7,17 +7,17 @@ This report verifies the correctness and physical invariants of the three-lobe 8
 | Metric | Value | Limit / Threshold | Status |
 | :--- | :---: | :---: | :---: |
 | **Overall Suite Status** | **PASSED** | Level 7.0 Parallel | OK |
-| **Passing Cases** | `16 / 16` (100.0%) | 100.0% accuracy | OK |
+| **Passing Cases** | `4 / 4` (100.0%) | 100.0% accuracy | OK |
 | **Failure Rate** | `0.0` | 0.0 | OK |
-| **Total Runtime** | `768.34 seconds` | N/A | OK |
+| **Total Runtime** | `145.01 seconds` | N/A | OK |
 
 ## 2. Invariant Envelope Performance
 
 | Invariant Metric | Measured Worst-Case | Limit / Threshold | Status |
 | :--- | :---: | :---: | :---: |
-| `min_active_register_mass` | 97.88 | $\ge 14.0$ | OK |
+| `min_active_register_mass` | 97.90 | $\ge 14.0$ | OK |
 | `max_source_basin_delta` | 0.0000 | No sign flip & low drift | OK |
-| `max_residual_flux_exit` | 0.000748 | $< 0.01$ | OK |
+| `max_residual_flux_exit` | 0.000634 | $< 0.01$ | OK |
 | `max_bus_rho_exit` | 0.0000 | $< 1.0$ | OK |
 
 ## 3. Analysis & Key Discoveries
