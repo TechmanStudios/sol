@@ -112,6 +112,8 @@ DEFAULT_BUDGET = _CFG.get("budget", {
     "max_calls_per_cycle": 20,
     "max_cost_per_cycle_usd": 2.00,
     "max_cost_per_day_usd": 10.00,
+    "max_calls_per_minute": 10,
+    "max_calls_per_day": 100,
     "max_retries": 2,
     "retry_delay_sec": 5.0,
     "timeout_sec": 120,

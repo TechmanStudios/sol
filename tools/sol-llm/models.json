@@ -18,7 +18,7 @@
       "name": "Google (Gemini)",
       "endpoint": "https://generativelanguage.googleapis.com",
       "env_var": "GOOGLE_API_KEY",
-      "sdk": "google"
+      "sdk": "openai"
     },
     "openai": {
       "name": "OpenAI (Direct)",
@@ -29,31 +29,31 @@
   },
   "slots": {
     "primary": {
-      "id": "Meta-Llama-3.1-405B-Instruct",
-      "name": "Llama 3.1 405B",
-      "provider": "github",
-      "context_window": 128000,
-      "cost_per_1k_input": 0.0,
-      "cost_per_1k_output": 0.0,
+      "id": "gemini-3.5-flash",
+      "name": "Gemini 3.5 Flash",
+      "provider": "google",
+      "context_window": 1048576,
+      "cost_per_1k_input": 0.000075,
+      "cost_per_1k_output": 0.0003,
       "is_reasoning": false
     },
     "fallback": {
-      "id": "Mistral-large-2411",
-      "name": "Mistral Large 2411",
-      "provider": "github",
-      "context_window": 128000,
-      "cost_per_1k_input": 0.0,
-      "cost_per_1k_output": 0.0,
+      "id": "gemini-3.5-flash",
+      "name": "Gemini 3.5 Flash",
+      "provider": "google",
+      "context_window": 1048576,
+      "cost_per_1k_input": 0.000075,
+      "cost_per_1k_output": 0.0003,
       "is_reasoning": false
     },
     "reasoning": {
-      "id": "DeepSeek-R1-0528",
-      "name": "DeepSeek R1 0528",
-      "provider": "github",
-      "context_window": 163840,
-      "cost_per_1k_input": 0.0,
-      "cost_per_1k_output": 0.0,
-      "is_reasoning": true
+      "id": "gemini-3.5-flash",
+      "name": "Gemini 3.5 Flash",
+      "provider": "google",
+      "context_window": 1048576,
+      "cost_per_1k_input": 0.000075,
+      "cost_per_1k_output": 0.0003,
+      "is_reasoning": false
     }
   },
   "budget": {
@@ -61,6 +61,8 @@
     "max_calls_per_cycle": 20,
     "max_cost_per_cycle_usd": 2.0,
     "max_cost_per_day_usd": 10.0,
+    "max_calls_per_minute": 10,
+    "max_calls_per_day": 100,
     "max_retries": 2,
     "retry_delay_sec": 5.0,
     "timeout_sec": 120
