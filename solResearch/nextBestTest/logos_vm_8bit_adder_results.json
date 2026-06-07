@@ -1,0 +1,2963 @@
+{
+  "schema": "sol.level6.verification.v1",
+  "run_id": "logos_vm_8bit_adder_20260605_235456",
+  "primitive": "8bit_serial_adder",
+  "level": "6.1",
+  "cases_total": 128,
+  "cases_passed": 128,
+  "failure_rate": 0.0,
+  "runtime_seconds": 4449.1641454696655,
+  "worst_cases": {
+    "min_active_register_mass": 76.25004772876181,
+    "max_source_basin_delta": 3.3306690738754696e-16,
+    "max_residual_flux_exit": 0.0007501386629307984,
+    "max_bus_rho_exit": 1.875244643998186e-05
+  },
+  "failures": [],
+  "results": [
+    {
+      "x": 0,
+      "y": 0,
+      "cin": 0,
+      "expected_sum": 0,
+      "actual_sum": 0,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007390802261032963,
+        "max_bus_rho_exit": 1.847600055795326e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "cin": 1,
+      "expected_sum": 1,
+      "actual_sum": 1,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007397391675452021,
+        "max_bus_rho_exit": 1.849247319788912e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 255,
+      "y": 0,
+      "cin": 0,
+      "expected_sum": 255,
+      "actual_sum": 255,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007424019257019054,
+        "max_bus_rho_exit": 1.855903853065188e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 255,
+      "y": 0,
+      "cin": 1,
+      "expected_sum": 256,
+      "actual_sum": 256,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007478056864824205,
+        "max_bus_rho_exit": 1.8694125201448416e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 0,
+      "y": 255,
+      "cin": 0,
+      "expected_sum": 255,
+      "actual_sum": 255,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007409860362867155,
+        "max_bus_rho_exit": 1.8523643220777373e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 0,
+      "y": 255,
+      "cin": 1,
+      "expected_sum": 256,
+      "actual_sum": 256,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007473219791062831,
+        "max_bus_rho_exit": 1.8682033174851356e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 255,
+      "y": 255,
+      "cin": 0,
+      "expected_sum": 510,
+      "actual_sum": 510,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.0007485471568203059,
+        "max_bus_rho_exit": 1.8712660951550547e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 255,
+      "y": 255,
+      "cin": 1,
+      "expected_sum": 511,
+      "actual_sum": 511,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 111.55630501406932,
+        "max_source_basin_delta": 2.220446049250313e-16,
+        "max_residual_flux_exit": 0.00074858588958181,
+        "max_bus_rho_exit": 1.8713629217914448e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 127,
+      "y": 128,
+      "cin": 0,
+      "expected_sum": 255,
+      "actual_sum": 255,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007425668188156273,
+        "max_bus_rho_exit": 1.8563160634252453e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 127,
+      "y": 128,
+      "cin": 1,
+      "expected_sum": 256,
+      "actual_sum": 256,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007478488867486855,
+        "max_bus_rho_exit": 1.8695205149355863e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 128,
+      "y": 127,
+      "cin": 0,
+      "expected_sum": 255,
+      "actual_sum": 255,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007403135849920378,
+        "max_bus_rho_exit": 1.8506832852894627e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 128,
+      "y": 127,
+      "cin": 1,
+      "expected_sum": 256,
+      "actual_sum": 256,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007471128781959006,
+        "max_bus_rho_exit": 1.867680593645362e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 128,
+      "y": 128,
+      "cin": 0,
+      "expected_sum": 256,
+      "actual_sum": 256,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007430416301098069,
+        "max_bus_rho_exit": 1.8575030270898578e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 255,
+      "y": 1,
+      "cin": 1,
+      "expected_sum": 257,
+      "actual_sum": 257,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 111.55630501406932,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007478500319808744,
+        "max_bus_rho_exit": 1.8695233778603155e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 57,
+      "y": 12,
+      "cin": 1,
+      "expected_sum": 70,
+      "actual_sum": 70,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007437765638066863,
+        "max_bus_rho_exit": 1.859340261386491e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 125,
+      "y": 114,
+      "cin": 0,
+      "expected_sum": 239,
+      "actual_sum": 239,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000749669418406618,
+        "max_bus_rho_exit": 1.8740715965015312e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 52,
+      "y": 44,
+      "cin": 1,
+      "expected_sum": 97,
+      "actual_sum": 97,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007431613486193269,
+        "max_bus_rho_exit": 1.857802307082823e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 16,
+      "y": 15,
+      "cin": 0,
+      "expected_sum": 31,
+      "actual_sum": 31,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007397881636909688,
+        "max_bus_rho_exit": 1.8493698034902138e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 111,
+      "y": 119,
+      "cin": 0,
+      "expected_sum": 230,
+      "actual_sum": 230,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007491181168143992,
+        "max_bus_rho_exit": 1.8726934174939373e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 101,
+      "y": 214,
+      "cin": 0,
+      "expected_sum": 315,
+      "actual_sum": 315,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007464357475530355,
+        "max_bus_rho_exit": 1.8659878591229753e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 229,
+      "y": 142,
+      "cin": 0,
+      "expected_sum": 371,
+      "actual_sum": 371,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007467938390901142,
+        "max_bus_rho_exit": 1.8668830392678625e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 81,
+      "y": 216,
+      "cin": 1,
+      "expected_sum": 298,
+      "actual_sum": 298,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007482418064769913,
+        "max_bus_rho_exit": 1.870502760822164e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 142,
+      "y": 79,
+      "cin": 0,
+      "expected_sum": 221,
+      "actual_sum": 221,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007422787111752377,
+        "max_bus_rho_exit": 1.855595833504786e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 172,
+      "y": 52,
+      "cin": 0,
+      "expected_sum": 224,
+      "actual_sum": 224,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007460110462000124,
+        "max_bus_rho_exit": 1.8649261634966713e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 194,
+      "y": 49,
+      "cin": 1,
+      "expected_sum": 244,
+      "actual_sum": 244,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007417576778235574,
+        "max_bus_rho_exit": 1.854293320982281e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 176,
+      "y": 135,
+      "cin": 0,
+      "expected_sum": 311,
+      "actual_sum": 311,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007471686922264366,
+        "max_bus_rho_exit": 1.8678201211314052e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 235,
+      "y": 63,
+      "cin": 1,
+      "expected_sum": 299,
+      "actual_sum": 299,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 111.55630501406932,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007471977259965215,
+        "max_bus_rho_exit": 1.8678927016082386e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 40,
+      "y": 150,
+      "cin": 1,
+      "expected_sum": 191,
+      "actual_sum": 191,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000742739631829613,
+        "max_bus_rho_exit": 1.856748072458913e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 98,
+      "y": 35,
+      "cin": 0,
+      "expected_sum": 133,
+      "actual_sum": 133,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007485214060483817,
+        "max_bus_rho_exit": 1.8712017217271594e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 116,
+      "y": 148,
+      "cin": 0,
+      "expected_sum": 264,
+      "actual_sum": 264,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007482404474006215,
+        "max_bus_rho_exit": 1.870499363316064e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 119,
+      "y": 51,
+      "cin": 1,
+      "expected_sum": 171,
+      "actual_sum": 171,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 111.55630501406932,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007494656229067811,
+        "max_bus_rho_exit": 1.873562135466625e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 142,
+      "y": 232,
+      "cin": 1,
+      "expected_sum": 375,
+      "actual_sum": 375,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007460745827132004,
+        "max_bus_rho_exit": 1.865084996139144e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 83,
+      "y": 189,
+      "cin": 1,
+      "expected_sum": 273,
+      "actual_sum": 273,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 111.55630501406932,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007479655745606283,
+        "max_bus_rho_exit": 1.8698122185967608e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 107,
+      "y": 136,
+      "cin": 0,
+      "expected_sum": 243,
+      "actual_sum": 243,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007426306759248527,
+        "max_bus_rho_exit": 1.8564756975142122e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 87,
+      "y": 125,
+      "cin": 0,
+      "expected_sum": 212,
+      "actual_sum": 212,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007496148290998518,
+        "max_bus_rho_exit": 1.873935130658359e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 236,
+      "y": 194,
+      "cin": 1,
+      "expected_sum": 431,
+      "actual_sum": 431,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007487872320698591,
+        "max_bus_rho_exit": 1.8718662506304732e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 112,
+      "y": 166,
+      "cin": 0,
+      "expected_sum": 278,
+      "actual_sum": 278,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007465159077186743,
+        "max_bus_rho_exit": 1.866188248635881e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 117,
+      "y": 16,
+      "cin": 1,
+      "expected_sum": 134,
+      "actual_sum": 134,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007498256525700201,
+        "max_bus_rho_exit": 1.874462160663342e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 205,
+      "y": 137,
+      "cin": 0,
+      "expected_sum": 342,
+      "actual_sum": 342,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007446188964680108,
+        "max_bus_rho_exit": 1.861445978488769e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 108,
+      "y": 161,
+      "cin": 0,
+      "expected_sum": 269,
+      "actual_sum": 269,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007468700173534913,
+        "max_bus_rho_exit": 1.867073474566623e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 255,
+      "y": 202,
+      "cin": 1,
+      "expected_sum": 458,
+      "actual_sum": 458,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007489649301374455,
+        "max_bus_rho_exit": 1.872310471633812e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 73,
+      "y": 135,
+      "cin": 0,
+      "expected_sum": 208,
+      "actual_sum": 208,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.00074336119471666,
+        "max_bus_rho_exit": 1.8583018951485595e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 126,
+      "y": 134,
+      "cin": 1,
+      "expected_sum": 261,
+      "actual_sum": 261,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007478725194284081,
+        "max_bus_rho_exit": 1.8695795934210226e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 204,
+      "y": 185,
+      "cin": 0,
+      "expected_sum": 389,
+      "actual_sum": 389,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007484801486825445,
+        "max_bus_rho_exit": 1.8710985839232638e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 70,
+      "y": 252,
+      "cin": 0,
+      "expected_sum": 322,
+      "actual_sum": 322,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007478503141257668,
+        "max_bus_rho_exit": 1.869524083184177e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 24,
+      "y": 56,
+      "cin": 0,
+      "expected_sum": 80,
+      "actual_sum": 80,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007435239327105428,
+        "max_bus_rho_exit": 1.858708718002099e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 81,
+      "y": 216,
+      "cin": 0,
+      "expected_sum": 297,
+      "actual_sum": 297,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000748066273032169,
+        "max_bus_rho_exit": 1.870063951081363e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 197,
+      "y": 195,
+      "cin": 1,
+      "expected_sum": 393,
+      "actual_sum": 393,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 111.55630501406932,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007483001731724713,
+        "max_bus_rho_exit": 1.8706486696234235e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 128,
+      "y": 5,
+      "cin": 0,
+      "expected_sum": 133,
+      "actual_sum": 133,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007441150425739616,
+        "max_bus_rho_exit": 1.8601864122740614e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 136,
+      "y": 174,
+      "cin": 0,
+      "expected_sum": 310,
+      "actual_sum": 310,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000745110247146242,
+        "max_bus_rho_exit": 1.8626742883642766e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 150,
+      "y": 222,
+      "cin": 0,
+      "expected_sum": 372,
+      "actual_sum": 372,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007442775773954555,
+        "max_bus_rho_exit": 1.8605927272242588e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 232,
+      "y": 1,
+      "cin": 1,
+      "expected_sum": 234,
+      "actual_sum": 234,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007430785144067013,
+        "max_bus_rho_exit": 1.8575952328161013e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 91,
+      "y": 54,
+      "cin": 1,
+      "expected_sum": 146,
+      "actual_sum": 146,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007493242753534258,
+        "max_bus_rho_exit": 1.873208785805462e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 101,
+      "y": 78,
+      "cin": 1,
+      "expected_sum": 180,
+      "actual_sum": 180,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007476962794312971,
+        "max_bus_rho_exit": 1.8691390173955852e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 82,
+      "y": 0,
+      "cin": 1,
+      "expected_sum": 83,
+      "actual_sum": 83,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007386232253549286,
+        "max_bus_rho_exit": 1.8464576160731404e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 250,
+      "y": 9,
+      "cin": 0,
+      "expected_sum": 259,
+      "actual_sum": 259,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000747822841466903,
+        "max_bus_rho_exit": 1.8694554052730962e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 185,
+      "y": 157,
+      "cin": 0,
+      "expected_sum": 342,
+      "actual_sum": 342,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007458277115468486,
+        "max_bus_rho_exit": 1.8644678517959232e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 29,
+      "y": 123,
+      "cin": 0,
+      "expected_sum": 152,
+      "actual_sum": 152,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007488744685409467,
+        "max_bus_rho_exit": 1.8720843299446753e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 43,
+      "y": 248,
+      "cin": 0,
+      "expected_sum": 291,
+      "actual_sum": 291,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007470877493598215,
+        "max_bus_rho_exit": 1.8676177749725006e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 64,
+      "y": 65,
+      "cin": 1,
+      "expected_sum": 130,
+      "actual_sum": 130,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007489020086077374,
+        "max_bus_rho_exit": 1.872153176366406e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 84,
+      "y": 135,
+      "cin": 1,
+      "expected_sum": 220,
+      "actual_sum": 220,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007431910034234829,
+        "max_bus_rho_exit": 1.8578764400603782e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 108,
+      "y": 102,
+      "cin": 1,
+      "expected_sum": 211,
+      "actual_sum": 211,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007485580030427018,
+        "max_bus_rho_exit": 1.871293209236038e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 204,
+      "y": 191,
+      "cin": 1,
+      "expected_sum": 396,
+      "actual_sum": 396,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007485091505875427,
+        "max_bus_rho_exit": 1.871171084741714e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 231,
+      "y": 61,
+      "cin": 0,
+      "expected_sum": 292,
+      "actual_sum": 292,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007472907886141784,
+        "max_bus_rho_exit": 1.8681253454965508e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 115,
+      "y": 32,
+      "cin": 1,
+      "expected_sum": 148,
+      "actual_sum": 148,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007479685776371074,
+        "max_bus_rho_exit": 1.8698197258795625e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 10,
+      "y": 117,
+      "cin": 0,
+      "expected_sum": 127,
+      "actual_sum": 127,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007369659446690869,
+        "max_bus_rho_exit": 1.842314639736493e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 3,
+      "y": 36,
+      "cin": 0,
+      "expected_sum": 39,
+      "actual_sum": 39,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007397065139842031,
+        "max_bus_rho_exit": 1.8491656903270576e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 117,
+      "y": 34,
+      "cin": 0,
+      "expected_sum": 151,
+      "actual_sum": 151,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007478595965018434,
+        "max_bus_rho_exit": 1.8695472878620335e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 169,
+      "y": 36,
+      "cin": 0,
+      "expected_sum": 205,
+      "actual_sum": 205,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.6079569708291,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007449622734484692,
+        "max_bus_rho_exit": 1.862304374243177e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 142,
+      "y": 248,
+      "cin": 0,
+      "expected_sum": 390,
+      "actual_sum": 390,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007480748117789994,
+        "max_bus_rho_exit": 1.8700852967872325e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 67,
+      "y": 242,
+      "cin": 0,
+      "expected_sum": 309,
+      "actual_sum": 309,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007463526351186638,
+        "max_bus_rho_exit": 1.865780089339725e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 242,
+      "y": 208,
+      "cin": 0,
+      "expected_sum": 450,
+      "actual_sum": 450,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007492697639140161,
+        "max_bus_rho_exit": 1.8730725146200918e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 48,
+      "y": 49,
+      "cin": 1,
+      "expected_sum": 98,
+      "actual_sum": 98,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007440958735008606,
+        "max_bus_rho_exit": 1.8601384921981618e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 181,
+      "y": 216,
+      "cin": 1,
+      "expected_sum": 398,
+      "actual_sum": 398,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007488756855331273,
+        "max_bus_rho_exit": 1.8720873722596247e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 239,
+      "y": 27,
+      "cin": 0,
+      "expected_sum": 266,
+      "actual_sum": 266,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000747650330737073,
+        "max_bus_rho_exit": 1.8690241519087094e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 31,
+      "y": 206,
+      "cin": 1,
+      "expected_sum": 238,
+      "actual_sum": 238,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007449849743919761,
+        "max_bus_rho_exit": 1.8623611235147834e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 55,
+      "y": 127,
+      "cin": 0,
+      "expected_sum": 182,
+      "actual_sum": 182,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007485496117004364,
+        "max_bus_rho_exit": 1.8712722320215352e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 97,
+      "y": 229,
+      "cin": 0,
+      "expected_sum": 326,
+      "actual_sum": 326,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007475756413446315,
+        "max_bus_rho_exit": 1.868837438584812e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 216,
+      "y": 93,
+      "cin": 1,
+      "expected_sum": 310,
+      "actual_sum": 310,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007479790764950132,
+        "max_bus_rho_exit": 1.86984597159656e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 236,
+      "y": 127,
+      "cin": 0,
+      "expected_sum": 363,
+      "actual_sum": 363,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007475096160920861,
+        "max_bus_rho_exit": 1.8686723844323965e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 226,
+      "y": 50,
+      "cin": 0,
+      "expected_sum": 276,
+      "actual_sum": 276,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007466951437640862,
+        "max_bus_rho_exit": 1.8666363143746296e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 7,
+      "y": 47,
+      "cin": 0,
+      "expected_sum": 54,
+      "actual_sum": 54,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007392232285583539,
+        "max_bus_rho_exit": 1.8479575424856907e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 85,
+      "y": 208,
+      "cin": 1,
+      "expected_sum": 294,
+      "actual_sum": 294,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007483378770660843,
+        "max_bus_rho_exit": 1.870742924230005e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 246,
+      "y": 109,
+      "cin": 1,
+      "expected_sum": 356,
+      "actual_sum": 356,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007478604620559116,
+        "max_bus_rho_exit": 1.8695494516294948e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 30,
+      "y": 84,
+      "cin": 1,
+      "expected_sum": 115,
+      "actual_sum": 115,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007425921962670832,
+        "max_bus_rho_exit": 1.8563795036027384e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 1,
+      "y": 199,
+      "cin": 1,
+      "expected_sum": 201,
+      "actual_sum": 201,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 111.55630501406932,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007430736617528686,
+        "max_bus_rho_exit": 1.8575831018414446e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 232,
+      "y": 146,
+      "cin": 1,
+      "expected_sum": 379,
+      "actual_sum": 379,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007478806587048764,
+        "max_bus_rho_exit": 1.8695999405053116e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 249,
+      "y": 79,
+      "cin": 0,
+      "expected_sum": 328,
+      "actual_sum": 328,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007481035524059869,
+        "max_bus_rho_exit": 1.8701571444461872e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 151,
+      "y": 111,
+      "cin": 0,
+      "expected_sum": 262,
+      "actual_sum": 262,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007473355366215355,
+        "max_bus_rho_exit": 1.8682372094295447e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 31,
+      "y": 160,
+      "cin": 0,
+      "expected_sum": 191,
+      "actual_sum": 191,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007428553231857436,
+        "max_bus_rho_exit": 1.857037285116068e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 25,
+      "y": 244,
+      "cin": 0,
+      "expected_sum": 269,
+      "actual_sum": 269,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.6079569708291,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007479002159346032,
+        "max_bus_rho_exit": 1.8696488309199898e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 29,
+      "y": 41,
+      "cin": 0,
+      "expected_sum": 70,
+      "actual_sum": 70,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007436221207181511,
+        "max_bus_rho_exit": 1.8589541746682743e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 35,
+      "y": 34,
+      "cin": 0,
+      "expected_sum": 69,
+      "actual_sum": 69,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007415903880700061,
+        "max_bus_rho_exit": 1.853875119348576e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 206,
+      "y": 61,
+      "cin": 0,
+      "expected_sum": 267,
+      "actual_sum": 267,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007475024222814704,
+        "max_bus_rho_exit": 1.8686544008841623e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 20,
+      "y": 41,
+      "cin": 1,
+      "expected_sum": 62,
+      "actual_sum": 62,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007388978775538751,
+        "max_bus_rho_exit": 1.847144209219832e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 161,
+      "y": 133,
+      "cin": 0,
+      "expected_sum": 294,
+      "actual_sum": 294,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000744448700424506,
+        "max_bus_rho_exit": 1.8610205115254147e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 160,
+      "y": 122,
+      "cin": 1,
+      "expected_sum": 283,
+      "actual_sum": 283,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000746050606599914,
+        "max_bus_rho_exit": 1.8650250591165022e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 202,
+      "y": 67,
+      "cin": 1,
+      "expected_sum": 270,
+      "actual_sum": 270,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007471674032200533,
+        "max_bus_rho_exit": 1.8678168987907424e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 234,
+      "y": 161,
+      "cin": 0,
+      "expected_sum": 395,
+      "actual_sum": 395,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007480712434251716,
+        "max_bus_rho_exit": 1.8700763763879324e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 4,
+      "y": 234,
+      "cin": 0,
+      "expected_sum": 238,
+      "actual_sum": 238,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007419955791697587,
+        "max_bus_rho_exit": 1.8548880419949543e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 37,
+      "y": 109,
+      "cin": 1,
+      "expected_sum": 147,
+      "actual_sum": 147,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 111.55630501406932,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007476652370194411,
+        "max_bus_rho_exit": 1.8690614155874847e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 67,
+      "y": 178,
+      "cin": 0,
+      "expected_sum": 245,
+      "actual_sum": 245,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007421107560060621,
+        "max_bus_rho_exit": 1.8551759684225123e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 125,
+      "y": 189,
+      "cin": 1,
+      "expected_sum": 315,
+      "actual_sum": 315,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 111.55630501406932,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000747660219199392,
+        "max_bus_rho_exit": 1.8690488717197488e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 80,
+      "y": 224,
+      "cin": 1,
+      "expected_sum": 305,
+      "actual_sum": 305,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000746442171745985,
+        "max_bus_rho_exit": 1.8660039187317065e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 4,
+      "y": 153,
+      "cin": 0,
+      "expected_sum": 157,
+      "actual_sum": 157,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000743313859594693,
+        "max_bus_rho_exit": 1.8581835637808696e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 68,
+      "y": 135,
+      "cin": 0,
+      "expected_sum": 203,
+      "actual_sum": 203,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007438162320666076,
+        "max_bus_rho_exit": 1.859439426641703e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 54,
+      "y": 79,
+      "cin": 1,
+      "expected_sum": 134,
+      "actual_sum": 134,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007488028769924768,
+        "max_bus_rho_exit": 1.8719053608094233e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 144,
+      "y": 107,
+      "cin": 1,
+      "expected_sum": 252,
+      "actual_sum": 252,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007409708105175867,
+        "max_bus_rho_exit": 1.852326259725508e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 104,
+      "y": 135,
+      "cin": 1,
+      "expected_sum": 240,
+      "actual_sum": 240,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 153.76394337331593,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007427297096694248,
+        "max_bus_rho_exit": 1.8567232684077833e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 128,
+      "y": 26,
+      "cin": 0,
+      "expected_sum": 154,
+      "actual_sum": 154,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007430297809617279,
+        "max_bus_rho_exit": 1.8574734058310568e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 216,
+      "y": 141,
+      "cin": 0,
+      "expected_sum": 357,
+      "actual_sum": 357,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000745075816837086,
+        "max_bus_rho_exit": 1.862588217273655e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 1,
+      "y": 170,
+      "cin": 0,
+      "expected_sum": 171,
+      "actual_sum": 171,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007433280539221645,
+        "max_bus_rho_exit": 1.8582190476692246e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 134,
+      "y": 82,
+      "cin": 1,
+      "expected_sum": 217,
+      "actual_sum": 217,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007419059758045777,
+        "max_bus_rho_exit": 1.8546640457673994e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 218,
+      "y": 4,
+      "cin": 0,
+      "expected_sum": 222,
+      "actual_sum": 222,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007429960532279642,
+        "max_bus_rho_exit": 1.8573890910833713e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 38,
+      "y": 76,
+      "cin": 0,
+      "expected_sum": 114,
+      "actual_sum": 114,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007377492736073012,
+        "max_bus_rho_exit": 1.8442728555550674e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 189,
+      "y": 75,
+      "cin": 1,
+      "expected_sum": 265,
+      "actual_sum": 265,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 111.55630501406932,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007474791453809193,
+        "max_bus_rho_exit": 1.8685962117982714e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 65,
+      "y": 21,
+      "cin": 1,
+      "expected_sum": 87,
+      "actual_sum": 87,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 111.55630501406932,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007385965116876903,
+        "max_bus_rho_exit": 1.8463908355379066e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 186,
+      "y": 20,
+      "cin": 1,
+      "expected_sum": 207,
+      "actual_sum": 207,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 202.91245106390224,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007474711520124365,
+        "max_bus_rho_exit": 1.8685762294641037e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 107,
+      "y": 127,
+      "cin": 0,
+      "expected_sum": 234,
+      "actual_sum": 234,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007489356500994918,
+        "max_bus_rho_exit": 1.8722372755207968e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 181,
+      "y": 208,
+      "cin": 0,
+      "expected_sum": 389,
+      "actual_sum": 389,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007488028611110903,
+        "max_bus_rho_exit": 1.871905321108117e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 121,
+      "y": 83,
+      "cin": 0,
+      "expected_sum": 204,
+      "actual_sum": 204,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 157.501269864218,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007501386629307984,
+        "max_bus_rho_exit": 1.875244643998186e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 211,
+      "y": 12,
+      "cin": 0,
+      "expected_sum": 223,
+      "actual_sum": 223,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007428637708791199,
+        "max_bus_rho_exit": 1.857058403200685e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 170,
+      "y": 210,
+      "cin": 0,
+      "expected_sum": 380,
+      "actual_sum": 380,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.000746842778757654,
+        "max_bus_rho_exit": 1.867005381781278e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 136,
+      "y": 81,
+      "cin": 0,
+      "expected_sum": 217,
+      "actual_sum": 217,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 151.94989398088438,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007417504126488506,
+        "max_bus_rho_exit": 1.8542751590335243e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 195,
+      "y": 19,
+      "cin": 1,
+      "expected_sum": 215,
+      "actual_sum": 215,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 111.55630501406932,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007427713576872926,
+        "max_bus_rho_exit": 1.8568273827886292e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 113,
+      "y": 102,
+      "cin": 1,
+      "expected_sum": 216,
+      "actual_sum": 216,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.3760405706316,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007484729571097819,
+        "max_bus_rho_exit": 1.871080605969358e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 179,
+      "y": 156,
+      "cin": 0,
+      "expected_sum": 335,
+      "actual_sum": 335,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 164.61694106590562,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007459276173906534,
+        "max_bus_rho_exit": 1.864717602818977e-05,
+        "steps": 5715
+      }
+    },
+    {
+      "x": 114,
+      "y": 12,
+      "cin": 0,
+      "expected_sum": 126,
+      "actual_sum": 126,
+      "passed": true,
+      "invariants": {
+        "arithmetic_ok": true,
+        "reg_ok": true,
+        "src_insulation_ok": true,
+        "mass_ok": true,
+        "flux_ok": true,
+        "bus_rho_ok": true
+      },
+      "metrics": {
+        "min_active_register_mass": 76.25004772876181,
+        "max_source_basin_delta": 3.3306690738754696e-16,
+        "max_residual_flux_exit": 0.0007381104372486892,
+        "max_bus_rho_exit": 1.8451757155429445e-05,
+        "steps": 5715
+      }
+    }
+  ]
+}

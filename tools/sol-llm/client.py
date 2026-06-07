@@ -62,9 +62,7 @@ except ImportError:
 # ---------------------------------------------------------------------------
 
 def _load_dotenv():
-    """Load .env from SOL root if GITHUB_TOKEN is not already set."""
-    if os.environ.get("GITHUB_TOKEN") or os.environ.get("GITHUB_MODELS_TOKEN"):
-        return  # already configured
+    """Load .env from SOL root if keys are missing from environment."""
     env_path = Path(__file__).resolve().parent.parent.parent / ".env"
     if not env_path.exists():
         return
@@ -149,6 +147,47 @@ def load_daily_cost() -> float:
     return total
 
 
+def load_recent_calls_count(seconds: int) -> int:
+    """Load count of calls in the last X seconds from the ledger."""
+    if not _COST_LEDGER.exists():
+        return 0
+    now = datetime.now(timezone.utc)
+    count = 0
+    with open(_COST_LEDGER, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                try:
+                    entry = json.loads(line)
+                    ts_str = entry.get("timestamp", "")
+                    if ts_str:
+                        dt = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
+                        if (now - dt).total_seconds() <= seconds:
+                            count += 1
+                except (json.JSONDecodeError, ValueError):
+                    pass
+    return count
+
+
+def load_daily_calls_count() -> int:
+    """Load total number of calls made today from the ledger."""
+    if not _COST_LEDGER.exists():
+        return 0
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    count = 0
+    with open(_COST_LEDGER, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                try:
+                    entry = json.loads(line)
+                    if entry.get("timestamp", "").startswith(today):
+                        count += 1
+                except (json.JSONDecodeError, ValueError):
+                    pass
+    return count
+
+
 # ---------------------------------------------------------------------------
 # Client
 # ---------------------------------------------------------------------------
@@ -175,17 +214,24 @@ class SolLLM:
         self.session_tokens_in = 0
         self.session_tokens_out = 0
 
-        # Resolve API key — check multiple env var names
+        # Resolve primary API key for backward compatibility
         self.api_key = (
             os.environ.get("GITHUB_TOKEN")
             or os.environ.get("GITHUB_MODELS_TOKEN")
             or os.environ.get("GH_TOKEN")
+            or os.environ.get("GOOGLE_API_KEY")
+            or os.environ.get("OPENAI_API_KEY")
         )
-        if not self.api_key:
-            raise EnvironmentError(
-                "No GitHub token found. Set GITHUB_TOKEN environment variable "
-                "with a fine-grained PAT that has GitHub Models API access."
-            )
+
+        self._clients = {}
+
+    def _get_client_for_model(self, model_key: str):
+        """Lazily resolve the OpenAI client for a specific model slot/provider."""
+        model_cfg = MODELS[model_key]
+        provider_key = model_cfg.get("provider", "github")
+
+        if provider_key in self._clients:
+            return self._clients[provider_key]
 
         # Lazy-import openai to avoid top-level dependency
         try:
@@ -195,10 +241,45 @@ class SolLLM:
                 "openai package required: pip install openai"
             )
 
-        self._client = OpenAI(
-            base_url=GITHUB_MODELS_ENDPOINT,
-            api_key=self.api_key,
+        # Load providers config
+        try:
+            from .config import PROVIDERS
+        except ImportError:
+            from config import PROVIDERS
+
+        prov_cfg = PROVIDERS.get(provider_key)
+        if not prov_cfg:
+            raise ValueError(f"Unknown provider '{provider_key}' for model slot '{model_key}'.")
+
+        env_var = prov_cfg.get("env_var", "")
+        api_key = os.environ.get(env_var)
+
+        # Fallback for github token name variations
+        if provider_key == "github" and not api_key:
+            api_key = (
+                os.environ.get("GITHUB_TOKEN")
+                or os.environ.get("GITHUB_MODELS_TOKEN")
+                or os.environ.get("GH_TOKEN")
+            )
+
+        if not api_key:
+            raise EnvironmentError(
+                f"API key for provider '{provider_key}' ({env_var}) not found in environment. "
+                f"Please define it in your .env file."
+            )
+
+        endpoint = prov_cfg.get("endpoint", "")
+        # For google provider, adjust endpoint if it targets Google API
+        if provider_key == "google" and "generativelanguage.googleapis.com" in endpoint:
+            if "/v1beta/openai" not in endpoint and "/v1/openai" not in endpoint:
+                endpoint = endpoint.rstrip("/") + "/v1beta/openai"
+
+        client = OpenAI(
+            base_url=endpoint,
+            api_key=api_key,
         )
+        self._clients[provider_key] = client
+        return client
 
     # ------------------------------------------------------------------
     # Budget checks
@@ -210,9 +291,24 @@ class SolLLM:
             return False, f"max_calls_per_cycle reached ({self.session_calls})"
         if self.session_cost_usd >= self.budget["max_cost_per_cycle_usd"]:
             return False, f"cycle cost cap reached (${self.session_cost_usd:.2f})"
-        daily = load_daily_cost() + self.session_cost_usd
-        if daily >= self.budget["max_cost_per_day_usd"]:
-            return False, f"daily cost cap reached (${daily:.2f})"
+        
+        # Daily cost check
+        daily_cost = load_daily_cost() + self.session_cost_usd
+        if daily_cost >= self.budget["max_cost_per_day_usd"]:
+            return False, f"daily cost cap reached (${daily_cost:.2f})"
+            
+        # Per-minute calls circuit breaker
+        max_min_calls = self.budget.get("max_calls_per_minute", 10)
+        recent_calls = load_recent_calls_count(60)
+        if recent_calls >= max_min_calls:
+            return False, f"rate limit: too many calls in the last minute ({recent_calls}/{max_min_calls})"
+            
+        # Per-day calls circuit breaker
+        max_day_calls = self.budget.get("max_calls_per_day", 100)
+        daily_calls = load_daily_calls_count()
+        if daily_calls >= max_day_calls:
+            return False, f"rate limit: too many calls today ({daily_calls}/{max_day_calls})"
+            
         return True, "OK"
 
     # ------------------------------------------------------------------
@@ -239,6 +335,8 @@ class SolLLM:
 
         t0 = time.time()
         try:
+            client = self._get_client_for_model(model_key)
+
             kwargs: dict[str, Any] = {
                 "model": model_id,
                 "messages": messages,
@@ -254,7 +352,7 @@ class SolLLM:
                 if json_mode:
                     kwargs["response_format"] = {"type": "json_object"}
 
-            result = self._client.chat.completions.create(**kwargs)
+            result = client.chat.completions.create(**kwargs)
 
             response.content = result.choices[0].message.content or ""
             response.input_tokens = getattr(result.usage, "prompt_tokens", 0)
@@ -471,4 +569,6 @@ class SolLLM:
             os.environ.get("GITHUB_TOKEN")
             or os.environ.get("GITHUB_MODELS_TOKEN")
             or os.environ.get("GH_TOKEN")
+            or os.environ.get("GOOGLE_API_KEY")
+            or os.environ.get("OPENAI_API_KEY")
         )
