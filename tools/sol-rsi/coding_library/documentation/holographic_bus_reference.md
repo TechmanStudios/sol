@@ -68,3 +68,26 @@ Anisotropic metric tensors $g_{ij}$ are introduced to compress the spatial footp
 
 ### D. Chebyshev or Hermite-Gaussian Wave-packets
 Modulating with non-sinusoidal waveforms whose spatial envelopes naturally decay to zero at the boundaries completely eliminates reflection noise, preventing destructive standing wave interference.
+
+---
+
+## 4. Level 11 PDM Calibration and Stabilization Guidelines
+
+### A. Failure Analysis (Periods $T \ge 18.0$)
+When driving the PDM channels at longer periods (e.g. $T = 18.0$, $T = 22.0$), calibration often collapses (yielding low, near-zero, or negative deltas). This is caused by:
+1.  **Damping Decay Mismatch**: With flat damping coefficient $\gamma = 0.01$, the relaxation timescale is $\tau = 100.0$ steps. At $T \ge 18.0$, the wave remains in the negative flux cycle longer than $\tau$, draining the register density below the critical mass preservation threshold ($\rho \ge 14.0$).
+2.  **Boundary Reflections**: Long spatial wavelengths exceed the localized basin boundaries, reflecting back as standing waves and causing phase-cancellation.
+3.  **Jeans Accretion Collapse**: At longer periods, wave patterns exceed the Jeans length ($\lambda > \lambda_J$), leading to gravitational collapse into nearby dense basins.
+
+### B. Stabilization Parameter Specification
+To stabilize 16-bit PDM, the following substrate overrides must be applied:
+
+| Parameter | Recommended Value | Physical Purpose |
+| :--- | :--- | :--- |
+| **Core Damping ($\gamma$)** | `0.002` to `0.004` | Extends relaxation timescale to 250–500 steps. |
+| **Boundary Damping ($\gamma_{boundary}$)** | `0.15` (32 cells thick) | Perfectly Matched Layer (PML) to absorb boundary reflections. |
+| **Grid Size** | `512 x 512` (minimum) | Pushes boundaries out to isolate register coordinate zones. |
+| **Time Step ($dt$)** | `0.02` | High temporal integration resolution to prevent phase dispersion. |
+| **Bias Flux Injection** | `0.15` | Steady flux offset to keep wave troughs above $\rho = 14.0$. |
+| **Periods List** | `[11.0, 13.0, 17.0, 19.0, 23.0, 29.0, 31.0, 37.0]` | Coprime prime-spaced periods to eliminate harmonic cross-talk. |
+

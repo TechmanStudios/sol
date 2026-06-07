@@ -1007,6 +1007,22 @@ class TestCodingLibrary(unittest.TestCase):
         finally:
             shutil.rmtree(temp_dir)
             
+    def test_level_11_agent_loads_real_lessons(self):
+        """Test that the Level 11 Agent loads the permanent level_lessons.json and holographic_bus_reference.md content."""
+        from coding_library.level_agents import LevelOrchestrator
+        from coding_library.library_agent import LuminaLibraryAgent
+        
+        lib = LuminaLibraryAgent()
+        orch = LevelOrchestrator()
+        agent = orch.get_level_agent(11, lib_agent=lib)
+        self.assertIsNotNone(agent)
+        
+        ctx = agent._get_context()
+        self.assertIn("Historical Failures & Lessons Learned for this Level", ctx)
+        self.assertIn("PDM phase calibration failure for period 18.0", ctx)
+        self.assertIn("Holographic Bus Reference", ctx)
+        self.assertIn("Level 11 PDM Calibration and Stabilization Guidelines", ctx)
+
     def test_compiler_static_safety_proofing(self):
         """Test that LuminaCompiler triggers StaticVerificationError when safety is breached."""
         from lumina_compiler import LuminaCompiler, LuminaAgent, StaticVerificationError
