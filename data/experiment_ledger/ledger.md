@@ -1,7 +1,7 @@
 # Experiment Ledger
 
-Generated: 2026-06-08T08:01:59.406616+00:00
-Records: 1672 | Runs: 252
+Generated: 2026-06-08T08:04:01.399739+00:00
+Records: 1673 | Runs: 253
 
 ## cortex
 
@@ -36,13 +36,13 @@ Records: 1672 | Runs: 252
 
 ## dream
 
-- Runs: 162 | Generations: 162 | Accepted: 162 | Acceptance: 100.00%
+- Runs: 163 | Generations: 163 | Accepted: 163 | Acceptance: 100.00%
 
 ### Modes
 
 | Mode | Runs | Gens | Accepted | Acceptance | Best dA | Best dF |
 |---|---:|---:|---:|---:|---:|---:|
-| discovery | 128 | 128 | 128 | 100.00% | 15.0000 | 1.0000 |
+| discovery | 129 | 129 | 129 | 100.00% | 15.0000 | 1.0000 |
 | mixed_consolidation | 33 | 33 | 33 | 100.00% | 10.0000 | 0.9995 |
 | reinforcement | 1 | 1 | 1 | 100.00% | 3.0000 | 0.8226 |
 
@@ -134,13 +134,13 @@ Records: 1672 | Runs: 252
 
 | Signal | Records | Accepted | Experiments |
 |---|---:|---:|---|
-| sol_manifold | 1371 | 241 | cortex, dream, self_train |
+| sol_manifold | 1372 | 242 | cortex, dream, self_train |
 | policy_adaptation | 1138 | 25 | self_train |
 | adaptive_rsi | 294 | 169 | rsi |
-| dream_replay | 162 | 162 | dream |
-| entropy_band:0p90 | 155 | 155 | dream |
+| dream_replay | 163 | 163 | dream |
+| entropy_band:0p90 | 156 | 156 | dream |
 | open_questions | 133 | 8 | rsi |
-| entropy_band:0p70 | 101 | 101 | dream |
+| entropy_band:0p70 | 102 | 102 | dream |
 | entropy_band:0p80 | 80 | 80 | dream |
 | injection:grail | 70 | 54 | cortex |
 | damping | 67 | 51 | cortex |
@@ -166,8 +166,8 @@ Records: 1672 | Runs: 252
 | entropy_band:0p50 | 21 | 21 | dream |
 | entropy_band:0p10 | 20 | 20 | dream |
 | source:cx_20260214_074804 | 18 | 18 | dream |
+| source:cx_20260525_074955 | 17 | 17 | dream |
 | entropy_band:0p20 | 16 | 16 | dream |
-| source:cx_20260525_074955 | 16 | 16 | dream |
 | injection | 13 | 13 | cortex |
 | source:cx_20260214_070812 | 11 | 11 | dream |
 | rho:1003 | 10 | 10 | dream |
@@ -176,9 +176,9 @@ Records: 1672 | Runs: 252
 | source:cx_20260212_052151 | 9 | 9 | dream |
 | source:cx_20260212_070748 | 9 | 9 | dream |
 | source:cx_20260212_074704 | 9 | 9 | dream |
+| source:cx_20260601_080455 | 9 | 9 | dream |
 | rho:1027 | 8 | 8 | dream |
 | source:cx_20260212_082639 | 8 | 8 | dream |
-| source:cx_20260601_080455 | 8 | 8 | dream |
 | manifold_potential | 7 | 4 | resonance |
 | phonon_memory | 7 | 4 | resonance |
 | rho:1126 | 7 | 7 | dream |
@@ -483,6 +483,7 @@ Records: 1672 | Runs: 252
 | basin:0de4fb1f | 1 | 1 | dream |
 | basin:0df6281f | 1 | 1 | dream |
 | basin:0e03c2b0 | 1 | 1 | dream |
+| basin:0e162456 | 1 | 1 | dream |
 | basin:0e2535fd | 1 | 1 | dream |
 | basin:0e3534aa | 1 | 1 | dream |
 | basin:0e9fb589 | 1 | 1 | dream |
@@ -754,6 +755,7 @@ Records: 1672 | Runs: 252
 | basin:31e0d0ed | 1 | 1 | dream |
 | basin:31fbe003 | 1 | 1 | dream |
 | basin:3212a4cb | 1 | 1 | dream |
+| basin:3235abc7 | 1 | 1 | dream |
 | basin:3245e180 | 1 | 1 | dream |
 | basin:324f75e8 | 1 | 1 | dream |
 | basin:3266cbcc | 1 | 1 | dream |
@@ -948,6 +950,7 @@ Records: 1672 | Runs: 252
 | basin:4d668258 | 1 | 1 | dream |
 | basin:4d830803 | 1 | 1 | dream |
 | basin:4d9e5452 | 1 | 1 | dream |
+| basin:4db796db | 1 | 1 | dream |
 | basin:4de5c7a4 | 1 | 1 | dream |
 | basin:4de8a0a2 | 1 | 1 | dream |
 | basin:4e22efa2 | 1 | 1 | dream |
@@ -963,6 +966,7 @@ Records: 1672 | Runs: 252
 | basin:4f20a435 | 1 | 1 | dream |
 | basin:4f3ed0aa | 1 | 1 | dream |
 | basin:4f69c8a3 | 1 | 1 | dream |
+| basin:4f7b081b | 1 | 1 | dream |
 | basin:4f93a520 | 1 | 1 | dream |
 | basin:4f9ac3cd | 1 | 1 | dream |
 | basin:4fa6b2c1 | 1 | 1 | dream |
@@ -1161,6 +1165,7 @@ Records: 1672 | Runs: 252
 | basin:67a6e199 | 1 | 1 | dream |
 | basin:67c2950e | 1 | 1 | dream |
 | basin:68023c23 | 1 | 1 | dream |
+| basin:681b25b6 | 1 | 1 | dream |
 | basin:68355c49 | 1 | 1 | dream |
 | basin:68371a2b | 1 | 1 | dream |
 | basin:6852f373 | 1 | 1 | dream |
@@ -1445,10 +1450,12 @@ Records: 1672 | Runs: 252
 | basin:93ef28f8 | 1 | 1 | dream |
 | basin:9412b475 | 1 | 1 | dream |
 | basin:9450c7aa | 1 | 1 | dream |
+| basin:949ca43d | 1 | 1 | dream |
 | basin:95683f04 | 1 | 1 | dream |
 | basin:95cb52d2 | 1 | 1 | dream |
 | basin:9648a1e6 | 1 | 1 | dream |
 | basin:968f739b | 1 | 1 | dream |
+| basin:96b81e0f | 1 | 1 | dream |
 | basin:971d11d9 | 1 | 1 | dream |
 | basin:9726c9f9 | 1 | 1 | dream |
 | basin:978f4a7c | 1 | 1 | dream |
@@ -1462,6 +1469,7 @@ Records: 1672 | Runs: 252
 | basin:98de7f27 | 1 | 1 | dream |
 | basin:99203734 | 1 | 1 | dream |
 | basin:992580aa | 1 | 1 | dream |
+| basin:993d88bd | 1 | 1 | dream |
 | basin:998ea452 | 1 | 1 | dream |
 | basin:9997c3d5 | 1 | 1 | dream |
 | basin:99986b82 | 1 | 1 | dream |
@@ -1609,6 +1617,7 @@ Records: 1672 | Runs: 252
 | basin:aeff4f21 | 1 | 1 | dream |
 | basin:af203035 | 1 | 1 | dream |
 | basin:af7caba3 | 1 | 1 | dream |
+| basin:af8bb41f | 1 | 1 | dream |
 | basin:af98c361 | 1 | 1 | dream |
 | basin:af9b4ca9 | 1 | 1 | dream |
 | basin:af9f4d18 | 1 | 1 | dream |
@@ -1693,6 +1702,7 @@ Records: 1672 | Runs: 252
 | basin:ba82d1e6 | 1 | 1 | dream |
 | basin:baa51e7a | 1 | 1 | dream |
 | basin:bad6abe4 | 1 | 1 | dream |
+| basin:bb092f97 | 1 | 1 | dream |
 | basin:bb0f218d | 1 | 1 | dream |
 | basin:bb22ef5e | 1 | 1 | dream |
 | basin:bb36ae9d | 1 | 1 | dream |
@@ -1862,6 +1872,7 @@ Records: 1672 | Runs: 252
 | basin:cfb2c0a8 | 1 | 1 | dream |
 | basin:d01197d6 | 1 | 1 | dream |
 | basin:d02ec9c7 | 1 | 1 | dream |
+| basin:d0c336d5 | 1 | 1 | dream |
 | basin:d0cf2535 | 1 | 1 | dream |
 | basin:d1129f05 | 1 | 1 | dream |
 | basin:d15a255c | 1 | 1 | dream |
@@ -1915,6 +1926,7 @@ Records: 1672 | Runs: 252
 | basin:d7b30a68 | 1 | 1 | dream |
 | basin:d7d60134 | 1 | 1 | dream |
 | basin:d806bc46 | 1 | 1 | dream |
+| basin:d83ff700 | 1 | 1 | dream |
 | basin:d8510793 | 1 | 1 | dream |
 | basin:d88a1061 | 1 | 1 | dream |
 | basin:d88ec44d | 1 | 1 | dream |
@@ -2089,6 +2101,7 @@ Records: 1672 | Runs: 252
 | basin:ec5c5de2 | 1 | 1 | dream |
 | basin:eca56e8f | 1 | 1 | dream |
 | basin:ecc264cd | 1 | 1 | dream |
+| basin:ed6bfe6d | 1 | 1 | dream |
 | basin:ed8fb12e | 1 | 1 | dream |
 | basin:edc940fb | 1 | 1 | dream |
 | basin:ee177770 | 1 | 1 | dream |
@@ -2255,19 +2268,21 @@ Records: 1672 | Runs: 252
 | rho:1140 | 1 | 1 | dream |
 | rho:1150 | 1 | 1 | dream |
 | rho:1153 | 1 | 1 | dream |
+| rho:1154 | 1 | 1 | dream |
 | source:cx_20260213_210052 | 1 | 1 | dream |
 | source:cx_20260213_222458 | 1 | 1 | dream |
 | source:cx_20260213_231014 | 1 | 1 | dream |
+| source:cx_20260608_075956 | 1 | 1 | dream |
 
 ## Potential Emergence
 
 | Signal | Records | Accepted | Experiments |
 |---|---:|---:|---|
-| stable_basin_present | 162 | 162 | dream |
-| new_basin_discovered | 161 | 161 | dream |
-| dominant_rho_persistent | 87 | 87 | dream |
+| stable_basin_present | 163 | 163 | dream |
+| new_basin_discovered | 162 | 162 | dream |
+| dominant_rho_persistent | 88 | 88 | dream |
 | threshold_transition | 65 | 49 | cortex |
-| high_replay_yield | 53 | 53 | dream |
+| high_replay_yield | 54 | 54 | dream |
 | stable_replay | 50 | 50 | cortex |
 | basin_reinforced | 34 | 34 | dream |
 | basin_migration | 30 | 30 | cortex |
@@ -2283,7 +2298,7 @@ Records: 1672 | Runs: 252
 | Signal | Records | Accepted | Experiments |
 |---|---:|---:|---|
 | rejected_candidate | 1113 | 0 | self_train |
-| decay_dominant | 156 | 156 | dream |
+| decay_dominant | 157 | 157 | dream |
 | cycle_error | 125 | 0 | rsi |
 | entropy_band_drift | 53 | 53 | dream |
 | mechanistic_gap | 44 | 44 | cortex |
