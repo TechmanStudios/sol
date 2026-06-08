@@ -1,0 +1,14 @@
+{
+  "3": [
+    {
+      "error": "Mass preservation failure on Register A (density < 14.0) during long settle cycles.",
+      "diagnostic": "Transient register decay drains mass. Recommend compensatory NUDGE, reducing settle cycles, or lower damping (gamma = 0.002)."
+    }
+  ],
+  "11": [
+    {
+      "error": "PDM phase calibration failure for period 18.0 (Bit 4/5) and period 22.0 (Bit 6/7) - negative or near-zero correlation deltas.",
+      "diagnostic": "Damping timescale mismatch (tau < T) combined with boundary standing wave reflections. Reduce core damping gamma to 0.002, decrease dt to 0.02, implement a 32-cell PML absorbing boundary, and shift to prime-spaced periods."
+    }
+  ]
+}

@@ -211,8 +211,72 @@ class LuminaLedgerArchivist(LuminaRoamingAgent):
         )
         super().__init__("Lumina Ledger Archivist", system_prompt, lib_agent)
 
+    def extract_level_lessons(self, target_dir: Path) -> Dict[str, List[Dict[str, str]]]:
+        """Scans log files for errors, maps them to substrate levels, and writes level_lessons.json."""
+        self.travel(target_dir)
+        target_path = Path(target_dir)
+        lessons: Dict[str, List[Dict[str, str]]] = {}
+        
+        # Read rsi_run_error.log if it exists
+        error_log = target_path / "rsi_run_error.log"
+        if error_log.exists():
+            try:
+                with open(error_log, "r", encoding="utf-8") as f:
+                    content = f.read()
+                    
+                # Look for mass preservation failure patterns
+                mass_failures = re.findall(r"([^\n]*Mass preservation failure[^\n]*)", content)
+                for failure in mass_failures:
+                    lessons.setdefault("3", []).append({
+                        "error": failure.strip(),
+                        "diagnostic": "Transient register decay. Recommend compensatory NUDGE or reduce settle cycles."
+                    })
+                    lessons.setdefault("5", []).append({
+                        "error": failure.strip(),
+                        "diagnostic": "Check register transfer logic and zero-bleed routing."
+                    })
+                    
+                # Look for PDM/PLL sync issues
+                pdm_failures = re.findall(r"([^\n]*PDM[^\n]*|[^\n]*PLL[^\n]*)", content)
+                for failure in pdm_failures:
+                    if failure.strip():
+                        lessons.setdefault("11", []).append({
+                            "error": failure.strip(),
+                            "diagnostic": "PLL synchronization lost. Check phase-locked frequency modulation parameters."
+                        })
+            except Exception:
+                pass
+                
+        docs_dir = Path(self.lib_agent.lib_dir) / "documentation"
+        docs_dir.mkdir(parents=True, exist_ok=True)
+        lessons_file = docs_dir / "level_lessons.json"
+        
+        existing_lessons = {}
+        if lessons_file.exists():
+            try:
+                with open(lessons_file, "r", encoding="utf-8") as f:
+                    existing_lessons = json.load(f)
+            except Exception:
+                pass
+                
+        # Merge new lessons
+        for lvl_str, items in lessons.items():
+            lvl_list = existing_lessons.setdefault(lvl_str, [])
+            for item in items:
+                if item["error"] not in [x["error"] for x in lvl_list]:
+                    lvl_list.append(item)
+                    
+        try:
+            with open(lessons_file, "w", encoding="utf-8") as f:
+                json.dump(existing_lessons, f, indent=2, ensure_ascii=False)
+            self.state_history.append("Compiled and merged lessons into level_lessons.json.")
+        except Exception as e:
+            self.state_history.append(f"Failed to write level_lessons.json: {e}")
+            
+        return existing_lessons
+
     def synthesize_reports(self, target_dir: Path) -> str:
-        """Parses cost ledger JSONL files in directory and synthesizes report."""
+        """Parses cost ledger JSONL files in directory, extracts lessons, and synthesizes report."""
         self.travel(target_dir)
         total_records = 0
         total_cost = 0.0
@@ -237,6 +301,9 @@ class LuminaLedgerArchivist(LuminaRoamingAgent):
                                 pass
             except Exception:
                 pass
+
+        # Extract lessons as part of reporting
+        self.extract_level_lessons(target_dir)
 
         summary = (
             f"# Lumina Archivist Synthesized Report\n\n"

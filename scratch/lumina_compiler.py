@@ -734,10 +734,65 @@ class LuminaLogosCompiler(LogosCompiler):
         return program
 
 
+class StaticVerificationError(Exception):
+    """Exception raised when static analysis detects a safety violation (e.g. mass preservation breach)."""
+    pass
+
+
+class StaticMassSentinel:
+    """Symbolically checks compiled Logos instructions to prove register mass safety bounds."""
+    
+    @staticmethod
+    def verify(instructions: list[Instruction], damping: float = 0.01) -> bool:
+        registers = {"A": 15.0, "B": 15.0, "C": 15.0, "D": 15.0}
+        active_registers = {"A": False, "B": False, "C": False, "D": False}
+        
+        for idx, inst in enumerate(instructions):
+            op = inst.op.upper()
+            args = inst.args
+            
+            if op == "LOAD":
+                reg = args[0]
+                active_registers[reg] = True
+            elif op == "CLEAR":
+                reg = args[0]
+                active_registers[reg] = False
+                registers[reg] = 15.0  # Reset mass when cleared
+            elif op == "COPY":
+                src, dest = args[0], args[1]
+                registers[dest] = registers[src]
+                active_registers[dest] = active_registers[src]
+            elif op == "CMOVE":
+                dest, src, cond = args[0], args[1], args[2]
+                registers[dest] = min(registers[dest], registers[src])
+                active_registers[dest] = active_registers[dest] or active_registers[src]
+            elif op == "NUDGE":
+                basin = args[0]
+                amount = float(args[1])
+                for reg in ('A', 'B', 'C', 'D'):
+                    if reg in basin or f"R{reg}" in basin:
+                        registers[reg] += amount
+            elif op == "SETTLE":
+                steps = int(args[0])
+                for reg in ('A', 'B', 'C', 'D'):
+                    if active_registers[reg]:
+                        registers[reg] = max(0.0, registers[reg] - damping * steps)
+                        
+            # Verify active registers bounds
+            for reg in ('A', 'B', 'C', 'D'):
+                if active_registers[reg] and registers[reg] < 14.0:
+                    raise StaticVerificationError(
+                        f"Static verification failure: instruction '{inst.op} {', '.join(map(str, inst.args))}' at index {idx} "
+                        f"drains Register {reg} mass to {registers[reg]:.2f} (< 14.0)."
+                    )
+                    
+        return True
+
+
 class LuminaCompiler:
     """Orchestrates class inspection, AST extraction, and Lumina compilation."""
     @staticmethod
-    def compile_agent(agent_cls: Type[LuminaAgent]) -> list[Instruction]:
+    def compile_agent(agent_cls: Type[LuminaAgent], verify_mass: bool = True) -> list[Instruction]:
         agent = agent_cls()
         import textwrap
         try:
@@ -753,10 +808,10 @@ class LuminaCompiler:
                     raise ValueError("Could not find flow() method in dynamic agent source.")
             else:
                 raise OSError("Could not get source code. Please set '_source' attribute on dynamically executed class.")
-        return LuminaCompiler.compile_flow_src(agent.inputs, agent.outputs, flow_src, agent=agent)
+        return LuminaCompiler.compile_flow_src(agent.inputs, agent.outputs, flow_src, agent=agent, verify_mass=verify_mass)
 
     @staticmethod
-    def compile_flow_src(inputs: dict[str, str], outputs: dict[str, str], flow_src: str, agent: Optional[LuminaAgent] = None) -> list[Instruction]:
+    def compile_flow_src(inputs: dict[str, str], outputs: dict[str, str], flow_src: str, agent: Optional[LuminaAgent] = None, verify_mass: bool = True) -> list[Instruction]:
         import textwrap
         flow_src = textwrap.dedent(flow_src)
         if not flow_src.strip().startswith("def "):
@@ -772,4 +827,9 @@ class LuminaCompiler:
             visitor.visit(stmt)
             
         compiler = LuminaLogosCompiler()
-        return compiler.compile(inputs, outputs, visitor.statements)
+        program = compiler.compile(inputs, outputs, visitor.statements)
+        
+        if verify_mass:
+            StaticMassSentinel.verify(program)
+            
+        return program

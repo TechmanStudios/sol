@@ -55,7 +55,40 @@ class LuminaLevelAgent(LuminaExpert):
             ctx.append("### Holographic Bus Reference:")
             ctx.append(hbus)
             
+        # Load level lessons if level_lessons.json exists
+        lessons_path = Path(self.lib_agent.lib_dir) / "documentation" / "level_lessons.json"
+        if lessons_path.exists():
+            try:
+                with open(lessons_path, "r", encoding="utf-8") as f:
+                    lessons_data = json.load(f)
+                    level_lessons = lessons_data.get(str(self.level_number))
+                    if level_lessons:
+                        ctx.append("### Historical Failures & Lessons Learned for this Level:")
+                        for lesson in level_lessons:
+                            ctx.append(f"- **Warning/Error**: {lesson.get('error')}\n  *Action/Diagnostic*: {lesson.get('diagnostic', 'N/A')}")
+            except Exception:
+                pass
+            
         return "\n\n".join(ctx) if ctx else "No reference documentation found."
+
+    def verify_code_snippet(self, code_snippet: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Instantiates a simulation chamber for this level and executes the bytecode snippet."""
+        from coding_library.level_chambers import Level1Chamber, Level3Chamber, Level11Chamber
+        
+        if self.level_number == 1:
+            chamber = Level1Chamber()
+            return chamber.execute(code_snippet)
+        elif self.level_number == 3:
+            chamber = Level3Chamber()
+            return chamber.execute(code_snippet)
+        elif self.level_number == 11:
+            chamber = Level11Chamber()
+            return chamber.execute(code_snippet)
+        else:
+            return {
+                "status": "UNSUPPORTED",
+                "message": f"Simulation chamber for Level {self.level_number} is not implemented yet."
+            }
 
 
 class LevelOrchestrator:
