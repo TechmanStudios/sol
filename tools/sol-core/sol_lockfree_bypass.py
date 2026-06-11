@@ -160,3 +160,38 @@ def execute_shadow_bypass(plan: BypassExecutionPlan) -> BypassExecutionReport:
         optimized_report=optimized_report,
         bypass_routes_applied=valid_routes
     )
+
+
+def validate_bypass_after_core_assembly(
+    bypass_plan: Any,
+    assembly_report: Any
+) -> bool:
+    """
+    Ensures that bypasses do not cross unresolved locks, consensus checkpoints,
+    cadence barriers, rollback-required zones, or prefix-carry critical paths.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(assembly_report, "result")
+    success = extract(res, "success", True) if res is not None else extract(assembly_report, "success", True)
+    if not success:
+        raise ValueError("Core assembly failed; holding bypass validation.")
+
+    meta = extract(bypass_plan, "metadata", {}) or {}
+    
+    if meta.get("cross_unresolved_lock") or meta.get("unresolved_lock"):
+        raise ValueError("Bypass crosses unresolved lock boundary.")
+    if meta.get("cross_consensus_checkpoint") or meta.get("consensus_checkpoint"):
+        raise ValueError("Bypass crosses consensus checkpoint.")
+    if meta.get("cross_cadence_barrier") or meta.get("cadence_barrier"):
+        raise ValueError("Bypass crosses cadence barrier.")
+    if meta.get("cross_rollback_zone") or meta.get("rollback_required"):
+        raise ValueError("Bypass crosses rollback-required zone.")
+    if meta.get("cross_prefix_carry_critical_path") or meta.get("prefix_carry_critical_path"):
+        raise ValueError("Bypass crosses prefix-carry critical path.")
+        
+    return True
+

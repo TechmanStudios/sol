@@ -482,3 +482,49 @@ def inject_rebalance_lock_boundary_violation(rebalance_plan: Any) -> None:
                 policy["lock_boundary_failed"] = True
 
 
+def validate_locks_for_topology_relocation(
+    boundary_plan: GlobalLockBoundaryPlan,
+    topology_plan: Any
+) -> bool:
+    """
+    Validates global locks for a topology relocation.
+    Blocks relocation (returns False) if:
+    - local lock ordering fails
+    - cross-manifold deadlock exists
+    - topology move crosses quarantine boundary without court authorization
+    - active transaction isolation is violated
+    - rollback references are missing
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not boundary_plan or not topology_plan:
+        return True
+
+    # Check lock ordering / deadlock / conflict via metadata or fields
+    meta = extract(boundary_plan, "metadata", {}) or {}
+    if extract(meta, "lock_boundary_failed", False):
+        return False
+    if extract(meta, "cross_manifold_deadlock", False) or extract(meta, "force_deadlock_detected", False):
+        return False
+    if extract(boundary_plan, "deadlock_detected", False) or extract(boundary_plan, "conflict_detected", False):
+        return False
+
+    intent = extract(topology_plan, "intent", {})
+    topology_refs = extract(intent, "topology_refs", {})
+
+    if topology_refs.get("lock_boundary_failed") or topology_refs.get("cross_manifold_deadlock"):
+        return False
+    if topology_refs.get("quarantine_violation") or topology_refs.get("quarantine_boundary_crossed"):
+        return False
+    if topology_refs.get("transaction_isolation_violated"):
+        return False
+    if topology_refs.get("missing_rollback_snapshot") or not topology_refs.get("rollback_snapshot"):
+        return False
+
+    return True
+
+
+

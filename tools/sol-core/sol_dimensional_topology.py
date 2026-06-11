@@ -155,3 +155,28 @@ def compare_dimensional_topologies(before: DimensionalTopology, after: Dimension
         reversible=reversible,
         elements_preserved=elements_preserved
     )
+
+
+def build_multimanifold_dimensional_remap(manifolds: List[Any], target_shapes: List[ManifoldShape]) -> Dict[str, CoordinateRemap]:
+    """
+    Generates coordinate remaps for multiple manifolds.
+    """
+    remaps = {}
+    for m, target in zip(manifolds, target_shapes):
+        m_id = getattr(m, "manifold_id", None) or m.get("manifold_id")
+        src_shape = getattr(m, "shape", None) or m.get("shape")
+        if isinstance(src_shape, list):
+            src_shape = ManifoldShape(dims=src_shape)
+        remap = project_coordinates(src_shape, target)
+        remaps[m_id] = remap
+    return remaps
+
+
+def validate_multimanifold_coordinate_consistency(remaps: Dict[str, CoordinateRemap]) -> bool:
+    """
+    Validates that each coordinate remap in the group is consistent and reversible if lossless.
+    """
+    for m_id, r in remaps.items():
+        validate_coordinate_remap(r)
+    return True
+

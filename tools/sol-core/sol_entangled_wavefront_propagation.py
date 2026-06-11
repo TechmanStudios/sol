@@ -347,3 +347,77 @@ def measure_relocation_wavefront_disturbance(before: Any, after: Any) -> float:
     Measures wavefront disturbance caused by state relocation.
     """
     return 0.005
+
+
+def validate_resonant_feedback_for_entangled_propagation(
+    feedback_report: Any,
+    propagation_report: Any
+) -> bool:
+    """
+    Ensures that resonant feedback does not destabilize entangled propagation.
+    Propagation must be blocked (returns False) if:
+    - entanglement coherence collapses (< 0.8)
+    - cadence windows are invalid
+    - wavefront coherence collapses (< 0.8)
+    - PML boundary behavior fails or reflection exceeds threshold
+    - active mass preservation fails
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not feedback_report:
+        return True
+
+    res = extract(feedback_report, "result", {})
+    obs = extract(res, "final_observation", {})
+    
+    # 1. Entanglement coherence collapse
+    ent_coh = extract(obs, "entanglement_phase_coherence", 1.0) or extract(feedback_report, "entanglement_coherence", 1.0)
+    if ent_coh < 0.8:
+        return False
+
+    # 2. Cadence window validation
+    # If telemetry indicates cadence windows are invalid
+    if extract(obs, "cadence_drift", 0.0) > 0.05:
+        return False
+
+    # 3. Wavefront coherence collapse
+    wf_coh = extract(obs, "wavefront_coherence", 1.0)
+    if wf_coh < 0.8:
+        return False
+
+    # 4. PML boundary behavior
+    reflection = extract(obs, "boundary_reflection", 0.0)
+    if reflection > 0.05:
+        return False
+    pml_eff = extract(obs, "pml_absorption_effectiveness", 1.0)
+    if pml_eff < 0.9:
+        return False
+
+    # 5. Active mass preservation
+    mass = extract(obs, "active_mass_preservation", 1.0)
+    if mass < 0.95:
+        return False
+
+    return True
+
+
+def measure_resonant_wavefront_disturbance(
+    before: Any,
+    after: Any
+) -> float:
+    """
+    Measures resonant wavefront disturbance (phase difference) between before and after states.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    before_phase = extract(before, "phase_offset", 0.0) or extract(before, "phase", 0.0) or 0.0
+    after_phase = extract(after, "phase_offset", 0.0) or extract(after, "phase", 0.0) or 0.0
+    
+    return abs(after_phase - before_phase)
+

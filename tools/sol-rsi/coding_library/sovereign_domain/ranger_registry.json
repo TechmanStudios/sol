@@ -218,6 +218,51 @@
     "description": "Patrols multi-manifold transactional geodesic routing optimization and dynamic waveguide rebalancing, emitting SovereignPackets",
     "class": "RouteRebalanceRanger",
     "observe_only": true
+  },
+  "route_fault_ranger": {
+    "description": "Patrols route rebalance fault matrix and optimization regression matrix reports, emitting SovereignPackets",
+    "class": "RouteFaultRanger",
+    "observe_only": true
+  },
+  "topology_relocation_ranger": {
+    "description": "Patrols sovereign topology relocation and multi-manifold reshaping, emitting SovereignPackets",
+    "class": "TopologyRelocationRanger",
+    "observe_only": true
+  },
+  "resonant_cadence_ranger": {
+    "description": "Patrols multi-manifold entangled resonant feedback and autonomous cadence sync, emitting SovereignPackets",
+    "class": "ResonantCadenceRanger",
+    "observe_only": true
+  },
+  "core_assembly_ranger": {
+    "description": "Patrols multi-core assembly and pipeline calibration, emitting SovereignPackets",
+    "class": "CoreAssemblyRanger",
+    "observe_only": true
+  },
+  "pipeline_wavefront_ranger": {
+    "description": "Patrols geodesic pipeline balancing and quantum wavefront calibration, emitting SovereignPackets",
+    "class": "PipelineWavefrontRanger",
+    "observe_only": true
+  },
+  "pipeline_wavefront_fault_ranger": {
+    "description": "Patrols geodesic pipeline balancing faults, quantum wavefront calibration faults, uncertainty fault audits, safety oracle validation, and rollback proofs, emitting SovereignPackets",
+    "class": "PipelineWavefrontFaultRanger",
+    "observe_only": true
+  },
+  "burnin_runtime_ranger": {
+    "description": "Patrols sovereign burn-in runtime and long-horizon stability ledgers, emitting SovereignPackets",
+    "class": "BurnInRuntimeRanger",
+    "observe_only": true
+  },
+  "release_candidate_ranger": {
+    "description": "Patrols sovereign release candidate manifests, governance freezes, API contracts, and dockets, emitting SovereignPackets",
+    "class": "ReleaseCandidateRanger",
+    "observe_only": true
+  },
+  "finalization_ranger": {
+    "description": "Patrols sovereign production gateways, final gate registries, system lockdowns, readiness guards, handoffs, and finalization dockets, emitting SovereignPackets",
+    "class": "FinalizationRanger",
+    "observe_only": true
   }
 }
 

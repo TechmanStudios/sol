@@ -290,3 +290,59 @@ def validate_synchronized_commit_for_atomicity(commit_report: Any, atomic_epoch:
         return False
         
     return True
+
+
+def validate_commit_after_autonomous_cadence_sync(
+    commit_report: Any,
+    sync_report: Any
+) -> bool:
+    """
+    Validates synchronized sequencer commits after autonomous cadence sync.
+    Blocks the commit if:
+    - autonomous sync is unstable or has errors
+    - cadence guard fails (or reports block/errors)
+    - global cadence skew exceeds threshold (0.05)
+    - split-brain cadence state is detected
+    - rollback readiness is missing
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not sync_report:
+        return True
+
+    # 1. Check if autonomous sync is unstable/unsuccessful
+    res = extract(sync_report, "result", {})
+    success = extract(res, "success", False) or extract(sync_report, "success", False)
+    errors = extract(res, "errors", []) or extract(sync_report, "errors", [])
+    if not success or errors:
+        return False
+
+    # 2. Check if global cadence skew exceeds threshold
+    skew = extract(res, "final_skew", 0.0) or extract(sync_report, "global_skew", 0.0) or 0.0
+    if skew > 0.05:
+        return False
+
+    # 3. Check split-brain cadence state
+    intent = extract(sync_report, "intent")
+    metadata = extract(intent, "metadata", {}) or extract(sync_report, "metadata", {}) or {}
+    if metadata.get("split_brain") or metadata.get("split_brain_detected"):
+        return False
+
+    # 4. Check rollback readiness (must have a rollback snapshot reference)
+    rollback_ready = (
+        metadata.get("rollback_snapshot") or
+        metadata.get("rollback_snapshot_ref") or
+        metadata.get("rollback_snapshots_present")
+    )
+    if not rollback_ready:
+        return False
+
+    # 5. Check cadence guard failure
+    if metadata.get("guard_failed") or metadata.get("autonomy_guard_failed"):
+        return False
+
+    return True
+

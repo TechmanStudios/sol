@@ -257,3 +257,197 @@ def validate_prefix_carry_after_waveguide_rebalance(
 
     return True
 
+
+def inject_prefix_carry_bridge_break(carry_plan: Any) -> None:
+    """
+    Injects a prefix-carry bridge break fault.
+    """
+    if isinstance(carry_plan, dict):
+        if "metadata" not in carry_plan:
+            carry_plan["metadata"] = {}
+        carry_plan["metadata"]["prefix_carry_bridge_broken"] = True
+    else:
+        meta = getattr(carry_plan, "metadata", None)
+        if meta is None:
+            meta = {}
+            setattr(carry_plan, "metadata", meta)
+        meta["prefix_carry_bridge_broken"] = True
+
+
+def validate_prefix_carry_fault_blocks_rebalance(carry_report: Any) -> bool:
+    """
+    Validates if prefix carry fault blocks rebalance promotion.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    meta = extract(carry_report, "metadata", {}) or {}
+    if extract(meta, "prefix_carry_bridge_broken", False) or extract(carry_report, "prefix_carry_bridge_broken", False):
+        return False
+    return True
+
+
+def remap_prefix_carry_after_topology_relocation(
+    carry_plan: Any,
+    topology_remap: Dict[str, Any]
+) -> Any:
+    """
+    Remaps prefix carry tree nodes/edges or lane inputs using the coordinate remap table.
+    """
+    # Simple remapping of lane inputs
+    lane_inputs = getattr(carry_plan, "lane_inputs", []) or []
+    for inp in lane_inputs:
+        mapped_lane = topology_remap.get(str(inp.lane_id))
+        if mapped_lane is not None:
+            inp.lane_id = int(mapped_lane)
+    return carry_plan
+
+
+def validate_prefix_carry_after_topology_relocation(
+    carry_report: Any,
+    topology_report: Any
+) -> bool:
+    """
+    Validates prefix carry bindings after topology relocation.
+    Raises ValueError if relocation invalidates carry tree connectivity,
+    carry-in completeness, carry-out correctness, or bridge PML coverage.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not topology_report:
+        return True
+
+    # Validate that topology relocation succeeded
+    result = extract(topology_report, "result", {})
+    success = extract(result, "success", True)
+    if not success:
+        raise ValueError("Topology relocation failed; prefix-carry validation blocked.")
+
+    # Check for invalidations in topology refs
+    plan = extract(topology_report, "plan", {})
+    intent = extract(plan, "intent", {})
+    topology_refs = extract(intent, "topology_refs", {})
+
+    if topology_refs.get("carry_tree_connectivity_violated") or topology_refs.get("missing_prefix_carry_bridge"):
+        raise ValueError("Topology relocation invalidates carry tree connectivity; prefix-carry validation blocked.")
+    if topology_refs.get("carry_in_completeness_violated") or topology_refs.get("missing_carry_in"):
+        raise ValueError("Topology relocation invalidates carry-in completeness; prefix-carry validation blocked.")
+    if topology_refs.get("carry_out_correctness_violated") or topology_refs.get("missing_carry_out"):
+        raise ValueError("Topology relocation invalidates carry-out correctness; prefix-carry validation blocked.")
+    if topology_refs.get("bridge_pml_coverage_violated") or topology_refs.get("missing_pml_boundary"):
+        raise ValueError("Topology relocation invalidates bridge PML coverage; prefix-carry validation blocked.")
+
+    return True
+
+
+def validate_prefix_carry_after_core_assembly(
+    carry_plan: Any,
+    assembly_report: Any
+) -> bool:
+    """
+    Validates prefix carry bindings after core assembly.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(assembly_report, "result")
+    success = extract(res, "success", True) if res is not None else extract(assembly_report, "success", True)
+    if not success:
+        raise ValueError("Core assembly failed; prefix-carry validation blocked.")
+
+    meta = extract(carry_plan, "metadata", {}) or {}
+    
+    if meta.get("carry_tree_connectivity_violated") or meta.get("missing_prefix_carry_bridge"):
+        raise ValueError("Core assembly invalidates carry tree connectivity; prefix-carry validation blocked.")
+    if meta.get("carry_in_completeness_violated") or meta.get("missing_carry_in"):
+        raise ValueError("Core assembly invalidates carry-in completeness; prefix-carry validation blocked.")
+    if meta.get("carry_out_correctness_violated") or meta.get("missing_carry_out"):
+        raise ValueError("Core assembly invalidates carry-out correctness; prefix-carry validation blocked.")
+    if meta.get("bridge_pml_coverage_violated") or meta.get("missing_pml_boundary"):
+        raise ValueError("Core assembly invalidates bridge PML coverage; prefix-carry validation blocked.")
+        
+    if meta.get("arithmetic_oracle_mismatch"):
+        raise ValueError("Core assembly prefix-carry arithmetic oracle mismatch.")
+
+    return True
+
+
+def validate_prefix_carry_after_pipeline_balance(
+    carry_report: Any,
+    balance_report: Any
+) -> bool:
+    """
+    Validates prefix carry bindings after pipeline load balancing.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not balance_report:
+        return True
+
+    res = extract(balance_report, "result")
+    success = extract(res, "success", True) if res is not None else extract(balance_report, "success", True)
+    if not success:
+        raise ValueError("Pipeline balancing failed; prefix-carry validation blocked.")
+
+    meta = extract(carry_report, "metadata", {}) or {}
+    plan = extract(balance_report, "plan", {})
+    bmeta = extract(plan, "metadata", {}) or {}
+
+    if meta.get("carry_tree_connectivity_violated") or bmeta.get("carry_tree_connectivity_violated"):
+        raise ValueError("Pipeline balancing invalidates carry tree connectivity.")
+    if meta.get("carry_in_completeness_violated") or bmeta.get("carry_in_completeness_violated"):
+        raise ValueError("Pipeline balancing invalidates carry-in completeness.")
+    if meta.get("carry_out_correctness_violated") or bmeta.get("carry_out_correctness_violated"):
+        raise ValueError("Pipeline balancing invalidates carry-out correctness.")
+    if meta.get("arithmetic_oracle_mismatch") or bmeta.get("arithmetic_oracle_mismatch"):
+        raise ValueError("Pipeline balancing prefix-carry arithmetic oracle mismatch.")
+
+    return True
+
+
+def inject_quantum_prefix_carry_bridge_break(carry_report: Any) -> Any:
+    """
+    Simulates a prefix carry bridge break.
+    """
+    import copy
+    mutated = copy.deepcopy(carry_report)
+    if isinstance(mutated, dict):
+        mutated.setdefault("metadata", {})["carry_tree_connectivity_violated"] = True
+    else:
+        meta = getattr(mutated, "metadata", {}) or {}
+        meta["carry_tree_connectivity_violated"] = True
+        mutated.metadata = meta
+    return mutated
+
+
+def validate_quantum_prefix_fault_blocks_promotion(carry_report: Any) -> bool:
+    """
+    Validates that a prefix-carry fault blocks candidate promotion.
+    """
+    if not carry_report:
+        return True
+    
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    meta = extract(carry_report, "metadata", {}) or {}
+    if meta.get("carry_tree_connectivity_violated") or meta.get("carry_in_completeness_violated") or meta.get("carry_out_correctness_violated"):
+        return True
+    return False
+
+
+
+
+

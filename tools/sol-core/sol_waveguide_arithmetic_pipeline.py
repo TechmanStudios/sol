@@ -278,3 +278,64 @@ def validate_arithmetic_oracle_after_route_optimization(
 
     return True
 
+
+def inject_arithmetic_oracle_mismatch(arithmetic_report: Any) -> None:
+    """
+    Injects an oracle mismatch into the arithmetic report.
+    """
+    if isinstance(arithmetic_report, dict):
+        arithmetic_report["oracle_match"] = False
+        if "metadata" not in arithmetic_report:
+            arithmetic_report["metadata"] = {}
+        arithmetic_report["metadata"]["oracle_match"] = False
+    else:
+        setattr(arithmetic_report, "oracle_match", False)
+        meta = getattr(arithmetic_report, "metadata", None)
+        if meta is None:
+            meta = {}
+            setattr(arithmetic_report, "metadata", meta)
+        meta["oracle_match"] = False
+
+
+def validate_arithmetic_after_quantum_wavefront_calibration(
+    arithmetic_report: Any,
+    quantum_report: Any
+) -> bool:
+    """
+    Validates arithmetic oracle agreement after quantum wavefront calibration.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not arithmetic_report:
+        return True
+
+    oracle_match = extract(arithmetic_report, "oracle_match", False)
+    if not oracle_match:
+        raise ValueError("Arithmetic oracle mismatch detected during quantum wavefront calibration.")
+
+    return True
+
+
+def inject_quantum_arithmetic_oracle_mismatch(arithmetic_report: Any) -> Any:
+    """
+    Injects an arithmetic oracle mismatch for quantum calibration stability audits.
+    """
+    import copy
+    mutated = copy.deepcopy(arithmetic_report)
+    if isinstance(mutated, dict):
+        mutated["oracle_match"] = False
+        mutated["arithmetic_oracle_match"] = False
+        mutated.setdefault("metadata", {})["oracle_match"] = False
+    else:
+        setattr(mutated, "oracle_match", False)
+        setattr(mutated, "arithmetic_oracle_match", False)
+        meta = getattr(mutated, "metadata", {}) or {}
+        meta["oracle_match"] = False
+        mutated.metadata = meta
+    return mutated
+
+
+

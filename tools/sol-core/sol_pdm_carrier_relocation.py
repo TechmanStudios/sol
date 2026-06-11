@@ -331,3 +331,74 @@ def inject_quadrature_pair_break(plan: Any) -> None:
     return inj_func(plan)
 
 
+def inject_waveguide_rebalance_carrier_alias(registry: Any) -> None:
+    """
+    Wrapper for carrier registry alias injection.
+    """
+    inject_carrier_registry_alias_to_active(registry)
+
+
+def inject_rebalance_carrier_lease_failure(rebalance_plan: Any) -> None:
+    """
+    Wrapper for lease failure injection.
+    """
+    inject_carrier_lease_failure(rebalance_plan)
+
+
+def inject_rebalance_quadrature_pair_break(rebalance_plan: Any) -> None:
+    """
+    Wrapper for quadrature pair break injection.
+    """
+    inject_quadrature_pair_break(rebalance_plan)
+
+
+def validate_carriers_for_quantum_wavefront_packets(
+    registry: Any,
+    packets: List[Any]
+) -> bool:
+    """
+    Delegates to sol_carrier_registry.
+    """
+    from sol_carrier_registry import validate_carriers_for_quantum_wavefront_packets as val_func
+    return val_func(registry, packets)
+
+
+def snapshot_carriers_before_quantum_calibration(
+    registry: Any,
+    packets: List[Any]
+) -> Any:
+    """
+    Delegates to sol_carrier_registry.
+    """
+    from sol_carrier_registry import snapshot_carriers_before_quantum_calibration as snap_func
+    return snap_func(registry, packets)
+
+
+def validate_carrier_registry_stable_over_burnin(registry_reports: List[Any]) -> bool:
+    """
+    Checks that the carrier registry configurations remain stable across burn-in snapshots.
+    """
+    from sol_carrier_registry import validate_carrier_registry_stable_over_burnin as val_func
+    return val_func(registry_reports)
+
+
+def validate_cadence_profiles_stable_over_burnin(cadence_reports: List[Any]) -> bool:
+    """
+    Checks that cadence profiles remain stable across all burn-in cycles.
+    """
+    from sol_carrier_registry import validate_cadence_profiles_stable_over_burnin as val_func
+    return val_func(cadence_reports)
+
+
+def validate_candidate_tables_not_active_over_burnin(reports: List[Any]) -> bool:
+    """
+    Ensures that active/default tables remain untouched and candidate tables are not activated.
+    """
+    from sol_carrier_registry import validate_candidate_tables_not_active_over_burnin as val_func
+    return val_func(reports)
+
+
+
+
+
+

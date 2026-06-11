@@ -229,3 +229,29 @@ def compare_manifold_shape_before_after(before: ManifoldShape, after: ManifoldSh
         "dimension_rank_shift": len(after.dims) - len(before.dims),
         "element_gain_loss": after.total_elements() - before.total_elements()
     }
+
+
+def export_reshape_for_sovereign_topology(plan: ManifoldReshapePlan) -> Dict[str, Any]:
+    """
+    Exports details of the reshape plan for consumption by sovereign topology relocation protocols.
+    Does not mutate default/active tables.
+    """
+    return {
+        "plan_id": plan.plan_id,
+        "lossless": plan.intent.lossless,
+        "source_dims": plan.intent.source_shape.dims,
+        "target_dims": plan.intent.target_shape.dims,
+        "coordinate_map_size": len(plan.mapping.coordinate_map)
+    }
+
+
+def validate_reshape_under_sovereign_policy(plan: ManifoldReshapePlan, policy: Any) -> bool:
+    """
+    Validates a reshape plan against a sovereign topology relocation policy constraint.
+    """
+    max_distortion = getattr(policy, "max_shape_distortion", 1.0)
+    rank_shift = abs(len(plan.intent.source_shape.dims) - len(plan.intent.target_shape.dims))
+    if rank_shift > max_distortion:
+        return False
+    return True
+

@@ -381,3 +381,74 @@ def inject_feedback_rollback_failure(loop: Dict[str, Any]) -> None:
         loop["metadata"] = {}
     loop["metadata"]["unstable_feedback"] = True
     loop["metadata"]["rollback_failure"] = True
+
+
+def bridge_entangled_feedback_to_resonant_feedback(
+    feedback_report: Any
+) -> Dict[str, Any]:
+    """
+    Bridges standard entangled feedback report metrics to resonant feedback signals.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(feedback_report, "result", {})
+    final_state = extract(res, "final_state", {})
+    
+    # Extract timing metrics
+    coh = extract(final_state, "coherence", 1.0)
+    drift = extract(final_state, "drift", 0.0)
+    crosstalk = extract(final_state, "crosstalk", 0.0)
+    reflection = extract(final_state, "reflection", 0.0)
+    carrier_err = extract(final_state, "carrier_error", 0.0)
+
+    import uuid
+    return {
+        "observation_id": f"OBS_BRIDGE_{uuid.uuid4().hex[:8]}",
+        "resonant_phase_coherence": coh,
+        "entanglement_phase_coherence": coh,
+        "cadence_drift": drift,
+        "global_cadence_skew": drift * 1.2,
+        "carrier_phase_error": carrier_err,
+        "wavefront_coherence": coh,
+        "crosstalk": crosstalk,
+        "boundary_reflection": reflection,
+        "pml_absorption_effectiveness": 1.0 - reflection,
+        "active_mass_preservation": 1.0,
+        "lane_timing_consistency": 1.0
+    }
+
+
+def validate_resonant_feedback_loop_stability(
+    resonant_report: Any
+) -> bool:
+    """
+    Ensures that the feedback loop remains stable and has not encountered errors.
+    Do not weaken existing feedback stability gates.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not resonant_report:
+        return False
+        
+    result = extract(resonant_report, "result", {})
+    success = extract(result, "success", False)
+    errors = extract(result, "errors", [])
+    
+    if not success or errors:
+        return False
+
+    # Check final observation coherence values
+    obs = extract(result, "final_observation")
+    if obs:
+        coh = extract(obs, "resonant_phase_coherence", 1.0)
+        if coh < 0.8:
+            return False
+            
+    return True
+

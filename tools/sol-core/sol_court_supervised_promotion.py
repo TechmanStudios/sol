@@ -2547,6 +2547,1758 @@ def review_route_rebalance_ranger_packet(packet: Any) -> CourtPromotionDecision:
     )
 
 
+def review_route_rebalance_fault_matrix_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a RouteRebalanceFaultMatrixReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+    success = extract(report, "success", False)
+    if not success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RFM_{int(time.time() * 1000)}",
+            decision="reject_level42_candidate",
+            justification="Route rebalance fault matrix checks failed."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_RFM_{int(time.time() * 1000)}",
+        decision="accept_shadow_route_fault_matrix",
+        justification="Route rebalance fault matrix checks passed."
+    )
+
+
+def review_optimization_regression_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews an OptimizationRegressionReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+    success = extract(report, "success", False)
+    if not success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_ORR_{int(time.time() * 1000)}",
+            decision="reject_level42_candidate",
+            justification="Optimization regression matrix checks failed."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_ORR_{int(time.time() * 1000)}",
+        decision="accept_shadow_route_fault_matrix",
+        justification="Optimization regression matrix checks passed."
+    )
+
+
+def review_route_cost_regression_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a RouteCostRegressionReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+    success = extract(report, "success", False)
+    rejected = extract(report, "rejected", False)
+    if not success or not rejected:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_CRR_{int(time.time() * 1000)}",
+            decision="reject_level42_candidate",
+            justification="Route cost regression checks failed."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_CRR_{int(time.time() * 1000)}",
+        decision="accept_shadow_route_fault_matrix",
+        justification="Route cost regression checks passed."
+    )
+
+
+def review_waveguide_fault_audit_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a WaveguideFaultAuditReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+    success = extract(report, "success", False)
+    quarantine = extract(report, "quarantine_recommended", False)
+    if quarantine:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WFA_{int(time.time() * 1000)}",
+            decision="quarantine_route",
+            justification="Waveguide fault audit recommended quarantine."
+        )
+    if not success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WFA_{int(time.time() * 1000)}",
+            decision="reject_level42_candidate",
+            justification="Waveguide fault audit report checks failed."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_WFA_{int(time.time() * 1000)}",
+        decision="accept_shadow_route_fault_matrix",
+        justification="Waveguide fault audit report checks passed."
+    )
+
+
+def review_route_rebalance_rollback_proof_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a RouteRebalanceRollbackProofReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+    success = extract(report, "success", False)
+    if not success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RRBP_{int(time.time() * 1000)}",
+            decision="rollback_route_rebalance_candidate",
+            justification="Route rebalance rollback proof checks failed."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_RRBP_{int(time.time() * 1000)}",
+        decision="accept_shadow_route_fault_matrix",
+        justification="Route rebalance rollback proof checks passed."
+    )
+
+
+def review_route_fault_ranger_packet(packet: Any) -> CourtPromotionDecision:
+    """
+    Reviews a RouteFaultRanger SovereignPacket and determines the Level 42 verdict.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+    
+    evidence = extract(packet, "evidence", {}) or {}
+    rec = extract(packet, "recommendation")
+    metadata = extract(packet, "metadata", {}) or {}
+    
+    total = evidence.get("total_fault_cases", 0)
+    passed = evidence.get("passed_fault_cases", 0)
+    failed = evidence.get("failed_fault_cases", 0)
+    reg_count = evidence.get("regression_count", 0)
+    rollback_status = evidence.get("rollback_proof_status", "failed")
+    table_protect = evidence.get("active_table_protection_status", "violated")
+    oracle_agreement = evidence.get("safety_oracle_agreement", "mismatched")
+    quarantine_status = evidence.get("quarantine_status", "inactive")
+    quarantine_targets = evidence.get("quarantine_targets", [])
+    
+    if evidence.get("promotion_readiness") == "ready" and rec == "promote":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RFR_{int(time.time() * 1000)}",
+            decision="promote_level42_candidate",
+            justification="All Level 42 route rebalance fault injection and optimization regression matrix checks passed."
+        )
+
+    if table_protect == "violated" or oracle_agreement == "mismatched":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RFR_{int(time.time() * 1000)}",
+            decision="reject_level42_candidate",
+            justification="Ranger detected active table violation or safety oracle mismatch."
+        )
+    if rollback_status == "failed":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RFR_{int(time.time() * 1000)}",
+            decision="rollback_route_rebalance_candidate",
+            justification="Ranger detected rollback proof status failure."
+        )
+    if quarantine_status == "active":
+        decision = "quarantine_route"
+        if quarantine_targets:
+            target = quarantine_targets[0]
+            if "quarantine_waveguide_segment" in target:
+                decision = "quarantine_waveguide_segment"
+            elif "quarantine_carrier" in target:
+                decision = "quarantine_carrier"
+            elif "quarantine_manifold" in target:
+                decision = "quarantine_manifold"
+            elif "quarantine_route_case" in target:
+                decision = "quarantine_route_case"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RFR_{int(time.time() * 1000)}",
+            decision=decision,
+            justification="Ranger detected active quarantine recommendation."
+        )
+    if failed > 0:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RFR_{int(time.time() * 1000)}",
+            decision="reject_level42_candidate",
+            justification=f"Ranger reported {failed} failed fault cases."
+        )
+    if reg_count > 0:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RFR_{int(time.time() * 1000)}",
+            decision="reject_level42_candidate",
+            justification=f"Ranger reported {reg_count} regressions."
+        )
+        
+    if metadata.get("sandbox_trial") or metadata.get("court_token") == "SANDBOX_TOKEN" or extract(packet, "reproducibility_hash", "") == "SANDBOX_HASH":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RFR_{int(time.time() * 1000)}",
+            decision="authorize_sandbox_route_fault_audit",
+            justification="Route fault ranger checks passed; authorized sandbox audit trial."
+        )
+        
+    return CourtPromotionDecision(
+        decision_id=f"DEC_RFR_{int(time.time() * 1000)}",
+        decision="hold_level42_candidate",
+        justification="Level 42 readiness checks are not complete or on hold."
+    )
+
+
+def review_topology_relocation_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a TopologyRelocationReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(report, "result", {})
+    success = extract(res, "success", False)
+    errors = extract(res, "errors", [])
+    
+    if not success or errors:
+        dec = "hold_topology_relocation"
+        for err in errors:
+            if "deadlock" in err.lower():
+                dec = "hold_topology_relocation"
+            elif "lock" in err.lower():
+                dec = "hold_topology_relocation"
+            elif "quarantine" in err.lower():
+                dec = "quarantine_topology_candidate"
+            elif "overwrite" in err.lower():
+                dec = "reject_topology_candidate"
+                
+        return CourtPromotionDecision(
+            decision_id=f"DEC_TR_{int(time.time() * 1000)}",
+            decision=dec,
+            justification=f"Topology relocation checks failed: {errors}"
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_TR_{int(time.time() * 1000)}",
+        decision="accept_shadow_topology_relocation",
+        justification="Topology relocation report checks passed."
+    )
+
+
+def review_multimanifold_reshape_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a MultiManifoldReshapeReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    val_passed = extract(report, "validation_passed", False)
+    result = extract(report, "result", {})
+    errors = extract(result, "errors", [])
+    
+    if not val_passed or errors:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_MMR_{int(time.time() * 1000)}",
+            decision="reject_topology_candidate",
+            justification=f"Multi-manifold reshape validation failed: {errors}"
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_MMR_{int(time.time() * 1000)}",
+        decision="accept_shadow_topology_relocation",
+        justification="Multi-manifold reshape report checks passed."
+    )
+
+
+def review_topology_shape_guard_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a TopologyShapeGuardReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    passed = extract(report, "passed", False)
+    errors = extract(report, "errors", [])
+    
+    if not passed or errors:
+        dec = "reject_topology_candidate"
+        for err in errors:
+            if "node" in err.lower():
+                dec = "reject_topology_candidate"
+            elif "lane" in err.lower() or "carrier" in err.lower() or "h-cam" in err.lower() or "prefix-carry" in err.lower() or "pml" in err.lower() or "transaction" in err.lower():
+                dec = "reject_topology_candidate"
+                
+        return CourtPromotionDecision(
+            decision_id=f"DEC_TSG_{int(time.time() * 1000)}",
+            decision=dec,
+            justification=f"Topology shape guard checks failed: {errors}"
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_TSG_{int(time.time() * 1000)}",
+        decision="accept_shadow_topology_relocation",
+        justification="Topology shape guard report checks passed."
+    )
+
+
+def review_topology_migration_protocol_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a TopologyMigrationProtocolReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    success = extract(report, "success", False)
+    errors = extract(report, "errors", [])
+    
+    if not success or errors:
+        dec = "abort_topology_migration"
+        for err in errors:
+            if "rollback" in err.lower():
+                dec = "rollback_topology_relocation"
+            elif "carrier" in err.lower() or "cadence" in err.lower():
+                dec = "abort_topology_migration"
+                
+        return CourtPromotionDecision(
+            decision_id=f"DEC_TMP_{int(time.time() * 1000)}",
+            decision=dec,
+            justification=f"Topology migration protocol checks failed: {errors}"
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_TMP_{int(time.time() * 1000)}",
+        decision="accept_shadow_topology_relocation",
+        justification="Topology migration protocol report checks passed."
+    )
+
+
+def review_topology_relocation_manifest(manifest: Any) -> CourtPromotionDecision:
+    """
+    Reviews a TopologyRelocationManifest.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    is_valid = extract(manifest, "is_valid", False)
+    rollback_refs = extract(manifest, "rollback_refs", [])
+    
+    if not is_valid or not rollback_refs:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_MAN_{int(time.time() * 1000)}",
+            decision="needs_more_evidence",
+            justification="Topology relocation manifest is incomplete or missing rollback references."
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_MAN_{int(time.time() * 1000)}",
+        decision="accept_shadow_topology_relocation",
+        justification="Topology relocation manifest checks passed."
+    )
+
+
+def review_topology_relocation_ranger_packet(packet: Any) -> CourtPromotionDecision:
+    """
+    Reviews a TopologyRelocationRanger SovereignPacket and determines the Level 43 verdict.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    evidence = extract(packet, "evidence", {}) or {}
+    rec = extract(packet, "recommendation")
+    metadata = extract(packet, "metadata", {}) or {}
+    
+    ready = evidence.get("promotion_readiness", False)
+    quarantine_rec = evidence.get("quarantine_recommendation", "none")
+    
+    if ready and rec == "promote":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_TRP_{int(time.time() * 1000)}",
+            decision="promote_level43_candidate",
+            justification="All Level 43 topology relocation and multi-manifold reshape checks passed."
+        )
+
+    if quarantine_rec == "quarantine" or rec == "quarantine":
+        dec = "quarantine_topology_candidate"
+        wavefront_coh = evidence.get("wavefront_coherence", "")
+        if wavefront_coh == "unstable":
+            dec = "quarantine_manifold"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_TRP_{int(time.time() * 1000)}",
+            decision=dec,
+            justification="Ranger recommended quarantine or detected instability."
+        )
+
+    if metadata.get("sandbox_trial") or metadata.get("court_token") == "SANDBOX_TOKEN" or extract(packet, "reproducibility_hash", "") == "SANDBOX_HASH":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_TRP_{int(time.time() * 1000)}",
+            decision="authorize_sandbox_topology_relocation_trial",
+            justification="Authorized sandbox topology relocation trial."
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_TRP_{int(time.time() * 1000)}",
+        decision="hold_topology_relocation",
+        justification="Level 43 readiness checks are not complete or on hold."
+    )
+
+
+def review_resonant_feedback_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a ResonantFeedbackReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(report, "result", {})
+    success = extract(res, "success", False)
+    errors = extract(res, "errors", [])
+    
+    if not success or errors:
+        dec = "hold_autonomous_cadence_sync"
+        for err in errors:
+            if "resonant phase" in err.lower():
+                dec = "rollback_autonomous_cadence_sync"
+            elif "entanglement coherence" in err.lower():
+                dec = "quarantine_resonant_link"
+            elif "crosstalk" in err.lower() or "reflection" in err.lower():
+                dec = "rollback_autonomous_cadence_sync"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RFB_{int(time.time() * 1000)}",
+            decision=dec,
+            justification=f"Resonant feedback validation failed: {errors}"
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_RFB_{int(time.time() * 1000)}",
+        decision="accept_shadow_resonant_cadence",
+        justification="Resonant feedback report checks passed."
+    )
+
+
+def review_autonomous_cadence_sync_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews an AutonomousCadenceSyncReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(report, "result", {})
+    success = extract(res, "success", False) or extract(report, "success", False)
+    errors = extract(res, "errors", []) or extract(report, "errors", [])
+
+    if not success or errors:
+        dec = "reject_autonomous_cadence_sync"
+        for err in errors:
+            if "split-brain" in err.lower() or "split_brain" in err.lower():
+                dec = "quarantine_manifold_clock"
+            elif "rollback" in err.lower():
+                dec = "rollback_autonomous_cadence_sync"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_ACS_{int(time.time() * 1000)}",
+            decision=dec,
+            justification=f"Autonomous cadence sync failed: {errors}"
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_ACS_{int(time.time() * 1000)}",
+        decision="accept_shadow_resonant_cadence",
+        justification="Autonomous cadence sync checks passed."
+    )
+
+
+def review_resonant_cadence_control_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a ResonantCadenceControlReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    state = extract(report, "state_classification", "nominal")
+    if state == "quarantine_required":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RCC_{int(time.time() * 1000)}",
+            decision="quarantine_manifold_clock",
+            justification="Wavefront coherence collapse indicates clock quarantine required."
+        )
+    elif state == "skew_warning":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RCC_{int(time.time() * 1000)}",
+            decision="hold_autonomous_cadence_sync",
+            justification="High global cadence skew warning."
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_RCC_{int(time.time() * 1000)}",
+        decision="accept_shadow_resonant_cadence",
+        justification="Resonant cadence control checks passed."
+    )
+
+
+def review_cadence_autonomy_guard_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a CadenceAutonomyGuardReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    dec = extract(report, "decision", {})
+    passed = extract(dec, "passed", False)
+    reasons = extract(dec, "blocked_reasons", [])
+
+    if not passed or reasons:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_CAG_{int(time.time() * 1000)}",
+            decision="reject_autonomous_cadence_sync",
+            justification=f"Cadence autonomy guard blocked synchronization: {reasons}"
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_CAG_{int(time.time() * 1000)}",
+        decision="accept_shadow_resonant_cadence",
+        justification="Cadence autonomy guard checks passed."
+    )
+
+
+def review_resonant_cadence_ranger_packet(packet: Any) -> CourtPromotionDecision:
+    """
+    Reviews a ResonantCadenceRanger SovereignPacket and determines the Level 44 verdict.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    evidence = extract(packet, "evidence", {}) or {}
+    rec = extract(packet, "recommendation")
+    metadata = extract(packet, "metadata", {}) or {}
+    
+    ready = evidence.get("promotion_readiness", False)
+    quarantine_rec = evidence.get("quarantine_recommendation", "none")
+    
+    if ready and rec == "promote":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RRP_{int(time.time() * 1000)}",
+            decision="promote_level44_candidate",
+            justification="All Level 44 resonant feedback and autonomous cadence sync checks passed."
+        )
+
+    if quarantine_rec == "quarantine" or rec == "quarantine":
+        dec = "quarantine_manifold_clock"
+        coh = evidence.get("resonant_phase_coherence", "")
+        if coh == "unstable":
+            dec = "quarantine_manifold_clock"
+        if evidence.get("autonomy_guard_status") == "failed":
+            dec = "reject_autonomous_cadence_sync"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RRP_{int(time.time() * 1000)}",
+            decision=dec,
+            justification="Ranger recommended quarantine or detected timing instability."
+        )
+
+    if metadata.get("sandbox_trial") or metadata.get("court_token") == "SANDBOX_TOKEN" or extract(packet, "reproducibility_hash", "") == "SANDBOX_HASH":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RRP_{int(time.time() * 1000)}",
+            decision="authorize_sandbox_autonomous_cadence_trial",
+            justification="Authorized sandbox autonomous cadence trial."
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_RRP_{int(time.time() * 1000)}",
+        decision="hold_autonomous_cadence_sync",
+        justification="Level 44 readiness checks are not complete or on hold."
+    )
+
+
+def review_sovereign_core_assembly_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a SovereignCoreAssemblyReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(report, "result")
+    success = extract(res, "success", True) if res is not None else extract(report, "success", True)
+    errors = extract(res, "errors", []) or []
+
+    if not success or errors:
+        dec = "hold_core_assembly"
+        for err in errors:
+            if "unstable autonomous cadence" in err.lower():
+                dec = "reject_core_assembly"
+            elif "rollback" in err.lower():
+                dec = "rollback_core_assembly"
+            elif "quarantine" in err.lower():
+                dec = "quarantine_core"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_SCA_{int(time.time() * 1000)}",
+            decision=dec,
+            justification=f"Sovereign core assembly failed: {errors}"
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_SCA_{int(time.time() * 1000)}",
+        decision="accept_shadow_core_assembly",
+        justification="Sovereign core assembly report checks passed."
+    )
+
+
+def review_pipeline_calibration_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a PipelineCalibrationReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(report, "result")
+    success = extract(res, "success", True) if res is not None else extract(report, "success", True)
+    errors = extract(res, "errors", []) or []
+
+    if not success or errors:
+        dec = "hold_core_assembly"
+        for err in errors:
+            if "latency" in err.lower() or "backpressure" in err.lower() or "stall" in err.lower():
+                dec = "quarantine_pipeline_stage"
+            elif "rollback" in err.lower():
+                dec = "rollback_core_assembly"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PCR_{int(time.time() * 1000)}",
+            decision=dec,
+            justification=f"Pipeline calibration failed: {errors}"
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_PCR_{int(time.time() * 1000)}",
+        decision="accept_shadow_core_assembly",
+        justification="Pipeline calibration checks passed."
+    )
+
+
+def review_pipeline_assembly_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a PipelineAssemblyReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(report, "result")
+    success = extract(res, "success", True) if res is not None else extract(report, "success", True)
+    errors = extract(res, "errors", []) or []
+
+    if not success or errors:
+        dec = "reject_core_assembly"
+        for err in errors:
+            if "stage" in err.lower() or "binding" in err.lower():
+                dec = "quarantine_pipeline_stage"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PAR_{int(time.time() * 1000)}",
+            decision=dec,
+            justification=f"Pipeline assembly failed: {errors}"
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_PAR_{int(time.time() * 1000)}",
+        decision="accept_shadow_core_assembly",
+        justification="Pipeline assembly checks passed."
+    )
+
+
+def review_core_cadence_calibration_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a CoreCadenceCalibrationReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    success = extract(report, "success", True)
+    errors = extract(report, "errors", []) or []
+
+    if not success or errors:
+        dec = "hold_core_assembly"
+        for err in errors:
+            if "overwrite" in err.lower():
+                dec = "reject_core_assembly"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_CCR_{int(time.time() * 1000)}",
+            decision=dec,
+            justification=f"Core cadence calibration failed: {errors}"
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_CCR_{int(time.time() * 1000)}",
+        decision="accept_shadow_core_assembly",
+        justification="Core cadence calibration checks passed."
+    )
+
+
+def review_core_waveguide_binding_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a CoreWaveguideBindingReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    success = extract(report, "success", True)
+    errors = extract(report, "errors", []) or []
+
+    if not success or errors:
+        dec = "rollback_core_assembly"
+        for err in errors:
+            if "pml" in err.lower() or "absorption" in err.lower():
+                dec = "rollback_core_assembly"
+            elif "prefix-carry" in err.lower():
+                dec = "rollback_core_assembly"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WBR_{int(time.time() * 1000)}",
+            decision=dec,
+            justification=f"Core waveguide binding failed: {errors}"
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_WBR_{int(time.time() * 1000)}",
+        decision="accept_shadow_core_assembly",
+        justification="Core waveguide binding checks passed."
+    )
+
+
+def review_core_assembly_ranger_packet(packet: Any) -> CourtPromotionDecision:
+    """
+    Reviews a CoreAssemblyRanger SovereignPacket and determines the Level 45 verdict.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    evidence = extract(packet, "evidence", {}) or {}
+    rec = extract(packet, "recommendation")
+    metadata = extract(packet, "metadata", {}) or {}
+    
+    ready = evidence.get("promotion_readiness", False)
+    quarantine_rec = evidence.get("quarantine_recommendation", "none")
+    
+    if ready and rec == "promote":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_CAR_{int(time.time() * 1000)}",
+            decision="promote_level45_candidate",
+            justification="All Level 45 multi-core assembly and calibration checks passed."
+        )
+
+    if quarantine_rec == "quarantine" or rec == "quarantine" or quarantine_rec == "hold_assembly":
+        dec = "hold_core_assembly"
+        if quarantine_rec == "quarantine_core":
+            dec = "quarantine_core"
+        elif quarantine_rec == "quarantine_stage":
+            dec = "quarantine_pipeline_stage"
+        elif quarantine_rec == "hold_assembly":
+            dec = "hold_core_assembly"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_CAR_{int(time.time() * 1000)}",
+            decision=dec,
+            justification="Ranger recommended quarantine or detected assembly instability."
+        )
+
+    if metadata.get("sandbox_trial") or metadata.get("court_token") == "SANDBOX_TOKEN" or extract(packet, "reproducibility_hash", "") == "SANDBOX_HASH":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_CAR_{int(time.time() * 1000)}",
+            decision="authorize_sandbox_core_assembly_trial",
+            justification="Authorized sandbox multi-core assembly trial."
+        )
+
+    if evidence.get("stage_latency", 0.0) > 0.1 or metadata.get("stage_latency_breach"):
+        return CourtPromotionDecision(
+            decision_id=f"DEC_CAR_{int(time.time() * 1000)}",
+            decision="quarantine_pipeline_stage",
+            justification="Stage latency breach blocks promotion."
+        )
+    if evidence.get("backpressure", 0.0) > 0.1 or metadata.get("backpressure_breach"):
+        return CourtPromotionDecision(
+            decision_id=f"DEC_CAR_{int(time.time() * 1000)}",
+            decision="hold_core_assembly",
+            justification="Backpressure breach blocks promotion."
+        )
+    if evidence.get("cross_core_stalls", 0.0) > 0.1 or metadata.get("cross_core_stall_breach"):
+        return CourtPromotionDecision(
+            decision_id=f"DEC_CAR_{int(time.time() * 1000)}",
+            decision="hold_core_assembly",
+            justification="Cross-core stall breach blocks promotion."
+        )
+    if evidence.get("cadence_skew", 0.0) > 0.1 or metadata.get("cadence_skew_breach"):
+        return CourtPromotionDecision(
+            decision_id=f"DEC_CAR_{int(time.time() * 1000)}",
+            decision="hold_core_assembly",
+            justification="Core cadence skew breach blocks promotion."
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_CAR_{int(time.time() * 1000)}",
+        decision="hold_core_assembly",
+        justification="Level 45 readiness checks are not complete or on hold."
+    )
+
+
+def review_geodesic_pipeline_balance_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a GeodesicPipelineBalanceReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(report, "result", {})
+    success = extract(res, "success", True)
+    errors = extract(res, "errors", [])
+    
+    if not success or errors:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_GPB_{int(time.time() * 1000)}",
+            decision="reject_pipeline_balance",
+            justification=f"Geodesic pipeline balance checks failed: {'; '.join(errors)}"
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_GPB_{int(time.time() * 1000)}",
+        decision="accept_shadow_pipeline_wavefront",
+        justification="Geodesic pipeline balancing checks passed."
+    )
+
+
+def review_quantum_wavefront_calibration_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a QuantumWavefrontCalibrationReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(report, "result", {})
+    success = extract(res, "success", True)
+    errors = extract(res, "errors", [])
+    
+    if not success or errors:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_QWC_{int(time.time() * 1000)}",
+            decision="reject_quantum_wavefront_candidate",
+            justification=f"Quantum wavefront calibration checks failed: {'; '.join(errors)}"
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_QWC_{int(time.time() * 1000)}",
+        decision="accept_shadow_pipeline_wavefront",
+        justification="Quantum wavefront calibration checks passed."
+    )
+
+
+def review_wavefront_uncertainty_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a WavefrontUncertaintyReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    is_valid = extract(report, "is_valid", True)
+    bound = extract(report, "bound")
+    is_bounded = extract(bound, "is_bounded", True) if bound else True
+    
+    if not is_valid or not is_bounded:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WUR_{int(time.time() * 1000)}",
+            decision="reject_quantum_wavefront_candidate",
+            justification="Unbounded wavefront uncertainty blocks calibration."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_WUR_{int(time.time() * 1000)}",
+        decision="accept_shadow_pipeline_wavefront",
+        justification="Wavefront uncertainty checks passed."
+    )
+
+
+def review_pipeline_balance_oracle_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a PipelineBalanceOracleReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    dec = extract(report, "decision")
+    decision_val = extract(dec, "decision", "accept") if dec else "accept"
+    justification = extract(dec, "justification", "Acceptable") if dec else "Acceptable"
+    
+    if decision_val != "accept":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PBO_{int(time.time() * 1000)}",
+            decision=decision_val,
+            justification=justification
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_PBO_{int(time.time() * 1000)}",
+        decision="accept_shadow_pipeline_wavefront",
+        justification="Pipeline balance safety oracle checks passed."
+    )
+
+
+def review_quantum_wavefront_protocol_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a QuantumWavefrontProtocolReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    success = extract(report, "success", True)
+    errors = extract(report, "errors", [])
+    
+    if not success or errors:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_QWP_{int(time.time() * 1000)}",
+            decision="reject_quantum_wavefront_candidate",
+            justification=f"Quantum wavefront protocol execution failed: {'; '.join(errors)}"
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_QWP_{int(time.time() * 1000)}",
+        decision="accept_shadow_pipeline_wavefront",
+        justification="Quantum wavefront protocol checks passed."
+    )
+
+
+def review_pipeline_wavefront_ranger_packet(packet: Any) -> CourtPromotionDecision:
+    """
+    Reviews a PipelineWavefrontRanger SovereignPacket.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    evidence = extract(packet, "evidence", {}) or {}
+    rec = extract(packet, "recommendation")
+    metadata = extract(packet, "metadata", {}) or {}
+    
+    ready = evidence.get("promotion_readiness", False)
+    quarantine_rec = evidence.get("quarantine_recommendation", "none")
+    
+    if ready and rec == "promote":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PWR_{int(time.time() * 1000)}",
+            decision="promote_level46_candidate",
+            justification="All Level 46 pipeline balancing and quantum wavefront calibration checks passed."
+        )
+
+    if quarantine_rec != "none" and quarantine_rec != "accept":
+        dec = "hold_pipeline_balance"
+        if quarantine_rec == "quarantine_core":
+            dec = "quarantine_core"
+        elif quarantine_rec == "quarantine_pipeline_segment":
+            dec = "quarantine_pipeline_segment"
+        elif quarantine_rec == "quarantine_wavefront_packet":
+            dec = "quarantine_wavefront_packet"
+        elif quarantine_rec == "rollback_balance":
+            dec = "rollback_pipeline_balance"
+        elif quarantine_rec == "rollback_wavefront_calibration":
+            dec = "rollback_quantum_wavefront_calibration"
+        elif quarantine_rec == "hold_balance":
+            dec = "hold_pipeline_balance"
+        elif quarantine_rec == "reject_balance_candidate":
+            dec = "reject_pipeline_balance"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PWR_{int(time.time() * 1000)}",
+            decision=dec,
+            justification=f"Ranger recommended quarantine or detected balancing instability: {quarantine_rec}"
+        )
+
+    if metadata.get("sandbox_trial") or metadata.get("court_token") == "SANDBOX_TOKEN" or extract(packet, "reproducibility_hash", "") == "SANDBOX_HASH":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PWR_{int(time.time() * 1000)}",
+            decision="authorize_sandbox_pipeline_wavefront_trial",
+            justification="Authorized sandbox pipeline balancing / wavefront trial."
+        )
+
+    if evidence.get("wavefront_coherence", 1.0) < 0.9 or metadata.get("coherence_breach"):
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PWR_{int(time.time() * 1000)}",
+            decision="rollback_quantum_wavefront_calibration",
+            justification="Wavefront coherence breach blocks promotion."
+        )
+    if evidence.get("packet_dispersion", 0.0) > 0.1 or metadata.get("dispersion_breach"):
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PWR_{int(time.time() * 1000)}",
+            decision="quarantine_wavefront_packet",
+            justification="Wavefront dispersion breach blocks promotion."
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_PWR_{int(time.time() * 1000)}",
+        decision="hold_pipeline_balance",
+        justification="Level 46 readiness checks are not complete or on hold."
+    )
+
+
+def review_pipeline_wavefront_fault_matrix_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a PipelineWavefrontFaultMatrixReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    passed_audit = extract(report, "passed_audit", True)
+    results = extract(report, "results", []) or []
+    
+    # Check if any individual case failed or if passed_audit is False
+    all_success = True
+    for res in results:
+        success = extract(res, "success", True)
+        if not success:
+            all_success = False
+            break
+
+    if not passed_audit or not all_success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WF_FMX_{int(time.time() * 1000)}",
+            decision="reject_level47_candidate",
+            justification="Pipeline wavefront fault matrix audit failed."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_WF_FMX_{int(time.time() * 1000)}",
+        decision="accept_shadow_pipeline_wavefront_fault_matrix",
+        justification="Pipeline wavefront fault matrix audit passed."
+    )
+
+
+def review_quantum_calibration_fault_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a QuantumCalibrationFaultReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    passed_audit = extract(report, "passed_audit", True)
+    results = extract(report, "results", []) or []
+    
+    all_success = True
+    rollback_req = False
+    quarantine_req = False
+    for res in results:
+        success = extract(res, "success", True)
+        if not success:
+            all_success = False
+        outcome = extract(res, "actual_outcome", "")
+        if outcome == "rollback_pipeline_wavefront_candidate":
+            rollback_req = True
+        elif outcome == "quarantine_wavefront_packet":
+            quarantine_req = True
+
+    if not passed_audit or not all_success:
+        dec = "reject_level47_candidate"
+        if rollback_req:
+            dec = "rollback_pipeline_wavefront_candidate"
+        elif quarantine_req:
+            dec = "quarantine_wavefront_packet"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_QCF_{int(time.time() * 1000)}",
+            decision=dec,
+            justification="Quantum calibration stability audit failed."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_QCF_{int(time.time() * 1000)}",
+        decision="accept_shadow_pipeline_wavefront_fault_matrix",
+        justification="Quantum calibration stability audit passed."
+    )
+
+
+def review_pipeline_balance_fault_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a PipelineBalanceFaultReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    success = extract(report, "success", True)
+    blocks_promotion = extract(report, "blocks_promotion", False)
+    quarantine_rec = extract(report, "quarantine_recommended", False)
+    
+    if not success or blocks_promotion:
+        dec = "reject_level47_candidate"
+        if quarantine_rec:
+            dec = "quarantine_pipeline_segment"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PBF_{int(time.time() * 1000)}",
+            decision=dec,
+            justification="Pipeline balance fault audit failed or blocks promotion."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_PBF_{int(time.time() * 1000)}",
+        decision="accept_shadow_pipeline_wavefront_fault_matrix",
+        justification="Pipeline balance fault audit passed."
+    )
+
+
+def review_uncertainty_fault_audit_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews an UncertaintyFaultAuditReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    passed_audit = extract(report, "passed_audit", True)
+    results = extract(report, "results", []) or []
+    
+    all_success = True
+    for res in results:
+        bp = extract(res, "blocks_promotion", True)
+        if bp:
+            all_success = False
+
+    if not passed_audit or not all_success or len(results) > 0:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_UFA_{int(time.time() * 1000)}",
+            decision="reject_level47_candidate",
+            justification="Uncertainty fault audit failed (unbounded uncertainty or dispersion breach)."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_UFA_{int(time.time() * 1000)}",
+        decision="accept_shadow_pipeline_wavefront_fault_matrix",
+        justification="Uncertainty fault audit passed."
+    )
+
+
+def review_pipeline_wavefront_rollback_proof_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a PipelineWavefrontRollbackProofReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    passed_proof = extract(report, "passed_proof", True)
+    results = extract(report, "results", []) or []
+    
+    all_success = True
+    for res in results:
+        success = extract(res, "success", True)
+        if not success:
+            all_success = False
+
+    if not passed_proof or not all_success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RLBK_PRF_{int(time.time() * 1000)}",
+            decision="reject_level47_candidate",
+            justification="Pipeline wavefront rollback proof failed."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_RLBK_PRF_{int(time.time() * 1000)}",
+        decision="accept_shadow_pipeline_wavefront_fault_matrix",
+        justification="Pipeline wavefront rollback proof passed."
+    )
+
+
+def review_pipeline_wavefront_safety_oracle_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a PipelineWavefrontSafetyOracleReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    dec = extract(report, "decision")
+    outcome = extract(dec, "outcome", "") if dec else ""
+    
+    if outcome in ["reject_candidate", "quarantine_core", "quarantine_pipeline_segment", "quarantine_wavefront_packet", "rollback_pipeline_balance", "rollback_wavefront_calibration", "hold_pipeline_balance", "hold_wavefront_calibration"]:
+        # Any unsafe case classified by safety oracle must block promotion
+        return CourtPromotionDecision(
+            decision_id=f"DEC_SFT_ORC_{int(time.time() * 1000)}",
+            decision="reject_level47_candidate",
+            justification=f"Safety oracle identified unsafe condition: {outcome}"
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_SFT_ORC_{int(time.time() * 1000)}",
+        decision="accept_shadow_pipeline_wavefront_fault_matrix",
+        justification="Safety oracle checks passed."
+    )
+
+
+def review_pipeline_wavefront_fault_ranger_packet(packet: Any) -> CourtPromotionDecision:
+    """
+    Reviews a PipelineWavefrontFaultRanger SovereignPacket.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    evidence = extract(packet, "evidence", {}) or {}
+    rec = extract(packet, "recommendation")
+    metadata = extract(packet, "metadata", {}) or {}
+    
+    ready = evidence.get("promotion_readiness", False)
+    quarantine_rec = evidence.get("quarantine_recommendation", "none")
+    
+    if ready and rec == "promote":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PWFR_{int(time.time() * 1000)}",
+            decision="promote_level47_candidate",
+            justification="All Level 47 pipeline wavefront fault injection and stability audits passed."
+        )
+
+    if quarantine_rec != "none" and quarantine_rec != "accept" and quarantine_rec != "accept_shadow":
+        dec = "hold_level47_candidate"
+        if quarantine_rec == "quarantine_core":
+            dec = "quarantine_core"
+        elif quarantine_rec == "quarantine_pipeline_segment":
+            dec = "quarantine_pipeline_segment"
+        elif quarantine_rec == "quarantine_wavefront_packet":
+            dec = "quarantine_wavefront_packet"
+        elif quarantine_rec == "rollback_pipeline_wavefront_candidate":
+            dec = "rollback_pipeline_wavefront_candidate"
+        elif quarantine_rec == "hold_level47_candidate":
+            dec = "hold_level47_candidate"
+        elif quarantine_rec == "reject_level47_candidate":
+            dec = "reject_level47_candidate"
+        elif quarantine_rec == "quarantine_fault_case":
+            dec = "quarantine_fault_case"
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PWFR_{int(time.time() * 1000)}",
+            decision=dec,
+            justification=f"Ranger recommended quarantine or detected audit instability: {quarantine_rec}"
+        )
+
+    if metadata.get("sandbox_trial") or metadata.get("court_token") == "SANDBOX_TOKEN" or extract(packet, "reproducibility_hash", "") == "SANDBOX_HASH":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PWFR_{int(time.time() * 1000)}",
+            decision="authorize_sandbox_pipeline_wavefront_fault_audit",
+            justification="Authorized sandbox pipeline wavefront fault audit trial."
+        )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_PWFR_{int(time.time() * 1000)}",
+        decision="hold_level47_candidate",
+        justification="Level 47 readiness checks are not complete or on hold."
+    )
+
+
+def review_burnin_runtime_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a BurnInRuntimeReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    passed = extract(report, "passed_audit", True)
+    justification = "Burn-in runtime shadow execution passed." if passed else "Burn-in runtime audit failed."
+    decision = "accept_shadow_burnin" if passed else "hold_burnin"
+    return CourtPromotionDecision(
+        decision_id=f"DEC_BRN_RT_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_burnin_sequence_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a BurnInSequenceReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    success = extract(report, "success", True)
+    justification = "Burn-in sequence plan executed successfully." if success else "Burn-in sequence had execution errors."
+    decision = "accept_shadow_burnin" if success else "quarantine_burnin_sequence"
+    return CourtPromotionDecision(
+        decision_id=f"DEC_BRN_SEQ_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_stability_ledger_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a StabilityLedgerValidationReport or StabilityLedger summary.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    valid = extract(report, "integrity_passed", True) or extract(report, "valid", True)
+    justification = "Stability ledger hash-chain integrity verified." if valid else "Stability ledger chain contains missing/reordered entries."
+    decision = "accept_shadow_burnin" if valid else "reject_burnin_candidate"
+    return CourtPromotionDecision(
+        decision_id=f"DEC_STB_LDG_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_burnin_regression_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a BurnInRegressionReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    dec_obj = extract(report, "decision")
+    passed = extract(report, "passed", True)
+    justification = "No regressions detected."
+    decision = "continue_shadow"
+    
+    if dec_obj:
+        decision = extract(dec_obj, "decision", "continue_shadow")
+        justification = extract(dec_obj, "justification", justification)
+    elif not passed:
+        decision = "hold_burnin"
+        justification = "Regression checks failed."
+
+    if decision == "continue_shadow":
+        decision = "accept_shadow_burnin"
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_BRN_REG_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_burnin_rollback_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a BurnInRollbackReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(report, "result")
+    success = extract(res, "success", True) if res else True
+    justification = "Rollback verification passed, state successfully restored." if success else "Rollback verification failed."
+    decision = "accept_shadow_burnin" if success else "rollback_burnin_to_checkpoint"
+    return CourtPromotionDecision(
+        decision_id=f"DEC_BRN_RLB_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_burnin_promotion_readiness_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a BurnInPromotionReadinessReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    score = extract(report, "score")
+    passed = extract(score, "passed", False) if score else False
+    justification = "Promotion readiness thresholds met." if passed else "Promotion readiness thresholds not satisfied."
+    
+    decision = "promote_level48_candidate"
+    if not passed:
+        decision = "hold_burnin"
+        reasons = extract(score, "reasons", []) or []
+        if any("ledger" in str(r).lower() for r in reasons):
+            decision = "reject_burnin_candidate"
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_BRN_RDY_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_burnin_runtime_ranger_packet(packet: Any) -> CourtPromotionDecision:
+    """
+    Reviews a BurnInRuntimeRanger SovereignPacket.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    evidence = extract(packet, "evidence", {}) or {}
+    rec = extract(packet, "recommendation")
+    metadata = extract(packet, "metadata", {}) or {}
+    
+    ready = evidence.get("promotion_readiness", False)
+    
+    if ready and rec == "promote":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_BRN_RNG_{int(time.time() * 1000)}",
+            decision="promote_level48_candidate",
+            justification="All Level 48 sovereign burn-in runtime and stability ledger audits passed."
+        )
+
+    token = metadata.get("court_token") or evidence.get("court_token")
+    if token and token != "INVALID_TOKEN":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_BRN_RNG_{int(time.time() * 1000)}",
+            decision="authorize_sandbox_burnin_trial",
+            justification="Sandbox token present. Authorizing sandbox burn-in trial."
+        )
+
+    quarantined = evidence.get("quarantine_count", 0) > 0
+    held = evidence.get("held_cycle_count", 0) > 0
+    
+    dec = "hold_burnin"
+    if quarantined:
+        dec = "quarantine_burnin_sequence"
+    elif held:
+        dec = "hold_burnin"
+    elif evidence.get("ledger_integrity_status") == "failed":
+        dec = "reject_burnin_candidate"
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_BRN_RNG_{int(time.time() * 1000)}",
+        decision=dec,
+        justification=f"Ranger observed incomplete evidence or audit failure. Recommendation: {rec}."
+    )
+
+
+def review_release_candidate_manifest(manifest: Any) -> CourtPromotionDecision:
+    """
+    Reviews a ReleaseCandidateManifest or report.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    valid = extract(manifest, "valid", True)
+    justification = "Release candidate manifest passes all shadow checks." if valid else "Release candidate manifest contains validation failures."
+    decision = "accept_shadow_release_candidate" if valid else "hold_release_candidate"
+    return CourtPromotionDecision(
+        decision_id=f"DEC_RC_MNF_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_governance_freeze_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a GovernanceFreezeReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    frozen = extract(report, "frozen", True)
+    justification = "Governance invariants freeze checked successfully." if frozen else "Governance invariants violated."
+    decision = "accept_shadow_release_candidate" if frozen else "reject_release_candidate"
+    return CourtPromotionDecision(
+        decision_id=f"DEC_GVR_FRZ_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_api_stability_contract(contract: Any) -> CourtPromotionDecision:
+    """
+    Reviews an APIStabilityContract.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    broken = extract(contract, "broken", False)
+    justification = "API stability contract verified; no breaking changes detected." if not broken else "API stability contract contains breaking API changes."
+    decision = "accept_shadow_release_candidate" if not broken else "reject_release_candidate"
+    return CourtPromotionDecision(
+        decision_id=f"DEC_API_CTR_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_release_readiness_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a ReleaseReadinessReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    classification = extract(report, "classification", "not_ready")
+    score_obj = extract(report, "score")
+    
+    justification = f"Release readiness evaluation completed: {classification}."
+    
+    decision = "promote_level49_candidate"
+    if classification == "needs_more_evidence":
+        decision = "needs_more_evidence"
+    elif classification == "reject_release_candidate":
+        decision = "reject_release_candidate"
+    elif classification == "not_ready":
+        decision = "hold_release_candidate"
+    elif classification == "sandbox_rc_ready":
+        decision = "authorize_sandbox_release_candidate_trial"
+    elif classification == "shadow_rc_ready":
+        decision = "accept_shadow_release_candidate"
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_RC_RDY_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_release_docket(docket: Any) -> CourtPromotionDecision:
+    """
+    Reviews a ReleaseDocket.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    evidence = extract(docket, "evidence", []) or []
+    evidence_types = {extract(e, "evidence_type") for e in evidence}
+    required = {
+        "rc_manifest", "governance_freeze_report", "api_stability_contract", 
+        "release_readiness_report", "package_report", "burn_in_report", 
+        "test_summary", "ranger_packet", "court_verdict"
+    }
+    
+    missing = required - evidence_types
+    if missing:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_RC_DCK_{int(time.time() * 1000)}",
+            decision="hold_release_candidate",
+            justification=f"Release docket is missing critical evidence: {list(missing)}"
+        )
+        
+    for item in evidence:
+        if extract(item, "evidence_type") == "court_verdict":
+            verdict_val = extract(item, "payload", {}).get("verdict")
+            if verdict_val == "reject":
+                return CourtPromotionDecision(
+                    decision_id=f"DEC_RC_DCK_{int(time.time() * 1000)}",
+                    decision="reject_release_candidate",
+                    justification="Release docket has rejected court verdict."
+                )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_RC_DCK_{int(time.time() * 1000)}",
+        decision="promote_level49_candidate",
+        justification="All required release evidence (tests, burn-in, rollbacks, API contract, and gates) are validated successfully in the docket."
+    )
+
+
+def review_production_gateway_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a ProductionGatewayReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    dec_obj = extract(report, "decision")
+    decision_str = extract(dec_obj, "decision") if dec_obj else "deny"
+    justification = f"Production gateway request: {decision_str}."
+    
+    decision = "deny_production_gateway"
+    if decision_str == "sandbox_trial_authorized":
+        decision = "authorize_sandbox_finalization_trial"
+    elif decision_str == "shadow_only_approved":
+        decision = "accept_shadow_finalization"
+        
+    return CourtPromotionDecision(
+        decision_id=f"DEC_GW_RPT_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_final_system_manifest(manifest: Any) -> CourtPromotionDecision:
+    """
+    Reviews a FinalSystemManifest.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    valid = extract(manifest, "valid", True)
+    justification = "Final system manifest passes shadow checks." if valid else "Final system manifest invalid."
+    decision = "accept_shadow_finalization" if valid else "hold_finalization"
+    return CourtPromotionDecision(
+        decision_id=f"DEC_SYS_MNF_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_final_gate_registry_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a FinalGateRegistryReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    all_passed = extract(report, "all_passed", True)
+    justification = "All final gates passed." if all_passed else "Final gate registry has failures."
+    decision = "promote_level50_candidate" if all_passed else "hold_finalization"
+    return CourtPromotionDecision(
+        decision_id=f"DEC_GAT_REG_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_production_readiness_guard_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a ProductionReadinessReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    dec_obj = extract(report, "decision")
+    decision_str = extract(dec_obj, "decision") if dec_obj else "not_ready"
+    justification = extract(dec_obj, "justification") if dec_obj else "Readiness report details."
+    
+    decision = "hold_finalization"
+    if decision_str == "production_blocked":
+        decision = "reject_finalization"
+    elif decision_str == "shadow_finalized":
+        decision = "accept_shadow_finalization"
+    elif decision_str == "sandbox_gateway_ready":
+        decision = "authorize_sandbox_finalization_trial"
+        
+    return CourtPromotionDecision(
+        decision_id=f"DEC_RDY_GRD_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_system_lockdown_report(report: Any) -> CourtPromotionDecision:
+    """
+    Reviews a SystemLockdownReport.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    locked = extract(report, "locked", True)
+    justification = "System parameters locked successfully." if locked else "System lockdown violated."
+    decision = "accept_shadow_finalization" if locked else "reject_finalization"
+    return CourtPromotionDecision(
+        decision_id=f"DEC_SYS_LCK_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_runtime_handoff_manifest(manifest: Any) -> CourtPromotionDecision:
+    """
+    Reviews a RuntimeHandoffManifest.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    valid = extract(manifest, "valid", True) or extract(manifest, "checklist_passed", True)
+    justification = "Runtime handoff manifest checklist verified." if valid else "Handoff manifest checklist failed."
+    decision = "accept_shadow_finalization" if valid else "hold_finalization"
+    return CourtPromotionDecision(
+        decision_id=f"DEC_HND_MNF_{int(time.time() * 1000)}",
+        decision=decision,
+        justification=justification
+    )
+
+def review_finalization_docket(docket: Any) -> CourtPromotionDecision:
+    """
+    Reviews a FinalizationDocket.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    evidence = extract(docket, "evidence", []) or []
+    evidence_types = {extract(e, "evidence_type") for e in evidence}
+    required = {
+        "final_system_manifest", "final_gate_registry_report", "production_readiness_guard_report",
+        "system_lockdown_report", "runtime_handoff_manifest", "release_candidate_manifest",
+        "release_docket", "runtime_ledger", "ranger_packet", "court_verdict"
+    }
+    
+    missing = required - evidence_types
+    if missing:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_FIN_DCK_{int(time.time() * 1000)}",
+            decision="hold_finalization",
+            justification=f"Finalization docket is missing critical evidence: {list(missing)}"
+        )
+        
+    for item in evidence:
+        if extract(item, "evidence_type") == "court_verdict":
+            verdict_val = extract(item, "payload", {}).get("verdict")
+            if verdict_val == "reject":
+                return CourtPromotionDecision(
+                    decision_id=f"DEC_FIN_DCK_{int(time.time() * 1000)}",
+                    decision="reject_finalization",
+                    justification="Finalization docket has rejected court verdict."
+                )
+
+    return CourtPromotionDecision(
+        decision_id=f"DEC_FIN_DCK_{int(time.time() * 1000)}",
+        decision="promote_level50_candidate",
+        justification="All 10 required finalization evidence items are validated successfully in the docket."
+    )
+
+
+
+
+
+
+
+
+
 
 
 

@@ -313,3 +313,70 @@ def validate_simd_prefix_carry_mapping(binding_map: SIMDCoreFabricMap) -> bool:
             
     return True
 
+
+def validate_simd_core_after_sovereign_assembly(
+    binding_map: SIMDCoreFabricMap,
+    assembly_report: Any
+) -> bool:
+    """
+    Validates SIMD core bindings after sovereign multi-core assembly.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(assembly_report, "result")
+    success = extract(res, "success", True) if res is not None else extract(assembly_report, "success", True)
+    if not success:
+        raise ValueError("Core assembly failed; holding SIMD validation.")
+
+    if not binding_map or not binding_map.bindings:
+        raise ValueError("SIMD bindings cannot be empty.")
+        
+    for b in binding_map.bindings:
+        if b.simd_mode not in ("uint8x8", "uint16x4", "uint32x2", "uint64x1"):
+            raise ValueError(f"Unsupported SIMD mode: {b.simd_mode}")
+            
+    meta = extract(binding_map, "metadata", {}) or {}
+    if meta.get("simd_validation_failed") or meta.get("simd_mismatch"):
+        raise ValueError("SIMD core validation failed: mismatch detected.")
+        
+    return True
+
+
+def run_shadow_simd_pipeline_on_assembled_cores(
+    dispatch_plan: SIMDWaveguideDispatchPlan,
+    assembly_report: Any
+) -> SIMDCoreIntegrationReport:
+    """
+    Runs shadow execution of SIMD dispatch plan on assembled cores.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    validate_simd_core_after_sovereign_assembly(dispatch_plan.binding_map, assembly_report)
+    trace = execute_shadow_simd_waveguide_dispatch(dispatch_plan)
+    
+    op = dispatch_plan.operation
+    oracle = extract(op, "oracle") if op else None
+    
+    oracle_match = True
+    if oracle is not None:
+        oracle_match = compare_simd_waveguide_oracle(trace, oracle)
+        
+    import uuid
+    return SIMDCoreIntegrationReport(
+        report_id=f"SIMD_REP_{uuid.uuid4().hex[:8]}",
+        binding_map=dispatch_plan.binding_map,
+        success=oracle_match,
+        errors=[] if oracle_match else ["Oracle mismatch in SIMD execution."],
+        simd_modes=list(set(b.simd_mode for b in dispatch_plan.binding_map.bindings)),
+        dispatch_plan=dispatch_plan,
+        trace=trace,
+        oracle_match=oracle_match
+    )
+
+

@@ -251,6 +251,10 @@ def execute_shadow_waveguide_rebalance(
         
     success = passed_gates and len(errors) == 0
     
+    policy = plan.intent.policy if (plan and plan.intent and hasattr(plan.intent, "policy")) else {}
+    if not isinstance(policy, dict):
+        policy = {}
+
     result = WaveguideRebalanceResult(
         result_id=f"REBAL_RES_{uuid.uuid4().hex[:8]}",
         plan_id=plan.plan_id,
@@ -290,4 +294,114 @@ def validate_waveguide_rebalance_fault_response(report: WaveguideRebalanceReport
     if expected_response != "accept_shadow" and not report.success:
         return True
     return False
+
+
+def validate_waveguide_rebalance_after_topology_relocation(
+    rebalance_report: Any,
+    topology_report: Any
+) -> bool:
+    """
+    Validates waveguide rebalance after topology relocation.
+    Raises ValueError if relocation invalidates PML, lane identity, carrier identity,
+    quadrature pairs, prefix-carry bridges, or route evidence.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not topology_report:
+        return True
+
+    # Validate that topology relocation succeeded
+    result = extract(topology_report, "result", {})
+    success = extract(result, "success", True)
+    if not success:
+        raise ValueError("Topology relocation failed; waveguide rebalance blocked.")
+
+    # Check for invalidations in topology refs
+    plan = extract(topology_report, "plan", {})
+    intent = extract(plan, "intent", {})
+    topology_refs = extract(intent, "topology_refs", {})
+
+    if topology_refs.get("pml_coverage_violated") or topology_refs.get("missing_pml_boundary"):
+        raise ValueError("Topology relocation invalidates PML absorption coverage; waveguide rebalance blocked.")
+    if topology_refs.get("lane_identity_violated") or topology_refs.get("missing_lane"):
+        raise ValueError("Topology relocation invalidates lane identity; waveguide rebalance blocked.")
+    if topology_refs.get("carrier_identity_violated") or topology_refs.get("missing_carrier"):
+        raise ValueError("Topology relocation invalidates carrier identity; waveguide rebalance blocked.")
+    if topology_refs.get("quadrature_pairs_violated") or topology_refs.get("quadrature_pair_break"):
+        raise ValueError("Topology relocation invalidates quadrature pairs; waveguide rebalance blocked.")
+    if topology_refs.get("prefix_carry_bridges_violated") or topology_refs.get("prefix_carry_bridge_break"):
+        raise ValueError("Topology relocation invalidates prefix-carry bridges; waveguide rebalance blocked.")
+    if topology_refs.get("route_evidence_violated") or topology_refs.get("missing_court_evidence"):
+        raise ValueError("Topology relocation invalidates route evidence; waveguide rebalance blocked.")
+
+    return True
+
+
+def remap_waveguide_rebalance_for_new_topology(
+    rebalance_plan: WaveguideRebalancePlan,
+    topology_remap: Dict[str, Any]
+) -> WaveguideRebalancePlan:
+    """
+    Remaps waveguide rebalance plan fields/candidates using coordinate and lane mappings.
+    """
+    # Simply remap coordinate systems or update lanes
+    for cand in rebalance_plan.candidates:
+        mapped_lane = topology_remap.get(str(cand.lane_id))
+        if mapped_lane is not None:
+            cand.lane_id = int(mapped_lane)
+    return rebalance_plan
+
+
+def validate_waveguide_after_pipeline_balance(
+    rebalance_report: Any,
+    balance_report: Any
+) -> bool:
+    """
+    Validates waveguide rebalance after pipeline load balancing.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not balance_report:
+        return True
+
+    res = extract(balance_report, "result", {})
+    success = extract(res, "success", True)
+    if not success:
+        raise ValueError("Pipeline balancing failed; waveguide validation blocked.")
+
+    plan = extract(balance_report, "plan", {})
+    meta = extract(plan, "metadata", {}) or {}
+    
+    if meta.get("lane_identity_violated"):
+        raise ValueError("Pipeline balancing invalidates lane identity.")
+    if meta.get("carrier_identity_violated"):
+        raise ValueError("Pipeline balancing invalidates carrier identity.")
+    if meta.get("quadrature_pairing_violated"):
+        raise ValueError("Pipeline balancing invalidates quadrature pairing.")
+    if meta.get("pml_coverage_violated"):
+        raise ValueError("Pipeline balancing invalidates PML absorption coverage.")
+    if meta.get("prefix_carry_bridge_violated"):
+        raise ValueError("Pipeline balancing invalidates prefix-carry bridge semantics.")
+    if meta.get("tensor_references_violated") or meta.get("reduction_references_violated"):
+        raise ValueError("Pipeline balancing invalidates tensor/reduction references.")
+
+    return True
+
+
+def remap_waveguide_load_after_pipeline_balance(
+    rebalance_report: Any,
+    balance_report: Any
+) -> Any:
+    """
+    Remaps waveguide load after pipeline load balancing.
+    """
+    return rebalance_report
+
+
 

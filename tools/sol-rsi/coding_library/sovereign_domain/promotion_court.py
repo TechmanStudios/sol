@@ -3636,6 +3636,816 @@ class PromotionCourt:
             details={"justification": dec.justification}
         )
 
+    def review_route_rebalance_fault_matrix_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a RouteRebalanceFaultMatrixReport.
+        """
+        from sol_court_supervised_promotion import review_route_rebalance_fault_matrix_report
+        dec = review_route_rebalance_fault_matrix_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"route_rebalance_fault_matrix_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_route_fault_matrix", "promote_level42_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_optimization_regression_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews an OptimizationRegressionReport.
+        """
+        from sol_court_supervised_promotion import review_optimization_regression_report
+        dec = review_optimization_regression_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"optimization_regression_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_route_fault_matrix", "promote_level42_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_route_cost_regression_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a RouteCostRegressionReport.
+        """
+        from sol_court_supervised_promotion import review_route_cost_regression_report
+        dec = review_route_cost_regression_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"route_cost_regression_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_route_fault_matrix", "promote_level42_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_waveguide_fault_audit_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a WaveguideFaultAuditReport.
+        """
+        from sol_court_supervised_promotion import review_waveguide_fault_audit_report
+        dec = review_waveguide_fault_audit_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"waveguide_fault_audit_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_route_fault_matrix", "promote_level42_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_route_rebalance_rollback_proof_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a RouteRebalanceRollbackProofReport.
+        """
+        from sol_court_supervised_promotion import review_route_rebalance_rollback_proof_report
+        dec = review_route_rebalance_rollback_proof_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"route_rebalance_rollback_proof_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_route_fault_matrix", "promote_level42_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_route_fault_ranger_packet(self, packet: Any) -> PromotionGateResult:
+        """
+        Reviews a RouteFaultRanger SovereignPacket.
+        """
+        from sol_court_supervised_promotion import review_route_fault_ranger_packet
+        dec = review_route_fault_ranger_packet(packet)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"route_fault_ranger_packet_gate",
+            passed=(dec.decision in ["promote_level42_candidate", "accept_shadow_route_fault_matrix", "authorize_sandbox_route_fault_audit"]),
+            evidence_hash="packet_evidence",
+            details={"justification": dec.justification}
+        )
+
+
+    def review_topology_relocation_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a TopologyRelocationReport.
+        """
+        from sol_court_supervised_promotion import review_topology_relocation_report
+        dec = review_topology_relocation_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"topology_relocation_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_topology_relocation", "promote_level43_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_multimanifold_reshape_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a MultiManifoldReshapeReport.
+        """
+        from sol_court_supervised_promotion import review_multimanifold_reshape_report
+        dec = review_multimanifold_reshape_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"multimanifold_reshape_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_topology_relocation", "promote_level43_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_topology_shape_guard_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a TopologyShapeGuardReport.
+        """
+        from sol_court_supervised_promotion import review_topology_shape_guard_report
+        dec = review_topology_shape_guard_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"topology_shape_guard_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_topology_relocation", "promote_level43_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_topology_migration_protocol_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a TopologyMigrationProtocolReport.
+        """
+        from sol_court_supervised_promotion import review_topology_migration_protocol_report
+        dec = review_topology_migration_protocol_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"topology_migration_protocol_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_topology_relocation", "promote_level43_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_topology_relocation_manifest(self, manifest: Any) -> PromotionGateResult:
+        """
+        Reviews a TopologyRelocationManifest.
+        """
+        from sol_court_supervised_promotion import review_topology_relocation_manifest
+        dec = review_topology_relocation_manifest(manifest)
+        m_id = getattr(manifest, "manifest_id", "unknown")
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"topology_manifest_gate_{m_id}",
+            passed=(dec.decision in ["accept_shadow_topology_relocation", "promote_level43_candidate"]),
+            evidence_hash=m_id,
+            details={"justification": dec.justification}
+        )
+
+    def review_topology_relocation_ranger_packet(self, packet: Any) -> PromotionGateResult:
+        """
+        Reviews a TopologyRelocationRanger SovereignPacket.
+        """
+        from sol_court_supervised_promotion import review_topology_relocation_ranger_packet
+        dec = review_topology_relocation_ranger_packet(packet)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name="topology_relocation_ranger_packet_gate",
+            passed=(dec.decision in ["promote_level43_candidate", "accept_shadow_topology_relocation", "authorize_sandbox_topology_relocation_trial"]),
+            evidence_hash="packet_evidence",
+            details={"justification": dec.justification}
+        )
+
+
+    def review_resonant_feedback_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a ResonantFeedbackReport.
+        """
+        from sol_court_supervised_promotion import review_resonant_feedback_report
+        dec = review_resonant_feedback_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"resonant_feedback_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_resonant_cadence", "promote_level44_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_autonomous_cadence_sync_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews an AutonomousCadenceSyncReport.
+        """
+        from sol_court_supervised_promotion import review_autonomous_cadence_sync_report
+        dec = review_autonomous_cadence_sync_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"autonomous_cadence_sync_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_resonant_cadence", "promote_level44_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_resonant_cadence_control_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a ResonantCadenceControlReport.
+        """
+        from sol_court_supervised_promotion import review_resonant_cadence_control_report
+        dec = review_resonant_cadence_control_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"resonant_cadence_control_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_resonant_cadence", "promote_level44_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_cadence_autonomy_guard_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a CadenceAutonomyGuardReport.
+        """
+        from sol_court_supervised_promotion import review_cadence_autonomy_guard_report
+        dec = review_cadence_autonomy_guard_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"cadence_autonomy_guard_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_resonant_cadence", "promote_level44_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_resonant_cadence_ranger_packet(self, packet: Any) -> PromotionGateResult:
+        """
+        Reviews a ResonantCadenceRanger SovereignPacket.
+        """
+        from sol_court_supervised_promotion import review_resonant_cadence_ranger_packet
+        dec = review_resonant_cadence_ranger_packet(packet)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name="resonant_cadence_ranger_packet_gate",
+            passed=(dec.decision in ["promote_level44_candidate", "accept_shadow_resonant_cadence", "authorize_sandbox_autonomous_cadence_trial"]),
+            evidence_hash="packet_evidence",
+            details={"justification": dec.justification}
+        )
+
+    def review_sovereign_core_assembly_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a SovereignCoreAssemblyReport.
+        """
+        from sol_court_supervised_promotion import review_sovereign_core_assembly_report
+        dec = review_sovereign_core_assembly_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"core_assembly_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_core_assembly", "promote_level45_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_pipeline_calibration_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a PipelineCalibrationReport.
+        """
+        from sol_court_supervised_promotion import review_pipeline_calibration_report
+        dec = review_pipeline_calibration_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"pipeline_calibration_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_core_assembly", "promote_level45_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_pipeline_assembly_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a PipelineAssemblyReport.
+        """
+        from sol_court_supervised_promotion import review_pipeline_assembly_report
+        dec = review_pipeline_assembly_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"pipeline_assembly_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_core_assembly", "promote_level45_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_core_cadence_calibration_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a CoreCadenceCalibrationReport.
+        """
+        from sol_court_supervised_promotion import review_core_cadence_calibration_report
+        dec = review_core_cadence_calibration_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"core_cadence_calibration_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_core_assembly", "promote_level45_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_core_waveguide_binding_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a CoreWaveguideBindingReport.
+        """
+        from sol_court_supervised_promotion import review_core_waveguide_binding_report
+        dec = review_core_waveguide_binding_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"core_waveguide_binding_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_core_assembly", "promote_level45_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_core_assembly_ranger_packet(self, packet: Any) -> PromotionGateResult:
+        """
+        Reviews a CoreAssemblyRanger SovereignPacket.
+        """
+        from sol_court_supervised_promotion import review_core_assembly_ranger_packet
+        dec = review_core_assembly_ranger_packet(packet)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name="core_assembly_ranger_packet_gate",
+            passed=(dec.decision in ["promote_level45_candidate", "accept_shadow_core_assembly", "authorize_sandbox_core_assembly_trial"]),
+            evidence_hash="packet_evidence",
+            details={"justification": dec.justification}
+        )
+
+    def review_geodesic_pipeline_balance_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a GeodesicPipelineBalanceReport.
+        """
+        from sol_court_supervised_promotion import review_geodesic_pipeline_balance_report
+        dec = review_geodesic_pipeline_balance_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"geodesic_pipeline_balance_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_pipeline_wavefront", "promote_level46_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_quantum_wavefront_calibration_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a QuantumWavefrontCalibrationReport.
+        """
+        from sol_court_supervised_promotion import review_quantum_wavefront_calibration_report
+        dec = review_quantum_wavefront_calibration_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"quantum_wavefront_calibration_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_pipeline_wavefront", "promote_level46_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_wavefront_uncertainty_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a WavefrontUncertaintyReport.
+        """
+        from sol_court_supervised_promotion import review_wavefront_uncertainty_report
+        dec = review_wavefront_uncertainty_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"wavefront_uncertainty_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_pipeline_wavefront", "promote_level46_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_pipeline_balance_oracle_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a PipelineBalanceOracleReport.
+        """
+        from sol_court_supervised_promotion import review_pipeline_balance_oracle_report
+        dec = review_pipeline_balance_oracle_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"pipeline_balance_oracle_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_pipeline_wavefront", "promote_level46_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_quantum_wavefront_protocol_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a QuantumWavefrontProtocolReport.
+        """
+        from sol_court_supervised_promotion import review_quantum_wavefront_protocol_report
+        dec = review_quantum_wavefront_protocol_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"quantum_wavefront_protocol_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_pipeline_wavefront", "promote_level46_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_pipeline_wavefront_ranger_packet(self, packet: Any) -> PromotionGateResult:
+        """
+        Reviews a PipelineWavefrontRanger SovereignPacket.
+        """
+        from sol_court_supervised_promotion import review_pipeline_wavefront_ranger_packet
+        dec = review_pipeline_wavefront_ranger_packet(packet)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name="pipeline_wavefront_ranger_packet_gate",
+            passed=(dec.decision in ["promote_level46_candidate", "accept_shadow_pipeline_wavefront", "authorize_sandbox_pipeline_wavefront_trial"]),
+            evidence_hash="packet_evidence",
+            details={"justification": dec.justification}
+        )
+
+    def review_pipeline_wavefront_fault_matrix_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a PipelineWavefrontFaultMatrixReport.
+        """
+        from sol_court_supervised_promotion import review_pipeline_wavefront_fault_matrix_report
+        dec = review_pipeline_wavefront_fault_matrix_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"pipeline_wavefront_fault_matrix_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_pipeline_wavefront_fault_matrix", "promote_level47_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_quantum_calibration_fault_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a QuantumCalibrationFaultReport.
+        """
+        from sol_court_supervised_promotion import review_quantum_calibration_fault_report
+        dec = review_quantum_calibration_fault_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"quantum_calibration_fault_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_pipeline_wavefront_fault_matrix", "promote_level47_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_pipeline_balance_fault_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a PipelineBalanceFaultReport.
+        """
+        from sol_court_supervised_promotion import review_pipeline_balance_fault_report
+        dec = review_pipeline_balance_fault_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"pipeline_balance_fault_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_pipeline_wavefront_fault_matrix", "promote_level47_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_uncertainty_fault_audit_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews an UncertaintyFaultAuditReport.
+        """
+        from sol_court_supervised_promotion import review_uncertainty_fault_audit_report
+        dec = review_uncertainty_fault_audit_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"uncertainty_fault_audit_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_pipeline_wavefront_fault_matrix", "promote_level47_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_pipeline_wavefront_rollback_proof_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a PipelineWavefrontRollbackProofReport.
+        """
+        from sol_court_supervised_promotion import review_pipeline_wavefront_rollback_proof_report
+        dec = review_pipeline_wavefront_rollback_proof_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"pipeline_wavefront_rollback_proof_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_pipeline_wavefront_fault_matrix", "promote_level47_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_pipeline_wavefront_safety_oracle_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a PipelineWavefrontSafetyOracleReport.
+        """
+        from sol_court_supervised_promotion import review_pipeline_wavefront_safety_oracle_report
+        dec = review_pipeline_wavefront_safety_oracle_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"pipeline_wavefront_safety_oracle_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_pipeline_wavefront_fault_matrix", "promote_level47_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_pipeline_wavefront_fault_ranger_packet(self, packet: Any) -> PromotionGateResult:
+        """
+        Reviews a PipelineWavefrontFaultRanger SovereignPacket.
+        """
+        from sol_court_supervised_promotion import review_pipeline_wavefront_fault_ranger_packet
+        dec = review_pipeline_wavefront_fault_ranger_packet(packet)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name="pipeline_wavefront_fault_ranger_packet_gate",
+            passed=(dec.decision in ["promote_level47_candidate", "accept_shadow_pipeline_wavefront_fault_matrix", "authorize_sandbox_pipeline_wavefront_fault_audit"]),
+            evidence_hash="packet_evidence",
+            details={"justification": dec.justification}
+        )
+
+    def review_burnin_runtime_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a BurnInRuntimeReport.
+        """
+        from sol_court_supervised_promotion import review_burnin_runtime_report
+        dec = review_burnin_runtime_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"burnin_runtime_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_burnin", "promote_level48_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_burnin_sequence_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a BurnInSequenceReport.
+        """
+        from sol_court_supervised_promotion import review_burnin_sequence_report
+        dec = review_burnin_sequence_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"burnin_sequence_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_burnin", "promote_level48_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_stability_ledger_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a StabilityLedgerValidationReport.
+        """
+        from sol_court_supervised_promotion import review_stability_ledger_report
+        dec = review_stability_ledger_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"stability_ledger_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_burnin", "promote_level48_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_burnin_regression_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a BurnInRegressionReport.
+        """
+        from sol_court_supervised_promotion import review_burnin_regression_report
+        dec = review_burnin_regression_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"burnin_regression_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_burnin", "promote_level48_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_burnin_rollback_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a BurnInRollbackReport.
+        """
+        from sol_court_supervised_promotion import review_burnin_rollback_report
+        dec = review_burnin_rollback_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"burnin_rollback_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_burnin", "promote_level48_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_burnin_promotion_readiness_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a BurnInPromotionReadinessReport.
+        """
+        from sol_court_supervised_promotion import review_burnin_promotion_readiness_report
+        dec = review_burnin_promotion_readiness_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"burnin_promotion_readiness_gate_{extract_id(report)}",
+            passed=(dec.decision in ["promote_level48_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_burnin_runtime_ranger_packet(self, packet: Any) -> PromotionGateResult:
+        """
+        Reviews a BurnInRuntimeRanger SovereignPacket.
+        """
+        from sol_court_supervised_promotion import review_burnin_runtime_ranger_packet
+        dec = review_burnin_runtime_ranger_packet(packet)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name="burnin_runtime_ranger_packet_gate",
+            passed=(dec.decision in ["promote_level48_candidate", "accept_shadow_burnin", "authorize_sandbox_burnin_trial"]),
+            evidence_hash="packet_evidence",
+            details={"justification": dec.justification}
+        )
+
+    def review_release_candidate_manifest(self, manifest: Any) -> PromotionGateResult:
+        """
+        Reviews a ReleaseCandidateManifest or report.
+        """
+        from sol_court_supervised_promotion import review_release_candidate_manifest
+        dec = review_release_candidate_manifest(manifest)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"release_candidate_manifest_gate_{extract_id(manifest)}",
+            passed=(dec.decision in ["accept_shadow_release_candidate", "promote_level49_candidate"]),
+            evidence_hash=extract_id(manifest),
+            details={"justification": dec.justification}
+        )
+
+    def review_governance_freeze_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a GovernanceFreezeReport.
+        """
+        from sol_court_supervised_promotion import review_governance_freeze_report
+        dec = review_governance_freeze_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"governance_freeze_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_release_candidate", "promote_level49_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_api_stability_contract(self, contract: Any) -> PromotionGateResult:
+        """
+        Reviews an APIStabilityContract.
+        """
+        from sol_court_supervised_promotion import review_api_stability_contract
+        dec = review_api_stability_contract(contract)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"api_stability_contract_gate_{extract_id(contract)}",
+            passed=(dec.decision in ["accept_shadow_release_candidate", "promote_level49_candidate"]),
+            evidence_hash=extract_id(contract),
+            details={"justification": dec.justification}
+        )
+
+    def review_release_readiness_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a ReleaseReadinessReport.
+        """
+        from sol_court_supervised_promotion import review_release_readiness_report
+        dec = review_release_readiness_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"release_readiness_gate_{extract_id(report)}",
+            passed=(dec.decision in ["promote_level49_candidate", "accept_shadow_release_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_release_docket(self, docket: Any) -> PromotionGateResult:
+        """
+        Reviews a ReleaseDocket.
+        """
+        from sol_court_supervised_promotion import review_release_docket
+        dec = review_release_docket(docket)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"release_docket_gate_{extract_id(docket)}",
+            passed=(dec.decision in ["promote_level49_candidate", "accept_shadow_release_candidate"]),
+            evidence_hash=extract_id(docket),
+            details={"justification": dec.justification}
+        )
+
+    def review_release_candidate_ranger_packet(self, packet: Any) -> PromotionGateResult:
+        """
+        Reviews a ReleaseCandidateRanger SovereignPacket.
+        """
+        evidence = packet.evidence if hasattr(packet, "evidence") else (packet.get("evidence", {}) if isinstance(packet, dict) else {})
+        passed = evidence.get("promotion_readiness", False)
+        dec_str = "promote_level49_candidate" if passed else "hold_release_candidate"
+        return PromotionGateResult(
+            decision=dec_str,
+            gate_name="release_candidate_ranger_packet_gate",
+            passed=passed,
+            evidence_hash="packet_evidence",
+            details={"justification": "Ranger observed complete release manifest and freeze checks." if passed else "Ranger observed missing evidence."}
+        )
+
+    def review_production_gateway_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a ProductionGatewayReport.
+        """
+        from sol_court_supervised_promotion import review_production_gateway_report
+        dec = review_production_gateway_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"production_gateway_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_finalization", "authorize_sandbox_finalization_trial", "promote_level50_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_final_system_manifest(self, manifest: Any) -> PromotionGateResult:
+        """
+        Reviews a FinalSystemManifest.
+        """
+        from sol_court_supervised_promotion import review_final_system_manifest
+        dec = review_final_system_manifest(manifest)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"final_system_manifest_gate_{extract_id(manifest)}",
+            passed=(dec.decision in ["accept_shadow_finalization", "promote_level50_candidate"]),
+            evidence_hash=extract_id(manifest),
+            details={"justification": dec.justification}
+        )
+
+    def review_final_gate_registry_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a FinalGateRegistryReport.
+        """
+        from sol_court_supervised_promotion import review_final_gate_registry_report
+        dec = review_final_gate_registry_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"final_gate_registry_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_finalization", "promote_level50_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_production_readiness_guard_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a ProductionReadinessReport.
+        """
+        from sol_court_supervised_promotion import review_production_readiness_guard_report
+        dec = review_production_readiness_guard_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"production_readiness_guard_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_finalization", "authorize_sandbox_finalization_trial", "promote_level50_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_system_lockdown_report(self, report: Any) -> PromotionGateResult:
+        """
+        Reviews a SystemLockdownReport.
+        """
+        from sol_court_supervised_promotion import review_system_lockdown_report
+        dec = review_system_lockdown_report(report)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"system_lockdown_gate_{extract_id(report)}",
+            passed=(dec.decision in ["accept_shadow_finalization", "promote_level50_candidate"]),
+            evidence_hash=extract_id(report),
+            details={"justification": dec.justification}
+        )
+
+    def review_runtime_handoff_manifest(self, manifest: Any) -> PromotionGateResult:
+        """
+        Reviews a RuntimeHandoffManifest.
+        """
+        from sol_court_supervised_promotion import review_runtime_handoff_manifest
+        dec = review_runtime_handoff_manifest(manifest)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"runtime_handoff_gate_{extract_id(manifest)}",
+            passed=(dec.decision in ["accept_shadow_finalization", "promote_level50_candidate"]),
+            evidence_hash=extract_id(manifest),
+            details={"justification": dec.justification}
+        )
+
+    def review_finalization_docket(self, docket: Any) -> PromotionGateResult:
+        """
+        Reviews a FinalizationDocket.
+        """
+        from sol_court_supervised_promotion import review_finalization_docket
+        dec = review_finalization_docket(docket)
+        return PromotionGateResult(
+            decision=dec.decision,
+            gate_name=f"finalization_docket_gate_{extract_id(docket)}",
+            passed=(dec.decision in ["promote_level50_candidate", "accept_shadow_finalization"]),
+            evidence_hash=extract_id(docket),
+            details={"justification": dec.justification}
+        )
+
+    def review_finalization_ranger_packet(self, packet: Any) -> PromotionGateResult:
+        """
+        Reviews a FinalizationRanger SovereignPacket.
+        """
+        evidence = packet.evidence if hasattr(packet, "evidence") else (packet.get("evidence", {}) if isinstance(packet, dict) else {})
+        passed = evidence.get("promotion_readiness", False)
+        dec_str = "promote_level50_candidate" if passed else "hold_finalization"
+        return PromotionGateResult(
+            decision=dec_str,
+            gate_name="finalization_ranger_packet_gate",
+            passed=passed,
+            evidence_hash="packet_evidence",
+            details={"justification": "Ranger observed complete final system manifest and gateway denials." if passed else "Ranger observed missing evidence."}
+        )
+
+
+
+
+
+
+
+
 
 
 def extract_id(obj: Any) -> str:

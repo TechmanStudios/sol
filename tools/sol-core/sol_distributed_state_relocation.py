@@ -266,3 +266,66 @@ def validate_state_relocation_after_route_optimization(
 
     return True
 
+
+def validate_state_refs_after_topology_relocation(
+    relocation_report: Any,
+    topology_report: Any
+) -> bool:
+    """
+    Validates state references after a topology relocation.
+    Raises ValueError if the topology relocation invalidates source, target, state hashes,
+    rollback, lane, or carrier bindings.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not topology_report:
+        return True
+
+    # Check for topology mismatch failures
+    result = extract(topology_report, "result", {})
+    success = extract(result, "success", True)
+    errors = extract(result, "errors", [])
+    
+    if not success or errors:
+        raise ValueError(f"Topology relocation failed; state relocation blocked. Errors: {errors}")
+
+    plan = extract(topology_report, "plan", {})
+    intent = extract(plan, "intent", {})
+    topology_refs = extract(intent, "topology_refs", {})
+
+    if topology_refs.get("source_refs_invalid") or topology_refs.get("missing_source"):
+        raise ValueError("Topology relocation invalidates source references; state relocation blocked.")
+    if topology_refs.get("target_refs_invalid") or topology_refs.get("missing_target"):
+        raise ValueError("Topology relocation invalidates target references; state relocation blocked.")
+    if topology_refs.get("state_hash_invalid") or topology_refs.get("state_hash_mismatch"):
+        raise ValueError("Topology relocation invalidates state hashes; state relocation blocked.")
+    if topology_refs.get("rollback_refs_invalid") or topology_refs.get("missing_rollback_snapshot"):
+        raise ValueError("Topology relocation invalidates rollback references; state relocation blocked.")
+    if topology_refs.get("lane_bindings_invalid") or topology_refs.get("lane_bindings_violated"):
+        raise ValueError("Topology relocation invalidates lane bindings; state relocation blocked.")
+    if topology_refs.get("carrier_bindings_invalid") or topology_refs.get("carrier_bindings_violated"):
+        raise ValueError("Topology relocation invalidates carrier bindings; state relocation blocked.")
+
+    return True
+
+
+def block_state_relocation_on_topology_mismatch(report: Any) -> bool:
+    """
+    Blocks state relocation if there is a topology mismatch or failure in the report.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    result = extract(report, "result", {})
+    success = extract(result, "success", True)
+    errors = extract(result, "errors", [])
+    if not success or errors:
+        raise ValueError(f"State relocation blocked due to topology mismatch: {errors}")
+    return True
+
+

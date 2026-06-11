@@ -2220,6 +2220,1015 @@ class RouteRebalanceAdvisor:
         )
 
 
+@dataclass
+class RouteRebalanceFaultSuggestion:
+    suggestion_id: str
+    value: str
+    reason: str
+
+
+@dataclass
+class RouteRebalanceFaultResponsePolicy:
+    policy_id: str
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class RouteRebalanceFaultResponseReport:
+    report_id: str
+    suggestion: RouteRebalanceFaultSuggestion
+    validated: bool
+    applied: bool
+
+
+class RouteRebalanceFaultAdvisor:
+    """
+    Formulates advisory suggestions in response to route rebalance fault occurrences.
+    """
+    def suggest_response(
+        self,
+        route_report: Any,
+        rebalance_report: Any,
+        protocol: Any = None
+    ) -> RouteRebalanceFaultResponseReport:
+        import uuid
+        def extract(obj, name, default=None):
+            if isinstance(obj, dict):
+                return obj.get(name, default)
+            return getattr(obj, name, default)
+
+        telemetry = {}
+        if protocol:
+            telemetry.update(getattr(protocol, "route_telemetry", {}) or {})
+            telemetry.update(getattr(protocol, "waveguide_telemetry", {}) or {})
+
+        crosstalk = telemetry.get("crosstalk_spike", False)
+        reflection = telemetry.get("reflection_breach", False)
+        missing_pml = telemetry.get("missing_pml", False)
+        prefix_carry = telemetry.get("break_prefix_carry", False)
+        carrier_lease = telemetry.get("carrier_lease_failure", False)
+        lock_violation = telemetry.get("lock_boundary_violation", False) or telemetry.get("cross_manifold_deadlock", False)
+        cadence_violation = telemetry.get("outside_cadence_window", False) or telemetry.get("global_cadence_skew", False)
+        cost_false = telemetry.get("no_improvement_without_justification", False) or telemetry.get("risk_underestimated", False)
+        table_overwrite = telemetry.get("active_tables_overwritten", False)
+        
+        reject_cases = (
+            telemetry.get("break_transaction_boundaries", False) or
+            telemetry.get("break_atomic_commit_boundaries", False) or
+            telemetry.get("missing_rollback_snapshot", False) or
+            telemetry.get("corrupted_rollback_snapshot", False) or
+            telemetry.get("state_hash_mismatch", False) or
+            telemetry.get("route_state_hash_mismatch", False) or
+            telemetry.get("local_quorum_failed", False) or
+            telemetry.get("global_quorum_failed", False) or
+            telemetry.get("sequencer_quorum_failed", False) or
+            telemetry.get("wavefront_coherence_collapse", False) or
+            telemetry.get("weakened_pml", False) or
+            telemetry.get("break_carrier_identity", False) or
+            telemetry.get("break_quadrature_pair", False) or
+            telemetry.get("lane_isolation_breached", False) or
+            telemetry.get("arithmetic_oracle_mismatch", False) or
+            telemetry.get("tensor_binding_break", False) or
+            telemetry.get("reduction_tree_break", False) or
+            telemetry.get("safety_oracle_mismatch", False) or
+            telemetry.get("production_route_mutation_attempt", False)
+        )
+
+        value = "observe"
+        reason = "All systems green."
+
+        if crosstalk or missing_pml:
+            value = "quarantine_waveguide_segment"
+            reason = "Inter-lane crosstalk exceeds safe limit or missing PML boundary."
+        elif reflection:
+            value = "quarantine_route"
+            reason = "PML boundary reflection exceeds acceptable limit."
+        elif prefix_carry:
+            value = "quarantine_manifold"
+            reason = "Rebalance candidate breaks prefix-carry semantics."
+        elif carrier_lease:
+            value = "quarantine_carrier"
+            reason = "Missing active lease for carrier on lane."
+        elif lock_violation:
+            value = "request_lock_boundary_review"
+            reason = "Lock boundary violation or deadlock detected."
+        elif cadence_violation:
+            value = "request_cadence_recalibration"
+            reason = "Cadence window failure or skew spike detected."
+        elif cost_false:
+            value = "request_cost_model_review"
+            reason = "Cost model false improvement or risk underestimation detected."
+        elif table_overwrite:
+            value = "restore_candidate_tables"
+            reason = "Attempt to overwrite active tables."
+        elif reject_cases:
+            value = "reject_route_candidate"
+            reason = "Critical route rebalance validation fault detected."
+        else:
+            errors = []
+            if route_report:
+                errors.extend(extract(route_report, "errors", []) or [])
+            if rebalance_report:
+                errors.extend(extract(rebalance_report, "errors", []) or [])
+                
+            if errors or (protocol and not getattr(protocol, "rollback_snapshots", None)):
+                value = "reject_route_candidate"
+                reason = f"Validation errors: {', '.join(errors)}"
+
+        suggestion = RouteRebalanceFaultSuggestion(
+            suggestion_id=f"SUGG_RRF_{uuid.uuid4().hex[:8]}",
+            value=value,
+            reason=reason
+        )
+        return RouteRebalanceFaultResponseReport(
+            report_id=f"REPB_{uuid.uuid4().hex[:8]}",
+            suggestion=suggestion,
+            validated=True,
+            applied=False
+        )
+
+
+@dataclass
+class SovereignTopologySuggestion:
+    suggestion_id: str
+    action: str
+    justification: str
+    target_ref: str
+    nudge_value: float = 0.0
+    damping_adjustment: float = 0.0
+
+
+@dataclass
+class SovereignTopologyClosedLoopPolicy:
+    policy_id: str
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class SovereignTopologyClosedLoopReport:
+    report_id: str
+    suggestion: SovereignTopologySuggestion
+    validated: bool
+    applied: bool
+
+
+class SovereignTopologyAdvisor:
+    """
+    Advisory-only controller for sovereign topology relocation and multi-manifold reshaping.
+    All suggestions remain strictly advisory in shadow mode.
+    """
+    def recommend_topology_action(
+        self,
+        telemetry_report: Any
+    ) -> SovereignTopologySuggestion:
+        """
+        Formulates an advisory suggestion based on topology relocation parameters.
+        """
+        import uuid
+        def extract(obj, name, default=None):
+            if isinstance(obj, dict):
+                return obj.get(name, default)
+            return getattr(obj, name, default)
+
+        # Extract stats/telemetry
+        crosstalk = extract(telemetry_report, "crosstalk", 0.0) or 0.0
+        reflection = extract(telemetry_report, "reflection", 0.0) or 0.0
+        phase_drift = extract(telemetry_report, "phase_drift", 0.0) or 0.0
+        distortion = extract(telemetry_report, "distortion", 0.0) or 0.0
+        route_depth = extract(telemetry_report, "route_depth", 0.0) or 0.0
+        boundary_crossings = extract(telemetry_report, "boundary_crossings", 0) or 0
+        
+        target_ref = extract(telemetry_report, "candidate_id", "candidate_0")
+
+        # Map to specific actions
+        if extract(telemetry_report, "cadence_windows_failed") or extract(telemetry_report, "outside_cadence_window"):
+            action = "hold_topology_relocation"
+            justification = "Temporal cadence window validation failed; holding relocation."
+        elif distortion > 1.0:
+            action = "reduce_shape_distortion"
+            justification = f"Shape distortion {distortion} exceeds threshold; requesting reduction."
+        elif route_depth > 5.0:
+            action = "reduce_route_depth"
+            justification = f"Geodesic route depth {route_depth} is too high; requesting reduction."
+        elif boundary_crossings > 3:
+            action = "reduce_boundary_crossings"
+            justification = f"Boundary crossings count {boundary_crossings} exceeds threshold."
+        elif phase_drift > 0.05:
+            action = "request_phase_realign"
+            justification = f"Phase drift {phase_drift} is high; realign recommended."
+        elif extract(telemetry_report, "global_cadence_skew", 0.0) > 0.03:
+            action = "request_cadence_recalibration"
+            justification = "Temporal skew detected; recalibration recommended."
+        elif extract(telemetry_report, "carrier_lease_failure"):
+            action = "request_carrier_recalibration"
+            justification = "Carrier lease validation failed; recalibration recommended."
+        elif reflection > 0.02:
+            action = "increase_boundary_absorption"
+            justification = f"Reflection {reflection} is slightly elevated; increase PML absorption."
+        elif extract(telemetry_report, "lock_boundary_failed") or extract(telemetry_report, "cross_manifold_deadlock"):
+            action = "rollback_topology_relocation"
+            justification = "Critical lock boundary or deadlock violation; recommending rollback."
+        elif crosstalk > 0.05:
+            action = "quarantine_topology_candidate"
+            justification = f"Crosstalk spike {crosstalk} detected; quarantining candidate."
+        elif extract(telemetry_report, "wavefront_coherence_collapsed"):
+            action = "quarantine_manifold"
+            justification = "Wavefront coherence collapsed; quarantining manifold."
+        else:
+            action = "observe"
+            justification = "All topology relocation metrics are within safe shadow parameters."
+
+        return SovereignTopologySuggestion(
+            suggestion_id=f"SUGG_TOPO_{uuid.uuid4().hex[:8]}",
+            action=action,
+            justification=justification,
+            target_ref=target_ref
+        )
+
+    def execute_sandbox_topology_relocation(
+        self,
+        suggestion: SovereignTopologySuggestion,
+        policy: SovereignTopologyClosedLoopPolicy,
+        token: Any
+    ) -> SovereignTopologyClosedLoopReport:
+        """
+        Executes advisory suggestion in sandbox mode. Requires valid court token.
+        """
+        errors = []
+        if token is None:
+            errors.append("Invalid or missing token for sandbox trial execution.")
+        else:
+            authorized = getattr(token, "authorized_by_court", False) or getattr(token, "active", False)
+            if not authorized:
+                errors.append("Unauthorized or inactive court token lease.")
+                
+        validated = len(errors) == 0
+        applied = validated and suggestion.action != "observe"
+        
+        import uuid
+        return SovereignTopologyClosedLoopReport(
+            report_id=f"TOPO_REP_{uuid.uuid4().hex[:8]}",
+            suggestion=suggestion,
+            validated=validated,
+            applied=applied
+        )
+
+
+@dataclass
+class AutonomousCadenceSuggestion:
+    suggestion_id: str
+    action: str
+    justification: str
+    target_ref: str
+
+@dataclass
+class AutonomousCadenceClosedLoopPolicy:
+    max_cadence_adjustment: float = 0.2
+    max_gain_limit: float = 0.5
+    allow_sandbox: bool = True
+
+@dataclass
+class AutonomousCadenceClosedLoopReport:
+    report_id: str
+    suggestion: AutonomousCadenceSuggestion
+    validated: bool
+    applied: bool
+
+
+class AutonomousCadenceAdvisor:
+    """
+    Formulates advisory suggestions for timing and cadence synchronization.
+    """
+    def suggest(self, telemetry_report: Any) -> AutonomousCadenceSuggestion:
+        import uuid
+        def extract(obj, name, default=None):
+            if isinstance(obj, dict):
+                return obj.get(name, default)
+            return getattr(obj, name, default)
+
+        # Extract values
+        res = extract(telemetry_report, "result", {}) or {}
+        obs = extract(res, "final_observation", {}) or {}
+        
+        drift = extract(obs, "cadence_drift", 0.0) or extract(telemetry_report, "drift", 0.0) or 0.0
+        skew = extract(obs, "global_cadence_skew", 0.0) or extract(telemetry_report, "global_skew", 0.0) or 0.0
+        crosstalk = extract(obs, "crosstalk", 0.0) or 0.0
+        reflection = extract(obs, "boundary_reflection", 0.0) or 0.0
+        gain = extract(extract(telemetry_report, "policy", {}), "max_feedback_gain", 0.0) or 0.0
+        
+        target_ref = extract(telemetry_report, "report_id", "report_0")
+
+        if extract(telemetry_report, "split_brain") or extract(telemetry_report, "split_brain_detected"):
+            action = "quarantine_manifold_clock"
+            justification = "Split-brain clock detected; quarantining manifold clock."
+        elif extract(telemetry_report, "guard_failed") or extract(telemetry_report, "autonomy_guard_failed"):
+            action = "hold_autonomy"
+            justification = "Cadence autonomy guard check failed; holding autonomy."
+        elif skew > 0.05:
+            action = "rollback_autonomous_sync"
+            justification = f"Skew {skew} exceeds safety threshold; recommending rollback."
+        elif drift > 0.03:
+            action = "reduce_cadence_adjustment"
+            justification = f"High drift {drift} detected; reducing adjustment step."
+        elif gain > 0.5:
+            action = "reduce_feedback_gain"
+            justification = f"Gain {gain} exceeds limit; reducing gain."
+        elif crosstalk > 0.05:
+            action = "quarantine_cadence_candidate"
+            justification = f"Crosstalk spike {crosstalk} detected; quarantining candidate."
+        elif reflection > 0.02:
+            action = "increase_boundary_absorption"
+            justification = f"PML reflection {reflection} is elevated."
+        elif extract(telemetry_report, "phase_drift", 0.0) > 0.03:
+            action = "request_phase_realign"
+            justification = "Phase drift detected; request phase realignment."
+        elif extract(telemetry_report, "carrier_error", 0.0) > 0.03:
+            action = "request_carrier_recalibration"
+            justification = "Carrier error detected; request carrier recalibration."
+        else:
+            action = "observe"
+            justification = "All cadence parameters are within safe shadow bounds."
+
+        return AutonomousCadenceSuggestion(
+            suggestion_id=f"SUGG_CAD_{uuid.uuid4().hex[:8]}",
+            action=action,
+            justification=justification,
+            target_ref=target_ref
+        )
+
+    def execute_sandbox_autonomous_cadence(
+        self,
+        suggestion: AutonomousCadenceSuggestion,
+        policy: AutonomousCadenceClosedLoopPolicy,
+        token: Any
+    ) -> AutonomousCadenceClosedLoopReport:
+        errors = []
+        if token is None:
+            errors.append("Invalid or missing token for sandbox trial execution.")
+        else:
+            authorized = getattr(token, "authorized_by_court", False) or getattr(token, "active", False)
+            if not authorized:
+                errors.append("Unauthorized or inactive court token lease.")
+                
+        validated = len(errors) == 0
+        applied = validated and suggestion.action != "observe"
+        
+        import uuid
+        return AutonomousCadenceClosedLoopReport(
+            report_id=f"CAD_REP_{uuid.uuid4().hex[:8]}",
+            suggestion=suggestion,
+            validated=validated,
+            applied=applied
+        )
+
+
+@dataclass
+class CoreAssemblySuggestion:
+    action: str
+    reason: str
+    nudge_value: float = 0.0
+    damping_adjustment: float = 0.0
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class PipelineCalibrationSuggestion:
+    action: str
+    reason: str
+    nudge_value: float = 0.0
+    damping_adjustment: float = 0.0
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class CoreAssemblyClosedLoopReport:
+    report_id: str
+    suggestion: Any
+    validated: bool
+    applied: bool
+    timestamp: float = field(default_factory=time.time)
+
+
+class SovereignCoreAssemblyAdvisor:
+    """
+    Advisory controller for multi-core assembly.
+    """
+    def __init__(self, bridge: FrontierBridge):
+        self.bridge = bridge
+
+    def suggest_assembly_control(
+        self,
+        assembly_report: Any,
+        policy: Optional[Any] = None
+    ) -> CoreAssemblySuggestion:
+        def extract(obj, name, default=None):
+            if isinstance(obj, dict):
+                return obj.get(name, default)
+            return getattr(obj, name, default)
+
+        res = extract(assembly_report, "result")
+        success = extract(res, "success", True) if res is not None else extract(assembly_report, "success", True)
+        metadata = extract(assembly_report, "metadata", {}) or {}
+        errors = extract(res, "errors", []) or []
+
+        if metadata.get("unstable_cadence") or metadata.get("cadence_instability") or (isinstance(assembly_report, dict) and assembly_report.get("unstable_cadence")):
+            return CoreAssemblySuggestion(
+                action="hold_assembly",
+                reason="Core assembly blocked: unstable autonomous cadence."
+            )
+        elif metadata.get("stage_latency_breach"):
+            return CoreAssemblySuggestion(
+                action="rebalance_pipeline_stage",
+                reason="Stage latency breach detected during assembly."
+            )
+        elif metadata.get("backpressure_breach"):
+            return CoreAssemblySuggestion(
+                action="reduce_core_load",
+                reason="Backpressure breach detected during assembly."
+            )
+        elif metadata.get("cross_core_stall_breach") or metadata.get("stall_breach"):
+            return CoreAssemblySuggestion(
+                action="reduce_bypass_scope",
+                reason="Cross-core stall breach detected; reducing bypass scope."
+            )
+        elif metadata.get("cadence_skew_breach") or metadata.get("high_skew"):
+            return CoreAssemblySuggestion(
+                action="request_core_cadence_calibration",
+                reason="Cadence skew breach detected during assembly."
+            )
+        elif metadata.get("wavefront_timing_drift_breach"):
+            return CoreAssemblySuggestion(
+                action="request_wavefront_realign",
+                reason="Wavefront timing drift breach detected during assembly."
+            )
+        elif metadata.get("carrier_timing_drift_breach"):
+            return CoreAssemblySuggestion(
+                action="request_carrier_recalibration",
+                reason="Carrier timing drift breach detected during assembly."
+            )
+        elif metadata.get("pml_coverage_violated") or metadata.get("missing_pml_boundary"):
+            return CoreAssemblySuggestion(
+                action="increase_boundary_absorption",
+                reason="PML boundary absorption violation detected during assembly."
+            )
+        elif metadata.get("quarantine_recommended"):
+            return CoreAssemblySuggestion(
+                action="quarantine_core",
+                reason="Quarantine recommended for core unit."
+            )
+        elif metadata.get("quarantine_stage_recommended"):
+            return CoreAssemblySuggestion(
+                action="quarantine_pipeline_stage",
+                reason="Quarantine recommended for pipeline stage."
+            )
+        elif not success or errors:
+            return CoreAssemblySuggestion(
+                action="rollback_assembly",
+                reason="Core assembly validation failed or has errors."
+            )
+        else:
+            return CoreAssemblySuggestion(
+                action="observe",
+                reason="Core assembly stability is within shadow limits."
+            )
+
+
+class PipelineCalibrationAdvisor:
+    """
+    Advisory controller for pipeline calibration.
+    """
+    def __init__(self, bridge: FrontierBridge):
+        self.bridge = bridge
+
+    def suggest_calibration_control(
+        self,
+        calibration_report: Any,
+        policy: Optional[Any] = None
+    ) -> PipelineCalibrationSuggestion:
+        def extract(obj, name, default=None):
+            if isinstance(obj, dict):
+                return obj.get(name, default)
+            return getattr(obj, name, default)
+
+        res = extract(calibration_report, "result")
+        success = extract(res, "success", True) if res is not None else extract(calibration_report, "success", True)
+        metadata = extract(calibration_report, "metadata", {}) or {}
+        errors = extract(res, "errors", []) or []
+
+        if metadata.get("stage_latency_breach"):
+            return PipelineCalibrationSuggestion(
+                action="rebalance_pipeline_stage",
+                reason="Stage latency breach detected."
+            )
+        elif metadata.get("backpressure_breach"):
+            return PipelineCalibrationSuggestion(
+                action="reduce_core_load",
+                reason="Backpressure breach detected."
+            )
+        elif metadata.get("cross_core_stall_breach") or metadata.get("stall_breach"):
+            return PipelineCalibrationSuggestion(
+                action="reduce_bypass_scope",
+                reason="Cross-core stall breach detected."
+            )
+        elif metadata.get("cadence_skew_breach") or metadata.get("high_skew"):
+            return PipelineCalibrationSuggestion(
+                action="request_core_cadence_calibration",
+                reason="Cadence skew breach detected."
+            )
+        elif metadata.get("wavefront_timing_drift_breach"):
+            return PipelineCalibrationSuggestion(
+                action="request_wavefront_realign",
+                reason="Wavefront timing drift breach detected."
+            )
+        elif metadata.get("carrier_timing_drift_breach"):
+            return PipelineCalibrationSuggestion(
+                action="request_carrier_recalibration",
+                reason="Carrier timing drift breach detected."
+            )
+        elif metadata.get("pml_coverage_violated") or metadata.get("missing_pml_boundary"):
+            return PipelineCalibrationSuggestion(
+                action="increase_boundary_absorption",
+                reason="PML boundary absorption violation detected."
+            )
+        elif metadata.get("quarantine_recommended"):
+            return PipelineCalibrationSuggestion(
+                action="quarantine_core",
+                reason="Quarantine recommended for core unit."
+            )
+        elif metadata.get("quarantine_stage_recommended"):
+            return PipelineCalibrationSuggestion(
+                action="quarantine_pipeline_stage",
+                reason="Quarantine recommended for pipeline stage."
+            )
+        elif not success or errors:
+            return PipelineCalibrationSuggestion(
+                action="rollback_assembly",
+                reason="Pipeline calibration failed or has errors."
+            )
+        else:
+            return PipelineCalibrationSuggestion(
+                action="observe",
+                reason="Pipeline calibration is within acceptable bounds."
+            )
+
+
+@dataclass
+class PipelineBalanceSuggestion:
+    action: str
+    reason: str
+    nudge_value: float = 0.0
+    damping_adjustment: float = 0.0
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class QuantumWavefrontSuggestion:
+    action: str
+    reason: str
+    nudge_value: float = 0.0
+    damping_adjustment: float = 0.0
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class PipelineWavefrontClosedLoopReport:
+    report_id: str
+    suggestion: Any
+    validated: bool
+    applied: bool
+    timestamp: float = field(default_factory=time.time)
+
+
+class GeodesicPipelineBalanceAdvisor:
+    """
+    Advisory controller for geodesic pipeline balancing.
+    """
+    def __init__(self, bridge: FrontierBridge):
+        self.bridge = bridge
+
+    def suggest_balance_control(
+        self,
+        balance_report: Any,
+        policy: Optional[Any] = None
+    ) -> PipelineBalanceSuggestion:
+        def extract(obj, name, default=None):
+            if isinstance(obj, dict):
+                return obj.get(name, default)
+            return getattr(obj, name, default)
+
+        res = extract(balance_report, "result")
+        success = extract(res, "success", True) if res is not None else extract(balance_report, "success", True)
+        metadata = extract(balance_report, "metadata", {}) or {}
+        errors = extract(res, "errors", []) or []
+
+        if metadata.get("quarantine_segment") or metadata.get("quarantine_pipeline_segment"):
+            return PipelineBalanceSuggestion(
+                action="quarantine_pipeline_segment",
+                reason="Quarantine recommended for pipeline segment."
+            )
+        elif metadata.get("quarantine_core"):
+            return PipelineBalanceSuggestion(
+                action="quarantine_core",
+                reason="Quarantine recommended for core."
+            )
+        elif metadata.get("quarantine_wavefront_packet"):
+            return PipelineBalanceSuggestion(
+                action="quarantine_wavefront_packet",
+                reason="Quarantine recommended for wavefront packet."
+            )
+        elif metadata.get("route_depth_breach"):
+            return PipelineBalanceSuggestion(
+                action="reduce_route_depth",
+                reason="Geodesic route depth breach detected."
+            )
+        elif metadata.get("backpressure_breach") or metadata.get("reduce_core_load"):
+            return PipelineBalanceSuggestion(
+                action="reduce_core_load",
+                reason="Backpressure breach or core overload detected."
+            )
+        elif metadata.get("stage_latency_breach"):
+            return PipelineBalanceSuggestion(
+                action="rebalance_pipeline_stage",
+                reason="Stage latency breach detected during balancing."
+            )
+        elif not success or errors:
+            return PipelineBalanceSuggestion(
+                action="rollback_balance",
+                reason="Pipeline balance failed or has errors."
+            )
+        else:
+            return PipelineBalanceSuggestion(
+                action="observe",
+                reason="Pipeline balance metrics are within shadow limits."
+            )
+
+
+class QuantumWavefrontCalibrationAdvisor:
+    """
+    Advisory controller for quantum wavefront calibration.
+    """
+    def __init__(self, bridge: FrontierBridge):
+        self.bridge = bridge
+
+    def suggest_calibration_control(
+        self,
+        calibration_report: Any,
+        policy: Optional[Any] = None
+    ) -> QuantumWavefrontSuggestion:
+        def extract(obj, name, default=None):
+            if isinstance(obj, dict):
+                return obj.get(name, default)
+            return getattr(obj, name, default)
+
+        res = extract(calibration_report, "result")
+        success = extract(res, "success", True) if res is not None else extract(calibration_report, "success", True)
+        metadata = extract(calibration_report, "metadata", {}) or {}
+        errors = extract(res, "errors", []) or []
+
+        if metadata.get("unbounded_uncertainty"):
+            return QuantumWavefrontSuggestion(
+                action="rollback_wavefront_calibration",
+                reason="Unbounded wavefront uncertainty blocks calibration."
+            )
+        elif metadata.get("wavefront_dispersion_breach"):
+            return QuantumWavefrontSuggestion(
+                action="reduce_wavefront_dispersion",
+                reason="Wavefront dispersion exceeds threshold."
+            )
+        elif metadata.get("cadence_skew_breach"):
+            return QuantumWavefrontSuggestion(
+                action="request_quantum_wavefront_realign",
+                reason="Quantum wavefront alignment requested."
+            )
+        elif metadata.get("carrier_recalibration_required") or metadata.get("carrier_timing_drift_breach"):
+            return QuantumWavefrontSuggestion(
+                action="request_carrier_recalibration",
+                reason="Carrier recalibration requested."
+            )
+        elif metadata.get("pml_coverage_violated") or metadata.get("missing_pml_boundary"):
+            return QuantumWavefrontSuggestion(
+                action="increase_boundary_absorption",
+                reason="PML boundary absorption violation detected."
+            )
+        elif metadata.get("quarantine_wavefront_packet"):
+            return QuantumWavefrontSuggestion(
+                action="quarantine_wavefront_packet",
+                reason="Quarantine recommended for wavefront packet."
+            )
+        elif not success or errors:
+            return QuantumWavefrontSuggestion(
+                action="rollback_wavefront_calibration",
+                reason="Quantum wavefront calibration failed or has errors."
+            )
+        else:
+            return QuantumWavefrontSuggestion(
+                action="observe",
+                reason="Quantum wavefront calibration metrics are within shadow limits."
+            )
+
+
+@dataclass
+class PipelineWavefrontFaultSuggestion:
+    suggestion_id: str
+    action: str
+    justification: str
+
+
+@dataclass
+class PipelineWavefrontFaultResponsePolicy:
+    allow_shadow_fault_response: bool = True
+    quarantine_threshold: float = 0.5
+
+
+@dataclass
+class PipelineWavefrontFaultResponseReport:
+    report_id: str
+    suggestion: PipelineWavefrontFaultSuggestion
+    validated: bool = True
+    applied: bool = False
+
+
+class PipelineWavefrontFaultAdvisor:
+    """
+    Formulates advisory suggestions in response to pipeline wavefront fault occurrences.
+    """
+    def __init__(self, bridge: FrontierBridge):
+        self.bridge = bridge
+
+    def suggest_response(
+        self,
+        fault_report: Any,
+        policy: Optional[PipelineWavefrontFaultResponsePolicy] = None
+    ) -> PipelineWavefrontFaultResponseReport:
+        import uuid
+        def extract(obj, name, default=None):
+            if isinstance(obj, dict):
+                return obj.get(name, default)
+            return getattr(obj, name, default)
+
+        action = "observe"
+        justification = "All systems green."
+
+        errors = []
+        results = []
+        
+        if fault_report:
+            errors.extend(extract(fault_report, "errors", []) or [])
+            results.extend(extract(fault_report, "results", []) or [])
+        
+        has_failure = False
+        for res in results:
+            if not extract(res, "success", True):
+                has_failure = True
+                
+        if errors or has_failure:
+            action = "reject_candidate"
+            justification = f"Pipeline wavefront fault audit detected failures."
+
+        suggestion = PipelineWavefrontFaultSuggestion(
+            suggestion_id=f"SUGG_PWF_{uuid.uuid4().hex[:8]}",
+            action=action,
+            justification=justification
+        )
+        return PipelineWavefrontFaultResponseReport(
+            report_id=f"REPB_WF_{uuid.uuid4().hex[:8]}",
+            suggestion=suggestion,
+            validated=True,
+            applied=False
+        )
+
+
+@dataclass
+class BurnInRuntimeSuggestion:
+    suggestion_id: str
+    action: str
+    justification: str
+
+
+@dataclass
+class BurnInStabilityPolicy:
+    stability_threshold: float = 0.95
+    sandbox_token: Optional[str] = None
+
+
+@dataclass
+class BurnInClosedLoopReport:
+    report_id: str
+    suggestion: BurnInRuntimeSuggestion
+    validated: bool = True
+    applied: bool = False
+
+
+class BurnInRuntimeAdvisor:
+    """
+    Advisory-only burn-in advisor interfacing with Frontier_OS.
+    """
+    def __init__(self, bridge: FrontierBridge):
+        self.bridge = bridge
+
+    def suggest_response(
+        self,
+        burnin_report: Any,
+        policy: Optional[BurnInStabilityPolicy] = None
+    ) -> BurnInClosedLoopReport:
+        import uuid
+        def extract(obj, name, default=None):
+            if isinstance(obj, dict):
+                return obj.get(name, default)
+            return getattr(obj, name, default)
+
+        action = "observe"
+        justification = "Burn-in execution normal."
+
+        if burnin_report:
+            errors = extract(burnin_report, "errors", []) or []
+            result = extract(burnin_report, "result", None)
+            if result:
+                success = extract(result, "success", True)
+                cycle_results = extract(result, "cycle_results", []) or []
+                if not success:
+                    action = "hold_burnin"
+                    justification = "Burn-in cycle failures detected."
+                
+                for cyc_res in cycle_results:
+                    metrics = extract(cyc_res, "metrics", {}) or {}
+                    if metrics.get("oracle_match_rate", 1.0) < 1.0:
+                        action = "reject_burnin_candidate"
+                        justification = "Oracle mismatch spike detected."
+                    elif metrics.get("wavefront_coherence", 1.0) < 0.90:
+                        action = "rollback_to_checkpoint"
+                        justification = "Wavefront coherence collapsed."
+                    elif metrics.get("phase_drift", 0.0) > 0.05:
+                        action = "hold_burnin"
+                        justification = "Critical phase drift detected."
+
+            passed_audit = extract(burnin_report, "passed_audit", True)
+            if not passed_audit:
+                if action == "observe":
+                    action = "hold_burnin"
+                    justification = "Burn-in audit failed."
+
+        token = extract(policy, "sandbox_token", None) if policy else None
+        applied = False
+        if token and token != "INVALID_TOKEN":
+            applied = True
+
+        suggestion = BurnInRuntimeSuggestion(
+            suggestion_id=f"SUGG_BRN_{uuid.uuid4().hex[:8]}",
+            action=action,
+            justification=justification
+        )
+        return BurnInClosedLoopReport(
+            report_id=f"REPB_BRN_{uuid.uuid4().hex[:8]}",
+            suggestion=suggestion,
+            validated=True,
+            applied=applied
+        )
+
+
+@dataclass
+class SystemFinalizationSuggestion:
+    suggestion_id: str
+    action: str  # observe, hold_finalization, request_more_evidence, request_ranger_review, request_court_review, request_ledger_repair, request_api_contract_review, request_governance_freeze_review, reject_gateway_request, quarantine_finalization_candidate
+    justification: str
+    timestamp: float = field(default_factory=time.time)
+
+@dataclass
+class ProductionGatewaySuggestion:
+    suggestion_id: str
+    action: str  # observe, reject_gateway_request, request_more_evidence, hold_finalization
+    justification: str
+    timestamp: float = field(default_factory=time.time)
+
+@dataclass
+class SystemFinalizationClosedLoopReport:
+    report_id: str
+    suggestion: Any  # SystemFinalizationSuggestion or ProductionGatewaySuggestion
+    validated: bool = True
+    applied: bool = False
+    timestamp: float = field(default_factory=time.time)
+
+class SystemFinalizationAdvisor:
+    """
+    Advisory-only system finalization advisor.
+    """
+    def __init__(self, bridge: FrontierBridge):
+        self.bridge = bridge
+
+    def suggest_finalization(
+        self,
+        final_manifest: Any,
+        policy: Optional[Any] = None
+    ) -> SystemFinalizationClosedLoopReport:
+        import uuid
+        def extract(obj, name, default=None):
+            if isinstance(obj, dict):
+                return obj.get(name, default)
+            return getattr(obj, name, default)
+
+        action = "observe"
+        justification = "System finalization evidence checks normal."
+
+        if final_manifest:
+            valid = extract(final_manifest, "valid", True)
+            if not valid:
+                action = "hold_finalization"
+                justification = "System finalization manifest contains validation failures."
+                
+            quarantine = extract(final_manifest, "quarantine_status", "none")
+            if quarantine == "quarantined":
+                action = "quarantine_finalization_candidate"
+                justification = "System is quarantined."
+
+            evidence_items = extract(final_manifest, "evidence", []) or []
+            evidence_types = {extract(item, "evidence_type") for item in evidence_items}
+            if "api_contract" in evidence_types:
+                for item in evidence_items:
+                    if extract(item, "evidence_type") == "api_contract" and extract(item, "payload", {}).get("broken"):
+                        action = "request_api_contract_review"
+                        justification = "API contract broken."
+            if "governance_freeze" in evidence_types:
+                for item in evidence_items:
+                    if extract(item, "evidence_type") == "governance_freeze" and not extract(item, "payload", {}).get("frozen", True):
+                        action = "request_governance_freeze_review"
+                        justification = "Governance freeze violation."
+
+        token = extract(policy, "sandbox_token") or extract(policy, "court_token")
+        applied = False
+        if token and token != "INVALID_TOKEN":
+            applied = True
+
+        suggestion = SystemFinalizationSuggestion(
+            suggestion_id=f"SUGG_FIN_{uuid.uuid4().hex[:8]}",
+            action=action,
+            justification=justification
+        )
+        return SystemFinalizationClosedLoopReport(
+            report_id=f"REPB_FIN_{uuid.uuid4().hex[:8]}",
+            suggestion=suggestion,
+            validated=True,
+            applied=applied
+        )
+
+class ProductionGatewayAdvisor:
+    """
+    Advisory-only production gateway advisor.
+    """
+    def __init__(self, bridge: FrontierBridge):
+        self.bridge = bridge
+
+    def suggest_gateway_response(
+        self,
+        gateway_report: Any,
+        policy: Optional[Any] = None
+    ) -> SystemFinalizationClosedLoopReport:
+        import uuid
+        def extract(obj, name, default=None):
+            if isinstance(obj, dict):
+                return obj.get(name, default)
+            return getattr(obj, name, default)
+
+        action = "observe"
+        justification = "Gateway request normal."
+
+        if gateway_report:
+            dec_obj = extract(gateway_report, "decision")
+            decision_str = extract(dec_obj, "decision") if dec_obj else None
+            if decision_str == "deny":
+                action = "reject_gateway_request"
+                justification = extract(dec_obj, "justification", "Gateway check denied.")
+            elif decision_str == "hold":
+                action = "hold_finalization"
+                justification = "Gateway request is held."
+            elif decision_str == "needs_more_evidence":
+                action = "request_more_evidence"
+                justification = "Gateway request needs more evidence."
+
+        token = extract(policy, "sandbox_token") or extract(policy, "court_token")
+        applied = False
+        if token and token != "INVALID_TOKEN":
+            applied = True
+
+        suggestion = ProductionGatewaySuggestion(
+            suggestion_id=f"SUGG_GW_{uuid.uuid4().hex[:8]}",
+            action=action,
+            justification=justification
+        )
+        return SystemFinalizationClosedLoopReport(
+            report_id=f"REPB_GW_{uuid.uuid4().hex[:8]}",
+            suggestion=suggestion,
+            validated=True,
+            applied=applied
+        )
+
+
+
+
+
+
+
+
+
 
 
 

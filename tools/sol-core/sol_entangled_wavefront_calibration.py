@@ -230,3 +230,58 @@ def summarize_entangled_calibration(result: EntangledCalibrationResult) -> Dict[
         "final_error": result.final_error,
         "errors": list(result.errors)
     }
+
+
+def export_resonant_feedback_targets(
+    calibration_report: Any
+) -> List[Dict[str, Any]]:
+    """
+    Exports resonant feedback targets based on calibration report targets.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    targets = extract(calibration_report, "targets", [])
+    feedback_targets = []
+    for t in targets:
+        feedback_targets.append({
+            "manifold_id": extract(t, "target_manifold_id", "unknown"),
+            "link_id": extract(t, "link_id", "unknown")
+        })
+    return feedback_targets
+
+
+def validate_resonant_feedback_after_calibration(
+    feedback_report: Any,
+    calibration_report: Any
+) -> bool:
+    """
+    Validates resonant feedback loop stability after calibration.
+    Feedback cannot be promoted if calibration baseline is missing or unstable.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not calibration_report:
+        return False
+
+    baseline = extract(calibration_report, "baseline")
+    if not baseline:
+        # missing baseline
+        return False
+        
+    coh = extract(baseline, "phase_coherence", 1.0)
+    if coh < 0.8:
+        # unstable baseline
+        return False
+
+    res = extract(feedback_report, "result", {})
+    if not extract(res, "success", False) or extract(res, "errors", []):
+        return False
+
+    return True
+

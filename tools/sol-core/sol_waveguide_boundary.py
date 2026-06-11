@@ -381,6 +381,151 @@ def measure_rebalance_boundary_reflection(
     return float(ref_before - ref_after)
 
 
+def inject_rebalanced_waveguide_missing_pml(rebalance_plan: Any) -> None:
+    """
+    Injects missing PML coverage fault into waveguide rebalance plan.
+    """
+    from sol_waveguide_rebalance_faults import inject_missing_pml_coverage
+    inject_missing_pml_coverage(rebalance_plan)
+
+
+def inject_rebalanced_waveguide_reflection_breach(rebalance_plan: Any, magnitude: float) -> None:
+    """
+    Injects boundary reflection breach fault into waveguide rebalance plan.
+    """
+    from sol_waveguide_rebalance_faults import inject_boundary_reflection_breach
+    inject_boundary_reflection_breach(rebalance_plan, magnitude)
+
+
+def validate_pml_after_topology_relocation(
+    topology_report: Any
+) -> bool:
+    """
+    Validates PML absorption boundaries after topology relocation.
+    Blocks relocation (returns False) if PML boundaries are invalid or missing.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not topology_report:
+        return True
+
+    plan = extract(topology_report, "plan", {})
+    intent = extract(plan, "intent", {})
+    topology_refs = extract(intent, "topology_refs", {})
+
+    if topology_refs.get("pml_coverage_violated") or topology_refs.get("missing_pml_boundary"):
+        return False
+    if topology_refs.get("boundary_reflection_breached") or topology_refs.get("reflection_breach"):
+        return False
+
+    return True
+
+
+def validate_pml_for_quantum_wavefront_packets(
+    packets: List[Any],
+    pml_state: Any
+) -> bool:
+    """
+    Validates that quantum wavefront packets are covered by PML.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not pml_state:
+        return True
+
+    meta = extract(pml_state, "metadata", {}) or {}
+    pml_invalid = meta.get("pml_boundaries_invalid") or meta.get("pml_weakened")
+    if pml_invalid:
+        raise ValueError("PML boundary validation failed: PML coverage is weakened or invalid.")
+
+    config = extract(pml_state, "config")
+    cells = extract(config, "pml_cells", 4) if config else 4
+    if cells <= 0:
+        raise ValueError("PML boundary validation failed: missing PML cells.")
+
+    for p in packets:
+        pmeta = extract(p, "metadata", {}) or {}
+        if pmeta.get("bypass_pml") or pmeta.get("pml_bypass"):
+            raise ValueError(f"Quantum wavefront packet {extract(p, 'packet_id')} bypassed PML coverage.")
+
+    return True
+
+
+def measure_quantum_boundary_reflection(
+    before: Any,
+    after: Any
+) -> float:
+    """
+    Measures difference in boundary reflections.
+    """
+    def extract(obj, name, default=0.0):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    ref_before = extract(before, "boundary_reflection", 0.0) or extract(before, "reflection", 0.0)
+    ref_after = extract(after, "boundary_reflection", 0.0) or extract(after, "reflection", 0.0)
+    return float(ref_before - ref_after)
+
+
+def inject_quantum_wavefront_missing_pml(packet_report: Any) -> Any:
+    """
+    Simulates a packet report with missing PML boundaries.
+    """
+    import copy
+    mutated = copy.deepcopy(packet_report)
+    if isinstance(mutated, dict):
+        mutated.setdefault("metadata", {})["pml_boundaries_invalid"] = True
+        mutated.setdefault("metadata", {})["pml_present"] = False
+    else:
+        meta = getattr(mutated, "metadata", {}) or {}
+        meta["pml_boundaries_invalid"] = True
+        meta["pml_present"] = False
+        mutated.metadata = meta
+    return mutated
+
+
+def inject_quantum_wavefront_pml_weakening(packet_report: Any, magnitude: float) -> Any:
+    """
+    Simulates a packet report with weakened PML absorption.
+    """
+    import copy
+    mutated = copy.deepcopy(packet_report)
+    if isinstance(mutated, dict):
+        mutated.setdefault("metadata", {})["pml_weakened"] = True
+        mutated["pml_absorption"] = magnitude
+    else:
+        meta = getattr(mutated, "metadata", {}) or {}
+        meta["pml_weakened"] = True
+        mutated.metadata = meta
+        if hasattr(mutated, "pml_absorption"):
+            mutated.pml_absorption = magnitude
+    return mutated
+
+
+def inject_quantum_boundary_reflection_breach(packet_report: Any, magnitude: float) -> Any:
+    """
+    Simulates a packet report with a boundary reflection breach.
+    """
+    import copy
+    mutated = copy.deepcopy(packet_report)
+    if isinstance(mutated, dict):
+        mutated["boundary_reflection"] = magnitude
+    else:
+        if hasattr(mutated, "boundary_reflection"):
+            mutated.boundary_reflection = magnitude
+    return mutated
+
+
+
+
+
 
 
 

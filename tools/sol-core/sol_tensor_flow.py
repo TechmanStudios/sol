@@ -527,3 +527,76 @@ def validate_tensor_shape_after_manifold_reshape(reshape_plan: Any, tensor_plan:
     return True
 
 
+def validate_tensor_shards_after_core_assembly(
+    tensor_plan: TensorFlowPlan,
+    assembly_report: Any
+) -> bool:
+    """
+    Validates tensor shards configuration after sovereign multi-core assembly.
+    Preserves: tensor shape, shard-to-core mapping, reduction-tree references, oracle path.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(assembly_report, "result")
+    success = extract(res, "success", True) if res is not None else extract(assembly_report, "success", True)
+    if not success:
+        raise ValueError("Core assembly failed; holding tensor validation.")
+
+    if not tensor_plan.shape or not tensor_plan.shape.validate():
+        raise ValueError("Invalid tensor shape configuration in tensor plan.")
+        
+    if not tensor_plan.shards:
+        raise ValueError("Tensor plan has no shards.")
+        
+    for s in tensor_plan.shards:
+        if not s.core_id:
+            raise ValueError(f"Tensor shard {s.shard_id} is missing core_id binding.")
+            
+    meta = extract(tensor_plan, "metadata", {}) or {}
+    if meta.get("tensor_validation_failed") or meta.get("missing_reduction_tree") or meta.get("missing_oracle_path"):
+        raise ValueError("Tensor shard validation failed: missing critical reference.")
+        
+    return True
+
+
+def run_shadow_tensor_pipeline_on_assembled_cores(
+    tensor_plan: TensorFlowPlan,
+    assembly_report: Any
+) -> TensorFlowReport:
+    """
+    Runs shadow execution of a tensor pipeline on assembled cores.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    validate_tensor_shards_after_core_assembly(tensor_plan, assembly_report)
+    
+    op_type = extract(tensor_plan, "op_type", "TENSOR_ADD")
+    operands = extract(tensor_plan, "operands") or [[0.0] * tensor_plan.shape.size, [0.0] * tensor_plan.shape.size]
+    
+    op = TensorFlowOperation(
+        op_type=op_type,
+        operands=operands,
+        plan=tensor_plan
+    )
+    result = execute_shadow_tensor_op(op)
+    
+    oracle = extract(tensor_plan, "oracle")
+    if oracle is not None and result.assembled_values != oracle:
+        result.passed_gates = False
+        result.evidence["errors"] = result.evidence.get("errors", []) + ["Oracle comparison mismatch."]
+        
+    import uuid
+    return TensorFlowReport(
+        report_id=f"TENSOR_REP_{uuid.uuid4().hex[:8]}",
+        passed_gates=result.passed_gates,
+        result=result
+    )
+
+
+

@@ -237,3 +237,33 @@ def summarize_hierarchical_waveguide(topology: HierarchicalWaveguideTopology) ->
         errors=errors,
         metadata={"timestamp": time.time()}
     )
+
+
+def validate_waveguide_topology_after_core_assembly(
+    topology: Any,
+    assembly_report: Any
+) -> bool:
+    """
+    Validates hierarchical waveguide topology against core assembly mapping report.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    res = extract(assembly_report, "result")
+    success = extract(res, "success", True) if res is not None else extract(assembly_report, "success", True)
+    if not success:
+        raise ValueError("Core assembly failed; holding waveguide topology validation.")
+
+    # Check validation
+    valid = getattr(topology, "valid", True) if hasattr(topology, "valid") else True
+    if not valid:
+        raise ValueError("Hierarchical waveguide topology validation failed.")
+        
+    meta = extract(topology, "metadata", {}) or {}
+    if meta.get("pml_coverage_violated") or meta.get("missing_pml_boundary"):
+        raise ValueError("Waveguide topology fails: missing or violated PML boundary coverage.")
+        
+    return True
+

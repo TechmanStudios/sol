@@ -164,6 +164,20 @@ def prepare_route_rebalance(
     if protocol.waveguide_telemetry.get("reflection_breach", False):
         for rc in rebal_candidates:
             rc.estimated_boundary_reflection = 0.09
+    if protocol.waveguide_telemetry.get("weakened_pml", False):
+        rebal_policy["weakened_pml"] = True
+    if protocol.waveguide_telemetry.get("carrier_lease_failure", False):
+        rebal_policy["carrier_lease_failure"] = True
+    if protocol.waveguide_telemetry.get("lane_isolation_breached", False):
+        rebal_policy["lane_isolation_breached"] = True
+        for rc in rebal_candidates:
+            rc.preserves_lane_identity = False
+    if protocol.waveguide_telemetry.get("break_carrier_identity", False):
+        for rc in rebal_candidates:
+            rc.preserves_carrier_identity = False
+    if protocol.waveguide_telemetry.get("break_quadrature_pair", False):
+        for rc in rebal_candidates:
+            rc.preserves_quadrature_pairings = False
             
     protocol.rebalance_plan = build_waveguide_rebalance_plan(rebal_candidates, rebal_policy)
     
@@ -196,11 +210,13 @@ def verify_route_rebalance(
     protocol.route_report = execute_shadow_transactional_route_optimization(protocol.route_plan)
     if not protocol.route_report.success:
         errors.append("Shadow route optimization execution failed")
+        errors.extend(protocol.route_report.errors)
         
     # 2. Run shadow waveguide rebalancing
     protocol.rebalance_report = execute_shadow_waveguide_rebalance(protocol.rebalance_plan)
     if not protocol.rebalance_report.success:
         errors.append("Shadow waveguide rebalancing execution failed")
+        errors.extend(protocol.rebalance_report.errors)
         
     # 3. Compare before/after costs
     if protocol.route_report.success:

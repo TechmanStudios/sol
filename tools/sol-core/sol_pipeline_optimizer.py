@@ -261,3 +261,70 @@ def recommend_rebalance_from_optimization_report(report: Any) -> List[Any]:
         ))
         
     return candidates
+
+
+def recommend_pipeline_calibration_from_bottlenecks(report: Any) -> List[Any]:
+    """
+    Analyzes optimization reports or pipeline reports to recommend calibration.
+    """
+    from sol_pipeline_calibration import PipelineCalibrationTarget
+    import uuid
+    
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    targets = []
+    
+    res = extract(report, "result")
+    orig = extract(res, "original_report") or report
+    trace = extract(orig, "trace")
+    
+    events = extract(trace, "events", []) or []
+    stalls = len([e for e in events if e.get("event") == "task_stall"])
+    
+    metadata = extract(report, "metadata", {}) or {}
+    if stalls > 0 or metadata.get("high_backpressure") or metadata.get("backpressure_breach"):
+        targets.append(PipelineCalibrationTarget(
+            target_id=f"TGT_CAL_{uuid.uuid4().hex[:4]}",
+            core_id="core_0",
+            stage_name="execute",
+            expected_latency=0.005
+        ))
+        
+    return targets
+
+
+def validate_optimization_after_pipeline_calibration(
+    optimization_report: Any,
+    calibration_report: Any
+) -> bool:
+    """
+    Ensures that optimization does not mutate active state and validates it against calibration report.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    cal_res = extract(calibration_report, "result")
+    cal_success = extract(cal_res, "success", True) if cal_res is not None else extract(calibration_report, "success", True)
+    
+    if not cal_success:
+        raise ValueError("Pipeline optimization validation failed: calibration report indicates failure.")
+        
+    opt_meta = extract(optimization_report, "metadata", {}) or {}
+    if opt_meta.get("overwrite_active_cadence") or opt_meta.get("overwrite_active_phase_table") or opt_meta.get("overwrite_active_carrier"):
+        raise ValueError("Active profile/table overwrite is prohibited.")
+        
+    if opt_meta.get("stage_latency_breach") or opt_meta.get("backpressure_breach") or opt_meta.get("stall_breach"):
+        raise ValueError("Pipeline calibration constraint violated: timing metrics breached.")
+        
+    # Check for court token sandbox execution
+    is_sandbox = opt_meta.get("sandbox_trial") or opt_meta.get("court_token") is not None
+    if opt_meta.get("live_execution") and not is_sandbox:
+        raise ValueError("Live execution requires court-tokened sandbox authorization.")
+        
+    return True
+

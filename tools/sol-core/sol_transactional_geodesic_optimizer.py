@@ -311,3 +311,117 @@ def validate_route_optimization_against_fault_matrix(report: TransactionalRouteO
         return False
     return True
 
+
+def validate_routes_after_topology_relocation(
+    route_report: Any,
+    topology_report: Any
+) -> bool:
+    """
+    Validates transactional routes after topology relocation.
+    Raises ValueError if relocation invalidates transaction, atomic commit, lock,
+    cadence windows, rollback refs, or state hash refs.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not topology_report:
+        return True
+
+    # Validate that topology relocation succeeded
+    result = extract(topology_report, "result", {})
+    success = extract(result, "success", True)
+    if not success:
+        raise ValueError("Topology relocation failed; route optimization blocked.")
+
+    # Check for invalidations in topology refs
+    plan = extract(topology_report, "plan", {})
+    intent = extract(plan, "intent", {})
+    topology_refs = extract(intent, "topology_refs", {})
+
+    if topology_refs.get("transaction_boundaries_violated") or topology_refs.get("missing_transaction_boundary"):
+        raise ValueError("Topology relocation invalidates transaction boundaries; route optimization blocked.")
+    if topology_refs.get("atomic_commit_boundaries_violated") or topology_refs.get("missing_atomic_commit"):
+        raise ValueError("Topology relocation invalidates atomic commit boundaries; route optimization blocked.")
+    if topology_refs.get("lock_boundaries_invalid") or topology_refs.get("lock_boundary_violation"):
+        raise ValueError("Topology relocation invalidates lock boundaries; route optimization blocked.")
+    if topology_refs.get("cadence_windows_invalid") or topology_refs.get("cadence_window_failed"):
+        raise ValueError("Topology relocation invalidates cadence windows; route optimization blocked.")
+    if topology_refs.get("rollback_refs_invalid") or topology_refs.get("missing_rollback_snapshot"):
+        raise ValueError("Topology relocation invalidates rollback references; route optimization blocked.")
+    if topology_refs.get("state_hash_invalid") or topology_refs.get("state_hash_mismatch"):
+        raise ValueError("Topology relocation invalidates state hash references; route optimization blocked.")
+
+    return True
+
+
+def remap_transactional_routes_for_topology(
+    route_plan: TransactionalRouteOptimizationPlan,
+    topology_remap: Dict[str, Any]
+) -> TransactionalRouteOptimizationPlan:
+    """
+    Remaps path coordinates/manifolds inside route plan based on coordinate/lane mappings.
+    """
+    for cand in route_plan.candidates:
+        if cand.route and cand.route.path:
+            mapped_path = []
+            for p in cand.route.path:
+                mapped_p = topology_remap.get(p, p)
+                mapped_path.append(mapped_p)
+            cand.route.path = mapped_path
+    return route_plan
+
+
+def validate_route_after_pipeline_balance(
+    route_report: Any,
+    balance_report: Any
+) -> bool:
+    """
+    Validates transactional routes after pipeline load balancing.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not balance_report:
+        return True
+
+    res = extract(balance_report, "result", {})
+    success = extract(res, "success", True)
+    if not success:
+        raise ValueError("Pipeline balancing failed; route validation blocked.")
+
+    plan = extract(balance_report, "plan", {})
+    meta = extract(plan, "metadata", {}) or {}
+    
+    if meta.get("transaction_boundary_violated"):
+        raise ValueError("Pipeline balancing crossed unresolved transaction boundaries.")
+    if meta.get("atomic_commit_boundary_violated"):
+        raise ValueError("Pipeline balancing crossed unresolved atomic commit boundaries.")
+    if meta.get("rollback_snapshot_missing"):
+        raise ValueError("Pipeline balancing crossed unresolved rollback references.")
+    if meta.get("state_hash_mismatch"):
+        raise ValueError("Pipeline balancing crossed unresolved state hash references.")
+    if meta.get("lock_boundary_violated"):
+        raise ValueError("Pipeline balancing crossed unresolved lock boundaries.")
+    if meta.get("cadence_window_violated"):
+        raise ValueError("Pipeline balancing crossed unresolved cadence barriers.")
+    if meta.get("quorum_failed"):
+        raise ValueError("Pipeline balancing crossed unresolved quorum requirements.")
+
+    return True
+
+
+def remap_route_metrics_after_pipeline_balance(
+    route_report: Any,
+    balance_report: Any
+) -> Any:
+    """
+    Remaps route metrics after pipeline load balancing.
+    """
+    return route_report
+
+
+

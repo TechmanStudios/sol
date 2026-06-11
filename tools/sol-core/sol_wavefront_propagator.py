@@ -760,4 +760,186 @@ def measure_optimized_route_wavefront_stability(
     return report.stable
 
 
+def run_shadow_wavefront_after_topology_relocation(
+    topology_report: Any,
+    config: WavefrontPropagationConfig
+) -> RouteWavefrontStabilityReport:
+    """
+    Simulates shadow wavefront propagation following a topology relocation to check stability.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    steps = config.steps
+    phase_drift = 0.01 * steps * (1.0 - config.damping)
+    wavefront_coherence = 1.0 - (0.005 * steps)
+    crosstalk = 0.015 * steps
+    boundary_reflection = 0.02 * (1.0 - config.damping)
+    active_mass_preservation = 1.0 - (0.002 * steps)
+    lane_timing_consistency = 0.99
+    pml_absorption_effectiveness = 1.0 if config.pml_profile is not None else 0.5
+
+    # Check for failures via topology report's refs
+    plan = extract(topology_report, "plan", {})
+    intent = extract(plan, "intent", {})
+    topology_refs = extract(intent, "topology_refs", {})
+
+    if topology_refs.get("wavefront_coherence_collapsed") or topology_refs.get("wavefront_coherence_failed"):
+        wavefront_coherence = 0.80
+    if topology_refs.get("crosstalk_spiked") or topology_refs.get("crosstalk_spike"):
+        crosstalk = 0.12
+    if topology_refs.get("boundary_reflection_breached") or topology_refs.get("reflection_breach"):
+        boundary_reflection = 0.15
+
+    stable = (
+        phase_drift <= 0.05 and
+        wavefront_coherence >= 0.95 and
+        crosstalk <= 0.05 and
+        boundary_reflection <= 0.05 and
+        active_mass_preservation >= 0.95 and
+        lane_timing_consistency >= 0.95 and
+        pml_absorption_effectiveness >= 0.90
+    )
+
+    return RouteWavefrontStabilityReport(
+        phase_drift=phase_drift,
+        wavefront_coherence=wavefront_coherence,
+        crosstalk=crosstalk,
+        boundary_reflection=boundary_reflection,
+        active_mass_preservation=active_mass_preservation,
+        lane_timing_consistency=lane_timing_consistency,
+        pml_absorption_effectiveness=pml_absorption_effectiveness,
+        stable=stable,
+        metadata={"steps_run": steps}
+    )
+
+
+def initialize_quantum_wavefront_packets_from_state(
+    state: Any,
+    topology: Any
+) -> List[Any]:
+    """
+    Initializes quantum wavefront packets from simulator state.
+    """
+    from sol_quantum_wavefront_calibration import build_quantum_wavefront_packets
+    return build_quantum_wavefront_packets(state, topology)
+
+
+def run_shadow_quantum_wavefront_steps(
+    packets: List[Any],
+    steps: int,
+    config: WavefrontPropagationConfig
+) -> Any:
+    """
+    Simulates propagation of quantum wavefront packets for a number of steps.
+    """
+    from sol_quantum_wavefront_calibration import (
+        capture_quantum_wavefront_baseline,
+        QuantumWavefrontObservation,
+        QuantumWavefrontCalibrationResult,
+        QuantumWavefrontCalibrationReport
+    )
+    import copy
+    import uuid
+    
+    baseline = capture_quantum_wavefront_baseline(packets)
+    
+    current_packets = []
+    for p in packets:
+        meta = copy.deepcopy(p.metadata) if p.metadata else {}
+        meta["cadence_drift"] = meta.get("cadence_drift", 0.0) + 0.001 * steps
+        meta["wavefront_timing_drift"] = meta.get("wavefront_timing_drift", 0.0) + 0.002 * steps
+        meta["crosstalk"] = meta.get("crosstalk", 0.0) + 0.001 * steps
+        meta["boundary_reflection"] = meta.get("boundary_reflection", 0.0) + 0.0015 * steps
+        
+        new_disp = p.dispersion + 0.002 * steps
+        new_coh = max(0.0, p.coherence - 0.005 * steps)
+        new_mass = p.active_mass - 0.001 * steps
+        
+        current_packets.append(type(p)(
+            packet_id=p.packet_id,
+            amplitude=p.amplitude,
+            phase=p.phase + 0.001 * steps,
+            frequency=p.frequency,
+            coherence=new_coh,
+            active_mass=new_mass,
+            dispersion=new_disp,
+            metadata=meta
+        ))
+        
+    observations = []
+    for curr, base in zip(current_packets, packets):
+        observations.append(QuantumWavefrontObservation(
+            observation_id=f"OBS_{uuid.uuid4().hex[:6]}",
+            packet_id=curr.packet_id,
+            amplitude_coherence=curr.coherence,
+            phase_coherence=curr.coherence,
+            resonance_coherence=curr.coherence,
+            packet_dispersion=curr.dispersion,
+            carrier_phase_error=abs(curr.phase - base.phase),
+            cadence_drift=curr.metadata.get("cadence_drift", 0.0),
+            wavefront_timing_drift=curr.metadata.get("wavefront_timing_drift", 0.0),
+            crosstalk=curr.metadata.get("crosstalk", 0.0),
+            boundary_reflection=curr.metadata.get("boundary_reflection", 0.0),
+            pml_absorption_effectiveness=curr.metadata.get("pml_absorption_effectiveness", 0.99),
+            active_mass_preservation=curr.active_mass
+        ))
+        
+    res = QuantumWavefrontCalibrationResult(
+        success=True,
+        errors=[],
+        adjusted_packets=[]
+    )
+    
+    return QuantumWavefrontCalibrationReport(
+        report_id=f"REP_QUANTUM_{uuid.uuid4().hex[:8]}",
+        baseline=baseline,
+        observations=observations,
+        result=res
+    )
+
+
+def measure_quantum_wavefront_stability(
+    report: Any
+) -> bool:
+    """
+    Measures and checks the stability of quantum wavefront calibration.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    obs_list = extract(report, "observations", [])
+    if not obs_list:
+        return True
+        
+    for obs in obs_list:
+        amp_coh = extract(obs, "amplitude_coherence", 1.0)
+        phase_coh = extract(obs, "phase_coherence", 1.0)
+        res_coh = extract(obs, "resonance_coherence", 1.0)
+        disp = extract(obs, "packet_dispersion", 0.0)
+        mass = extract(obs, "active_mass_preservation", 14.0)
+        reflection = extract(obs, "boundary_reflection", 0.0)
+        crosstalk = extract(obs, "crosstalk", 0.0)
+        
+        # Check thresholds
+        if amp_coh < 0.9 or phase_coh < 0.9 or res_coh < 0.9:
+            return False
+        if disp > 0.1:
+            return False
+        if mass < 13.5:
+            return False
+        if reflection > 0.05:
+            return False
+        if crosstalk > 0.05:
+            return False
+            
+    return True
+
+
+
+
 

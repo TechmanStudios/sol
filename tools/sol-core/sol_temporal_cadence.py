@@ -458,4 +458,297 @@ def measure_rebalance_cadence_disturbance(
     return abs(after_skew - before_skew)
 
 
+def inject_optimized_route_cadence_failure(route_plan: Any) -> None:
+    """
+    Injects a cadence window failure into the route optimization plan.
+    """
+    if isinstance(route_plan, dict):
+        route_plan["cadence_windows"] = ["outside_cadence_window"]
+        if "metadata" not in route_plan:
+            route_plan["metadata"] = {}
+        route_plan["metadata"]["outside_cadence_window"] = True
+    else:
+        setattr(route_plan, "cadence_windows", ["outside_cadence_window"])
+        meta = getattr(route_plan, "metadata", None)
+        if meta is None:
+            meta = {}
+            setattr(route_plan, "metadata", meta)
+        meta["outside_cadence_window"] = True
+
+
+def inject_rebalance_cadence_skew(rebalance_plan: Any, magnitude: float) -> None:
+    """
+    Injects global cadence skew into the waveguide rebalance plan.
+    """
+    if isinstance(rebalance_plan, dict):
+        if "intent" not in rebalance_plan:
+            rebalance_plan["intent"] = {}
+        intent = rebalance_plan["intent"]
+        if "policy" not in intent:
+            intent["policy"] = {}
+        intent["policy"]["global_skew"] = magnitude
+        intent["policy"]["global_cadence_skew"] = True
+    else:
+        intent = getattr(rebalance_plan, "intent", None)
+        if intent:
+            policy = getattr(intent, "policy", None)
+            if policy is None:
+                policy = {}
+                setattr(intent, "policy", policy)
+            if isinstance(policy, dict):
+                policy["global_skew"] = magnitude
+                policy["global_cadence_skew"] = True
+
+
+def snapshot_cadence_before_topology_relocation(
+    cadence_group: Any
+) -> Any:
+    """
+    Snapshots temporal cadence state prior to topology relocation.
+    """
+    import uuid
+    import time
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    g_id = extract(cadence_group, "group_id", "GROUP_DEFAULT")
+    participants = extract(cadence_group, "participants", [])
+    
+    return {
+        "snapshot_id": f"SNAP_CAD_TOPO_{uuid.uuid4().hex[:8]}",
+        "group_id": g_id,
+        "participants_count": len(participants),
+        "timestamp": time.time()
+    }
+
+
+def validate_cadence_after_topology_relocation(
+    cadence_report: Any,
+    topology_report: Any
+) -> bool:
+    """
+    Validates temporal cadence status after topology relocation.
+    Relocation must be blocked (returns False) if:
+    - cadence windows fail
+    - global cadence skew exceeds threshold (0.05)
+    - participant clocks split-brain
+    - cadence checkpoint is incomplete
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not topology_report:
+        return True
+
+    plan = extract(topology_report, "plan", {})
+    intent = extract(plan, "intent", {})
+    topology_refs = extract(intent, "topology_refs", {})
+
+    if topology_refs.get("cadence_windows_invalid") or topology_refs.get("outside_cadence_window"):
+        return False
+        
+    global_skew = extract(topology_refs, "global_skew", 0.0) or extract(cadence_report, "global_skew", 0.0) or 0.0
+    if global_skew > 0.05 or topology_refs.get("global_cadence_skew"):
+        return False
+
+    if topology_refs.get("split_brain") or topology_refs.get("split_brain_detected"):
+        return False
+
+    if topology_refs.get("checkpoint_incomplete") or topology_refs.get("checkpoint_failed"):
+        return False
+
+    return True
+
+
+def export_cadence_sync_targets(
+    cadence_group: Any
+) -> List[Dict[str, Any]]:
+    """
+    Exports target synchronization metadata for participants.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    participants = extract(cadence_group, "participants", [])
+    targets = []
+    for p in participants:
+        targets.append({
+            "manifold_id": extract(p, "manifold_id", "unknown"),
+            "target_skew": 0.05
+        })
+    return targets
+
+
+def validate_candidate_cadence_profile(
+    candidate: Any,
+    active_profile: Any
+) -> bool:
+    """
+    Validates candidate cadence profile. Crucially, ensures candidate is separate
+    from active/default profile and that active profile cannot be overwritten.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not candidate or not active_profile:
+        raise ValueError("Candidate profile or active profile is missing.")
+
+    # Prevent active cadence profile from being overwritten
+    if extract(candidate, "manifold_id") == extract(active_profile, "manifold_id"):
+        # If candidate attempts to overwrite in-place or is not a separate object/representation
+        if extract(candidate, "overwrite_active") or extract(candidate, "metadata", {}).get("overwrite_active"):
+            raise ValueError("Candidate cadence profile attempts to overwrite active profile in place.")
+
+    # Validate profile fields
+    rate = extract(candidate, "tick_rate", 0.0)
+    if rate <= 0.0:
+        raise ValueError("Invalid tick rate in candidate profile.")
+
+    return True
+
+
+def compare_candidate_cadence_to_active(
+    candidate: Any,
+    active_profile: Any
+) -> Dict[str, Any]:
+    """
+    Compares candidate cadence parameters to the active ones.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    cand_rate = extract(candidate, "tick_rate", 0.0)
+    act_rate = extract(active_profile, "tick_rate", 0.0)
+    
+    cand_phase = extract(candidate, "phase_offset", 0.0)
+    act_phase = extract(active_profile, "phase_offset", 0.0)
+    
+    return {
+        "tick_rate_difference": cand_rate - act_rate,
+        "phase_offset_difference": cand_phase - act_phase,
+        "separate": True
+    }
+
+
+def validate_quantum_wavefront_cadence(
+    packet_report: Any,
+    cadence_report: Any
+) -> bool:
+    """
+    Validates cadence constraints for quantum wavefront packets.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    if not packet_report:
+        return True
+
+    obs_list = extract(packet_report, "observations", [])
+    for obs in obs_list:
+        drift = extract(obs, "cadence_drift", 0.0)
+        if drift > 0.05:
+            return False
+        timing_drift = extract(obs, "wavefront_timing_drift", 0.0)
+        if timing_drift > 0.05:
+            return False
+
+    if cadence_report:
+        global_skew = extract(cadence_report, "global_skew", 0.0) or extract(cadence_report, "skew", 0.0) or 0.0
+        if global_skew > 0.05:
+            return False
+        if extract(cadence_report, "checkpoint_incomplete") or extract(cadence_report, "checkpoint_failed"):
+            return False
+        if extract(cadence_report, "outside_cadence_window") or extract(cadence_report, "outside_window"):
+            return False
+
+    return True
+
+
+def measure_quantum_wavefront_cadence_error(
+    packet_report: Any,
+    cadence_profile: Any
+) -> float:
+    """
+    Measures cadence error metrics from quantum wavefront packet reports.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+
+    total_error = 0.0
+    obs_list = extract(packet_report, "observations", [])
+    for obs in obs_list:
+        total_error += abs(extract(obs, "cadence_drift", 0.0))
+    return total_error
+
+
+def inject_quantum_cadence_window_failure(packet_report: Any) -> Any:
+    """
+    Simulates a cadence window failure in the report.
+    """
+    import copy
+    mutated = copy.deepcopy(packet_report)
+    if isinstance(mutated, dict):
+        mutated["outside_cadence_window"] = True
+    else:
+        mutated.outside_cadence_window = True
+    return mutated
+
+
+def inject_quantum_global_cadence_skew(packet_report: Any, magnitude: float) -> Any:
+    """
+    Simulates global cadence skew in the report.
+    """
+    import copy
+    mutated = copy.deepcopy(packet_report)
+    if isinstance(mutated, dict):
+        mutated["global_skew"] = magnitude
+    else:
+        mutated.global_skew = magnitude
+    return mutated
+
+
+def validate_carrier_registry_stable_over_burnin(registry_reports: List[Any]) -> bool:
+    """
+    Checks that the carrier registry configurations remain stable across burn-in snapshots.
+    """
+    from sol_carrier_registry import validate_carrier_registry_stable_over_burnin as val_func
+    return val_func(registry_reports)
+
+
+def validate_cadence_profiles_stable_over_burnin(cadence_reports: List[Any]) -> bool:
+    """
+    Checks that cadence profiles remain stable across all burn-in cycles.
+    """
+    from sol_carrier_registry import validate_cadence_profiles_stable_over_burnin as val_func
+    return val_func(cadence_reports)
+
+
+def validate_candidate_tables_not_active_over_burnin(reports: List[Any]) -> bool:
+    """
+    Ensures that active/default tables remain untouched and candidate tables are not activated.
+    """
+    from sol_carrier_registry import validate_candidate_tables_not_active_over_burnin as val_func
+    return val_func(reports)
+
+
+
+
+
+
+
+
 

@@ -170,3 +170,568 @@ def summarize_sovereign_runtime(runtime: SovereignRuntimeState) -> SovereignRunt
         result=result,
         passed_gates=passed
     )
+
+
+def submit_topology_relocation_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeEvent:
+    """
+    Submits a topology relocation command to the sovereign runtime.
+    Runtime must enforce allowed modes, court tokens, and rollback references.
+    """
+    if command.mode == "production" or runtime.mode == "production":
+        runtime.mode = "hold"
+        raise ValueError("Production mode execution is blocked by sovereign control rules.")
+    
+    # Enforce allowed mode
+    if command.mode not in runtime.policy.allowed_modes:
+        raise ValueError(f"Command mode {command.mode} is not allowed by runtime policy.")
+
+    # Enforce court token if sandbox
+    if command.mode == "sandbox":
+        token = command.payload.get("court_token")
+        if not token or token == "INVALID_TOKEN":
+            raise ValueError("Court token is required for sandbox execution.")
+
+    # Enforce rollback snapshot reference
+    rollback_snapshot = command.payload.get("rollback_snapshot")
+    if not rollback_snapshot:
+        raise ValueError("Rollback references are required for topology relocation command execution.")
+
+    # Check for no production/default topology mutation
+    if command.payload.get("mutate_production_topology"):
+        raise ValueError("Production topology mutation is strictly prohibited.")
+
+    return submit_runtime_command(runtime, command)
+
+
+def execute_shadow_topology_relocation_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeResult:
+    """
+    Executes a shadow topology relocation command.
+    """
+    submit_topology_relocation_command(runtime, command)
+    errors = []
+    
+    if command.payload.get("should_fail"):
+        errors.append("Simulated shadow relocation command execution failure.")
+        
+    success = len(errors) == 0
+    final_level = command.target_level if success else runtime.active_level
+    
+    return SovereignRuntimeResult(
+        success=success,
+        final_level=final_level,
+        executed_steps=1 if success else 0,
+        errors=errors,
+        quarantined=(runtime.mode == "quarantine")
+    )
+
+
+def submit_autonomous_cadence_sync_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeEvent:
+    """
+    Submits an autonomous cadence sync command to the sovereign runtime.
+    Runtime must enforce allowed modes, court tokens, and rollback references.
+    """
+    if command.mode == "production" or runtime.mode == "production":
+        runtime.mode = "hold"
+        raise ValueError("Production mode execution is blocked by sovereign control rules.")
+    
+    # Enforce allowed mode
+    if command.mode not in runtime.policy.allowed_modes:
+        raise ValueError(f"Command mode {command.mode} is not allowed by runtime policy.")
+
+    # Enforce court token if sandbox
+    if command.mode == "sandbox":
+        token = command.payload.get("court_token")
+        if not token or token == "INVALID_TOKEN":
+            raise ValueError("Court token is required for sandbox execution.")
+
+    # Enforce rollback snapshot reference
+    rollback_snapshot = command.payload.get("rollback_snapshot")
+    if not rollback_snapshot:
+        raise ValueError("Rollback references are required for autonomous cadence command execution.")
+
+    # Check for no production/default cadence mutation
+    if command.payload.get("mutate_production_cadence"):
+        raise ValueError("Production cadence mutation is strictly prohibited.")
+
+    # Ensure no automatic promotion
+    if command.payload.get("automatic_promotion"):
+        raise ValueError("Automatic promotion is prohibited under sovereign timing rules.")
+
+    return submit_runtime_command(runtime, command)
+
+
+def execute_shadow_autonomous_cadence_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeResult:
+    """
+    Executes a shadow autonomous cadence sync command.
+    """
+    submit_autonomous_cadence_sync_command(runtime, command)
+    errors = []
+    
+    if command.payload.get("should_fail"):
+        errors.append("Simulated shadow autonomous cadence command execution failure.")
+        
+    success = len(errors) == 0
+    final_level = command.target_level if success else runtime.active_level
+    
+    return SovereignRuntimeResult(
+        success=success,
+        final_level=final_level,
+        executed_steps=1 if success else 0,
+        errors=errors,
+        quarantined=(runtime.mode == "quarantine")
+    )
+
+
+def submit_multicore_assembly_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeEvent:
+    """
+    Submits a multi-core assembly command. Enforces shadow/sandbox mode,
+    court token for sandbox, ranger observer, rollback references, no production
+    execution, and no automatic promotion.
+    """
+    if command.mode == "production" or runtime.mode == "production" or command.payload.get("production_execution"):
+        runtime.mode = "hold"
+        raise ValueError("Production mode execution is blocked by sovereign control rules.")
+
+    if command.mode not in runtime.policy.allowed_modes:
+        raise ValueError(f"Command mode {command.mode} is not allowed by runtime policy.")
+
+    if command.mode == "sandbox":
+        token = command.payload.get("court_token")
+        if not token or token == "INVALID_TOKEN":
+            raise ValueError("Court token is required for sandbox execution.")
+
+    # Enforce ranger observer
+    ranger = command.payload.get("ranger_observer") or command.payload.get("ranger_evidence")
+    if not ranger:
+        raise ValueError("Ranger observer reference is required for multi-core assembly command execution.")
+
+    # Enforce rollback snapshot reference
+    rollback_snapshot = command.payload.get("rollback_snapshot")
+    if not rollback_snapshot:
+        raise ValueError("Rollback references are required for multi-core assembly command execution.")
+
+    # Check for no automatic promotion
+    if command.payload.get("automatic_promotion"):
+        raise ValueError("Automatic promotion is prohibited under sovereign multi-core assembly rules.")
+
+    # Check for active profiles or tables mutation attempts
+    if command.payload.get("mutate_active_profiles") or command.payload.get("overwrite_active_cadence") or command.payload.get("overwrite_active_phase_table") or command.payload.get("overwrite_active_carrier"):
+        raise ValueError("Active profile/table overwrite is prohibited.")
+
+    return submit_runtime_command(runtime, command)
+
+
+def execute_shadow_multicore_assembly_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeResult:
+    """
+    Executes a shadow multi-core assembly command.
+    """
+    submit_multicore_assembly_command(runtime, command)
+    errors = []
+    
+    if command.payload.get("should_fail"):
+        errors.append("Simulated shadow multi-core assembly command execution failure.")
+        
+    success = len(errors) == 0
+    final_level = command.target_level if success else runtime.active_level
+    
+    return SovereignRuntimeResult(
+        success=success,
+        final_level=final_level,
+        executed_steps=1 if success else 0,
+        errors=errors,
+        quarantined=(runtime.mode == "quarantine")
+    )
+
+
+def submit_pipeline_balance_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeEvent:
+    """
+    Submits a pipeline balance command. Enforces shadow/sandbox mode,
+    court token if sandbox, ranger observer, rollback references, no production
+    execution, and no automatic promotion.
+    """
+    if command.mode == "production" or runtime.mode == "production" or command.payload.get("production_execution"):
+        runtime.mode = "hold"
+        raise ValueError("Production mode execution is blocked by sovereign control rules.")
+
+    if command.mode not in runtime.policy.allowed_modes:
+        raise ValueError(f"Command mode {command.mode} is not allowed by runtime policy.")
+
+    if command.mode == "sandbox":
+        token = command.payload.get("court_token")
+        if not token or token == "INVALID_TOKEN":
+            raise ValueError("Court token is required for sandbox execution.")
+
+    # Enforce ranger observer
+    ranger = command.payload.get("ranger_observer") or command.payload.get("ranger_evidence")
+    if not ranger:
+        raise ValueError("Ranger observer reference is required for pipeline balance command execution.")
+
+    # Enforce rollback snapshot reference
+    rollback_snapshot = command.payload.get("rollback_snapshot")
+    if not rollback_snapshot:
+        raise ValueError("Rollback references are required for pipeline balance command execution.")
+
+    # Check for no automatic promotion
+    if command.payload.get("automatic_promotion"):
+        raise ValueError("Automatic promotion is prohibited under sovereign pipeline balance rules.")
+
+    # Check for active profiles or tables mutation attempts
+    if command.payload.get("mutate_active_profiles") or command.payload.get("overwrite_active_cadence") or command.payload.get("overwrite_active_phase_table") or command.payload.get("overwrite_active_carrier"):
+        raise ValueError("Active profile/table overwrite is prohibited.")
+
+    return submit_runtime_command(runtime, command)
+
+
+def execute_shadow_pipeline_balance_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeResult:
+    """
+    Executes a shadow pipeline balance command.
+    """
+    submit_pipeline_balance_command(runtime, command)
+    errors = []
+    
+    if command.payload.get("should_fail"):
+        errors.append("Simulated shadow pipeline balance command execution failure.")
+        
+    success = len(errors) == 0
+    final_level = command.target_level if success else runtime.active_level
+    
+    return SovereignRuntimeResult(
+        success=success,
+        final_level=final_level,
+        executed_steps=1 if success else 0,
+        errors=errors,
+        quarantined=(runtime.mode == "quarantine")
+    )
+
+
+def submit_quantum_wavefront_calibration_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeEvent:
+    """
+    Submits a quantum wavefront calibration command. Enforces shadow/sandbox mode,
+    court token if sandbox, ranger observer, rollback references, no production
+    execution, and no automatic promotion.
+    """
+    if command.mode == "production" or runtime.mode == "production" or command.payload.get("production_execution"):
+        runtime.mode = "hold"
+        raise ValueError("Production mode execution is blocked by sovereign control rules.")
+
+    if command.mode not in runtime.policy.allowed_modes:
+        raise ValueError(f"Command mode {command.mode} is not allowed by runtime policy.")
+
+    if command.mode == "sandbox":
+        token = command.payload.get("court_token")
+        if not token or token == "INVALID_TOKEN":
+            raise ValueError("Court token is required for sandbox execution.")
+
+    # Enforce ranger observer
+    ranger = command.payload.get("ranger_observer") or command.payload.get("ranger_evidence")
+    if not ranger:
+        raise ValueError("Ranger observer reference is required for quantum wavefront calibration command execution.")
+
+    # Enforce rollback snapshot reference
+    rollback_snapshot = command.payload.get("rollback_snapshot")
+    if not rollback_snapshot:
+        raise ValueError("Rollback references are required for quantum wavefront calibration command execution.")
+
+    # Check for no automatic promotion
+    if command.payload.get("automatic_promotion"):
+        raise ValueError("Automatic promotion is prohibited under sovereign quantum wavefront calibration rules.")
+
+    # Check for active profiles or tables mutation attempts
+    if command.payload.get("mutate_active_profiles") or command.payload.get("overwrite_active_cadence") or command.payload.get("overwrite_active_phase_table") or command.payload.get("overwrite_active_carrier"):
+        raise ValueError("Active profile/table overwrite is prohibited.")
+
+    return submit_runtime_command(runtime, command)
+
+
+def execute_shadow_quantum_wavefront_calibration_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeResult:
+    """
+    Executes a shadow quantum wavefront calibration command.
+    """
+    submit_quantum_wavefront_calibration_command(runtime, command)
+    errors = []
+    
+    if command.payload.get("should_fail"):
+        errors.append("Simulated shadow quantum wavefront calibration command execution failure.")
+        
+    success = len(errors) == 0
+    final_level = command.target_level if success else runtime.active_level
+    
+    return SovereignRuntimeResult(
+        success=success,
+        final_level=final_level,
+        executed_steps=1 if success else 0,
+        errors=errors,
+        quarantined=(runtime.mode == "quarantine")
+    )
+
+
+def submit_burnin_runtime_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeEvent:
+    """
+    Submits a burn-in runtime command. Enforces shadow/sandbox mode,
+    court token if sandbox, ranger observer, rollback references, no production
+    execution, and no automatic promotion.
+    """
+    if command.mode == "production" or runtime.mode == "production" or command.payload.get("production_execution"):
+        runtime.mode = "hold"
+        raise ValueError("Production mode execution is blocked by sovereign control rules.")
+
+    if command.mode not in runtime.policy.allowed_modes:
+        raise ValueError(f"Command mode {command.mode} is not allowed by runtime policy.")
+
+    if command.mode == "sandbox":
+        token = command.payload.get("court_token")
+        if not token or token == "INVALID_TOKEN":
+            raise ValueError("Court token is required for sandbox execution.")
+
+    # Enforce ranger observer
+    ranger = command.payload.get("ranger_observer") or command.payload.get("ranger_evidence")
+    if not ranger:
+        raise ValueError("Ranger observer reference is required for burn-in runtime command execution.")
+
+    # Enforce rollback snapshot reference
+    rollback_snapshot = command.payload.get("rollback_snapshot")
+    if not rollback_snapshot:
+        raise ValueError("Rollback references are required for burn-in runtime command execution.")
+
+    # Check for no automatic promotion
+    if command.payload.get("automatic_promotion"):
+        raise ValueError("Automatic promotion is prohibited under sovereign burn-in rules.")
+
+    # Bounded cycle count
+    max_cycles = command.payload.get("max_cycles", 10)
+    if max_cycles <= 0 or max_cycles > 1000:
+        raise ValueError("Unbounded cycle count is prohibited.")
+
+    # Check for active profiles or tables mutation attempts
+    if command.payload.get("mutate_active_profiles") or command.payload.get("overwrite_active_cadence") or command.payload.get("overwrite_active_phase_table") or command.payload.get("overwrite_active_carrier"):
+        raise ValueError("Active profile/table overwrite is prohibited.")
+
+    return submit_runtime_command(runtime, command)
+
+
+
+def execute_shadow_burnin_runtime_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeResult:
+    """
+    Executes a shadow burn-in runtime command.
+    """
+    submit_burnin_runtime_command(runtime, command)
+    errors = []
+    
+    if command.payload.get("should_fail"):
+        errors.append("Simulated shadow burn-in command execution failure.")
+        
+    success = len(errors) == 0
+    final_level = command.target_level if success else runtime.active_level
+    
+    return SovereignRuntimeResult(
+        success=success,
+        final_level=final_level,
+        executed_steps=1 if success else 0,
+        errors=errors,
+        quarantined=(runtime.mode == "quarantine")
+    )
+
+
+def submit_release_candidate_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeEvent:
+    """
+    Submits a release candidate command. Enforces shadow/sandbox mode,
+    court token if sandbox, ranger observer, no production execution,
+    and no automatic promotion.
+    """
+    if command.mode == "production" or runtime.mode == "production" or command.payload.get("production_execution"):
+        runtime.mode = "hold"
+        raise ValueError("Production mode execution is blocked by sovereign control rules.")
+
+    if command.mode not in runtime.policy.allowed_modes:
+        raise ValueError(f"Command mode {command.mode} is not allowed by runtime policy.")
+
+    if command.mode == "sandbox":
+        token = command.payload.get("court_token")
+        if not token or token == "INVALID_TOKEN":
+            raise ValueError("Court token is required for sandbox execution.")
+
+    # Enforce ranger observer
+    ranger = command.payload.get("ranger_observer") or command.payload.get("ranger_evidence")
+    if not ranger:
+        raise ValueError("Ranger observer reference is required for release candidate command execution.")
+
+    # Check for no automatic promotion
+    if command.payload.get("automatic_promotion"):
+        raise ValueError("Automatic promotion is prohibited under sovereign release candidate rules.")
+
+    # Check for active profiles or tables mutation attempts
+    if command.payload.get("mutate_active_profiles") or command.payload.get("overwrite_active_cadence") or command.payload.get("overwrite_active_phase_table") or command.payload.get("overwrite_active_carrier"):
+        raise ValueError("Active profile/table overwrite is prohibited.")
+
+    return submit_runtime_command(runtime, command)
+
+
+def execute_shadow_release_candidate_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeResult:
+    """
+    Executes a shadow release candidate command.
+    """
+    submit_release_candidate_command(runtime, command)
+    errors = []
+    
+    if command.payload.get("should_fail"):
+        errors.append("Simulated shadow release candidate command execution failure.")
+        
+    success = len(errors) == 0
+    final_level = command.target_level if success else runtime.active_level
+    
+    return SovereignRuntimeResult(
+        success=success,
+        final_level=final_level,
+        executed_steps=1 if success else 0,
+        errors=errors,
+        quarantined=(runtime.mode == "quarantine")
+    )
+
+
+def submit_system_finalization_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeEvent:
+    """
+    Submits a system finalization command. Enforces shadow/sandbox mode,
+    court review, ranger observer, ledger entry, and no automatic promotion.
+    """
+    if command.mode == "production" or runtime.mode == "production" or command.payload.get("production_execution"):
+        runtime.mode = "hold"
+        raise ValueError("Production mode execution is blocked by sovereign control rules.")
+
+    if command.mode not in runtime.policy.allowed_modes:
+        raise ValueError(f"Command mode {command.mode} is not allowed by runtime policy.")
+
+    if command.mode == "sandbox":
+        token = command.payload.get("court_token")
+        if not token or token == "INVALID_TOKEN":
+            raise ValueError("Court token is required for sandbox execution.")
+
+    # Enforce ranger observer
+    ranger = command.payload.get("ranger_observer") or command.payload.get("ranger_evidence")
+    if not ranger:
+        raise ValueError("Ranger observer reference is required for system finalization command execution.")
+
+    # Check for no automatic promotion
+    if command.payload.get("automatic_promotion"):
+        raise ValueError("Automatic promotion is prohibited under sovereign finalization rules.")
+
+    # Check for active profiles or tables mutation attempts
+    if command.payload.get("mutate_active_profiles") or command.payload.get("overwrite_active_cadence") or command.payload.get("overwrite_active_phase_table") or command.payload.get("overwrite_active_carrier"):
+        raise ValueError("Active profile/table overwrite is prohibited.")
+
+    return submit_runtime_command(runtime, command)
+
+
+def execute_shadow_system_finalization_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeResult:
+    """
+    Executes shadow system finalization command.
+    """
+    submit_system_finalization_command(runtime, command)
+    errors = []
+    
+    if command.payload.get("should_fail"):
+        errors.append("Simulated shadow system finalization failure.")
+        
+    success = len(errors) == 0
+    final_level = command.target_level if success else runtime.active_level
+    
+    return SovereignRuntimeResult(
+        success=success,
+        final_level=final_level,
+        executed_steps=1 if success else 0,
+        errors=errors,
+        quarantined=(runtime.mode == "quarantine")
+    )
+
+
+def submit_production_gateway_check_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeEvent:
+    """
+    Submits a production gateway check command.
+    """
+    # Enforces default-deny and rejects production mode
+    if command.mode == "production" or runtime.mode == "production" or command.payload.get("production_execution"):
+        runtime.mode = "hold"
+        raise ValueError("Production mode execution is blocked by sovereign control rules.")
+
+    return submit_runtime_command(runtime, command)
+
+
+def execute_shadow_production_gateway_check_command(
+    runtime: SovereignRuntimeState,
+    command: SovereignRuntimeCommand
+) -> SovereignRuntimeResult:
+    """
+    Executes shadow production gateway check.
+    """
+    submit_production_gateway_check_command(runtime, command)
+    errors = []
+    
+    if command.payload.get("should_fail"):
+        errors.append("Simulated gateway check failure.")
+        
+    success = len(errors) == 0
+    final_level = command.target_level if success else runtime.active_level
+    
+    return SovereignRuntimeResult(
+        success=success,
+        final_level=final_level,
+        executed_steps=1 if success else 0,
+        errors=errors,
+        quarantined=(runtime.mode == "quarantine")
+    )
+
+
+
+
+
+
