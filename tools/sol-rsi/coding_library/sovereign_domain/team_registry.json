@@ -1,0 +1,36 @@
+{
+  "level_11_stabilization_team": {
+    "description": "Ensures stable 16-bit PDM verification",
+    "lead": "Phase Calibration Agent",
+    "rangers": [
+      "phase_ranger",
+      "mass_ranger",
+      "telemetry_ranger"
+    ],
+    "stability_guard": "MSF Guard Agent"
+  },
+  "level_12_32bit_fabric_team": {
+    "description": "Proposes and calibrates the 32-bit spatial waveguide fabric",
+    "lead": "WideWord Fabric Agent",
+    "agents": [
+      "ByteSlice Agent",
+      "Prefix Carry Agent"
+    ],
+    "rangers": [
+      "byte_lane_ranger",
+      "carry_ranger",
+      "boundary_ranger",
+      "telemetry_ranger"
+    ]
+  },
+  "level_13_64bit_fabric_team": {
+    "description": "Handles 64-bit WideWord and vector compute modes",
+    "lead": "Chief SOL Architect",
+    "rangers": [
+      "byte_lane_ranger",
+      "carry_ranger",
+      "boundary_ranger",
+      "phase_ranger"
+    ]
+  }
+}

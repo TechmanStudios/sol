@@ -1210,6 +1210,19 @@ class SOLEngine:
         self.cap_law = cap_law
         self._step_count = 0
         self._baseline: dict | None = None
+        self.backend = "dict"
+
+    def set_backend(self, backend: str):
+        if backend not in ("dict", "vectorized"):
+            raise ValueError(f"Invalid backend: {backend}. Must be 'dict' or 'vectorized'.")
+        self.backend = backend
+
+    def step_vectorized(self, dt=None, c_press=None, damping=None) -> dict:
+        from sol_engine_backend_adapter import step_vectorized_impl
+        result = step_vectorized_impl(self, dt, c_press, damping)
+        self._step_count += 1
+        return result
+
 
     @classmethod
     def from_default_graph(cls, *, dt=0.12, c_press=0.1, damping=0.2,
@@ -1234,6 +1247,8 @@ class SOLEngine:
                    cap_law=kwargs.get("cap_law"))
 
     def step(self, dt=None, c_press=None, damping=None) -> dict:
+        if getattr(self, "backend", "dict") == "vectorized":
+            return self.step_vectorized(dt, c_press, damping)
         import telemetry
         if not telemetry._TELEMETRY_ENABLED:
             result = self.physics.step(
