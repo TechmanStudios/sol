@@ -1,0 +1,29 @@
+{
+  "32bit_promotion_gate": {
+    "min_active_mass": 14.0,
+    "max_cross_lane_leakage": 0.05,
+    "min_active_recall_delta": 0.2,
+    "required_invariants": [
+      "mass_preservation",
+      "lane_isolation",
+      "phase_coherence"
+    ]
+  },
+  "64bit_promotion_gate": {
+    "min_active_mass": 14.0,
+    "max_cross_lane_leakage": 0.05,
+    "min_active_recall_delta": 0.2,
+    "required_invariants": [
+      "mass_preservation",
+      "lane_isolation",
+      "phase_coherence",
+      "prefix_carry_equality"
+    ],
+    "supported_modes": [
+      "uint8x8",
+      "uint16x4",
+      "uint32x2",
+      "uint64x1"
+    ]
+  }
+}

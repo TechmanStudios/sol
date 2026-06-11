@@ -1,0 +1,225 @@
+{
+  "phase_ranger": {
+    "description": "Patrols PDM lanes and detects phase drift",
+    "class": "PhaseRanger",
+    "observe_only": true
+  },
+  "mass_ranger": {
+    "description": "Checks registers and monitors mass preservation thresholds",
+    "class": "MassRanger",
+    "observe_only": true
+  },
+  "boundary_ranger": {
+    "description": "Inspects PML boundary health and detects standing-wave reflections",
+    "class": "BoundaryRanger",
+    "observe_only": true
+  },
+  "byte_lane_ranger": {
+    "description": "Patrols individual byte slices and measures crosstalk leakage",
+    "class": "ByteLaneRanger",
+    "observe_only": true
+  },
+  "carry_ranger": {
+    "description": "Verifies carry-select and prefix carry paths",
+    "class": "CarryRanger",
+    "observe_only": true
+  },
+  "telemetry_ranger": {
+    "description": "Attaches to step loops to capture micro-level execution traces",
+    "class": "TelemetryRanger",
+    "observe_only": true
+  },
+  "memory_ranger": {
+    "description": "Inspects HCAM recall maps and checks HCAM memory banking correctness",
+    "class": "MemoryRanger",
+    "observe_only": true
+  },
+  "signal_ranger": {
+    "description": "Observes PDM encoded bytes and WideWord wave packets",
+    "class": "SignalRanger",
+    "observe_only": true
+  },
+  "drift_ranger": {
+    "description": "Observes PDM phase drift and waveguide dispersion profiles",
+    "class": "DriftRanger",
+    "observe_only": true
+  },
+  "kernel_ranger": {
+    "description": "Observes vectorized graph kernel layouts, CSR sparse tables, and SIMD execution plans",
+    "class": "KernelRanger",
+    "observe_only": true
+  },
+  "court_ranger": {
+    "description": "Observes PromotionGateResult and CalibrationPromotionReport decisions and statuses",
+    "class": "CourtRanger",
+    "observe_only": true
+  },
+  "sequencer_ranger": {
+    "description": "Observes WideWordInstructionResult and WordCommitPacket",
+    "class": "SequencerRanger",
+    "observe_only": true
+  },
+  "pdm_ranger": {
+    "description": "Observes PDM execution plans, modulated traces, and demodulation results",
+    "class": "PDMRanger",
+    "observe_only": true
+  },
+  "frontier_ranger": {
+    "description": "Observes closed-loop Frontier adjustment candidate packets",
+    "class": "FrontierRanger",
+    "observe_only": true
+  },
+  "live_control_ranger": {
+    "description": "Observes live PDM mutations, tokens, and results",
+    "class": "LiveControlRanger",
+    "observe_only": true
+  },
+  "fabric_ranger": {
+    "description": "Observes WideWordFabricTopology, WideWordFabricExecutionPlan, and WideWordFabricReport",
+    "class": "FabricRanger",
+    "observe_only": true
+  },
+  "hcam_ranger": {
+    "description": "Inspects Hierarchical H-CAM banking topologies, query-response routes, and reduction trees",
+    "class": "HCamRanger",
+    "observe_only": true
+  },
+  "simd_ranger": {
+    "description": "Inspects Level 14 SIMD mode mappings, vector computations, and geodesic reduction trees",
+    "class": "SimdRanger",
+    "observe_only": true
+  },
+  "entanglement_ranger": {
+    "description": "Patrols cross-manifold routing links and measures entanglement stability indicators",
+    "class": "EntanglementRanger",
+    "observe_only": true
+  },
+  "consensus_ranger": {
+    "description": "Patrols distributed consensus wavefront sync states and collects agreement quorum evidence",
+    "class": "ConsensusRanger",
+    "observe_only": true
+  },
+  "atomic_commit_ranger": {
+    "description": "Patrols distributed 2-phase commit operations and validates atomic commit safety",
+    "class": "AtomicCommitRanger",
+    "observe_only": true
+  },
+  "shard_ranger": {
+    "description": "Patrols distributed sharding, queries, and shard-level consensus topologies",
+    "class": "ShardRanger",
+    "observe_only": true
+  },
+  "transaction_ranger": {
+    "description": "Patrols distributed transaction coordinators, lock schedules, deadlocks, and validation safety",
+    "class": "TransactionRanger",
+    "observe_only": true
+  },
+  "gc_ranger": {
+    "description": "Patrols graph compaction, reachability, GC collections, and active register safety",
+    "class": "GCRanger",
+    "observe_only": true
+  },
+  "wavefront_ranger": {
+    "description": "Patrols wavefront propagation reports, PML absorption metrics, and boundary reflection scores",
+    "class": "WavefrontRanger",
+    "observe_only": true
+  },
+  "tensor_ranger": {
+    "description": "Patrols multi-sequencer core group execution, sharding, operations, and consensus states",
+    "class": "TensorRanger",
+    "observe_only": true
+  },
+  "pipeline_ranger": {
+    "description": "Patrols multi-core execution pipeline schedules, traces, and stall reports, emitting SovereignPackets",
+    "class": "PipelineRanger",
+    "observe_only": true
+  },
+  "optimization_ranger": {
+    "description": "Patrols distributed pipeline optimization plans, bypass reports, and lock boundary audits, emitting SovereignPackets",
+    "class": "OptimizationRanger",
+    "observe_only": true
+  },
+  "rebalancer_ranger": {
+    "description": "Patrols distributed shard rebalancing and manifold placement, emitting SovereignPackets",
+    "class": "RebalancerRanger",
+    "observe_only": true
+  },
+  "relocation_ranger": {
+    "description": "Patrols distributed manifold rebalancing and live relocation trials, emitting SovereignPackets",
+    "class": "RelocationRanger",
+    "observe_only": true
+  },
+  "manifold_sync_ranger": {
+    "description": "Patrols distributed manifold synchronization, coordination, and alignment, emitting SovereignPackets",
+    "class": "ManifoldSyncRanger",
+    "observe_only": true
+  },
+  "transaction_propagation_ranger": {
+    "description": "Patrols distributed manifold transaction consensus and geodesic wave propagation, emitting SovereignPackets",
+    "class": "TransactionPropagationRanger",
+    "observe_only": true
+  },
+  "calibration_ranger": {
+    "description": "Patrols distributed calibration loops and wavefront alignment stabilization, emitting SovereignPackets",
+    "class": "CalibrationRanger",
+    "observe_only": true
+  },
+  "fabric_synthesis_ranger": {
+    "description": "Patrols waveguide fabric synthesis and SIMD core integration, emitting SovereignPackets",
+    "class": "FabricSynthesisRanger",
+    "observe_only": true
+  },
+  "reshape_ranger": {
+    "description": "Patrols multi-dimensional manifold reshape and carrier relocation, emitting SovereignPackets",
+    "class": "ReshapeRanger",
+    "observe_only": true
+  },
+  "cadence_ranger": {
+    "description": "Patrols multi-manifold transaction consensus timing and temporal cadence stabilization, emitting SovereignPackets",
+    "class": "CadenceRanger",
+    "observe_only": true
+  },
+  "entangled_commit_ranger": {
+    "description": "Patrols multi-manifold entangled wavefront propagation and synchronized sequencer commits, emitting SovereignPackets",
+    "class": "EntangledCommitRanger",
+    "observe_only": true
+  },
+  "entangled_feedback_ranger": {
+    "description": "Patrols multi-manifold entangled wavefront calibration and feedback loops, emitting SovereignPackets",
+    "class": "EntangledFeedbackRanger",
+    "observe_only": true
+  },
+  "sovereign_runtime_ranger": {
+    "description": "Patrols sovereign runtime state, schedules, traces, governance, and ledgers, emitting SovereignPackets",
+    "class": "SovereignRuntimeRanger",
+    "observe_only": true
+  },
+  "waveguide_arithmetic_ranger": {
+    "description": "Patrols waveguide arithmetic fabric, prefix carry, and arithmetic reports, emitting SovereignPackets",
+    "class": "WaveguideArithmeticRanger",
+    "observe_only": true
+  },
+  "atomic_consensus_ranger": {
+    "description": "Patrols entangled wavefront consensus, multi-manifold atomic commits, and atomic epoch reports, emitting SovereignPackets",
+    "class": "AtomicConsensusRanger",
+    "observe_only": true
+  },
+  "state_relocation_ranger": {
+    "description": "Patrols distributed state relocation and real-time calibration loops, emitting SovereignPackets",
+    "class": "StateRelocationRanger",
+    "observe_only": true
+  },
+  "fault_matrix_ranger": {
+    "description": "Patrols distributed state relocation fault matrix and calibration loops stability matrix, emitting SovereignPackets",
+    "class": "FaultMatrixRanger",
+    "observe_only": true
+  },
+  "route_rebalance_ranger": {
+    "description": "Patrols multi-manifold transactional geodesic routing optimization and dynamic waveguide rebalancing, emitting SovereignPackets",
+    "class": "RouteRebalanceRanger",
+    "observe_only": true
+  }
+}
+
+
+
