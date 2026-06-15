@@ -1,0 +1,31 @@
+{"ts": "2026-06-15T08:18:45.453049Z", "event": "session_start", "session_id": "CX-20260615-081845", "config": {"max_protocols": "3", "max_total_steps": "100000", "gap_type_filter": "None", "dry_run": "False", "out_dir": "/home/runner/work/sol/sol/data/cortex_sessions", "strict_guardrails": "True", "verbose": "True"}}
+{"ts": "2026-06-15T08:18:46.475913Z", "event": "meta_gap_prioritized", "top_gap": "unpromoted:CL-1", "boosted_priority": 4.7138}
+{"ts": "2026-06-15T08:18:46.486403Z", "event": "knowledge_scan", "total_gaps": 612, "by_type": {"unpromoted": 6, "unfalsified": 4, "replication": 313, "unexplored_param": 4, "open_question": 225, "weak_evidence": 59, "headless_baseline": 1}}
+{"ts": "2026-06-15T08:18:46.540193Z", "event": "gap_selected", "gap_id": "unpromoted:CL-1", "gap_type": "unpromoted", "priority": 2, "description": "CL-1 (Robust): Baseline restore is non-negotiable for comparability \u2014 no proof packet found"}
+{"ts": "2026-06-15T08:18:46.541664Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-1", "memory_context": "Memory nodes: 31 | Memory edges: 147 | Avg confidence: 0.410 | Tags: basin(31), entropy(31), rhoMax(31)"}
+{"ts": "2026-06-15T08:18:46.542019Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-1", "template": "parameter_sweep"}
+{"ts": "2026-06-15T08:18:46.542096Z", "event": "hypothesis_generated", "hypothesis_id": "H-001", "template": "parameter_sweep", "question": "How does damping affect entropy, flux, and mass over 200 steps?"}
+{"ts": "2026-06-15T08:18:46.542365Z", "event": "hypothesis_augmented", "hypothesis_id": "H-001", "memory_falsifiers": 2}
+{"ts": "2026-06-15T08:18:46.542910Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260615-081845/protocols/h-001_protocol.json"}
+{"ts": "2026-06-15T08:18:46.595670Z", "event": "execution_start", "hypothesis_id": "H-001", "series": "h-001"}
+{"ts": "2026-06-15T08:18:58.795715Z", "event": "execution_complete", "hypothesis_id": "H-001", "elapsed_sec": 12.2, "sanity_passed": true, "anomalies": [], "total_session_steps": 2400}
+{"ts": "2026-06-15T08:18:58.796086Z", "event": "meta_recorded", "hypothesis_id": "H-001", "template": "parameter_sweep", "gap_type": "unpromoted"}
+{"ts": "2026-06-15T08:18:58.834909Z", "event": "gap_selected", "gap_id": "unpromoted:CL-2", "gap_type": "unpromoted", "priority": 2, "description": "CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale \u2014 no proof "}
+{"ts": "2026-06-15T08:18:58.835993Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-2", "memory_context": "Memory nodes: 31 | Memory edges: 147 | Avg confidence: 0.410 | Tags: basin(31), entropy(31), rhoMax(31)"}
+{"ts": "2026-06-15T08:18:58.836227Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-2", "template": "parameter_sweep"}
+{"ts": "2026-06-15T08:18:58.836291Z", "event": "hypothesis_generated", "hypothesis_id": "H-002", "template": "replication", "question": "Can headless sol-core reproduce: ?"}
+{"ts": "2026-06-15T08:18:58.836413Z", "event": "hypothesis_augmented", "hypothesis_id": "H-002", "memory_falsifiers": 2}
+{"ts": "2026-06-15T08:18:58.836728Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260615-081845/protocols/h-002_protocol.json"}
+{"ts": "2026-06-15T08:18:58.836804Z", "event": "execution_start", "hypothesis_id": "H-002", "series": "h-002"}
+{"ts": "2026-06-15T08:19:06.564892Z", "event": "execution_complete", "hypothesis_id": "H-002", "elapsed_sec": 7.73, "sanity_passed": true, "anomalies": [], "total_session_steps": 3900}
+{"ts": "2026-06-15T08:19:06.565143Z", "event": "meta_recorded", "hypothesis_id": "H-002", "template": "replication", "gap_type": "unpromoted"}
+{"ts": "2026-06-15T08:19:06.595225Z", "event": "gap_selected", "gap_id": "unpromoted:CL-3", "gap_type": "unpromoted", "priority": 2, "description": "CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins \u2014 no p"}
+{"ts": "2026-06-15T08:19:06.596438Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-3", "memory_context": "Memory nodes: 31 | Memory edges: 147 | Avg confidence: 0.410 | Tags: basin(31), entropy(31), rhoMax(31)"}
+{"ts": "2026-06-15T08:19:06.596654Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-3", "template": "dt_compression"}
+{"ts": "2026-06-15T08:19:06.596701Z", "event": "hypothesis_generated", "hypothesis_id": "H-003", "template": "dt_compression", "question": "Does dt compress time-to-failure in headless sol-core as it does in the dashboard?"}
+{"ts": "2026-06-15T08:19:06.596885Z", "event": "hypothesis_augmented", "hypothesis_id": "H-003", "memory_falsifiers": 2}
+{"ts": "2026-06-15T08:19:06.597158Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260615-081845/protocols/h-003_protocol.json"}
+{"ts": "2026-06-15T08:19:06.597200Z", "event": "execution_start", "hypothesis_id": "H-003", "series": "h-003"}
+{"ts": "2026-06-15T08:20:10.764646Z", "event": "execution_complete", "hypothesis_id": "H-003", "elapsed_sec": 64.17, "sanity_passed": true, "anomalies": [], "total_session_steps": 16400}
+{"ts": "2026-06-15T08:20:10.764876Z", "event": "meta_recorded", "hypothesis_id": "H-003", "template": "dt_compression", "gap_type": "unpromoted"}
+{"ts": "2026-06-15T08:20:10.764905Z", "event": "budget_stop", "reason": "max_protocols reached (3/3)"}
