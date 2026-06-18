@@ -1,0 +1,72 @@
+{
+    "rc1_id": "SOL-WAVEGUIDE-RC1",
+    "rc2_id": "SOL-WAVEGUIDE-RC2",
+    "shared_features": {
+        "profiles": [
+            "BENCHMARK_MATRIX",
+            "DEBUG_TRACE_AUDIT",
+            "FULL_SAFE_OPTIMIZED",
+            "RAW_STRICT",
+            "SAFE_CONTROL",
+            "SAFE_LOCAL",
+            "SAFE_MEMORY",
+            "V1_CANDIDATE_EXPERIMENTAL"
+        ],
+        "passes": [
+            "branch_predication",
+            "channel_dependency_analysis",
+            "execution_plan_validation",
+            "memory_alias_analysis",
+            "pipeline_compaction",
+            "program_adaptation",
+            "scoreboard_scheduling",
+            "trace_metadata_preparation",
+            "v1_candidate_lowering"
+        ],
+        "fields": [
+            "backend",
+            "benchmark_summary",
+            "canonical_pass_order",
+            "known_limitations",
+            "micro_isa_v0_compliance",
+            "micro_isa_v1_extension_status",
+            "optimization_profiles",
+            "rc_id",
+            "sandbox_caveat",
+            "simulation_acceleration",
+            "test_summary",
+            "trace_replay_summary",
+            "v1_candidate_summary",
+            "waveguide_channel_state"
+        ]
+    },
+    "rc1_only_features": {
+        "profiles": [],
+        "passes": [],
+        "fields": []
+    },
+    "rc2_only_features": {
+        "profiles": [
+            "AUTOTUNE_LOWEST_CYCLES",
+            "AUTOTUNE_SAFE",
+            "COST_MODEL_DEBUG",
+            "KERNEL_AUTOTUNE_SAFE"
+        ],
+        "passes": [
+            "channel_kernel_recognition",
+            "cost_model_evaluation",
+            "deterministic_policy_selection"
+        ],
+        "fields": [
+            "cost_model_and_autotuning"
+        ]
+    },
+    "governed_feature_leakage": [],
+    "missing_governed_features_rc2": [],
+    "unexpected_additions": [],
+    "boundary_valid": true,
+    "boundary_reasons": [
+        "RC_DELTA_MATCHES_EXPECTATION"
+    ],
+    "caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation."
+}

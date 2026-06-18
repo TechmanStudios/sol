@@ -1,0 +1,91 @@
+{
+    "approved_rc_ids": [
+        "SOL-WAVEGUIDE-RC1",
+        "SOL-WAVEGUIDE-RC2"
+    ],
+    "artifact_paths": [
+        "docs/SOL_WAVEGUIDE_ARCHITECTURE_MAP_RC2.md",
+        "docs/SOL_WAVEGUIDE_OPTIMIZATION_RESEARCH_DOSSIER_RC2.md",
+        "docs/SOL_WAVEGUIDE_PROOF_LEDGER_RC2.md",
+        "docs/SOL_WAVEGUIDE_RC1_MANIFEST.json",
+        "docs/SOL_WAVEGUIDE_RC2_MANIFEST.json",
+        "docs/SOL_WAVEGUIDE_RC_DELTA_AUDIT.json",
+        "docs/SOL_WAVEGUIDE_RC_PROMOTION_RECORD_RC1.json",
+        "docs/SOL_WAVEGUIDE_RC_PROMOTION_RECORD_RC2.json",
+        "docs/SOL_WAVEGUIDE_RC_RELEASE_GATE.md",
+        "docs/SOL_WAVEGUIDE_RC_RELEASE_REGISTRY.json",
+        "docs/SOL_WAVEGUIDE_RC_RELEASE_REGISTRY.md"
+    ],
+    "entries": {
+        "SOL-WAVEGUIDE-RC1": {
+            "approved_rangers": [
+                "ManifestBoundaryRanger",
+                "ReleaseGateRanger",
+                "PromotionLedgerRanger",
+                "ProofLedgerRanger",
+                "RegressionAuditRanger"
+            ],
+            "artifact_paths": [
+                "docs/SOL_WAVEGUIDE_RC1_MANIFEST.json",
+                "docs/SOL_WAVEGUIDE_RC_RELEASE_GATE.md",
+                "docs/SOL_WAVEGUIDE_RC_DELTA_AUDIT.json",
+                "docs/SOL_WAVEGUIDE_RC_PROMOTION_RECORD_RC1.json"
+            ],
+            "candidate_level": "RC1",
+            "court_verdict": "promotion_approved",
+            "court_verdict_digest": "82d8609c1db7621cbe9c3f24cc11a52565bc09b2ebffbaed1e11c629d0619b6e",
+            "court_verdict_path": "docs/SOL_WAVEGUIDE_RC_COURT_VERDICT_RC1.json",
+            "delta_audit_digest": "eb3e3a9654f2d17535c79c2ea66164f5434caaca5eb4bcb92c9a4ecdce5d612c",
+            "entry_id": "SOL-WAVEGUIDE-RC-REGISTRY-ENTRY-RC1",
+            "manifest_digest": "a9ea3db022835bc79c551083a216f0890ee82db27ee6428b3e275414bd1abcea",
+            "manifest_path": "docs/SOL_WAVEGUIDE_RC1_MANIFEST.json",
+            "promotion_record_digest": "9cd7b44a48a44a65b89d5b4584a6d09d55d667845c4c8164b534dc75844b6d73",
+            "promotion_record_path": "docs/SOL_WAVEGUIDE_RC_PROMOTION_RECORD_RC1.json",
+            "quorum_status": "quorum_satisfied",
+            "rc_id": "SOL-WAVEGUIDE-RC1",
+            "registry_entry_digest": "f6617271533faecdb7307b0fdc7dfbed814ca1718bcb8d251a97d3fabb7b3076",
+            "release_status": "release_registered",
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation."
+        },
+        "SOL-WAVEGUIDE-RC2": {
+            "approved_rangers": [
+                "ManifestBoundaryRanger",
+                "ReleaseGateRanger",
+                "PromotionLedgerRanger",
+                "ProofLedgerRanger",
+                "RegressionAuditRanger"
+            ],
+            "artifact_paths": [
+                "docs/SOL_WAVEGUIDE_RC2_MANIFEST.json",
+                "docs/SOL_WAVEGUIDE_ARCHITECTURE_MAP_RC2.md",
+                "docs/SOL_WAVEGUIDE_OPTIMIZATION_RESEARCH_DOSSIER_RC2.md",
+                "docs/SOL_WAVEGUIDE_PROOF_LEDGER_RC2.md",
+                "docs/SOL_WAVEGUIDE_RC_RELEASE_GATE.md",
+                "docs/SOL_WAVEGUIDE_RC_DELTA_AUDIT.json",
+                "docs/SOL_WAVEGUIDE_RC_PROMOTION_RECORD_RC2.json"
+            ],
+            "candidate_level": "RC2",
+            "court_verdict": "promotion_approved",
+            "court_verdict_digest": "63087c91453585b5117453bfbe36a907d9cd5d75afa5d61dc48604e776247eba",
+            "court_verdict_path": "docs/SOL_WAVEGUIDE_RC_COURT_VERDICT_RC2.json",
+            "delta_audit_digest": "eb3e3a9654f2d17535c79c2ea66164f5434caaca5eb4bcb92c9a4ecdce5d612c",
+            "entry_id": "SOL-WAVEGUIDE-RC-REGISTRY-ENTRY-RC2",
+            "manifest_digest": "bd804a0036f112a8d3d1bdc3b252703fc5c32b9b9b04f5bd30424f39f056a6e9",
+            "manifest_path": "docs/SOL_WAVEGUIDE_RC2_MANIFEST.json",
+            "promotion_record_digest": "33fcfb98ada8fa816c0f7ec69c1c94d8a1bf57c52d928c703d201f0518ff906e",
+            "promotion_record_path": "docs/SOL_WAVEGUIDE_RC_PROMOTION_RECORD_RC2.json",
+            "quorum_status": "quorum_satisfied",
+            "rc_id": "SOL-WAVEGUIDE-RC2",
+            "registry_entry_digest": "a93d91aa6ed2e9ce7c40ddfcc99d6a954f260c1e154fa05f1495c957fbb3901a",
+            "release_status": "release_registered",
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation."
+        }
+    },
+    "latest_foundation_rc": "SOL-WAVEGUIDE-RC1",
+    "latest_governed_stack_rc": "SOL-WAVEGUIDE-RC2",
+    "registry_digest": "c25c9f3f67224fbf79806d211a25f17798885cfc376fb6f77c7efed23cc1bee4",
+    "registry_id": "SOL-WAVEGUIDE-RC-RELEASE-REGISTRY",
+    "registry_status": "registry_valid",
+    "registry_version": 1,
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation."
+}

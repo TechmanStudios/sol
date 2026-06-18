@@ -1,0 +1,32 @@
+{
+    "admission_status": "pass_admitted",
+    "candidate_level": "foundation",
+    "capability_resolution_digest": "346734bcc2048f2bb1ced2764ac3fcaafe30cafd3b890f6d08bdc5a0151e1a7e",
+    "capability_status": "capability_resolved",
+    "decision_digest": "6477cec92762aa9ad37b520fa7d2d93f778f4cec733c8bcefe575031c523e18d",
+    "decision_id": "SOL-WAVEGUIDE-PASS-ADMISSION-DECISION-RC1",
+    "hybrid_execution_allowed": false,
+    "lane_fabric_fallback_allowed": false,
+    "notes": "Pass pipeline_compaction is admitted under candidate level foundation.",
+    "pass_allowed": true,
+    "production_mutation_allowed": false,
+    "profile_allowed": true,
+    "rc_id": "SOL-WAVEGUIDE-RC1",
+    "reason_codes": [
+        "PASS_ADMISSION_ADMITTED",
+        "PASS_ADMISSION_CAPABILITY_RESOLUTION_VALID",
+        "PASS_ADMISSION_CAPABILITY_RESOLVED",
+        "PASS_ADMISSION_PASS_ALLOWED",
+        "PASS_ADMISSION_PROFILE_ALLOWED",
+        "PASS_ADMISSION_RC_MATCH",
+        "PASS_ADMISSION_REQUEST_CANONICAL",
+        "PASS_ADMISSION_SOFTWARE_CAVEAT_INCLUDED",
+        "PASS_ADMISSION_STRICT_WAVEGUIDE_REQUIRED"
+    ],
+    "request_id": "SOL-WAVEGUIDE-PASS-ADMISSION-REQUEST-RC1",
+    "requested_pass": "pipeline_compaction",
+    "requested_profile": "FULL_SAFE_OPTIMIZED",
+    "requested_scope": "profile_selection",
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+    "strict_waveguide_required": true
+}

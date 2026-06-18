@@ -1850,6 +1850,384 @@ def review_waveguide_arithmetic_ranger_packet(packet: Any) -> CourtPromotionDeci
     )
 
 
+def review_wideword_computation_report(report: Any) -> CourtPromotionDecision:
+    """
+    Performs the final Promotion Court review of WideWord computation validation.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    success = extract(report, "success", False)
+    oracle_match = extract(report, "oracle_match", False) or extract(report, "oracle_matches", False)
+    cases_failed = extract(report, "cases_failed", 0)
+    meta = extract(report, "metadata", {}) or {}
+    
+    if cases_failed > 0 or not oracle_match:
+        if meta.get("hold_computation"):
+            return CourtPromotionDecision(
+                decision_id=f"DEC_WW_{int(time.time() * 1000)}",
+                decision="hold_wideword_computation",
+                justification="WideWord computation validation failed: hold requested by metadata."
+            )
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WW_{int(time.time() * 1000)}",
+            decision="reject_wideword_computation",
+            justification="WideWord computation validation failed: output does not match python reference."
+        )
+        
+    if meta.get("needs_more_evidence") or not success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WW_{int(time.time() * 1000)}",
+            decision="needs_more_evidence",
+            justification="WideWord computation validation requires further calibration or telemetry evidence."
+        )
+        
+    return CourtPromotionDecision(
+        decision_id=f"DEC_WW_{int(time.time() * 1000)}",
+        decision="accept_shadow_wideword_computation",
+        justification="WideWord computation validation matches python reference oracle."
+    )
+
+
+def review_wideword_computation_ranger_packet(packet: Any) -> CourtPromotionDecision:
+    """
+    Evaluates a SovereignPacket containing WideWord computation validation evidence.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    payload = extract(packet, "payload", {}) or {}
+    evidence = extract(packet, "evidence", {}) or {}
+    rec = extract(packet, "recommendation")
+    
+    if rec == "hold":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WW_RNG_{int(time.time() * 1000)}",
+            decision="hold_wideword_computation",
+            justification="Court hold on WideWord computation per ranger recommendation."
+        )
+    if rec == "reject":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WW_RNG_{int(time.time() * 1000)}",
+            decision="reject_wideword_computation",
+            justification="Court rejection on WideWord computation per ranger recommendation."
+        )
+    if rec == "needs_more_evidence":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WW_RNG_{int(time.time() * 1000)}",
+            decision="needs_more_evidence",
+            justification="Court needs more evidence on WideWord computation per ranger recommendation."
+        )
+        
+    return CourtPromotionDecision(
+        decision_id=f"DEC_WW_RNG_{int(time.time() * 1000)}",
+        decision="accept_shadow_wideword_computation",
+        justification="Ranger evidence and shadow WideWord computation accepted."
+    )
+
+
+def review_waveguide_program_execution_report(report: Any) -> CourtPromotionDecision:
+    """
+    Performs the final Promotion Court review of Waveguide Program execution validation.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    success = extract(report, "success", False)
+    oracle_match = extract(report, "oracle_match", False)
+    cases_failed = extract(report, "cases_failed", 0)
+    meta = extract(report, "metadata", {}) or {}
+    
+    if cases_failed > 0 or not oracle_match:
+        if meta.get("hold_computation"):
+            return CourtPromotionDecision(
+                decision_id=f"DEC_WWP_{int(time.time() * 1000)}",
+                decision="hold_waveguide_program_execution",
+                justification="Waveguide Program validation failed: hold requested by metadata."
+            )
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WWP_{int(time.time() * 1000)}",
+            decision="reject_waveguide_program_execution",
+            justification="Waveguide Program validation failed: output does not match python reference."
+        )
+        
+    if meta.get("needs_more_evidence") or not success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WWP_{int(time.time() * 1000)}",
+            decision="needs_more_evidence",
+            justification="Waveguide Program validation requires further calibration or telemetry evidence."
+        )
+        
+    return CourtPromotionDecision(
+        decision_id=f"DEC_WWP_{int(time.time() * 1000)}",
+        decision="accept_shadow_waveguide_program_execution",
+        justification="Waveguide Program validation matches python reference oracle."
+    )
+
+
+def review_waveguide_program_ranger_packet(packet: Any) -> CourtPromotionDecision:
+    """
+    Evaluates a SovereignPacket containing Waveguide Program validation evidence.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    payload = extract(packet, "payload", {}) or {}
+    evidence = extract(packet, "evidence", {}) or {}
+    rec = extract(packet, "recommendation")
+    
+    if rec == "hold":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WWP_RNG_{int(time.time() * 1000)}",
+            decision="hold_waveguide_program_execution",
+            justification="Court hold on Waveguide Program per ranger recommendation."
+        )
+    if rec == "reject":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WWP_RNG_{int(time.time() * 1000)}",
+            decision="reject_waveguide_program_execution",
+            justification="Court rejection on Waveguide Program per ranger recommendation."
+        )
+    if rec == "needs_more_evidence":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WWP_RNG_{int(time.time() * 1000)}",
+            decision="needs_more_evidence",
+            justification="Court needs more evidence on Waveguide Program per ranger recommendation."
+        )
+        
+    return CourtPromotionDecision(
+        decision_id=f"DEC_WWP_RNG_{int(time.time() * 1000)}",
+        decision="accept_shadow_waveguide_program_execution",
+        justification="Ranger evidence and shadow Waveguide Program execution accepted."
+    )
+
+
+def review_strict_backend_execution_report(report: Any) -> CourtPromotionDecision:
+    """
+    Performs the final Promotion Court review of the Strict Backend execution proof report.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    success = extract(report, "success", False)
+    active_table_mutated = extract(report, "active_table_mutated", False)
+    meta = extract(report, "metadata", {}) or {}
+    
+    results = extract(report, "results") or []
+    
+    if active_table_mutated:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_STRICT_{int(time.time() * 1000)}",
+            decision="reject_strict_backend_proof",
+            justification="Strict backend proof rejected: active/default manifolds, phase tables or registries were mutated."
+        )
+        
+    for res in results:
+        strict_mode = extract(res, "strict_mode", False)
+        all_requested = extract(res, "all_instructions_used_requested_backend", True)
+        validated = extract(res, "validated", False)
+        failed_count = extract(res, "failed_instruction_count", 0)
+        oracle_match = extract(res, "oracle_match", True)
+        
+        if strict_mode and not all_requested and validated:
+            return CourtPromotionDecision(
+                decision_id=f"DEC_STRICT_{int(time.time() * 1000)}",
+                decision="reject_strict_backend_proof",
+                justification=f"Strict backend proof rejected: fallback happened in strict mode for {extract(res, 'program_name')} under {extract(res, 'backend_requested')} but report claims validation."
+            )
+            
+        if failed_count > 0 or not oracle_match:
+            if not oracle_match or (res.first_failure and "mismatch" in res.first_failure.lower()):
+                return CourtPromotionDecision(
+                    decision_id=f"DEC_STRICT_{int(time.time() * 1000)}",
+                    decision="reject_strict_backend_proof",
+                    justification=f"Strict backend proof rejected: oracle mismatch or failed instruction in program {extract(res, 'program_name')}."
+                )
+                
+    if meta.get("needs_more_evidence") or not success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_STRICT_{int(time.time() * 1000)}",
+            decision="needs_more_evidence",
+            justification="Strict backend proof requires further evidence or configuration details."
+        )
+        
+    if meta.get("hold_proof"):
+        return CourtPromotionDecision(
+            decision_id=f"DEC_STRICT_{int(time.time() * 1000)}",
+            decision="hold_strict_backend_proof",
+            justification="Court hold on strict backend proof per metadata request."
+        )
+        
+    return CourtPromotionDecision(
+        decision_id=f"DEC_STRICT_{int(time.time() * 1000)}",
+        decision="accept_shadow_strict_backend_proof",
+        justification="Strict backend execution proof accepted: all backends match reference oracles under strict constraints."
+    )
+
+
+def review_strict_backend_ranger_packet(packet: Any) -> CourtPromotionDecision:
+    """
+    Evaluates a SovereignPacket containing Strict WideWord Backend validation evidence.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    evidence = extract(packet, "evidence", {}) or {}
+    rec = extract(packet, "recommendation")
+    
+    if rec == "hold":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_STRICT_RNG_{int(time.time() * 1000)}",
+            decision="hold_strict_backend_proof",
+            justification="Court hold on strict backend proof per ranger recommendation."
+        )
+    if rec == "reject":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_STRICT_RNG_{int(time.time() * 1000)}",
+            decision="reject_strict_backend_proof",
+            justification="Court rejection on strict backend proof per ranger recommendation."
+        )
+    if rec == "needs_more_evidence":
+        return CourtPromotionDecision(
+            decision_id=f"DEC_STRICT_RNG_{int(time.time() * 1000)}",
+            decision="needs_more_evidence",
+            justification="Court needs more evidence on strict backend proof per ranger recommendation."
+        )
+        
+    return CourtPromotionDecision(
+        decision_id=f"DEC_STRICT_RNG_{int(time.time() * 1000)}",
+        decision="accept_shadow_strict_backend_proof",
+        justification="Ranger evidence and strict backend execution proof accepted."
+    )
+
+
+def review_micro_isa_spec(report: Any) -> CourtPromotionDecision:
+    """
+    Supervises the Micro-ISA spec validation.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+    success = extract(report, "success", True)
+    if not success or extract(report, "errors"):
+        return CourtPromotionDecision(
+            decision_id=f"DEC_ISA_SPEC_{int(time.time() * 1000)}",
+            decision="reject_micro_isa",
+            justification="Micro-ISA specification failed validation: errors present."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_ISA_SPEC_{int(time.time() * 1000)}",
+        decision="accept_micro_isa_v0",
+        justification="Micro-ISA spec successfully validated."
+    )
+
+
+def review_backend_capability_matrix(report: Any) -> CourtPromotionDecision:
+    """
+    Supervises the Backend Capability Matrix verification.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+    success = extract(report, "success", True)
+    violations = extract(report, "violations", []) or []
+    if not success or violations:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_CAP_MATRIX_{int(time.time() * 1000)}",
+            decision="reject_micro_isa",
+            justification=f"Backend Capability Matrix failed validation: {len(violations)} overclaim violations found."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_CAP_MATRIX_{int(time.time() * 1000)}",
+        decision="accept_micro_isa_v0",
+        justification="Backend capability matrix successfully verified against strict proof reports."
+    )
+
+
+def review_micro_isa_compliance_report(report: Any) -> CourtPromotionDecision:
+    """
+    Supervises the Micro-ISA compliance report.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+    success = extract(report, "success", True)
+    results = extract(report, "results", []) or []
+    for r in results:
+        backend = extract(r, "backend")
+        level = extract(r, "compliance_level")
+        # Check if partial backends are promoted as full
+        if backend in ("sequencer_shadow_strict", "pdm_waveguide_shadow_strict") and level == "full_compliance":
+            return CourtPromotionDecision(
+                decision_id=f"DEC_COMPLIANCE_{int(time.time() * 1000)}",
+                decision="reject_micro_isa",
+                justification=f"Compliance overclaim: partial backend {backend} promoted as full_compliance."
+            )
+    if not success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_COMPLIANCE_{int(time.time() * 1000)}",
+            decision="reject_micro_isa",
+            justification="Micro-ISA compliance campaign reported failure."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_COMPLIANCE_{int(time.time() * 1000)}",
+        decision="accept_micro_isa_v0",
+        justification="Micro-ISA compliance campaign report verified successfully."
+    )
+
+
+def review_microcode_lowering_report(report: Any) -> CourtPromotionDecision:
+    """
+    Supervises the Microcode Lowering report.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+    success = extract(report, "success", True)
+    plans = extract(report, "plans", {}) or {}
+    # Reject if a microcoded instruction uses unsupported lower ops
+    for op, plan in plans.items():
+        status = extract(plan, "status")
+        if status == "active":
+            seq = extract(plan, "sequence")
+            if seq:
+                ops = extract(seq, "ops", [])
+                for micro_op in ops:
+                    if extract(micro_op, "op") in ("JMP", "JZ", "JNZ", "JC", "JNC", "JB", "JNB", "LOAD", "STORE"):
+                        return CourtPromotionDecision(
+                            decision_id=f"DEC_LOWERING_{int(time.time() * 1000)}",
+                            decision="reject_micro_isa",
+                            justification=f"Lowering plan uses unsupported/blocked native operations: {extract(micro_op, 'op')}"
+                        )
+    if not success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_LOWERING_{int(time.time() * 1000)}",
+            decision="reject_micro_isa",
+            justification="Microcode lowering validation failed."
+        )
+    return CourtPromotionDecision(
+        decision_id=f"DEC_LOWERING_{int(time.time() * 1000)}",
+        decision="accept_micro_isa_v0",
+        justification="Microcode lowering plan accepted."
+    )
+
+
 def review_entangled_wavefront_consensus_report(report: Any) -> CourtPromotionDecision:
     """
     Reviews the entangled wavefront consensus report.
@@ -4290,6 +4668,91 @@ def review_finalization_docket(docket: Any) -> CourtPromotionDecision:
         decision="promote_level50_candidate",
         justification="All 10 required finalization evidence items are validated successfully in the docket."
     )
+
+
+def review_waveguide_control_memory_report(report: Any) -> CourtPromotionDecision:
+    """
+    Performs final Promotion Court review of the Waveguide Control-Memory Bridge report.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    success = extract(report, "success", False)
+    oracle_match = extract(report, "oracle_match", False)
+    mismatches = extract(report, "mismatches", []) or []
+    meta = extract(report, "metadata", {}) or {}
+    
+    if len(mismatches) > 0 or not oracle_match:
+        if meta.get("hold_bridge"):
+            return CourtPromotionDecision(
+                decision_id=f"DEC_WCMB_{int(time.time() * 1000)}",
+                decision="hold_waveguide_control_memory_bridge",
+                justification="Waveguide Control-Memory Bridge failed: hold requested by metadata."
+            )
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WCMB_{int(time.time() * 1000)}",
+            decision="reject_waveguide_control_memory_bridge",
+            justification="Waveguide Control-Memory Bridge failed: oracle mismatch or mismatch detected."
+        )
+        
+    if meta.get("needs_more_evidence") or not success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_WCMB_{int(time.time() * 1000)}",
+            decision="needs_more_evidence",
+            justification="Waveguide Control-Memory Bridge validation requires further evidence."
+        )
+        
+    return CourtPromotionDecision(
+        decision_id=f"DEC_WCMB_{int(time.time() * 1000)}",
+        decision="accept_shadow_waveguide_control_memory_bridge",
+        justification="Waveguide Control-Memory Bridge matches python reference oracle."
+    )
+
+
+def review_pdm_waveguide_microcoded_compliance_report(report: Any) -> CourtPromotionDecision:
+    """
+    Performs final Promotion Court review of the PDM/Waveguide Microcoded Strict Compliance report.
+    """
+    def extract(obj, name, default=None):
+        if isinstance(obj, dict):
+            return obj.get(name, default)
+        return getattr(obj, name, default)
+        
+    success = extract(report, "success", False)
+    results = extract(report, "results", []) or []
+    meta = extract(report, "metadata", {}) or {}
+    
+    # Check if there is any non_compliant result for our backend
+    has_non_compliant = False
+    for res in results:
+        backend = extract(res, "backend")
+        compliant = extract(res, "compliant", False)
+        comp_level = extract(res, "compliance_level")
+        if backend == "pdm_waveguide_microcoded_strict" and (not compliant or comp_level == "non_compliant"):
+            has_non_compliant = True
+            
+    if has_non_compliant:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PWMC_{int(time.time() * 1000)}",
+            decision="reject_waveguide_control_memory_bridge",
+            justification="Microcoded strict compliance failed: backend is non-compliant."
+        )
+        
+    if meta.get("needs_more_evidence") or not success:
+        return CourtPromotionDecision(
+            decision_id=f"DEC_PWMC_{int(time.time() * 1000)}",
+            decision="needs_more_evidence",
+            justification="Microcoded strict compliance requires further evidence."
+        )
+        
+    return CourtPromotionDecision(
+        decision_id=f"DEC_PWMC_{int(time.time() * 1000)}",
+        decision="accept_shadow_waveguide_control_memory_bridge",
+        justification="Microcoded strict compliance verified successfully."
+    )
+
 
 
 
