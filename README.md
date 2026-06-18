@@ -129,6 +129,64 @@ graph TD
 
 ---
 
+## Lumina Coding Library & Sovereign Ranger System
+
+The **Lumina Coding Library** and the **Sovereign Ranger System** form the runtime metrology, compliance, and self-organization framework of the SOL engine.
+
+```mermaid
+graph TD
+    classDef default fill:#1a1b26,stroke:#7aa2f7,stroke-width:1px,color:#c0caf5;
+    classDef highlight fill:#24283b,stroke:#bb9af7,stroke-width:2px,color:#ff9e64;
+
+    subgraph Lumina ["Lumina Coding Library"]
+        LA["Lumina Library Agent"] -- "Syncs code" --> IL["RSI Inventor Ledger"]
+        LA -- "Hosts" --> LE["Lumina Experts<br>(Substrate, Compiler, Synthesis)"]
+        LA -- "Maintains" --> LC["Verified Components<br>(Adders, SRLatch, etc.)"]
+    end
+
+    subgraph Execution ["Ranger Patrol & Observation"]
+        RM["Ranger Mission"] --> RR["Roaming Rangers<br>(Carry, Phase, ISA, etc.)"]
+        RR -- "Patrols Substrates" --> Sub["SOL Substrate Levels (1-12)"]
+        RR -- "Compiles Metrics" --> SP["Sovereign Packet<br>(Evidence Packet)"]
+    end
+
+    subgraph Governance ["Sovereign Promotion Court"]
+        SP -- "Submits evidence" --> PC["Promotion Court"]
+        PC -- "Evaluates promotion gates" --> GR["PromotionGateResult<br>(Decision / Vote)"]
+        GR -- "Promotes Layer" --> Sub
+    end
+
+    class LA,IL,LE,LC,RM,RR,Sub,SP,PC,GR default;
+    class PC highlight;
+```
+
+### Key Framework Components
+
+* **Lumina Coding Library**: Managed by the `LuminaLibraryAgent`, this repository automatically consolidates successful logic blocks from the recursive self-improvement (RSI) inventor logs. It hosts specialised advisory agent teams (Substrate, Compiler, and Wave Logic Synthesis experts) powered by LLMs to guide code layout without expensive simulations.
+* **Roaming Rangers**: Mobile observation agents deployed on structured `RangerMissions`. Each ranger patrols a specific substrate domain and collects metrics on phase drift, carry stability, boundary reflections, and instruction compliance.
+* **Sovereign Promotion Court**: The judicial governance layer. It reviews the JSON-serialized `SovereignPackets` submitted by rangers. If all exit tolerances are met and no safety quarantine flags are raised, the court authorizes the promotion of the candidate component or layer up the substrate hierarchy.
+
+### SOL Substrate Levels Hierarchy
+
+SOL's physical and computational substrate is organized into a 12-level hierarchy:
+
+| Level | Name | Description | Key Operations |
+| :---: | :--- | :--- | :--- |
+| **1** | **Nano-folds** | Physical Cell Layer representing base memristive battery latch. | `CHARGE`, `DISCHARGE`, `HOLD`, `READ_CELL` |
+| **2** | **Micro-folds** | Local Computational Layer (AND/OR gates) and astable clock oscillators. | `OSCILLATE`, `GATE_AND`, `GATE_OR`, `SYNC_CLOCK` |
+| **3** | **Sub-manifolds** | Memory Routing Layer using semantic attractor basins to store logic state. | `SETTLE_BASIN`, `MEASURE_RHO`, `ZERO_BLEED_ROUTE` |
+| **4** | **Manifolds** | Coordinated Routing and Bus Layer managing dual-bus broadcast and self-timed handshakes. | `BROADCAST_BUS`, `HANDSHAKE_INIT`, `HANDSHAKE_ACK` |
+| **5** | **Manifold-Systems** | Orchestrated Architecture Layer utilizing gated registers and conditional moves. | `LOAD_REGISTER`, `STORE_REGISTER`, `CMOVE_COND` |
+| **6** | **Basic Software** | Programmable Runtime Layer running LogosVM bytecode and compiler parsing. | `RUN_VM`, `EXECUTE_BYTECODE`, `COMPILE_AST` |
+| **7** | **Parallel Wave Substrate** | Multi-Core Layer implementing SIMD broadcasts and Carry-Select parallel arithmetic. | `SIMD_BROADCAST`, `CARRY_SELECT_ADD`, `PARALLEL_STEP` |
+| **8** | **Spectral Parallelism** | Frequency-Division Multiplexed single-bus routing via multi-carrier wave modulation. | `MODULATE_CARRIER`, `DEMODULATE_CARRIER`, `RESONANT_GATE` |
+| **9** | **Holographic CAM (H-CAM)** | Holographic Recall Layer using phase-coherent superposition search keys. | `HCAM_RECALL`, `PHASE_SUPERPOSITION`, `RESONANT_ATTEND` |
+| **10** | **Multi-Head Attention** | Concurrent Crossbar Layer implementing multi-port query superposition. | `MHRA_ATTEND`, `CONCURRENT_CROSSBAR`, `SUPERIMPOSE_MULTI_QUERY` |
+| **11** | **Phase-Division (PDM)** | Phase-Division Multiplexing Layer scaling communication over multi-lane crossbars. | `PDM_MODULATE`, `PDM_DEMODULATE`, `MULTILANE_ROUTE`, `PLL_SYNC` |
+| **12** | **Hyper-manifolds** | Hyper-dimensional topological manifold spaces enabling non-Euclidean semantic routing. | `HYPER_RECALL`, `TENSOR_PRODUCE` |
+
+---
+
 ## Status
 
 SOL is **pre-1.0, actively developed research code**. Expect:
