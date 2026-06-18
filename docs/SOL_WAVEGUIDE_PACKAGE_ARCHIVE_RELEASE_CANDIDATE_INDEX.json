@@ -1,0 +1,91 @@
+{
+    "archive_candidate_digests_indexed": [
+        "b00628c0435b36035c4552d70b4b9a451d869cb2828b1afccaa5ac467054621d"
+    ],
+    "archive_candidate_statuses_indexed": [
+        "archive_candidate_verified"
+    ],
+    "archive_candidates": [
+        {
+            "archive_candidate_entry_digest": "8cc6c29fe424cdf94f42c8218c3b3f337bfe817e61fdf69af2c0113209337530",
+            "archive_candidate_entry_id": "SOL-WAVEGUIDE-ARCHIVE-CANDIDATE-ENTRY-000",
+            "archive_candidate_kind": "local_verified_zip_archive_candidate",
+            "archive_candidate_status": "archive_candidate_verified",
+            "archive_digest_verified": true,
+            "archive_display_path": "",
+            "archive_file_digest": "b00628c0435b36035c4552d70b4b9a451d869cb2828b1afccaa5ac467054621d",
+            "archive_file_set_verified": true,
+            "archive_file_size_bytes": 70162,
+            "archive_filename": "SOL_WAVEGUIDE_PACKAGE_ASSEMBLY.zip",
+            "archive_format": "zip",
+            "archive_member_paths_safe": true,
+            "deployment_performed": false,
+            "deployment_status": "not_performed",
+            "expected_archive_file_count": 28,
+            "external_publication_performed": false,
+            "notes": [],
+            "production_mutation_performed": false,
+            "production_mutation_status": "not_performed",
+            "publication_status": "not_performed",
+            "reason_codes": [
+                "CANDIDATE_VERIFIED"
+            ],
+            "signing_performed": false,
+            "signing_status": "not_performed",
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "source_package_archive_audit_report_digest": "5f32f8fbc1b2bb996185ad993bcaf02549a9fa7f929e83254ba638999565ff65",
+            "source_package_archive_build_record_digest": "98ef9f3ab29de0d55ae3d2db8d46d77e8540f44432c2cdf85edac4c87bcb4507",
+            "source_package_archive_manifest_digest": "ea9fa31afeaae0a76b2f6c2343a24830963a46c11cc5ae130710f92e8a836942",
+            "source_package_archive_plan_digest": "c81f779955c433e49227e3c6dc2cbb07457c70053c58f9ebcfe09ea4409c5c69",
+            "upload_performed": false,
+            "upload_status": "not_performed",
+            "verified_archive_member_count": 28
+        }
+    ],
+    "archive_formats_indexed": [
+        "zip"
+    ],
+    "blocked_archive_candidate_count": 0,
+    "blocked_archive_candidates": [],
+    "blocked_operation_attempt_counts": {
+        "archive_creation": 0,
+        "deployment": 0,
+        "directory_creation": 0,
+        "external_publication": 0,
+        "external_signing": 0,
+        "file_copy": 0,
+        "production_mutation": 0,
+        "upload": 0
+    },
+    "current_archive_candidate_digest": "b00628c0435b36035c4552d70b4b9a451d869cb2828b1afccaa5ac467054621d",
+    "current_archive_candidate_display_path": "",
+    "current_archive_candidate_format": "zip",
+    "current_archive_candidate_size_bytes": 70162,
+    "deployment_performed": false,
+    "deployment_status": "not_performed",
+    "external_publication_performed": false,
+    "invalid_archive_candidate_count": 0,
+    "invalid_archive_candidates": [],
+    "package_archive_release_candidate_index_digest": "7c1906d177cd74a56fbb375a7a10172ced21b79b8a8765250194cba2c83d38f1",
+    "package_archive_release_candidate_index_id": "SOL-WAVEGUIDE-PACKAGE-ARCHIVE-RELEASE-CANDIDATE-INDEX",
+    "package_archive_release_candidate_index_status": "package_archive_candidate_index_valid",
+    "package_archive_release_candidate_index_version": 1,
+    "production_mutation_performed": false,
+    "production_mutation_status": "not_performed",
+    "publication_status": "not_performed",
+    "reason_codes": [
+        "PACKAGE_ARCHIVE_CANDIDATE_INDEX_VALID"
+    ],
+    "signing_performed": false,
+    "signing_status": "not_performed",
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+    "source_package_archive_audit_report_digest": "5f32f8fbc1b2bb996185ad993bcaf02549a9fa7f929e83254ba638999565ff65",
+    "upload_performed": false,
+    "upload_status": "not_performed",
+    "verified_archive_candidate_count": 1,
+    "verified_archive_candidates": [
+        "SOL-WAVEGUIDE-ARCHIVE-CANDIDATE-ENTRY-000"
+    ],
+    "warning_archive_candidate_count": 0,
+    "warning_archive_candidates": []
+}

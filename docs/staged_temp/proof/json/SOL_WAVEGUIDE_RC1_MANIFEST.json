@@ -1,0 +1,116 @@
+{
+    "rc_id": "SOL-WAVEGUIDE-RC1",
+    "backend": "pdm_waveguide_microcoded_strict",
+    "micro_isa_v0_compliance": "full_compliance",
+    "micro_isa_v1_extension_status": "candidate_compliant",
+    "optimization_profiles": [
+        "RAW_STRICT",
+        "SAFE_LOCAL",
+        "SAFE_CONTROL",
+        "SAFE_MEMORY",
+        "FULL_SAFE_OPTIMIZED",
+        "BENCHMARK_MATRIX",
+        "DEBUG_TRACE_AUDIT",
+        "V1_CANDIDATE_EXPERIMENTAL"
+    ],
+    "canonical_pass_order": [
+        "program_adaptation",
+        "v1_candidate_lowering",
+        "memory_alias_analysis",
+        "channel_dependency_analysis",
+        "branch_predication",
+        "pipeline_compaction",
+        "scoreboard_scheduling",
+        "execution_plan_validation",
+        "trace_metadata_preparation"
+    ],
+    "v1_candidate_summary": {
+        "status": "candidate_compliant",
+        "supported_candidates": [
+            "SELECT",
+            "CMOVZ",
+            "CMOVNZ",
+            "CMOVC",
+            "CMOVNC",
+            "CMOVB",
+            "CMOVNB",
+            "PLOAD_RO",
+            "LANE_ADD",
+            "LANE_SUB",
+            "PREFIX_ADD",
+            "PREFIX_SUB",
+            "VEC_PACK",
+            "VEC_UNPACK",
+            "VEC_BROADCAST",
+            "VEC_EXTRACT",
+            "VEC_INSERT",
+            "VEC_LANE_ADD",
+            "VEC_LANE_SUB",
+            "VEC_LANE_AND",
+            "VEC_LANE_OR",
+            "VEC_LANE_XOR",
+            "VEC_MASK_SELECT",
+            "WG_CHAN_FENCE"
+        ],
+        "unsupported_candidates": [
+            "WG_CHAN_SEND",
+            "WG_CHAN_RECV",
+            "WG_CHAN_ROUTE",
+            "PSTORE_WO"
+        ],
+        "proposed_candidates": [
+            "DUMMY_V1_OP"
+        ]
+    },
+    "benchmark_summary": {
+        "benchmark_cases": 109,
+        "representative_savings": {
+            "compacted_only": "15-25% cycle reduction",
+            "scheduled_only": "10-20% cycle reduction",
+            "compacted_and_scheduled": "20-35% cycle reduction"
+        }
+    },
+    "trace_replay_summary": {
+        "audit_mechanism": "replay_waveguide_execution_trace",
+        "invariants_enforced": [
+            "PC continuity verification",
+            "ALU correctness replay comparison",
+            "Memory alias and shard range checks",
+            "Prefix carry metadata group routing validation",
+            "Scoreboard scheduling wavefront hazards validation"
+        ]
+    },
+    "test_summary": {
+        "test_command": "pytest",
+        "regression_status": "passed",
+        "exact_passed_count": 862
+    },
+    "sandbox_caveat": "Execution remains software-simulated shadow/sandbox only. No physical or quantum-hardware execution path exists or is claimed.",
+    "known_limitations": [
+        "Unsafe waveguide channel operations (WG_CHAN_SEND, WG_CHAN_RECV, WG_CHAN_ROUTE) are rejected by lowering and security validation.",
+        "Predication limited to safe conditional diamond structures without nested cycles or memory writes in diamonds.",
+        "Scoreboard scheduler operates on localized superblocks bound by branch entry/exit points and explicit memory barriers.",
+        "All execution is software-emulated shadow/sandbox only, with no physical hardware binding."
+    ],
+    "waveguide_channel_state": {
+        "sandbox_only": true,
+        "external_io": false,
+        "enabled_by_default": false,
+        "channel_count": 8,
+        "width_bits": 32,
+        "supported_ops": [
+            "WG_CHAN_SEND",
+            "WG_CHAN_RECV",
+            "WG_CHAN_ROUTE",
+            "WG_CHAN_FENCE"
+        ],
+        "safety_model": "deterministic_bounded_sandbox_state"
+    },
+    "simulation_acceleration": {
+        "enabled_by_default": false,
+        "core_execution_parallelized": false,
+        "offline_benchmark_parallelism": "optional",
+        "offline_trace_replay_parallelism": "optional",
+        "sequential_regression_required": true
+    }
+}

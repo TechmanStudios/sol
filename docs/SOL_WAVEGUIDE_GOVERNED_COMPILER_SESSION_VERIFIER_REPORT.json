@@ -1,0 +1,230 @@
+{
+    "blocked_session_count": 0,
+    "blocked_sessions": [],
+    "cases": [
+        {
+            "admission_decision_digests": [
+                "6477cec92762aa9ad37b520fa7d2d93f778f4cec733c8bcefe575031c523e18d"
+            ],
+            "candidate_level": "foundation",
+            "capability_resolution_digest": "346734bcc2048f2bb1ced2764ac3fcaafe30cafd3b890f6d08bdc5a0151e1a7e",
+            "compiler_profile": "FULL_SAFE_OPTIMIZED",
+            "executed_pass_count": 1,
+            "execution_record_digests": [
+                "9ef92b4a3c2a769fde99836b526366c119f24f7db1b0142f90b8323dbbfbb466"
+            ],
+            "failed_replay_count": 0,
+            "invocation_record_digest": "dd6ea5cd0894544385d2756e8414998dc528ef1442aeb22ede263a66df5b73e3",
+            "invocation_record_path": "docs/SOL_WAVEGUIDE_GOVERNED_COMPILER_INVOCATION_RC1.json",
+            "invocation_record_valid": true,
+            "invocation_request_digest": "",
+            "invocation_status": "invocation_verified",
+            "notes": "Session verification completed with status session_verified.",
+            "pass_plan_order_preserved": true,
+            "pass_plan_valid": true,
+            "rc_id": "SOL-WAVEGUIDE-RC1",
+            "reason_codes": [
+                "SESSION_VERIFIER_ADMISSION_DIGESTS_REFERENCED",
+                "SESSION_VERIFIER_CAPABILITY_DIGEST_REFERENCED",
+                "SESSION_VERIFIER_COUNTS_VALID",
+                "SESSION_VERIFIER_EXECUTION_DIGESTS_REFERENCED",
+                "SESSION_VERIFIER_EXECUTION_SESSION_VERIFIED",
+                "SESSION_VERIFIER_FINAL_OUTPUT_DIGEST_MATCH",
+                "SESSION_VERIFIER_HYBRID_EXECUTION_FORBIDDEN",
+                "SESSION_VERIFIER_INVOCATION_DIGEST_VALID",
+                "SESSION_VERIFIER_INVOCATION_RECORD_VALID",
+                "SESSION_VERIFIER_LANEFABRIC_FALLBACK_FORBIDDEN",
+                "SESSION_VERIFIER_PASS_PLAN_ORDER_PRESERVED",
+                "SESSION_VERIFIER_PASS_PLAN_VALID",
+                "SESSION_VERIFIER_PRODUCTION_MUTATION_FORBIDDEN",
+                "SESSION_VERIFIER_REPLAY_REPORT_DIGEST_VALID",
+                "SESSION_VERIFIER_SOFTWARE_CAVEAT_INCLUDED",
+                "SESSION_VERIFIER_STRICT_WAVEGUIDE_REQUIRED",
+                "SESSION_VERIFIER_TRACE_LEDGER_DIGEST_VALID"
+            ],
+            "recomputed_final_output_payload_digest": "e118f75e0e7c0d4b21dffdd84fdeb322bdab07ca09285e73f3445c8cb8de2e65",
+            "recorded_final_output_payload_digest": "e118f75e0e7c0d4b21dffdd84fdeb322bdab07ca09285e73f3445c8cb8de2e65",
+            "rejected_pass_count": 0,
+            "replay_report_digest": "fb41ff4f01021b9d9790f76c03898b1e2e4127e9508868ccec4c91e2e14c4965",
+            "requested_pass_sequence": [
+                "pipeline_compaction"
+            ],
+            "session_case_digest": "0232ff8987485cfd3d5233a4af11bcabdb3eadb189dfc3ec37d96d2b749575b7",
+            "session_case_id": "SOL-WAVEGUIDE-SESSION-CASE-RC1",
+            "session_verification_status": "session_verified",
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "trace_entry_digests": [
+                "96acdcb966c3d8998e62984fb8c1ade7975df40b136ca551949b0dbc19fb0b8c"
+            ],
+            "trace_ledger_digest": "46e7c5b9c5af4622e5b5a95b61a61c36360e7ad3df2f8602c74c3de05f92e43f",
+            "verified_execution_count": 1,
+            "verified_rejection_count": 0
+        },
+        {
+            "admission_decision_digests": [
+                "8abf243a97dc3c997ac9984e53d9ee31d0977e06c8cc1888c9e692187218673b",
+                "cf8407523cfe963006fea5db5ff4de465d2a1c8fb9db0ce1ff54cc1b01b1345c",
+                "e75911d54bcd41f6b78040fe7b1b57f6b227f4e908e091a97fcf7eb1e0f2f225"
+            ],
+            "candidate_level": "governed_execution_stack",
+            "capability_resolution_digest": "c35dc87fedb6b53f4f9d9509f7c62cb22a65fb797b4b12fda838052fd8054e60",
+            "compiler_profile": "COST_MODEL_DEBUG",
+            "executed_pass_count": 3,
+            "execution_record_digests": [
+                "1dbaa66b6e21b6c11f280ef60398f8afdc8198c5bcff2d9bb7b87b4d55e63276",
+                "75bc82dfc73702439cd44c584e91de87e84b7b1b51b47fe8f8962a0066390638",
+                "cb03fd9c190ee317403e13622cc71bd752b73bb80dfdcd247e2de7376c41bcd9"
+            ],
+            "failed_replay_count": 0,
+            "invocation_record_digest": "3d7e6b383576d6edac8026343c90bdb00e33e25e2f21c24897e9068ddb1010d2",
+            "invocation_record_path": "docs/SOL_WAVEGUIDE_GOVERNED_COMPILER_INVOCATION_RC2.json",
+            "invocation_record_valid": true,
+            "invocation_request_digest": "",
+            "invocation_status": "invocation_verified",
+            "notes": "Session verification completed with status session_verified.",
+            "pass_plan_order_preserved": true,
+            "pass_plan_valid": true,
+            "rc_id": "SOL-WAVEGUIDE-RC2",
+            "reason_codes": [
+                "SESSION_VERIFIER_ADMISSION_DIGESTS_REFERENCED",
+                "SESSION_VERIFIER_CAPABILITY_DIGEST_REFERENCED",
+                "SESSION_VERIFIER_COUNTS_VALID",
+                "SESSION_VERIFIER_EXECUTION_DIGESTS_REFERENCED",
+                "SESSION_VERIFIER_EXECUTION_SESSION_VERIFIED",
+                "SESSION_VERIFIER_FINAL_OUTPUT_DIGEST_MATCH",
+                "SESSION_VERIFIER_HYBRID_EXECUTION_FORBIDDEN",
+                "SESSION_VERIFIER_INVOCATION_DIGEST_VALID",
+                "SESSION_VERIFIER_INVOCATION_RECORD_VALID",
+                "SESSION_VERIFIER_LANEFABRIC_FALLBACK_FORBIDDEN",
+                "SESSION_VERIFIER_PASS_PLAN_ORDER_PRESERVED",
+                "SESSION_VERIFIER_PASS_PLAN_VALID",
+                "SESSION_VERIFIER_PRODUCTION_MUTATION_FORBIDDEN",
+                "SESSION_VERIFIER_REPLAY_REPORT_DIGEST_VALID",
+                "SESSION_VERIFIER_SOFTWARE_CAVEAT_INCLUDED",
+                "SESSION_VERIFIER_STRICT_WAVEGUIDE_REQUIRED",
+                "SESSION_VERIFIER_TRACE_LEDGER_DIGEST_VALID"
+            ],
+            "recomputed_final_output_payload_digest": "0f09785f332627b50781c45055105e81a7b691aed354d0fdf9a593b2222ab03b",
+            "recorded_final_output_payload_digest": "0f09785f332627b50781c45055105e81a7b691aed354d0fdf9a593b2222ab03b",
+            "rejected_pass_count": 0,
+            "replay_report_digest": "ff7224d152fddfa88b6b9d2d2c0a8a3925cbbc7e4a5546aa5638b7511e56171f",
+            "requested_pass_sequence": [
+                "pipeline_compaction",
+                "cost_model_evaluation",
+                "deterministic_policy_selection"
+            ],
+            "session_case_digest": "534e2d303b0ac4254f75493d7d66e337db58ca3219e76e491644a3f007948c00",
+            "session_case_id": "SOL-WAVEGUIDE-SESSION-CASE-RC2",
+            "session_verification_status": "session_verified",
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "trace_entry_digests": [
+                "3a6439da6ef0e3aca26100996f1412e477268cf322099296390cde263d9f05fc",
+                "7594bc6390b6be617190655cb7ee55655c86b2fa0cc535a00770f12023f609b4",
+                "f8e155f1d4bac7e528c172d11b8cae1e4d7072ff4f2db6dc0de3aebd081312ad"
+            ],
+            "trace_ledger_digest": "162cc36e203c2bbeef39ac4f1176bdc0b13022b8108e22802b1406fa5bf2aa25",
+            "verified_execution_count": 3,
+            "verified_rejection_count": 0
+        },
+        {
+            "admission_decision_digests": [
+                "2cb1b96318152e72e815ad8722963920e525512e7141cdf7e59b16602d406ecd"
+            ],
+            "candidate_level": "foundation",
+            "capability_resolution_digest": "346734bcc2048f2bb1ced2764ac3fcaafe30cafd3b890f6d08bdc5a0151e1a7e",
+            "compiler_profile": "COST_MODEL_DEBUG",
+            "executed_pass_count": 0,
+            "execution_record_digests": [
+                "d30bf573d03bf39c3d5f4ffac64d1ff05b48b4e3433625db0f5541fb73040c02"
+            ],
+            "failed_replay_count": 0,
+            "invocation_record_digest": "7af64b2af5d6e8e17531d87563eac01ab9edc2697fe16b364760d0b9172c9a3a",
+            "invocation_record_path": "docs/SOL_WAVEGUIDE_GOVERNED_COMPILER_INVOCATION_REJECTION_EXAMPLE.json",
+            "invocation_record_valid": true,
+            "invocation_request_digest": "",
+            "invocation_status": "invocation_rejected_verified",
+            "notes": "Session verification completed with status session_rejection_verified.",
+            "pass_plan_order_preserved": true,
+            "pass_plan_valid": true,
+            "rc_id": "SOL-WAVEGUIDE-RC1",
+            "reason_codes": [
+                "SESSION_VERIFIER_ADMISSION_DIGESTS_REFERENCED",
+                "SESSION_VERIFIER_CAPABILITY_DIGEST_REFERENCED",
+                "SESSION_VERIFIER_COUNTS_VALID",
+                "SESSION_VERIFIER_EXECUTION_DIGESTS_REFERENCED",
+                "SESSION_VERIFIER_FINAL_OUTPUT_DIGEST_MATCH",
+                "SESSION_VERIFIER_HYBRID_EXECUTION_FORBIDDEN",
+                "SESSION_VERIFIER_INVOCATION_DIGEST_VALID",
+                "SESSION_VERIFIER_INVOCATION_RECORD_VALID",
+                "SESSION_VERIFIER_LANEFABRIC_FALLBACK_FORBIDDEN",
+                "SESSION_VERIFIER_PASS_PLAN_ORDER_PRESERVED",
+                "SESSION_VERIFIER_PASS_PLAN_VALID",
+                "SESSION_VERIFIER_PRODUCTION_MUTATION_FORBIDDEN",
+                "SESSION_VERIFIER_REJECTION_SESSION_VERIFIED",
+                "SESSION_VERIFIER_REPLAY_REPORT_DIGEST_VALID",
+                "SESSION_VERIFIER_SOFTWARE_CAVEAT_INCLUDED",
+                "SESSION_VERIFIER_STRICT_WAVEGUIDE_REQUIRED",
+                "SESSION_VERIFIER_TRACE_LEDGER_DIGEST_VALID"
+            ],
+            "recomputed_final_output_payload_digest": "197fd115a8162ddbf2c9aa84f68b84bd34ea07e92e0d26354bd6ba35bea92e80",
+            "recorded_final_output_payload_digest": "197fd115a8162ddbf2c9aa84f68b84bd34ea07e92e0d26354bd6ba35bea92e80",
+            "rejected_pass_count": 1,
+            "replay_report_digest": "964a3b765014cfc33f6b70434fd5aecd70069e1b51e0cc2d5c1cfcaff67dce42",
+            "requested_pass_sequence": [
+                "cost_model_evaluation"
+            ],
+            "session_case_digest": "801f4b49d83c3ae20de25571fb0ff0b703daba65ab8607ce060706c90668069c",
+            "session_case_id": "SOL-WAVEGUIDE-SESSION-CASE-RC1",
+            "session_verification_status": "session_rejection_verified",
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "trace_entry_digests": [
+                "e51c4981effda2f51bf56a9d675ad3ce65d8c9e9b36c59903acb7049d903007c"
+            ],
+            "trace_ledger_digest": "0730d84464f980504555c6b199071a7dfb0c13e7ce499101db6d186ecbf610b9",
+            "verified_execution_count": 0,
+            "verified_rejection_count": 1
+        }
+    ],
+    "failed_session_count": 0,
+    "failed_sessions": [],
+    "final_output_payload_digests": [
+        "0f09785f332627b50781c45055105e81a7b691aed354d0fdf9a593b2222ab03b",
+        "197fd115a8162ddbf2c9aa84f68b84bd34ea07e92e0d26354bd6ba35bea92e80",
+        "e118f75e0e7c0d4b21dffdd84fdeb322bdab07ca09285e73f3445c8cb8de2e65"
+    ],
+    "invocation_record_digests": [
+        "3d7e6b383576d6edac8026343c90bdb00e33e25e2f21c24897e9068ddb1010d2",
+        "7af64b2af5d6e8e17531d87563eac01ab9edc2697fe16b364760d0b9172c9a3a",
+        "dd6ea5cd0894544385d2756e8414998dc528ef1442aeb22ede263a66df5b73e3"
+    ],
+    "rc1_session_count": 2,
+    "rc2_session_count": 1,
+    "reason_codes": [
+        "SESSION_VERIFIER_REPORT_DIGEST_VALID",
+        "SESSION_VERIFIER_REPORT_VERIFIED"
+    ],
+    "replay_report_digests": [
+        "964a3b765014cfc33f6b70434fd5aecd70069e1b51e0cc2d5c1cfcaff67dce42",
+        "fb41ff4f01021b9d9790f76c03898b1e2e4127e9508868ccec4c91e2e14c4965",
+        "ff7224d152fddfa88b6b9d2d2c0a8a3925cbbc7e4a5546aa5638b7511e56171f"
+    ],
+    "session_verification_report_digest": "5668039147916143d5eb2d564dea793bf770023d9d9b09b70b825e1e3684991f",
+    "session_verification_report_id": "SOL-WAVEGUIDE-GOVERNED-COMPILER-SESSION-VERIFIER-REPORT",
+    "session_verification_report_status": "session_verification_report_verified",
+    "session_verification_report_version": "1",
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+    "trace_ledger_digests": [
+        "0730d84464f980504555c6b199071a7dfb0c13e7ce499101db6d186ecbf610b9",
+        "162cc36e203c2bbeef39ac4f1176bdc0b13022b8108e22802b1406fa5bf2aa25",
+        "46e7c5b9c5af4622e5b5a95b61a61c36360e7ad3df2f8602c74c3de05f92e43f"
+    ],
+    "verified_rejection_session_count": 1,
+    "verified_rejection_sessions": [
+        "SOL-WAVEGUIDE-SESSION-CASE-RC1"
+    ],
+    "verified_session_count": 2,
+    "verified_sessions": [
+        "SOL-WAVEGUIDE-SESSION-CASE-RC1",
+        "SOL-WAVEGUIDE-SESSION-CASE-RC2"
+    ]
+}

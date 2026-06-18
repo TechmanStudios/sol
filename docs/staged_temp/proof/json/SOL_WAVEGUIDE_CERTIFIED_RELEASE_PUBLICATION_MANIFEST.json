@@ -1,0 +1,247 @@
+{
+    "audit_case_digests": [
+        "8947628ea46a9da8fef4162adca7cf652fb33ed8eb09260b919bea83960d8e8e",
+        "e7dc6f4fdd139c3e04d8a633e9232ffeba582810608ab94f3380717ff79e81a0"
+    ],
+    "audit_registry_entry_digests": [
+        "0bf2dff7dce09f1a881599e7bc4e99987027692580fd3c17104eca5e58302a50",
+        "f2d15709e7d3ff14a00ca5b5d9b51ebcda359637220c6b4a7d1449cba0ca1206"
+    ],
+    "audit_report_digests": [
+        "ca1d1278c3ebbb41aad86858aa5a9e1d6a2b5a5f8f772a64802d0f585cd69dcc",
+        "f7724b0ee9b3871e6767489e0be43dc7b74a437b0fab22985dfb60bdc9f259ed"
+    ],
+    "blocked_rc_count": 0,
+    "blocked_rcs": [],
+    "candidate_levels_indexed": [
+        "Foundation",
+        "Governed Execution Stack"
+    ],
+    "certification_bundle_digests": [
+        "1902c9e2034e2f77f979a32eef5fbf4de68e0eed00c84d375ffa7c54715a21f6",
+        "a4a0cb70a080ee51f01dd4aacc905e6cdc880b5420382e8e471a33c1012424f4"
+    ],
+    "certification_bundle_ids": [
+        "SOL-WAVEGUIDE-RELEASE-CERTIFICATION-BUNDLE-RC1",
+        "SOL-WAVEGUIDE-RELEASE-CERTIFICATION-BUNDLE-RC2"
+    ],
+    "final_output_payload_digests": [
+        "0f09785f332627b50781c45055105e81a7b691aed354d0fdf9a593b2222ab03b",
+        "197fd115a8162ddbf2c9aa84f68b84bd34ea07e92e0d26354bd6ba35bea92e80",
+        "e118f75e0e7c0d4b21dffdd84fdeb322bdab07ca09285e73f3445c8cb8de2e65"
+    ],
+    "invalid_rc_count": 0,
+    "invalid_rcs": [],
+    "pending_rc_count": 0,
+    "pending_rcs": [],
+    "publication_channel_policy": {
+        "allowed": [
+            "artifact_catalog_publication",
+            "documentation_publication",
+            "internal_distribution"
+        ],
+        "blocked": [
+            "external_key_signing",
+            "legal_certification_claim",
+            "production_deployment",
+            "quantum_hardware_certification"
+        ]
+    },
+    "publication_entries": [
+        {
+            "artifact_digest_mismatch_count": 0,
+            "artifact_validation_failure_count": 0,
+            "audit_case_digest": "8947628ea46a9da8fef4162adca7cf652fb33ed8eb09260b919bea83960d8e8e",
+            "audit_report_digest": "f7724b0ee9b3871e6767489e0be43dc7b74a437b0fab22985dfb60bdc9f259ed",
+            "audit_report_status": "audit_report_verified",
+            "audit_status": "audit_registered",
+            "candidate_level": "Foundation",
+            "certification_bundle_digest": "1902c9e2034e2f77f979a32eef5fbf4de68e0eed00c84d375ffa7c54715a21f6",
+            "certification_bundle_id": "SOL-WAVEGUIDE-RELEASE-CERTIFICATION-BUNDLE-RC1",
+            "compiler_session_registry_valid": true,
+            "final_output_payload_digests": [
+                "0f09785f332627b50781c45055105e81a7b691aed354d0fdf9a593b2222ab03b",
+                "197fd115a8162ddbf2c9aa84f68b84bd34ea07e92e0d26354bd6ba35bea92e80",
+                "e118f75e0e7c0d4b21dffdd84fdeb322bdab07ca09285e73f3445c8cb8de2e65"
+            ],
+            "notes": [],
+            "publication_channels_allowed": [
+                "artifact_catalog_publication",
+                "documentation_publication",
+                "internal_distribution"
+            ],
+            "publication_channels_blocked": [
+                "external_key_signing",
+                "legal_certification_claim",
+                "production_deployment",
+                "quantum_hardware_certification"
+            ],
+            "publication_entry_digest": "fb9abd5b9cdbc25b994721ecaf1b9131cb5d3f04e0773a1f071a2c0c7b915bee",
+            "publication_entry_id": "SOL-WAVEGUIDE-PUBLICATION-ENTRY-SOL-WAVEGUIDE-RC1",
+            "publication_gate_reasons": [],
+            "publication_status": "publication_ready",
+            "rc_id": "SOL-WAVEGUIDE-RC1",
+            "reason_codes": [
+                "PUBLICATION_ARTIFACT_CATALOG_ALLOWED",
+                "PUBLICATION_AUDIT_CASE_DIGEST_REFERENCED",
+                "PUBLICATION_AUDIT_REPORT_DIGEST_REFERENCED",
+                "PUBLICATION_BUNDLE_DIGEST_REFERENCED",
+                "PUBLICATION_DOCUMENTATION_ALLOWED",
+                "PUBLICATION_ENTRY_CANONICAL",
+                "PUBLICATION_EXTERNAL_SIGNING_BLOCKED",
+                "PUBLICATION_FINAL_OUTPUT_DIGESTS_REFERENCED",
+                "PUBLICATION_INTERNAL_DISTRIBUTION_ALLOWED",
+                "PUBLICATION_LEGAL_CLAIM_BLOCKED",
+                "PUBLICATION_PRODUCTION_DEPLOYMENT_BLOCKED",
+                "PUBLICATION_QUANTUM_HARDWARE_CLAIM_BLOCKED",
+                "PUBLICATION_RC_AUDIT_VERIFIED",
+                "PUBLICATION_RC_READY",
+                "PUBLICATION_SOFTWARE_CAVEAT_INCLUDED",
+                "PUBLICATION_SOURCE_AUDIT_ENTRY_REFERENCED"
+            ],
+            "registered_rejection_session_count": 1,
+            "registered_session_count": 2,
+            "runtime_capability_valid": true,
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "source_audit_registry_entry_digest": "0bf2dff7dce09f1a881599e7bc4e99987027692580fd3c17104eca5e58302a50",
+            "target_rc_approved": true
+        },
+        {
+            "artifact_digest_mismatch_count": 0,
+            "artifact_validation_failure_count": 0,
+            "audit_case_digest": "e7dc6f4fdd139c3e04d8a633e9232ffeba582810608ab94f3380717ff79e81a0",
+            "audit_report_digest": "ca1d1278c3ebbb41aad86858aa5a9e1d6a2b5a5f8f772a64802d0f585cd69dcc",
+            "audit_report_status": "audit_report_verified",
+            "audit_status": "audit_registered",
+            "candidate_level": "Governed Execution Stack",
+            "certification_bundle_digest": "a4a0cb70a080ee51f01dd4aacc905e6cdc880b5420382e8e471a33c1012424f4",
+            "certification_bundle_id": "SOL-WAVEGUIDE-RELEASE-CERTIFICATION-BUNDLE-RC2",
+            "compiler_session_registry_valid": true,
+            "final_output_payload_digests": [
+                "0f09785f332627b50781c45055105e81a7b691aed354d0fdf9a593b2222ab03b",
+                "197fd115a8162ddbf2c9aa84f68b84bd34ea07e92e0d26354bd6ba35bea92e80",
+                "e118f75e0e7c0d4b21dffdd84fdeb322bdab07ca09285e73f3445c8cb8de2e65"
+            ],
+            "notes": [],
+            "publication_channels_allowed": [
+                "artifact_catalog_publication",
+                "documentation_publication",
+                "internal_distribution"
+            ],
+            "publication_channels_blocked": [
+                "external_key_signing",
+                "legal_certification_claim",
+                "production_deployment",
+                "quantum_hardware_certification"
+            ],
+            "publication_entry_digest": "fb0fe7569a4ba8141ac8c1f4f5234b00776707e77a4bd356730e48c9373051ef",
+            "publication_entry_id": "SOL-WAVEGUIDE-PUBLICATION-ENTRY-SOL-WAVEGUIDE-RC2",
+            "publication_gate_reasons": [],
+            "publication_status": "publication_ready",
+            "rc_id": "SOL-WAVEGUIDE-RC2",
+            "reason_codes": [
+                "PUBLICATION_ARTIFACT_CATALOG_ALLOWED",
+                "PUBLICATION_AUDIT_CASE_DIGEST_REFERENCED",
+                "PUBLICATION_AUDIT_REPORT_DIGEST_REFERENCED",
+                "PUBLICATION_BUNDLE_DIGEST_REFERENCED",
+                "PUBLICATION_DOCUMENTATION_ALLOWED",
+                "PUBLICATION_ENTRY_CANONICAL",
+                "PUBLICATION_EXTERNAL_SIGNING_BLOCKED",
+                "PUBLICATION_FINAL_OUTPUT_DIGESTS_REFERENCED",
+                "PUBLICATION_INTERNAL_DISTRIBUTION_ALLOWED",
+                "PUBLICATION_LEGAL_CLAIM_BLOCKED",
+                "PUBLICATION_PRODUCTION_DEPLOYMENT_BLOCKED",
+                "PUBLICATION_QUANTUM_HARDWARE_CLAIM_BLOCKED",
+                "PUBLICATION_RC_AUDIT_VERIFIED",
+                "PUBLICATION_RC_READY",
+                "PUBLICATION_SOFTWARE_CAVEAT_INCLUDED",
+                "PUBLICATION_SOURCE_AUDIT_ENTRY_REFERENCED"
+            ],
+            "registered_rejection_session_count": 1,
+            "registered_session_count": 2,
+            "runtime_capability_valid": true,
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "source_audit_registry_entry_digest": "f2d15709e7d3ff14a00ca5b5d9b51ebcda359637220c6b4a7d1449cba0ca1206",
+            "target_rc_approved": true
+        }
+    ],
+    "publication_manifest_digest": "c35971e704ba433259d7c5246921a14702ec529cfc385ef58433c17dae3cd480",
+    "publication_manifest_id": "SOL-WAVEGUIDE-CERTIFIED-RELEASE-PUBLICATION-MANIFEST",
+    "publication_manifest_status": "publication_manifest_ready",
+    "publication_manifest_version": 1,
+    "publication_readiness_catalog": [
+        {
+            "allowed_channels": [
+                "artifact_catalog_publication",
+                "documentation_publication",
+                "internal_distribution"
+            ],
+            "audit_case_digest": "8947628ea46a9da8fef4162adca7cf652fb33ed8eb09260b919bea83960d8e8e",
+            "audit_report_digest": "f7724b0ee9b3871e6767489e0be43dc7b74a437b0fab22985dfb60bdc9f259ed",
+            "blocked_channels": [
+                "external_key_signing",
+                "legal_certification_claim",
+                "production_deployment",
+                "quantum_hardware_certification"
+            ],
+            "candidate_level": "Foundation",
+            "catalog_index": 1,
+            "certification_bundle_digest": "1902c9e2034e2f77f979a32eef5fbf4de68e0eed00c84d375ffa7c54715a21f6",
+            "certification_bundle_id": "SOL-WAVEGUIDE-RELEASE-CERTIFICATION-BUNDLE-RC1",
+            "publication_status": "publication_ready",
+            "rc_id": "SOL-WAVEGUIDE-RC1"
+        },
+        {
+            "allowed_channels": [
+                "artifact_catalog_publication",
+                "documentation_publication",
+                "internal_distribution"
+            ],
+            "audit_case_digest": "e7dc6f4fdd139c3e04d8a633e9232ffeba582810608ab94f3380717ff79e81a0",
+            "audit_report_digest": "ca1d1278c3ebbb41aad86858aa5a9e1d6a2b5a5f8f772a64802d0f585cd69dcc",
+            "blocked_channels": [
+                "external_key_signing",
+                "legal_certification_claim",
+                "production_deployment",
+                "quantum_hardware_certification"
+            ],
+            "candidate_level": "Governed Execution Stack",
+            "catalog_index": 2,
+            "certification_bundle_digest": "a4a0cb70a080ee51f01dd4aacc905e6cdc880b5420382e8e471a33c1012424f4",
+            "certification_bundle_id": "SOL-WAVEGUIDE-RELEASE-CERTIFICATION-BUNDLE-RC2",
+            "publication_status": "publication_ready",
+            "rc_id": "SOL-WAVEGUIDE-RC2"
+        }
+    ],
+    "publishable_rc_count": 2,
+    "publishable_rcs": [
+        "SOL-WAVEGUIDE-RC1",
+        "SOL-WAVEGUIDE-RC2"
+    ],
+    "rc1_publication_count": 1,
+    "rc2_publication_count": 1,
+    "reason_codes": [
+        "PUBLICATION_ARTIFACT_CATALOG_ALLOWED",
+        "PUBLICATION_AUDIT_CASE_DIGEST_REFERENCED",
+        "PUBLICATION_AUDIT_REPORT_DIGEST_REFERENCED",
+        "PUBLICATION_BUNDLE_DIGEST_REFERENCED",
+        "PUBLICATION_COUNTS_VALID",
+        "PUBLICATION_DOCUMENTATION_ALLOWED",
+        "PUBLICATION_ENTRY_CANONICAL",
+        "PUBLICATION_EXTERNAL_SIGNING_BLOCKED",
+        "PUBLICATION_FINAL_OUTPUT_DIGESTS_REFERENCED",
+        "PUBLICATION_INTERNAL_DISTRIBUTION_ALLOWED",
+        "PUBLICATION_LEGAL_CLAIM_BLOCKED",
+        "PUBLICATION_MANIFEST_READY",
+        "PUBLICATION_PRODUCTION_DEPLOYMENT_BLOCKED",
+        "PUBLICATION_QUANTUM_HARDWARE_CLAIM_BLOCKED",
+        "PUBLICATION_RC_AUDIT_VERIFIED",
+        "PUBLICATION_RC_READY",
+        "PUBLICATION_READINESS_CATALOG_CANONICAL",
+        "PUBLICATION_SOFTWARE_CAVEAT_INCLUDED",
+        "PUBLICATION_SOURCE_AUDIT_ENTRY_REFERENCED",
+        "PUBLICATION_SOURCE_AUDIT_REGISTRY_VALID"
+    ],
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+    "source_audit_registry_digest": "4802a42b80b2739da7a06b82a8d73a9c541f655f573bdd8342e6521daf2748f4"
+}

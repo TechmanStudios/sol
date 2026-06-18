@@ -263,6 +263,26 @@
     "description": "Patrols sovereign production gateways, final gate registries, system lockdowns, readiness guards, handoffs, and finalization dockets, emitting SovereignPackets",
     "class": "FinalizationRanger",
     "observe_only": true
+  },
+  "wideword_program_ranger": {
+    "description": "Patrols Waveguide Program execution reports and WideWord program traces, emitting SovereignPackets",
+    "class": "WideWordProgramRanger",
+    "observe_only": true
+  },
+  "strict_backend_ranger": {
+    "description": "Patrols WideWord Strict Backend Execution Proofs, emitting SovereignPackets",
+    "class": "StrictBackendRanger",
+    "observe_only": true
+  },
+  "micro_isa_ranger": {
+    "description": "Patrols Micro-ISA v0 specification compliance and capability matrix reports, emitting SovereignPackets",
+    "class": "MicroISARanger",
+    "observe_only": true
+  },
+  "waveguide_control_memory_ranger": {
+    "description": "Patrols Waveguide Control-Memory Bridge execution, branch, and memory reports, emitting SovereignPackets",
+    "class": "WaveguideControlMemoryRanger",
+    "observe_only": true
   }
 }
 
