@@ -69,6 +69,66 @@ the minimal [`KB/sample_kb.md`](KB/sample_kb.md) template.
 
 ---
 
+## SOL Waveguide Pipeline Architecture
+
+The **SOL Waveguide Pipeline** is a multi-stage, deterministic verification and packaging system. It ensures that any compiled semantic manifold and its execution transcripts are fully audited, locally attested, and packaged into verified release candidates without depending on production mutations or external services.
+
+```mermaid
+graph TD
+    classDef default fill:#1a1b26,stroke:#7aa2f7,stroke-width:1px,color:#c0caf5;
+    classDef highlight fill:#24283b,stroke:#bb9af7,stroke-width:2px,color:#ff9e64;
+
+    subgraph Compilation ["1. Compilation & Pass Admission"]
+        A["Compiler Invocation"] --> B["Pass Admission"]
+        B --> C["Optimization Pass Mgr"]
+    end
+
+    subgraph Staging ["2. Controlled Local Staging"]
+        C --> D["Staging Plan"]
+        D --> E["Staging Runner"]
+        E --> F["Staging Manifest & Validator"]
+    end
+
+    subgraph Assembly ["3. Package Assembly & Dry Run"]
+        F --> G["Assembly Plan"]
+        G --> H["Run Blueprint"]
+        H --> I["Dry-Run Transcript & Validator"]
+    end
+
+    subgraph Gate ["4. Physical Execution Gate"]
+        I --> J["Authorization Capsule"]
+        J --> K["Physical Execution Gate & Validator"]
+    end
+
+    subgraph Archive ["5. Archive & Attestation"]
+        K --> L["Archive Plan & Builder"]
+        L --> M["Archive Manifest & Validator"]
+        M --> N["Digest Attestation & Validator"]
+        N --> O["Attested Candidate Index"]
+    end
+
+    subgraph Handoff ["6. Release Handoff & Closure"]
+        O --> P["Release Handoff Bundle"]
+        P --> Q["Offline Verification Kit"]
+        Q --> R["Readiness Closure Report"]
+        R --> S["Pipeline Completion Index"]
+    end
+
+    class A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S default;
+    class S highlight;
+```
+
+### Component Breakdown
+
+1. **Compilation & Pass Admission**: Admitted compiler passes are verified against structural compliance contracts (`sol_waveguide_compiler_pass_admission.py`), and memory layouts are optimized dynamically under a parameterized cost model.
+2. **Controlled Local Staging**: Automatically plans, runs, and validates the output boundaries (`sol_waveguide_package_controlled_local_staging_runner.py`) using isolated directories to protect target environments from untracked modifications.
+3. **Package Assembly & Dry Run**: Creates a deterministic execution blueprint (`sol_waveguide_package_assembly_run_execution_blueprint.py`) and executes a sandboxed dry-run transcript to verify command structure and parameter scaling.
+4. **Physical Execution Gate**: Requires explicit operator approval using cryptographic authorization capsules (`sol_waveguide_package_assembly_run_authorization_capsule.py`) before allowing physical build steps.
+5. **Archive & Attestation**: Builds and validates a clean ZIP package (`sol_waveguide_package_archive_builder.py`), then signs the archive locally via a secure digest attestation pipeline (`sol_waveguide_package_archive_digest_attestation.py`).
+6. **Release Handoff & Closure**: Assembles the final handoff bundle (`sol_waveguide_release_handoff_bundle.py`), generates offline verification kits for consumers, checks readiness criteria, and seals the pipeline using the completion index.
+
+---
+
 ## Status
 
 SOL is **pre-1.0, actively developed research code**. Expect:
