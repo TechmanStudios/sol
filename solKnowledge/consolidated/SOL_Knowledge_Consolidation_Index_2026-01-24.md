@@ -894,3 +894,20 @@ Additional proof packets were promoted by tying claim-ledger items to on-disk CS
   - Question: Does dt compress time-to-failure in headless sol-core as it does in the dashboard?
   - Claim: CL-3 | Sanity: PASS
   - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+## Cortex Session: CX-20260622-081916 (consolidated 2026-06-22)
+
+- [PP-2026-06-22-cortex-CX-20260622-081916-h-001-None.md](solKnowledge/proof_packets/PP-2026-06-22-cortex-CX-20260622-081916-h-001-None.md)
+  - Question: Do different injection targets produce distinct basin formations?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-06-22-cortex-CX-20260622-081916-h-002-None.md](solKnowledge/proof_packets/PP-2026-06-22-cortex-CX-20260622-081916-h-002-None.md)
+  - Question: Can headless sol-core reproduce: ?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-06-22-cortex-CX-20260622-081916-h-003-damping.md](solKnowledge/proof_packets/PP-2026-06-22-cortex-CX-20260622-081916-h-003-damping.md)
+  - Question: At what value of damping does the system behavior qualitatively change?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
