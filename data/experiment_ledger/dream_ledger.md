@@ -1,12 +1,13 @@
 # Dream Ledger
 
-Generated: 2026-06-22T08:22:40.168318+00:00
-Nights analyzed: 179 | Cross-night findings: 2410
+Generated: 2026-06-23T05:29:55.717115+00:00
+Nights analyzed: 180 | Cross-night findings: 2424
 
 ## Latest nights
 
 | Night | Sources | Replays | New | Reinf | Decay | Unique basins | Stable | Score (mean / max) |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
+| DS-20260623-052718 | 5 | 15 | 4 | 0 | 34 | 13 | 13 | 0.320 / 0.825 |
 | DS-20260622-082056 | 3 | 9 | 6 | 1 | 33 | 13 | 13 | 0.525 / 0.900 |
 | DS-20260622-055724 | 5 | 15 | 6 | 0 | 33 | 13 | 13 | 0.176 / 0.455 |
 | DS-20260621-054331 | 5 | 15 | 10 | 0 | 33 | 13 | 13 | 0.195 / 0.502 |
@@ -16,7 +17,6 @@ Nights analyzed: 179 | Cross-night findings: 2410
 | DS-20260617-054638 | 5 | 15 | 8 | 0 | 32 | 13 | 13 | 0.289 / 0.746 |
 | DS-20260616-055738 | 5 | 15 | 8 | 1 | 31 | 13 | 13 | 0.319 / 0.823 |
 | DS-20260615-082040 | 3 | 9 | 5 | 1 | 30 | 13 | 13 | 0.525 / 0.900 |
-| DS-20260615-055542 | 5 | 15 | 5 | 1 | 30 | 13 | 13 | 0.176 / 0.454 |
 
 ## New / recurring stable basins
 
@@ -47,7 +47,7 @@ Nights analyzed: 179 | Cross-night findings: 2410
 
 | Finding | Class | Stable | Promote | Nights | Sources | Description |
 |---|---|:-:|:-:|---:|---:|---|
-| `dominant_basin_turnover` | basin_turnover | ✓ | · | 176 | 0 | Dominant basin shifted on 176/179 nights. |
+| `dominant_basin_turnover` | basin_turnover | ✓ | · | 177 | 0 | Dominant basin shifted on 177/180 nights. |
 
 ## Possible information-transfer mechanisms
 
@@ -67,9 +67,9 @@ Nights analyzed: 179 | Cross-night findings: 2410
 | `source:CX-20260302-062850` | recurring_source | ✓ | ★ | 37 | 1 | Source cortex session CX-20260302-062850 replayed on 37 night(s) with mean replay score 0.262. |
 | `source:CX-20260309-063136` | recurring_source | ✓ | ★ | 37 | 1 | Source cortex session CX-20260309-063136 replayed on 37 night(s) with mean replay score 0.252. |
 | `source:CX-20260217-062310` | recurring_source | ✓ | ★ | 36 | 1 | Source cortex session CX-20260217-062310 replayed on 36 night(s) with mean replay score 0.307. |
-| `source:CX-20260525-074955` | recurring_source | ✓ | ★ | 31 | 1 | Source cortex session CX-20260525-074955 replayed on 31 night(s) with mean replay score 0.315. |
+| `source:CX-20260525-074955` | recurring_source | ✓ | ★ | 32 | 1 | Source cortex session CX-20260525-074955 replayed on 32 night(s) with mean replay score 0.307. |
 | `source:CX-20260217-013501` | recurring_source | ✓ | ★ | 30 | 1 | Source cortex session CX-20260217-013501 replayed on 30 night(s) with mean replay score 0.408. |
+| `source:CX-20260601-080455` | recurring_source | ✓ | ★ | 25 | 1 | Source cortex session CX-20260601-080455 replayed on 25 night(s) with mean replay score 0.373. |
 | `source:CX-20260216-063358` | recurring_source | ✓ | ★ | 24 | 1 | Source cortex session CX-20260216-063358 replayed on 24 night(s) with mean replay score 0.424. |
-| `source:CX-20260601-080455` | recurring_source | ✓ | ★ | 24 | 1 | Source cortex session CX-20260601-080455 replayed on 24 night(s) with mean replay score 0.384. |
 | `source:CX-20260214-074804` | recurring_source | ✓ | ★ | 18 | 1 | Source cortex session CX-20260214-074804 replayed on 18 night(s) with mean replay score 0.523. |
-| `source:CX-20260608-075956` | recurring_source | ✓ | ★ | 17 | 1 | Source cortex session CX-20260608-075956 replayed on 17 night(s) with mean replay score 0.478. |
+| `source:CX-20260608-075956` | recurring_source | ✓ | ★ | 18 | 1 | Source cortex session CX-20260608-075956 replayed on 18 night(s) with mean replay score 0.463. |
