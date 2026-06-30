@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-29T08:04:44.425362+00:00",
-  "nights": 187,
+  "generated_at": "2026-06-30T05:32:11.207296+00:00",
+  "nights": 188,
   "findings": [
     {
       "finding_class": "recurring_basin",
@@ -1135,6 +1135,29 @@
       "metrics": {
         "night_count": 2.0,
         "source_count": 7.0,
+        "stable_night_count": 2.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
+      "finding_id": "basin:31a7c117",
+      "description": "Basin mass_hash=31a7c117 observed on 2 night(s) across 5 source cortex session(s); stable on 2 night(s).",
+      "nights": [
+        "DS-20260629-080304",
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
+      ],
+      "metrics": {
+        "night_count": 2.0,
+        "source_count": 5.0,
         "stable_night_count": 2.0
       },
       "is_stable": true,
@@ -6786,6 +6809,28 @@
     },
     {
       "finding_class": "recurring_basin",
+      "finding_id": "basin:11b08218",
+      "description": "Basin mass_hash=11b08218 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
+      "nights": [
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
+      ],
+      "metrics": {
+        "night_count": 1.0,
+        "source_count": 5.0,
+        "stable_night_count": 1.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
       "finding_id": "basin:11be0603",
       "description": "Basin mass_hash=11be0603 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
       "nights": [
@@ -7515,6 +7560,28 @@
         "CX-20260217-013501",
         "CX-20260217-062310",
         "CX-20260223-063438"
+      ],
+      "metrics": {
+        "night_count": 1.0,
+        "source_count": 5.0,
+        "stable_night_count": 1.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
+      "finding_id": "basin:1566eb75",
+      "description": "Basin mass_hash=1566eb75 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
+      "nights": [
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
       ],
       "metrics": {
         "night_count": 1.0,
@@ -12857,26 +12924,6 @@
     },
     {
       "finding_class": "recurring_basin",
-      "finding_id": "basin:31a7c117",
-      "description": "Basin mass_hash=31a7c117 observed on 1 night(s) across 3 source cortex session(s); stable on 1 night(s).",
-      "nights": [
-        "DS-20260629-080304"
-      ],
-      "source_sessions": [
-        "CX-20260615-081845",
-        "CX-20260622-081916",
-        "CX-20260629-080102"
-      ],
-      "metrics": {
-        "night_count": 1.0,
-        "source_count": 3.0,
-        "stable_night_count": 1.0
-      },
-      "is_stable": true,
-      "promote_to_canonical": false
-    },
-    {
-      "finding_class": "recurring_basin",
       "finding_id": "basin:31c1642f",
       "description": "Basin mass_hash=31c1642f observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
       "nights": [
@@ -15498,6 +15545,28 @@
     },
     {
       "finding_class": "recurring_basin",
+      "finding_id": "basin:3e0cecc3",
+      "description": "Basin mass_hash=3e0cecc3 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
+      "nights": [
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
+      ],
+      "metrics": {
+        "night_count": 1.0,
+        "source_count": 5.0,
+        "stable_night_count": 1.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
       "finding_id": "basin:3e3271e5",
       "description": "Basin mass_hash=3e3271e5 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
       "nights": [
@@ -16299,6 +16368,28 @@
       "metrics": {
         "night_count": 1.0,
         "source_count": 3.0,
+        "stable_night_count": 1.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
+      "finding_id": "basin:42befd00",
+      "description": "Basin mass_hash=42befd00 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
+      "nights": [
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
+      ],
+      "metrics": {
+        "night_count": 1.0,
+        "source_count": 5.0,
         "stable_night_count": 1.0
       },
       "is_stable": true,
@@ -22948,6 +23039,28 @@
     },
     {
       "finding_class": "recurring_basin",
+      "finding_id": "basin:66297232",
+      "description": "Basin mass_hash=66297232 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
+      "nights": [
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
+      ],
+      "metrics": {
+        "night_count": 1.0,
+        "source_count": 5.0,
+        "stable_night_count": 1.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
       "finding_id": "basin:6648179b",
       "description": "Basin mass_hash=6648179b observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
       "nights": [
@@ -24911,6 +25024,28 @@
         "CX-20260427-070645",
         "CX-20260504-071553",
         "CX-20260511-072752"
+      ],
+      "metrics": {
+        "night_count": 1.0,
+        "source_count": 5.0,
+        "stable_night_count": 1.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
+      "finding_id": "basin:70e2678e",
+      "description": "Basin mass_hash=70e2678e observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
+      "nights": [
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
       ],
       "metrics": {
         "night_count": 1.0,
@@ -28670,6 +28805,28 @@
     },
     {
       "finding_class": "recurring_basin",
+      "finding_id": "basin:88373d76",
+      "description": "Basin mass_hash=88373d76 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
+      "nights": [
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
+      ],
+      "metrics": {
+        "night_count": 1.0,
+        "source_count": 5.0,
+        "stable_night_count": 1.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
       "finding_id": "basin:884ba225",
       "description": "Basin mass_hash=884ba225 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
       "nights": [
@@ -30959,6 +31116,28 @@
         "CX-20260330-064835",
         "CX-20260406-064925",
         "CX-20260413-065651"
+      ],
+      "metrics": {
+        "night_count": 1.0,
+        "source_count": 5.0,
+        "stable_night_count": 1.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
+      "finding_id": "basin:99083241",
+      "description": "Basin mass_hash=99083241 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
+      "nights": [
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
       ],
       "metrics": {
         "night_count": 1.0,
@@ -36215,6 +36394,28 @@
     },
     {
       "finding_class": "recurring_basin",
+      "finding_id": "basin:b5c71b06",
+      "description": "Basin mass_hash=b5c71b06 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
+      "nights": [
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
+      ],
+      "metrics": {
+        "night_count": 1.0,
+        "source_count": 5.0,
+        "stable_night_count": 1.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
       "finding_id": "basin:b601f83c",
       "description": "Basin mass_hash=b601f83c observed on 1 night(s) across 2 source cortex session(s); stable on 1 night(s).",
       "nights": [
@@ -36550,6 +36751,28 @@
         "CX-20260525-074955",
         "CX-20260601-080455",
         "CX-20260608-075956"
+      ],
+      "metrics": {
+        "night_count": 1.0,
+        "source_count": 5.0,
+        "stable_night_count": 1.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
+      "finding_id": "basin:b7d14f54",
+      "description": "Basin mass_hash=b7d14f54 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
+      "nights": [
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
       ],
       "metrics": {
         "night_count": 1.0,
@@ -36920,6 +37143,28 @@
         "CX-20260511-072752",
         "CX-20260518-073932",
         "CX-20260525-074955"
+      ],
+      "metrics": {
+        "night_count": 1.0,
+        "source_count": 5.0,
+        "stable_night_count": 1.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
+      "finding_id": "basin:b99d2d96",
+      "description": "Basin mass_hash=b99d2d96 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
+      "nights": [
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
       ],
       "metrics": {
         "night_count": 1.0,
@@ -42792,6 +43037,28 @@
         "CX-20260309-063136",
         "CX-20260316-064244",
         "CX-20260323-063706"
+      ],
+      "metrics": {
+        "night_count": 1.0,
+        "source_count": 5.0,
+        "stable_night_count": 1.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_basin",
+      "finding_id": "basin:d854d45b",
+      "description": "Basin mass_hash=d854d45b observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s).",
+      "nights": [
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260601-080455",
+        "CX-20260608-075956",
+        "CX-20260615-081845",
+        "CX-20260622-081916",
+        "CX-20260629-080102"
       ],
       "metrics": {
         "night_count": 1.0,
@@ -51588,7 +51855,7 @@
     {
       "finding_class": "recurring_source",
       "finding_id": "source:CX-20260601-080455",
-      "description": "Source cortex session CX-20260601-080455 replayed on 31 night(s) with mean replay score 0.315.",
+      "description": "Source cortex session CX-20260601-080455 replayed on 32 night(s) with mean replay score 0.307.",
       "nights": [
         "DS-20260601-080604",
         "DS-20260602-054103",
@@ -51620,14 +51887,15 @@
         "DS-20260626-053221",
         "DS-20260627-052252",
         "DS-20260628-053612",
-        "DS-20260629-054154"
+        "DS-20260629-054154",
+        "DS-20260630-052918"
       ],
       "source_sessions": [
         "CX-20260601-080455"
       ],
       "metrics": {
-        "night_count": 31.0,
-        "score_mean": 0.3149731446108762,
+        "night_count": 32.0,
+        "score_mean": 0.3067405115553861,
         "score_max": 0.8999735926633604,
         "yield_mean": 15.0
       },
@@ -51684,6 +51952,49 @@
     },
     {
       "finding_class": "recurring_source",
+      "finding_id": "source:CX-20260608-075956",
+      "description": "Source cortex session CX-20260608-075956 replayed on 25 night(s) with mean replay score 0.373.",
+      "nights": [
+        "DS-20260608-080225",
+        "DS-20260609-052853",
+        "DS-20260610-053848",
+        "DS-20260611-054158",
+        "DS-20260612-054101",
+        "DS-20260613-053714",
+        "DS-20260614-054052",
+        "DS-20260615-055542",
+        "DS-20260615-082040",
+        "DS-20260616-055738",
+        "DS-20260617-054638",
+        "DS-20260618-054318",
+        "DS-20260619-054959",
+        "DS-20260620-053539",
+        "DS-20260621-054331",
+        "DS-20260622-055724",
+        "DS-20260622-082056",
+        "DS-20260623-052718",
+        "DS-20260624-052602",
+        "DS-20260625-052718",
+        "DS-20260626-053221",
+        "DS-20260627-052252",
+        "DS-20260628-053612",
+        "DS-20260629-054154",
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260608-075956"
+      ],
+      "metrics": {
+        "night_count": 25.0,
+        "score_mean": 0.372719512930454,
+        "score_max": 0.8999729212797484,
+        "yield_mean": 24.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": true
+    },
+    {
+      "finding_class": "recurring_source",
       "finding_id": "source:CX-20260216-063358",
       "description": "Source cortex session CX-20260216-063358 replayed on 24 night(s) with mean replay score 0.424.",
       "nights": [
@@ -51719,48 +52030,6 @@
         "night_count": 24.0,
         "score_mean": 0.42393352464519257,
         "score_max": 0.8999707055981734,
-        "yield_mean": 24.0
-      },
-      "is_stable": true,
-      "promote_to_canonical": true
-    },
-    {
-      "finding_class": "recurring_source",
-      "finding_id": "source:CX-20260608-075956",
-      "description": "Source cortex session CX-20260608-075956 replayed on 24 night(s) with mean replay score 0.384.",
-      "nights": [
-        "DS-20260608-080225",
-        "DS-20260609-052853",
-        "DS-20260610-053848",
-        "DS-20260611-054158",
-        "DS-20260612-054101",
-        "DS-20260613-053714",
-        "DS-20260614-054052",
-        "DS-20260615-055542",
-        "DS-20260615-082040",
-        "DS-20260616-055738",
-        "DS-20260617-054638",
-        "DS-20260618-054318",
-        "DS-20260619-054959",
-        "DS-20260620-053539",
-        "DS-20260621-054331",
-        "DS-20260622-055724",
-        "DS-20260622-082056",
-        "DS-20260623-052718",
-        "DS-20260624-052602",
-        "DS-20260625-052718",
-        "DS-20260626-053221",
-        "DS-20260627-052252",
-        "DS-20260628-053612",
-        "DS-20260629-054154"
-      ],
-      "source_sessions": [
-        "CX-20260608-075956"
-      ],
-      "metrics": {
-        "night_count": 24.0,
-        "score_mean": 0.38395713197410974,
-        "score_max": 0.8999729212797484,
         "yield_mean": 24.0
       },
       "is_stable": true,
@@ -51805,7 +52074,7 @@
     {
       "finding_class": "recurring_source",
       "finding_id": "source:CX-20260615-081845",
-      "description": "Source cortex session CX-20260615-081845 replayed on 17 night(s) with mean replay score 0.478.",
+      "description": "Source cortex session CX-20260615-081845 replayed on 18 night(s) with mean replay score 0.463.",
       "nights": [
         "DS-20260615-082040",
         "DS-20260616-055738",
@@ -51823,14 +52092,15 @@
         "DS-20260627-052252",
         "DS-20260628-053612",
         "DS-20260629-054154",
-        "DS-20260629-080304"
+        "DS-20260629-080304",
+        "DS-20260630-052918"
       ],
       "source_sessions": [
         "CX-20260615-081845"
       ],
       "metrics": {
-        "night_count": 17.0,
-        "score_mean": 0.47834667535272607,
+        "night_count": 18.0,
+        "score_mean": 0.46323079804770184,
         "score_max": 0.8999690786432895,
         "yield_mean": 15.0
       },
@@ -51861,6 +52131,34 @@
         "night_count": 11.0,
         "score_mean": 0.693429546511222,
         "score_max": 0.9985193452339616,
+        "yield_mean": 24.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": true
+    },
+    {
+      "finding_class": "recurring_source",
+      "finding_id": "source:CX-20260622-081916",
+      "description": "Source cortex session CX-20260622-081916 replayed on 10 night(s) with mean replay score 0.614.",
+      "nights": [
+        "DS-20260622-082056",
+        "DS-20260623-052718",
+        "DS-20260624-052602",
+        "DS-20260625-052718",
+        "DS-20260626-053221",
+        "DS-20260627-052252",
+        "DS-20260628-053612",
+        "DS-20260629-054154",
+        "DS-20260629-080304",
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260622-081916"
+      ],
+      "metrics": {
+        "night_count": 10.0,
+        "score_mean": 0.6137608932130695,
+        "score_max": 0.8999703176866024,
         "yield_mean": 24.0
       },
       "is_stable": true,
@@ -51969,33 +52267,6 @@
         "night_count": 9.0,
         "score_mean": 0.8628817791380707,
         "score_max": 0.9998671368857313,
-        "yield_mean": 24.0
-      },
-      "is_stable": true,
-      "promote_to_canonical": true
-    },
-    {
-      "finding_class": "recurring_source",
-      "finding_id": "source:CX-20260622-081916",
-      "description": "Source cortex session CX-20260622-081916 replayed on 9 night(s) with mean replay score 0.636.",
-      "nights": [
-        "DS-20260622-082056",
-        "DS-20260623-052718",
-        "DS-20260624-052602",
-        "DS-20260625-052718",
-        "DS-20260626-053221",
-        "DS-20260627-052252",
-        "DS-20260628-053612",
-        "DS-20260629-054154",
-        "DS-20260629-080304"
-      ],
-      "source_sessions": [
-        "CX-20260622-081916"
-      ],
-      "metrics": {
-        "night_count": 9.0,
-        "score_mean": 0.6361266288031936,
-        "score_max": 0.8999703176866024,
         "yield_mean": 24.0
       },
       "is_stable": true,
@@ -52589,6 +52860,26 @@
     },
     {
       "finding_class": "recurring_source",
+      "finding_id": "source:CX-20260629-080102",
+      "description": "Source cortex session CX-20260629-080102 replayed on 2 night(s) with mean replay score 0.862.",
+      "nights": [
+        "DS-20260629-080304",
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [
+        "CX-20260629-080102"
+      ],
+      "metrics": {
+        "night_count": 2.0,
+        "score_mean": 0.8618902410299378,
+        "score_max": 0.899973324012096,
+        "yield_mean": 24.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "recurring_source",
       "finding_id": "source:CX-20260213-210052",
       "description": "Source cortex session CX-20260213-210052 replayed on 1 night(s) with mean replay score 0.997.",
       "nights": [
@@ -52645,28 +52936,9 @@
       "promote_to_canonical": false
     },
     {
-      "finding_class": "recurring_source",
-      "finding_id": "source:CX-20260629-080102",
-      "description": "Source cortex session CX-20260629-080102 replayed on 1 night(s) with mean replay score 0.900.",
-      "nights": [
-        "DS-20260629-080304"
-      ],
-      "source_sessions": [
-        "CX-20260629-080102"
-      ],
-      "metrics": {
-        "night_count": 1.0,
-        "score_mean": 0.899973324012096,
-        "score_max": 0.899973324012096,
-        "yield_mean": 24.0
-      },
-      "is_stable": false,
-      "promote_to_canonical": false
-    },
-    {
       "finding_class": "replay_yield_correlation",
       "finding_id": "replay_score_vs_stable_share",
-      "description": "Across 187 night(s), Pearson(replay_score_mean, stable_basin_share)=0.000.",
+      "description": "Across 188 night(s), Pearson(replay_score_mean, stable_basin_share)=0.000.",
       "nights": [
         "DS-20260208-052205",
         "DS-20260208-055125",
@@ -52854,13 +53126,14 @@
         "DS-20260627-052252",
         "DS-20260628-053612",
         "DS-20260629-054154",
-        "DS-20260629-080304"
+        "DS-20260629-080304",
+        "DS-20260630-052918"
       ],
       "source_sessions": [],
       "metrics": {
-        "night_count": 187.0,
+        "night_count": 188.0,
         "correlation": 0.0,
-        "score_mean": 0.40846112511175314,
+        "score_mean": 0.4079874838691692,
         "stable_share_mean": 1.0
       },
       "is_stable": false,
@@ -52869,7 +53142,7 @@
     {
       "finding_class": "reinforcement_decay_balance",
       "finding_id": "reinforcement_vs_decay",
-      "description": "Across 187 night(s): discovered=1214, reinforced=65, decayed=4868; reinforcement\u2265decay on 6/187 nights.",
+      "description": "Across 188 night(s): discovered=1222, reinforced=65, decayed=4901; reinforcement\u2265decay on 6/188 nights.",
       "nights": [
         "DS-20260208-052205",
         "DS-20260208-055125",
@@ -53057,16 +53330,17 @@
         "DS-20260627-052252",
         "DS-20260628-053612",
         "DS-20260629-054154",
-        "DS-20260629-080304"
+        "DS-20260629-080304",
+        "DS-20260630-052918"
       ],
       "source_sessions": [],
       "metrics": {
-        "night_count": 187.0,
-        "basins_discovered": 1214.0,
+        "night_count": 188.0,
+        "basins_discovered": 1222.0,
         "basins_reinforced": 65.0,
-        "basins_decayed": 4868.0,
+        "basins_decayed": 4901.0,
         "reinforcement_balance_nights": 6.0,
-        "reinforcement_balance_share": 0.03208556149732621
+        "reinforcement_balance_share": 0.031914893617021274
       },
       "is_stable": true,
       "promote_to_canonical": false
@@ -53182,6 +53456,29 @@
     },
     {
       "finding_class": "top_node_set_persistence",
+      "finding_id": "top_nodes:1_1164_1165_1168_1169",
+      "description": "Top-node set [1, 1164, 1165, 1168, 1169] recurred on 9 night(s).",
+      "nights": [
+        "DS-20260622-055724",
+        "DS-20260622-082056",
+        "DS-20260623-052718",
+        "DS-20260624-052602",
+        "DS-20260625-052718",
+        "DS-20260626-053221",
+        "DS-20260629-054154",
+        "DS-20260629-080304",
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [],
+      "metrics": {
+        "night_count": 9.0,
+        "set_size": 5.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": true
+    },
+    {
+      "finding_class": "top_node_set_persistence",
       "finding_id": "top_nodes:1118_1119_1122_1123_1126",
       "description": "Top-node set [1118, 1119, 1122, 1123, 1126] recurred on 9 night(s).",
       "nights": [
@@ -53216,28 +53513,6 @@
         "DS-20260316-064358",
         "DS-20260317-044038",
         "DS-20260318-044449"
-      ],
-      "source_sessions": [],
-      "metrics": {
-        "night_count": 8.0,
-        "set_size": 5.0
-      },
-      "is_stable": true,
-      "promote_to_canonical": true
-    },
-    {
-      "finding_class": "top_node_set_persistence",
-      "finding_id": "top_nodes:1_1164_1165_1168_1169",
-      "description": "Top-node set [1, 1164, 1165, 1168, 1169] recurred on 8 night(s).",
-      "nights": [
-        "DS-20260622-055724",
-        "DS-20260622-082056",
-        "DS-20260623-052718",
-        "DS-20260624-052602",
-        "DS-20260625-052718",
-        "DS-20260626-053221",
-        "DS-20260629-054154",
-        "DS-20260629-080304"
       ],
       "source_sessions": [],
       "metrics": {
@@ -53605,6 +53880,25 @@
     },
     {
       "finding_class": "top_node_set_persistence",
+      "finding_id": "top_nodes:1164_1165_1168_1169_1175",
+      "description": "Top-node set [1164, 1165, 1168, 1169, 1175] recurred on 5 night(s).",
+      "nights": [
+        "DS-20260627-052252",
+        "DS-20260628-053612",
+        "DS-20260629-054154",
+        "DS-20260629-080304",
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [],
+      "metrics": {
+        "night_count": 5.0,
+        "set_size": 5.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": true
+    },
+    {
+      "finding_class": "top_node_set_persistence",
       "finding_id": "top_nodes:1_1000_1001_1002_1003",
       "description": "Top-node set [1, 1000, 1001, 1002, 1003] recurred on 4 night(s).",
       "nights": [
@@ -53810,24 +54104,6 @@
         "DS-20260610-053848",
         "DS-20260611-054158",
         "DS-20260612-054101"
-      ],
-      "source_sessions": [],
-      "metrics": {
-        "night_count": 4.0,
-        "set_size": 5.0
-      },
-      "is_stable": true,
-      "promote_to_canonical": true
-    },
-    {
-      "finding_class": "top_node_set_persistence",
-      "finding_id": "top_nodes:1164_1165_1168_1169_1175",
-      "description": "Top-node set [1164, 1165, 1168, 1169, 1175] recurred on 4 night(s).",
-      "nights": [
-        "DS-20260627-052252",
-        "DS-20260628-053612",
-        "DS-20260629-054154",
-        "DS-20260629-080304"
       ],
       "source_sessions": [],
       "metrics": {
@@ -55457,6 +55733,22 @@
     },
     {
       "finding_class": "top_node_set_persistence",
+      "finding_id": "top_nodes:1155_1164_1168_1169_1175",
+      "description": "Top-node set [1155, 1164, 1168, 1169, 1175] recurred on 2 night(s).",
+      "nights": [
+        "DS-20260629-080304",
+        "DS-20260630-052918"
+      ],
+      "source_sessions": [],
+      "metrics": {
+        "night_count": 2.0,
+        "set_size": 5.0
+      },
+      "is_stable": true,
+      "promote_to_canonical": false
+    },
+    {
+      "finding_class": "top_node_set_persistence",
       "finding_id": "top_nodes:1164_1165_1168_1170_1171",
       "description": "Top-node set [1164, 1165, 1168, 1170, 1171] recurred on 2 night(s).",
       "nights": [
@@ -55490,7 +55782,7 @@
     {
       "finding_class": "entropy_band_persistence",
       "finding_id": "entropy_band:0.900",
-      "description": "Entropy band 0.900 present on 180 night(s).",
+      "description": "Entropy band 0.900 present on 181 night(s).",
       "nights": [
         "DS-20260212-031446",
         "DS-20260212-032211",
@@ -55671,11 +55963,12 @@
         "DS-20260627-052252",
         "DS-20260628-053612",
         "DS-20260629-054154",
-        "DS-20260629-080304"
+        "DS-20260629-080304",
+        "DS-20260630-052918"
       ],
       "source_sessions": [],
       "metrics": {
-        "night_count": 180.0,
+        "night_count": 181.0,
         "entropy_band": 0.9
       },
       "is_stable": true,
@@ -55684,7 +55977,7 @@
     {
       "finding_class": "entropy_band_persistence",
       "finding_id": "entropy_band:0.700",
-      "description": "Entropy band 0.700 present on 124 night(s).",
+      "description": "Entropy band 0.700 present on 125 night(s).",
       "nights": [
         "DS-20260208-052205",
         "DS-20260208-055125",
@@ -55809,11 +56102,12 @@
         "DS-20260625-052718",
         "DS-20260626-053221",
         "DS-20260629-054154",
-        "DS-20260629-080304"
+        "DS-20260629-080304",
+        "DS-20260630-052918"
       ],
       "source_sessions": [],
       "metrics": {
-        "night_count": 124.0,
+        "night_count": 125.0,
         "entropy_band": 0.7
       },
       "is_stable": true,
@@ -56092,7 +56386,7 @@
     {
       "finding_class": "basin_turnover",
       "finding_id": "dominant_basin_turnover",
-      "description": "Dominant basin shifted on 184/187 nights.",
+      "description": "Dominant basin shifted on 185/188 nights.",
       "nights": [
         "DS-20260208-055125",
         "DS-20260210-045027",
@@ -56277,13 +56571,14 @@
         "DS-20260627-052252",
         "DS-20260628-053612",
         "DS-20260629-054154",
-        "DS-20260629-080304"
+        "DS-20260629-080304",
+        "DS-20260630-052918"
       ],
       "source_sessions": [],
       "metrics": {
-        "night_count": 187.0,
-        "turnover_nights": 184.0,
-        "turnover_share": 0.983957219251337
+        "night_count": 188.0,
+        "turnover_nights": 185.0,
+        "turnover_share": 0.9840425531914894
       },
       "is_stable": true,
       "promote_to_canonical": false
