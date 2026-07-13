@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-13T05:16:18.397491+00:00",
-  "records": 1716,
-  "runs": 296,
+  "generated_at": "2026-07-13T07:19:36.997283+00:00",
+  "records": 1717,
+  "runs": 297,
   "experiments": {
     "cortex": {
-      "runs": 75,
-      "generations": 75,
-      "accepted_generations": 58,
-      "acceptance_rate": 0.7733333333333333,
+      "runs": 76,
+      "generations": 76,
+      "accepted_generations": 59,
+      "acceptance_rate": 0.7763157894736842,
       "top_runs_by_anchor": [
         {
           "experiment": "cortex",
@@ -192,9 +192,9 @@
           "best_full_delta": 1.0
         },
         "unpromoted": {
-          "generations": 20,
-          "runs": 20,
-          "accepted_generations": 20,
+          "generations": 21,
+          "runs": 21,
+          "accepted_generations": 21,
           "acceptance_rate": 1.0,
           "best_anchor_delta": 1.0,
           "best_full_delta": 5.0
@@ -746,8 +746,8 @@
   },
   "knowledge_domains": {
     "sol_manifold": {
-      "records": 1415,
-      "accepted_generations": 285,
+      "records": 1416,
+      "accepted_generations": 286,
       "experiments": [
         "cortex",
         "dream",
@@ -804,15 +804,15 @@
       ]
     },
     "injection:grail": {
-      "records": 74,
-      "accepted_generations": 58,
+      "records": 75,
+      "accepted_generations": 59,
       "experiments": [
         "cortex"
       ]
     },
     "damping": {
-      "records": 71,
-      "accepted_generations": 55,
+      "records": 72,
+      "accepted_generations": 56,
       "experiments": [
         "cortex"
       ]
@@ -19335,8 +19335,8 @@
       ]
     },
     "stable_replay": {
-      "records": 54,
-      "accepted_generations": 54,
+      "records": 55,
+      "accepted_generations": 55,
       "experiments": [
         "cortex"
       ]
@@ -19428,8 +19428,8 @@
       ]
     },
     "mechanistic_gap": {
-      "records": 47,
-      "accepted_generations": 47,
+      "records": 48,
+      "accepted_generations": 48,
       "experiments": [
         "cortex"
       ]
