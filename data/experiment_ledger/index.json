@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-20T05:20:09.729263+00:00",
-  "records": 1725,
-  "runs": 305,
+  "generated_at": "2026-07-20T07:18:03.441015+00:00",
+  "records": 1726,
+  "runs": 306,
   "experiments": {
     "cortex": {
-      "runs": 76,
-      "generations": 76,
-      "accepted_generations": 59,
-      "acceptance_rate": 0.7763157894736842,
+      "runs": 77,
+      "generations": 77,
+      "accepted_generations": 60,
+      "acceptance_rate": 0.7792207792207793,
       "top_runs_by_anchor": [
         {
           "experiment": "cortex",
@@ -192,9 +192,9 @@
           "best_full_delta": 1.0
         },
         "unpromoted": {
-          "generations": 21,
-          "runs": 21,
-          "accepted_generations": 21,
+          "generations": 22,
+          "runs": 22,
+          "accepted_generations": 22,
           "acceptance_rate": 1.0,
           "best_anchor_delta": 1.0,
           "best_full_delta": 5.0
@@ -746,8 +746,8 @@
   },
   "knowledge_domains": {
     "sol_manifold": {
-      "records": 1424,
-      "accepted_generations": 294,
+      "records": 1425,
+      "accepted_generations": 295,
       "experiments": [
         "cortex",
         "dream",
@@ -804,8 +804,8 @@
       ]
     },
     "injection:grail": {
-      "records": 75,
-      "accepted_generations": 59,
+      "records": 76,
+      "accepted_generations": 60,
       "experiments": [
         "cortex"
       ]
@@ -964,6 +964,13 @@
         "dream"
       ]
     },
+    "dt": {
+      "records": 24,
+      "accepted_generations": 24,
+      "experiments": [
+        "cortex"
+      ]
+    },
     "source:cx_20260216_063358": {
       "records": 24,
       "accepted_generations": 24,
@@ -976,13 +983,6 @@
       "accepted_generations": 24,
       "experiments": [
         "dream"
-      ]
-    },
-    "dt": {
-      "records": 23,
-      "accepted_generations": 23,
-      "experiments": [
-        "cortex"
       ]
     },
     "entropy_band:0p60": {
@@ -20049,8 +20049,8 @@
       ]
     },
     "stable_replay": {
-      "records": 55,
-      "accepted_generations": 55,
+      "records": 56,
+      "accepted_generations": 56,
       "experiments": [
         "cortex"
       ]
@@ -20149,8 +20149,8 @@
       ]
     },
     "unknown_mechanics": {
-      "records": 47,
-      "accepted_generations": 47,
+      "records": 48,
+      "accepted_generations": 48,
       "experiments": [
         "cortex"
       ]

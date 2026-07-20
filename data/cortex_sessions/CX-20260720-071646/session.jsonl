@@ -1,0 +1,31 @@
+{"ts": "2026-07-20T07:16:46.649415Z", "event": "session_start", "session_id": "CX-20260720-071646", "config": {"max_protocols": "3", "max_total_steps": "100000", "gap_type_filter": "None", "dry_run": "False", "out_dir": "/home/runner/work/sol/sol/data/cortex_sessions", "strict_guardrails": "True", "verbose": "True"}}
+{"ts": "2026-07-20T07:16:47.721757Z", "event": "meta_gap_prioritized", "top_gap": "unpromoted:CL-1", "boosted_priority": 4.7138}
+{"ts": "2026-07-20T07:16:47.734205Z", "event": "knowledge_scan", "total_gaps": 630, "by_type": {"unpromoted": 6, "unfalsified": 4, "replication": 328, "unexplored_param": 4, "open_question": 225, "weak_evidence": 62, "headless_baseline": 1}}
+{"ts": "2026-07-20T07:16:47.785142Z", "event": "gap_selected", "gap_id": "unpromoted:CL-1", "gap_type": "unpromoted", "priority": 2, "description": "CL-1 (Robust): Baseline restore is non-negotiable for comparability \u2014 no proof packet found"}
+{"ts": "2026-07-20T07:16:47.786336Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-1", "memory_context": "Memory nodes: 30 | Memory edges: 153 | Avg confidence: 0.335 | Tags: basin(30), entropy(30), rhoMax(30)"}
+{"ts": "2026-07-20T07:16:47.786532Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-1", "template": "dt_compression"}
+{"ts": "2026-07-20T07:16:47.786569Z", "event": "hypothesis_generated", "hypothesis_id": "H-001", "template": "dt_compression", "question": "Does dt compress time-to-failure in headless sol-core as it does in the dashboard?"}
+{"ts": "2026-07-20T07:16:47.786727Z", "event": "hypothesis_augmented", "hypothesis_id": "H-001", "memory_falsifiers": 2}
+{"ts": "2026-07-20T07:16:47.787076Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260720-071646/protocols/h-001_protocol.json"}
+{"ts": "2026-07-20T07:16:47.835621Z", "event": "execution_start", "hypothesis_id": "H-001", "series": "h-001"}
+{"ts": "2026-07-20T07:17:52.297066Z", "event": "execution_complete", "hypothesis_id": "H-001", "elapsed_sec": 64.46, "sanity_passed": true, "anomalies": [], "total_session_steps": 12500}
+{"ts": "2026-07-20T07:17:52.297336Z", "event": "meta_recorded", "hypothesis_id": "H-001", "template": "dt_compression", "gap_type": "unpromoted"}
+{"ts": "2026-07-20T07:17:52.325641Z", "event": "gap_selected", "gap_id": "unpromoted:CL-2", "gap_type": "unpromoted", "priority": 2, "description": "CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale \u2014 no proof "}
+{"ts": "2026-07-20T07:17:52.326641Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-2", "memory_context": "Memory nodes: 30 | Memory edges: 153 | Avg confidence: 0.335 | Tags: basin(30), entropy(30), rhoMax(30)"}
+{"ts": "2026-07-20T07:17:52.326920Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-2", "template": "replication"}
+{"ts": "2026-07-20T07:17:52.326986Z", "event": "hypothesis_generated", "hypothesis_id": "H-002", "template": "replication", "question": "Can headless sol-core reproduce: ?"}
+{"ts": "2026-07-20T07:17:52.327149Z", "event": "hypothesis_augmented", "hypothesis_id": "H-002", "memory_falsifiers": 2}
+{"ts": "2026-07-20T07:17:52.327481Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260720-071646/protocols/h-002_protocol.json"}
+{"ts": "2026-07-20T07:17:52.327530Z", "event": "execution_start", "hypothesis_id": "H-002", "series": "h-002"}
+{"ts": "2026-07-20T07:18:00.150660Z", "event": "execution_complete", "hypothesis_id": "H-002", "elapsed_sec": 7.82, "sanity_passed": true, "anomalies": [], "total_session_steps": 14000}
+{"ts": "2026-07-20T07:18:00.150892Z", "event": "meta_recorded", "hypothesis_id": "H-002", "template": "replication", "gap_type": "unpromoted"}
+{"ts": "2026-07-20T07:18:00.179625Z", "event": "gap_selected", "gap_id": "unpromoted:CL-3", "gap_type": "unpromoted", "priority": 2, "description": "CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins \u2014 no p"}
+{"ts": "2026-07-20T07:18:00.180754Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-3", "memory_context": "Memory nodes: 30 | Memory edges: 153 | Avg confidence: 0.335 | Tags: basin(30), entropy(30), rhoMax(30)"}
+{"ts": "2026-07-20T07:18:00.180940Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-3", "template": "baseline_golden"}
+{"ts": "2026-07-20T07:18:00.180979Z", "event": "hypothesis_generated", "hypothesis_id": "H-003", "template": "baseline_golden", "question": "What are the canonical metric outputs for standard injection protocols?"}
+{"ts": "2026-07-20T07:18:00.181061Z", "event": "hypothesis_augmented", "hypothesis_id": "H-003", "memory_falsifiers": 1}
+{"ts": "2026-07-20T07:18:00.181315Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260720-071646/protocols/h-003_protocol.json"}
+{"ts": "2026-07-20T07:18:00.181353Z", "event": "execution_start", "hypothesis_id": "H-003", "series": "h-003"}
+{"ts": "2026-07-20T07:18:02.784579Z", "event": "execution_complete", "hypothesis_id": "H-003", "elapsed_sec": 2.6, "sanity_passed": true, "anomalies": [], "total_session_steps": 14500}
+{"ts": "2026-07-20T07:18:02.784789Z", "event": "meta_recorded", "hypothesis_id": "H-003", "template": "baseline_golden", "gap_type": "unpromoted"}
+{"ts": "2026-07-20T07:18:02.784819Z", "event": "budget_stop", "reason": "max_protocols reached (3/3)"}
