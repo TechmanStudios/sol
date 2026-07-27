@@ -979,3 +979,20 @@ Additional proof packets were promoted by tying claim-ledger items to on-disk CS
   - Question: What are the canonical metric outputs for standard injection protocols?
   - Claim: CL-3 | Sanity: PASS
   - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found
+
+## Cortex Session: CX-20260727-072053 (consolidated 2026-07-27)
+
+- [PP-2026-07-27-cortex-CX-20260727-072053-h-001-dt.md](solKnowledge/proof_packets/PP-2026-07-27-cortex-CX-20260727-072053-h-001-dt.md)
+  - Question: Does dt compress time-to-failure in headless sol-core as it does in the dashboard?
+  - Claim: CL-1 | Sanity: PASS
+  - Gap: CL-1 (Robust): Baseline restore is non-negotiable for comparability — no proof packet found
+
+- [PP-2026-07-27-cortex-CX-20260727-072053-h-002-psi_diffusion.md](solKnowledge/proof_packets/PP-2026-07-27-cortex-CX-20260727-072053-h-002-psi_diffusion.md)
+  - Question: How does psi_diffusion affect entropy distribution and basin selection?
+  - Claim: CL-2 | Sanity: PASS
+  - Gap: CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale — no proof packet found
+
+- [PP-2026-07-27-cortex-CX-20260727-072053-h-003-damping.md](solKnowledge/proof_packets/PP-2026-07-27-cortex-CX-20260727-072053-h-003-damping.md)
+  - Question: How does damping affect entropy, flux, and mass over 200 steps?
+  - Claim: CL-3 | Sanity: PASS
+  - Gap: CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins — no proof packet found

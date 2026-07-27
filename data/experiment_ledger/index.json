@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-27T05:23:34.132048+00:00",
-  "records": 1734,
-  "runs": 314,
+  "generated_at": "2026-07-27T07:22:44.733634+00:00",
+  "records": 1735,
+  "runs": 315,
   "experiments": {
     "cortex": {
-      "runs": 77,
-      "generations": 77,
-      "accepted_generations": 60,
-      "acceptance_rate": 0.7792207792207793,
+      "runs": 78,
+      "generations": 78,
+      "accepted_generations": 61,
+      "acceptance_rate": 0.782051282051282,
       "top_runs_by_anchor": [
         {
           "experiment": "cortex",
@@ -192,9 +192,9 @@
           "best_full_delta": 1.0
         },
         "unpromoted": {
-          "generations": 22,
-          "runs": 22,
-          "accepted_generations": 22,
+          "generations": 23,
+          "runs": 23,
+          "accepted_generations": 23,
           "acceptance_rate": 1.0,
           "best_anchor_delta": 1.0,
           "best_full_delta": 5.0
@@ -746,8 +746,8 @@
   },
   "knowledge_domains": {
     "sol_manifold": {
-      "records": 1433,
-      "accepted_generations": 303,
+      "records": 1434,
+      "accepted_generations": 304,
       "experiments": [
         "cortex",
         "dream",
@@ -804,15 +804,15 @@
       ]
     },
     "injection:grail": {
-      "records": 76,
-      "accepted_generations": 60,
+      "records": 77,
+      "accepted_generations": 61,
       "experiments": [
         "cortex"
       ]
     },
     "damping": {
-      "records": 72,
-      "accepted_generations": 56,
+      "records": 73,
+      "accepted_generations": 57,
       "experiments": [
         "cortex"
       ]
@@ -972,8 +972,8 @@
       ]
     },
     "dt": {
-      "records": 24,
-      "accepted_generations": 24,
+      "records": 25,
+      "accepted_generations": 25,
       "experiments": [
         "cortex"
       ]
@@ -1139,6 +1139,13 @@
         "resonance"
       ]
     },
+    "psi_diffusion": {
+      "records": 7,
+      "accepted_generations": 7,
+      "experiments": [
+        "cortex"
+      ]
+    },
     "rho:1126": {
       "records": 7,
       "accepted_generations": 7,
@@ -1179,13 +1186,6 @@
       "accepted_generations": 6,
       "experiments": [
         "dream"
-      ]
-    },
-    "psi_diffusion": {
-      "records": 6,
-      "accepted_generations": 6,
-      "experiments": [
-        "cortex"
       ]
     },
     "rho:1111": {
@@ -20644,8 +20644,8 @@
       ]
     },
     "stable_replay": {
-      "records": 56,
-      "accepted_generations": 56,
+      "records": 57,
+      "accepted_generations": 57,
       "experiments": [
         "cortex"
       ]
@@ -20737,8 +20737,8 @@
       ]
     },
     "mechanistic_gap": {
-      "records": 48,
-      "accepted_generations": 48,
+      "records": 49,
+      "accepted_generations": 49,
       "experiments": [
         "cortex"
       ]
