@@ -1,12 +1,13 @@
 # Dream Ledger
 
-Generated: 2026-08-06T05:09:07.726432+00:00
-Nights analyzed: 230 | Cross-night findings: 3037
+Generated: 2026-08-07T04:44:24.215735+00:00
+Nights analyzed: 231 | Cross-night findings: 3042
 
 ## Latest nights
 
 | Night | Sources | Replays | New | Reinf | Decay | Unique basins | Stable | Score (mean / max) |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
+| DS-20260807-044155 | 5 | 15 | 1 | 2 | 29 | 6 | 6 | 0.237 / 0.612 |
 | DS-20260806-050640 | 5 | 15 | 1 | 2 | 29 | 6 | 6 | 0.262 / 0.675 |
 | DS-20260805-050637 | 5 | 15 | 1 | 3 | 28 | 6 | 6 | 0.289 / 0.745 |
 | DS-20260804-050716 | 5 | 15 | 2 | 2 | 29 | 6 | 6 | 0.319 / 0.823 |
@@ -16,7 +17,6 @@ Nights analyzed: 230 | Cross-night findings: 3037
 | DS-20260801-050829 | 5 | 15 | 4 | 2 | 26 | 13 | 13 | 0.215 / 0.554 |
 | DS-20260731-051407 | 5 | 15 | 2 | 1 | 27 | 13 | 13 | 0.237 / 0.611 |
 | DS-20260730-050559 | 5 | 15 | 2 | 0 | 28 | 13 | 13 | 0.262 / 0.675 |
-| DS-20260729-050809 | 5 | 15 | 8 | 0 | 28 | 13 | 13 | 0.289 / 0.745 |
 
 ## New / recurring stable basins
 
@@ -41,13 +41,13 @@ Nights analyzed: 230 | Cross-night findings: 3037
 | `basin:c5b94d9d` | recurring_basin | ✓ | ★ | 3 | 5 | Basin mass_hash=c5b94d9d observed on 3 night(s) across 5 source cortex session(s); stable on 3 night(s). |
 | `basin:cf52afe5` | recurring_basin | ✓ | ★ | 3 | 5 | Basin mass_hash=cf52afe5 observed on 3 night(s) across 5 source cortex session(s); stable on 3 night(s). |
 | `basin:d42df9d2` | recurring_basin | ✓ | ★ | 3 | 5 | Basin mass_hash=d42df9d2 observed on 3 night(s) across 5 source cortex session(s); stable on 3 night(s). |
-| `basin:030d13cf` | recurring_basin | ✓ | · | 2 | 10 | Basin mass_hash=030d13cf observed on 2 night(s) across 10 source cortex session(s); stable on 2 night(s). |
+| `basin:f7bd3d5b` | recurring_basin | ✓ | ★ | 3 | 12 | Basin mass_hash=f7bd3d5b observed on 3 night(s) across 12 source cortex session(s); stable on 3 night(s). |
 
 ## Shifted dominant basin
 
 | Finding | Class | Stable | Promote | Nights | Sources | Description |
 |---|---|:-:|:-:|---:|---:|---|
-| `dominant_basin_turnover` | basin_turnover | ✓ | · | 226 | 0 | Dominant basin shifted on 226/230 nights. |
+| `dominant_basin_turnover` | basin_turnover | ✓ | · | 227 | 0 | Dominant basin shifted on 227/231 nights. |
 
 ## Possible information-transfer mechanisms
 
