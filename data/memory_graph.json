@@ -1,40 +1,17 @@
 {
   "meta": {
     "version": 1,
-    "last_compacted": "2026-08-11T04:34:40.764750+00:00",
-    "trace_count": 8041
+    "last_compacted": "2026-08-12T04:39:12.405414+00:00",
+    "trace_count": 8070
   },
   "nodes": [
-    {
-      "id": 1201,
-      "label": "basin:1197:1197,1195,1194,1199,1183:0.9",
-      "group": "memory",
-      "source_session": "DS-20260719-050731",
-      "source_hypothesis": "H-003",
-      "confidence": 0.05999999999999983,
-      "created_at": "2026-07-19T05:09:55.902745+00:00",
-      "last_reinforced": "2026-07-19T05:09:55.902745+00:00",
-      "decay_rate": 0.02,
-      "tags": [
-        "basin:1197:1197,1195,1194,1199,1183:0.9",
-        "rhoMax:1197",
-        "entropy:0.9"
-      ],
-      "rho": 0.0,
-      "p": 0.0,
-      "psi": 0.0,
-      "psi_bias": 0.0,
-      "semanticMass": 1.0,
-      "semanticMass0": 1.0,
-      "miss_count": 27
-    },
     {
       "id": 1202,
       "label": "basin:1197:1197,1195,1201,1194,1199:0.9",
       "group": "memory",
       "source_session": "DS-20260720-051743",
       "source_hypothesis": "H-003",
-      "confidence": 0.07999999999999984,
+      "confidence": 0.05999999999999983,
       "created_at": "2026-07-20T05:20:09.009682+00:00",
       "last_reinforced": "2026-07-20T05:20:09.009682+00:00",
       "decay_rate": 0.02,
@@ -49,7 +26,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 26
+      "miss_count": 27
     },
     {
       "id": 1203,
@@ -57,7 +34,7 @@
       "group": "memory",
       "source_session": "DS-20260720-071830",
       "source_hypothesis": "H-002",
-      "confidence": 0.2199999999999997,
+      "confidence": 0.1999999999999997,
       "created_at": "2026-07-20T07:19:41.873613+00:00",
       "last_reinforced": "2026-07-21T05:10:12.482458+00:00",
       "decay_rate": 0.02,
@@ -72,7 +49,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 24
+      "miss_count": 25
     },
     {
       "id": 1204,
@@ -80,7 +57,7 @@
       "group": "memory",
       "source_session": "DS-20260721-050802",
       "source_hypothesis": "H-003",
-      "confidence": 0.11999999999999984,
+      "confidence": 0.09999999999999984,
       "created_at": "2026-07-21T05:10:12.483048+00:00",
       "last_reinforced": "2026-07-21T05:10:12.483048+00:00",
       "decay_rate": 0.02,
@@ -95,7 +72,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 24
+      "miss_count": 25
     },
     {
       "id": 1205,
@@ -103,7 +80,7 @@
       "group": "memory",
       "source_session": "DS-20260722-050724",
       "source_hypothesis": "H-003",
-      "confidence": 0.2599999999999997,
+      "confidence": 0.23999999999999969,
       "created_at": "2026-07-22T05:08:49.428781+00:00",
       "last_reinforced": "2026-07-23T05:10:38.377217+00:00",
       "decay_rate": 0.02,
@@ -118,7 +95,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 22
+      "miss_count": 23
     },
     {
       "id": 1206,
@@ -126,7 +103,7 @@
       "group": "memory",
       "source_session": "DS-20260723-050818",
       "source_hypothesis": "H-003",
-      "confidence": 0.15999999999999984,
+      "confidence": 0.13999999999999985,
       "created_at": "2026-07-23T05:10:38.377351+00:00",
       "last_reinforced": "2026-07-23T05:10:38.377351+00:00",
       "decay_rate": 0.02,
@@ -141,7 +118,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 22
+      "miss_count": 23
     },
     {
       "id": 1207,
@@ -149,7 +126,7 @@
       "group": "memory",
       "source_session": "DS-20260724-050724",
       "source_hypothesis": "H-003",
-      "confidence": 0.17999999999999983,
+      "confidence": 0.15999999999999984,
       "created_at": "2026-07-24T05:09:44.702772+00:00",
       "last_reinforced": "2026-07-24T05:09:44.702772+00:00",
       "decay_rate": 0.02,
@@ -164,7 +141,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 21
+      "miss_count": 22
     },
     {
       "id": 1208,
@@ -172,7 +149,7 @@
       "group": "memory",
       "source_session": "DS-20260725-050700",
       "source_hypothesis": "H-003",
-      "confidence": 0.19999999999999982,
+      "confidence": 0.17999999999999983,
       "created_at": "2026-07-25T05:08:45.218311+00:00",
       "last_reinforced": "2026-07-25T05:08:45.218311+00:00",
       "decay_rate": 0.02,
@@ -187,7 +164,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 20
+      "miss_count": 21
     },
     {
       "id": 1209,
@@ -195,7 +172,7 @@
       "group": "memory",
       "source_session": "DS-20260726-051120",
       "source_hypothesis": "H-003",
-      "confidence": 0.2199999999999998,
+      "confidence": 0.19999999999999982,
       "created_at": "2026-07-26T05:13:41.470151+00:00",
       "last_reinforced": "2026-07-26T05:13:41.470151+00:00",
       "decay_rate": 0.02,
@@ -210,7 +187,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 19
+      "miss_count": 20
     },
     {
       "id": 1210,
@@ -218,7 +195,7 @@
       "group": "memory",
       "source_session": "DS-20260727-052121",
       "source_hypothesis": "H-003",
-      "confidence": 0.2399999999999998,
+      "confidence": 0.2199999999999998,
       "created_at": "2026-07-27T05:23:33.468004+00:00",
       "last_reinforced": "2026-07-27T05:23:33.468004+00:00",
       "decay_rate": 0.02,
@@ -233,7 +210,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 18
+      "miss_count": 19
     },
     {
       "id": 1211,
@@ -241,7 +218,7 @@
       "group": "memory",
       "source_session": "DS-20260727-072314",
       "source_hypothesis": "H-003",
-      "confidence": 0.2599999999999998,
+      "confidence": 0.2399999999999998,
       "created_at": "2026-07-27T07:24:26.473141+00:00",
       "last_reinforced": "2026-07-27T07:24:26.473141+00:00",
       "decay_rate": 0.02,
@@ -256,7 +233,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 17
+      "miss_count": 18
     },
     {
       "id": 1212,
@@ -264,7 +241,7 @@
       "group": "memory",
       "source_session": "DS-20260728-050703",
       "source_hypothesis": "H-003",
-      "confidence": 0.2799999999999998,
+      "confidence": 0.2599999999999998,
       "created_at": "2026-07-28T05:09:37.679546+00:00",
       "last_reinforced": "2026-07-28T05:09:37.679546+00:00",
       "decay_rate": 0.02,
@@ -279,7 +256,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 16
+      "miss_count": 17
     },
     {
       "id": 1213,
@@ -287,7 +264,7 @@
       "group": "memory",
       "source_session": "DS-20260729-050809",
       "source_hypothesis": "H-003",
-      "confidence": 0.2999999999999998,
+      "confidence": 0.2799999999999998,
       "created_at": "2026-07-29T05:09:59.519160+00:00",
       "last_reinforced": "2026-07-29T05:09:59.519160+00:00",
       "decay_rate": 0.02,
@@ -302,7 +279,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 15
+      "miss_count": 16
     },
     {
       "id": 1214,
@@ -310,7 +287,7 @@
       "group": "memory",
       "source_session": "DS-20260730-050559",
       "source_hypothesis": "H-003",
-      "confidence": 0.94,
+      "confidence": 0.9199999999999999,
       "created_at": "2026-07-30T05:08:38.272941+00:00",
       "last_reinforced": "2026-08-09T04:32:58.083234+00:00",
       "decay_rate": 0.02,
@@ -325,7 +302,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 3
+      "miss_count": 4
     },
     {
       "id": 1215,
@@ -333,7 +310,7 @@
       "group": "memory",
       "source_session": "DS-20260731-051407",
       "source_hypothesis": "H-003",
-      "confidence": 0.45999999999999985,
+      "confidence": 0.43999999999999984,
       "created_at": "2026-07-31T05:16:44.186944+00:00",
       "last_reinforced": "2026-08-01T05:11:09.953481+00:00",
       "decay_rate": 0.02,
@@ -348,7 +325,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 12
+      "miss_count": 13
     },
     {
       "id": 1216,
@@ -356,7 +333,7 @@
       "group": "memory",
       "source_session": "DS-20260801-050829",
       "source_hypothesis": "H-003",
-      "confidence": 0.3599999999999999,
+      "confidence": 0.33999999999999986,
       "created_at": "2026-08-01T05:11:09.954905+00:00",
       "last_reinforced": "2026-08-01T05:11:09.954905+00:00",
       "decay_rate": 0.02,
@@ -371,7 +348,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 12
+      "miss_count": 13
     },
     {
       "id": 1217,
@@ -379,7 +356,7 @@
       "group": "memory",
       "source_session": "DS-20260802-050813",
       "source_hypothesis": "H-003",
-      "confidence": 0.3799999999999999,
+      "confidence": 0.3599999999999999,
       "created_at": "2026-08-02T05:10:51.424380+00:00",
       "last_reinforced": "2026-08-02T05:10:51.424380+00:00",
       "decay_rate": 0.02,
@@ -394,7 +371,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 11
+      "miss_count": 12
     },
     {
       "id": 1218,
@@ -402,9 +379,9 @@
       "group": "memory",
       "source_session": "DS-20260803-051746",
       "source_hypothesis": "H-003",
-      "confidence": 0.8799999999999999,
+      "confidence": 0.9799999999999999,
       "created_at": "2026-08-03T05:20:17.623835+00:00",
-      "last_reinforced": "2026-08-11T04:34:40.504998+00:00",
+      "last_reinforced": "2026-08-12T04:39:12.135664+00:00",
       "decay_rate": 0.02,
       "tags": [
         "basin:1:1,1213,1212,1210,1216:0.7",
@@ -425,7 +402,7 @@
       "group": "memory",
       "source_session": "DS-20260803-072234",
       "source_hypothesis": "H-002",
-      "confidence": 0.8999999999999999,
+      "confidence": 0.8799999999999999,
       "created_at": "2026-08-03T07:24:00.754024+00:00",
       "last_reinforced": "2026-08-07T04:44:23.003160+00:00",
       "decay_rate": 0.02,
@@ -440,7 +417,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 5
+      "miss_count": 6
     },
     {
       "id": 1220,
@@ -448,7 +425,7 @@
       "group": "memory",
       "source_session": "DS-20260804-050716",
       "source_hypothesis": "H-002",
-      "confidence": 0.5599999999999999,
+      "confidence": 0.5399999999999999,
       "created_at": "2026-08-04T05:09:41.460895+00:00",
       "last_reinforced": "2026-08-05T05:09:07.832071+00:00",
       "decay_rate": 0.02,
@@ -463,7 +440,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 7
+      "miss_count": 8
     },
     {
       "id": 1221,
@@ -471,7 +448,7 @@
       "group": "memory",
       "source_session": "DS-20260805-050637",
       "source_hypothesis": "H-001",
-      "confidence": 0.45999999999999996,
+      "confidence": 0.43999999999999995,
       "created_at": "2026-08-05T05:09:07.831260+00:00",
       "last_reinforced": "2026-08-05T05:09:07.831260+00:00",
       "decay_rate": 0.02,
@@ -486,7 +463,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 7
+      "miss_count": 8
     },
     {
       "id": 1222,
@@ -494,7 +471,7 @@
       "group": "memory",
       "source_session": "DS-20260806-050640",
       "source_hypothesis": "H-001",
-      "confidence": 0.48,
+      "confidence": 0.45999999999999996,
       "created_at": "2026-08-06T05:09:06.542490+00:00",
       "last_reinforced": "2026-08-06T05:09:06.542490+00:00",
       "decay_rate": 0.02,
@@ -509,7 +486,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 6
+      "miss_count": 7
     },
     {
       "id": 1223,
@@ -517,7 +494,7 @@
       "group": "memory",
       "source_session": "DS-20260807-044155",
       "source_hypothesis": "H-001",
-      "confidence": 0.5,
+      "confidence": 0.48,
       "created_at": "2026-08-07T04:44:23.002173+00:00",
       "last_reinforced": "2026-08-07T04:44:23.002173+00:00",
       "decay_rate": 0.02,
@@ -532,7 +509,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 5
+      "miss_count": 6
     },
     {
       "id": 1224,
@@ -540,7 +517,7 @@
       "group": "memory",
       "source_session": "DS-20260808-042548",
       "source_hypothesis": "H-002",
-      "confidence": 0.64,
+      "confidence": 0.62,
       "created_at": "2026-08-08T04:28:13.170158+00:00",
       "last_reinforced": "2026-08-09T04:32:58.083393+00:00",
       "decay_rate": 0.02,
@@ -555,7 +532,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 3
+      "miss_count": 4
     },
     {
       "id": 1225,
@@ -563,7 +540,7 @@
       "group": "memory",
       "source_session": "DS-20260809-043033",
       "source_hypothesis": "H-001",
-      "confidence": 0.54,
+      "confidence": 0.52,
       "created_at": "2026-08-09T04:32:58.082382+00:00",
       "last_reinforced": "2026-08-09T04:32:58.082382+00:00",
       "decay_rate": 0.02,
@@ -578,7 +555,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 3
+      "miss_count": 4
     },
     {
       "id": 1226,
@@ -586,9 +563,9 @@
       "group": "memory",
       "source_session": "DS-20260810-043441",
       "source_hypothesis": "H-002",
-      "confidence": 0.8,
+      "confidence": 0.9,
       "created_at": "2026-08-10T04:37:10.303548+00:00",
-      "last_reinforced": "2026-08-11T04:34:40.505344+00:00",
+      "last_reinforced": "2026-08-12T04:39:12.136025+00:00",
       "decay_rate": 0.02,
       "tags": [
         "basin:1:1,1213,1212,1210,1216:0.9",
@@ -609,7 +586,7 @@
       "group": "memory",
       "source_session": "DS-20260810-063950",
       "source_hypothesis": "H-001",
-      "confidence": 0.5800000000000001,
+      "confidence": 0.56,
       "created_at": "2026-08-10T06:40:51.696109+00:00",
       "last_reinforced": "2026-08-10T06:40:51.696109+00:00",
       "decay_rate": 0.02,
@@ -624,7 +601,7 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
-      "miss_count": 1
+      "miss_count": 2
     },
     {
       "id": 1228,
@@ -632,7 +609,7 @@
       "group": "memory",
       "source_session": "DS-20260811-043223",
       "source_hypothesis": "H-001",
-      "confidence": 0.6000000000000001,
+      "confidence": 0.5800000000000001,
       "created_at": "2026-08-11T04:34:40.505498+00:00",
       "last_reinforced": "2026-08-11T04:34:40.505498+00:00",
       "decay_rate": 0.02,
@@ -647,26 +624,33 @@
       "psi_bias": 0.0,
       "semanticMass": 1.0,
       "semanticMass0": 1.0,
+      "miss_count": 1
+    },
+    {
+      "id": 1229,
+      "label": "basin:1216:1216,1210,1211,1205,1213:0.9",
+      "group": "memory",
+      "source_session": "DS-20260812-043651",
+      "source_hypothesis": "H-001",
+      "confidence": 0.6000000000000001,
+      "created_at": "2026-08-12T04:39:12.136180+00:00",
+      "last_reinforced": "2026-08-12T04:39:12.136180+00:00",
+      "decay_rate": 0.02,
+      "tags": [
+        "basin:1216:1216,1210,1211,1205,1213:0.9",
+        "rhoMax:1216",
+        "entropy:0.9"
+      ],
+      "rho": 0.0,
+      "p": 0.0,
+      "psi": 0.0,
+      "psi_bias": 0.0,
+      "semanticMass": 1.0,
+      "semanticMass0": 1.0,
       "miss_count": 0
     }
   ],
   "edges": [
-    {
-      "from_id": 1201,
-      "to_id": 1,
-      "w0": 0.18000000000000002,
-      "kind": "memory",
-      "source_session": "DS-20260719-050731",
-      "rationale": "Stable attractor discovered in dream replay (stability=3)"
-    },
-    {
-      "from_id": 1201,
-      "to_id": 1,
-      "w0": 0.18000000000000002,
-      "kind": "memory",
-      "source_session": "DS-20260719-050731",
-      "rationale": "Stable attractor discovered in dream replay (stability=3)"
-    },
     {
       "from_id": 1202,
       "to_id": 1,
@@ -705,14 +689,6 @@
       "w0": 0.18000000000000002,
       "kind": "memory",
       "source_session": "DS-20260720-071830",
-      "rationale": "Stable attractor discovered in dream replay (stability=3)"
-    },
-    {
-      "from_id": 1204,
-      "to_id": 1201,
-      "w0": 0.18000000000000002,
-      "kind": "memory",
-      "source_session": "DS-20260721-050802",
       "rationale": "Stable attractor discovered in dream replay (stability=3)"
     },
     {
@@ -1466,7 +1442,15 @@
       "kind": "memory",
       "source_session": "DS-20260811-043223",
       "rationale": "Stable attractor discovered in dream replay (stability=3)"
+    },
+    {
+      "from_id": 1229,
+      "to_id": 1216,
+      "w0": 0.18000000000000002,
+      "kind": "memory",
+      "source_session": "DS-20260812-043651",
+      "rationale": "Stable attractor discovered in dream replay (stability=3)"
     }
   ],
-  "id_counter": 1229
+  "id_counter": 1230
 }
