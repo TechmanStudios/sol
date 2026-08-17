@@ -1,11 +1,11 @@
 # Experiment Ledger
 
-Generated: 2026-08-17T04:20:12.822054+00:00
-Records: 1761 | Runs: 341
+Generated: 2026-08-17T06:17:54.521517+00:00
+Records: 1762 | Runs: 342
 
 ## cortex
 
-- Runs: 80 | Generations: 80 | Accepted: 63 | Acceptance: 78.75%
+- Runs: 81 | Generations: 81 | Accepted: 64 | Acceptance: 79.01%
 
 ### Modes
 
@@ -16,7 +16,7 @@ Records: 1761 | Runs: 341
 | open_question | 33 | 33 | 33 | 100.00% | 1.0000 | 8.0000 |
 | unexplored_param | 2 | 2 | 2 | 100.00% | 1.0000 | 4.0000 |
 | unfalsified | 1 | 1 | 1 | 100.00% | 1.0000 | 1.0000 |
-| unpromoted | 25 | 25 | 25 | 100.00% | 1.0000 | 5.0000 |
+| unpromoted | 26 | 26 | 26 | 100.00% | 1.0000 | 5.0000 |
 | weak_evidence | 1 | 1 | 1 | 100.00% | 1.0000 | 10.0000 |
 
 ### Top Runs
@@ -134,7 +134,7 @@ Records: 1761 | Runs: 341
 
 | Signal | Records | Accepted | Experiments |
 |---|---:|---:|---|
-| sol_manifold | 1460 | 330 | cortex, dream, self_train |
+| sol_manifold | 1461 | 331 | cortex, dream, self_train |
 | policy_adaptation | 1138 | 25 | self_train |
 | adaptive_rsi | 294 | 169 | rsi |
 | dream_replay | 242 | 242 | dream |
@@ -142,8 +142,8 @@ Records: 1761 | Runs: 341
 | entropy_band:0p70 | 171 | 171 | dream |
 | open_questions | 133 | 8 | rsi |
 | entropy_band:0p80 | 111 | 111 | dream |
-| injection:grail | 79 | 63 | cortex |
-| damping | 75 | 59 | cortex |
+| injection:grail | 80 | 64 | cortex |
+| damping | 76 | 60 | cortex |
 | source:cx_20260316_064244 | 38 | 38 | dream |
 | source:cx_20260323_063706 | 38 | 38 | dream |
 | source:cx_20260330_064835 | 38 | 38 | dream |
@@ -3230,7 +3230,7 @@ Records: 1761 | Runs: 341
 | basin_reinforced | 68 | 68 | dream |
 | threshold_transition | 68 | 52 | cortex |
 | high_replay_yield | 63 | 63 | dream |
-| stable_replay | 59 | 59 | cortex |
+| stable_replay | 60 | 60 | cortex |
 | basin_migration | 30 | 30 | cortex |
 | topological_reorganization | 30 | 30 | cortex |
 | accepted_candidate | 25 | 25 | self_train |
@@ -3247,7 +3247,7 @@ Records: 1761 | Runs: 341
 | decay_dominant | 236 | 236 | dream |
 | cycle_error | 125 | 0 | rsi |
 | entropy_band_drift | 79 | 79 | dream |
-| mechanistic_gap | 50 | 50 | cortex |
+| mechanistic_gap | 51 | 51 | cortex |
 | unknown_mechanics | 49 | 49 | cortex |
 | open_question | 34 | 34 | cortex |
 | unmapped_regime | 30 | 30 | cortex |
