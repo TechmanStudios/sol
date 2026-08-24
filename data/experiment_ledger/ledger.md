@@ -1,11 +1,11 @@
 # Experiment Ledger
 
-Generated: 2026-08-24T04:20:36.742621+00:00
-Records: 1770 | Runs: 350
+Generated: 2026-08-24T06:21:46.707275+00:00
+Records: 1771 | Runs: 351
 
 ## cortex
 
-- Runs: 81 | Generations: 81 | Accepted: 64 | Acceptance: 79.01%
+- Runs: 82 | Generations: 82 | Accepted: 65 | Acceptance: 79.27%
 
 ### Modes
 
@@ -16,7 +16,7 @@ Records: 1770 | Runs: 350
 | open_question | 33 | 33 | 33 | 100.00% | 1.0000 | 8.0000 |
 | unexplored_param | 2 | 2 | 2 | 100.00% | 1.0000 | 4.0000 |
 | unfalsified | 1 | 1 | 1 | 100.00% | 1.0000 | 1.0000 |
-| unpromoted | 26 | 26 | 26 | 100.00% | 1.0000 | 5.0000 |
+| unpromoted | 27 | 27 | 27 | 100.00% | 1.0000 | 5.0000 |
 | weak_evidence | 1 | 1 | 1 | 100.00% | 1.0000 | 10.0000 |
 
 ### Top Runs
@@ -134,7 +134,7 @@ Records: 1770 | Runs: 350
 
 | Signal | Records | Accepted | Experiments |
 |---|---:|---:|---|
-| sol_manifold | 1469 | 339 | cortex, dream, self_train |
+| sol_manifold | 1470 | 340 | cortex, dream, self_train |
 | policy_adaptation | 1138 | 25 | self_train |
 | adaptive_rsi | 294 | 169 | rsi |
 | dream_replay | 250 | 250 | dream |
@@ -142,8 +142,8 @@ Records: 1770 | Runs: 350
 | entropy_band:0p70 | 172 | 172 | dream |
 | open_questions | 133 | 8 | rsi |
 | entropy_band:0p80 | 117 | 117 | dream |
-| injection:grail | 80 | 64 | cortex |
-| damping | 76 | 60 | cortex |
+| injection:grail | 81 | 65 | cortex |
+| damping | 77 | 61 | cortex |
 | rho:1 | 45 | 45 | dream |
 | source:cx_20260316_064244 | 38 | 38 | dream |
 | source:cx_20260323_063706 | 38 | 38 | dream |
@@ -3333,9 +3333,9 @@ Records: 1770 | Runs: 350
 | new_basin_discovered | 249 | 249 | dream |
 | dominant_rho_persistent | 120 | 120 | dream |
 | basin_reinforced | 71 | 71 | dream |
-| threshold_transition | 68 | 52 | cortex |
+| threshold_transition | 69 | 53 | cortex |
 | high_replay_yield | 64 | 64 | dream |
-| stable_replay | 60 | 60 | cortex |
+| stable_replay | 61 | 61 | cortex |
 | basin_migration | 30 | 30 | cortex |
 | topological_reorganization | 30 | 30 | cortex |
 | accepted_candidate | 25 | 25 | self_train |
@@ -3352,8 +3352,8 @@ Records: 1770 | Runs: 350
 | decay_dominant | 244 | 244 | dream |
 | cycle_error | 125 | 0 | rsi |
 | entropy_band_drift | 86 | 86 | dream |
-| mechanistic_gap | 51 | 51 | cortex |
-| unknown_mechanics | 49 | 49 | cortex |
+| mechanistic_gap | 52 | 52 | cortex |
+| unknown_mechanics | 50 | 50 | cortex |
 | open_question | 34 | 34 | cortex |
 | unmapped_regime | 30 | 30 | cortex |
 | phase2_regression | 3 | 0 | resonance |
