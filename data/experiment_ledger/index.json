@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-09-14T04:20:49.910221+00:00",
-  "records": 1797,
-  "runs": 377,
+  "generated_at": "2026-09-14T06:40:10.596307+00:00",
+  "records": 1798,
+  "runs": 378,
   "experiments": {
     "cortex": {
-      "runs": 84,
-      "generations": 84,
-      "accepted_generations": 67,
-      "acceptance_rate": 0.7976190476190477,
+      "runs": 85,
+      "generations": 85,
+      "accepted_generations": 68,
+      "acceptance_rate": 0.8,
       "top_runs_by_anchor": [
         {
           "experiment": "cortex",
@@ -192,9 +192,9 @@
           "best_full_delta": 1.0
         },
         "unpromoted": {
-          "generations": 29,
-          "runs": 29,
-          "accepted_generations": 29,
+          "generations": 30,
+          "runs": 30,
+          "accepted_generations": 30,
           "acceptance_rate": 1.0,
           "best_anchor_delta": 1.0,
           "best_full_delta": 5.0
@@ -746,8 +746,8 @@
   },
   "knowledge_domains": {
     "sol_manifold": {
-      "records": 1496,
-      "accepted_generations": 366,
+      "records": 1497,
+      "accepted_generations": 367,
       "experiments": [
         "cortex",
         "dream",
@@ -804,8 +804,8 @@
       ]
     },
     "injection:grail": {
-      "records": 83,
-      "accepted_generations": 67,
+      "records": 84,
+      "accepted_generations": 68,
       "experiments": [
         "cortex"
       ]
@@ -25299,8 +25299,8 @@
       ]
     },
     "stable_replay": {
-      "records": 63,
-      "accepted_generations": 63,
+      "records": 64,
+      "accepted_generations": 64,
       "experiments": [
         "cortex"
       ]
@@ -25392,8 +25392,8 @@
       ]
     },
     "unknown_mechanics": {
-      "records": 51,
-      "accepted_generations": 51,
+      "records": 52,
+      "accepted_generations": 52,
       "experiments": [
         "cortex"
       ]

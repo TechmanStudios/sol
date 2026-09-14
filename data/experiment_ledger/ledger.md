@@ -1,11 +1,11 @@
 # Experiment Ledger
 
-Generated: 2026-09-14T04:20:49.910221+00:00
-Records: 1797 | Runs: 377
+Generated: 2026-09-14T06:40:10.596307+00:00
+Records: 1798 | Runs: 378
 
 ## cortex
 
-- Runs: 84 | Generations: 84 | Accepted: 67 | Acceptance: 79.76%
+- Runs: 85 | Generations: 85 | Accepted: 68 | Acceptance: 80.00%
 
 ### Modes
 
@@ -16,7 +16,7 @@ Records: 1797 | Runs: 377
 | open_question | 33 | 33 | 33 | 100.00% | 1.0000 | 8.0000 |
 | unexplored_param | 2 | 2 | 2 | 100.00% | 1.0000 | 4.0000 |
 | unfalsified | 1 | 1 | 1 | 100.00% | 1.0000 | 1.0000 |
-| unpromoted | 29 | 29 | 29 | 100.00% | 1.0000 | 5.0000 |
+| unpromoted | 30 | 30 | 30 | 100.00% | 1.0000 | 5.0000 |
 | weak_evidence | 1 | 1 | 1 | 100.00% | 1.0000 | 10.0000 |
 
 ### Top Runs
@@ -134,7 +134,7 @@ Records: 1797 | Runs: 377
 
 | Signal | Records | Accepted | Experiments |
 |---|---:|---:|---|
-| sol_manifold | 1496 | 366 | cortex, dream, self_train |
+| sol_manifold | 1497 | 367 | cortex, dream, self_train |
 | policy_adaptation | 1138 | 25 | self_train |
 | adaptive_rsi | 294 | 169 | rsi |
 | dream_replay | 274 | 274 | dream |
@@ -142,7 +142,7 @@ Records: 1797 | Runs: 377
 | entropy_band:0p70 | 181 | 181 | dream |
 | entropy_band:0p80 | 133 | 133 | dream |
 | open_questions | 133 | 8 | rsi |
-| injection:grail | 83 | 67 | cortex |
+| injection:grail | 84 | 68 | cortex |
 | damping | 78 | 62 | cortex |
 | rho:1 | 63 | 63 | dream |
 | entropy_band:0p60 | 42 | 42 | dream |
@@ -3646,7 +3646,7 @@ Records: 1797 | Runs: 377
 | basin_reinforced | 74 | 74 | dream |
 | threshold_transition | 69 | 53 | cortex |
 | high_replay_yield | 67 | 67 | dream |
-| stable_replay | 63 | 63 | cortex |
+| stable_replay | 64 | 64 | cortex |
 | basin_migration | 30 | 30 | cortex |
 | topological_reorganization | 30 | 30 | cortex |
 | accepted_candidate | 25 | 25 | self_train |
@@ -3664,7 +3664,7 @@ Records: 1797 | Runs: 377
 | cycle_error | 125 | 0 | rsi |
 | entropy_band_drift | 94 | 94 | dream |
 | mechanistic_gap | 54 | 54 | cortex |
-| unknown_mechanics | 51 | 51 | cortex |
+| unknown_mechanics | 52 | 52 | cortex |
 | open_question | 34 | 34 | cortex |
 | unmapped_regime | 30 | 30 | cortex |
 | phase2_regression | 3 | 0 | resonance |
