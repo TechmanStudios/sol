@@ -1,12 +1,13 @@
 # Dream Ledger
 
-Generated: 2026-09-18T04:18:22.814365+00:00
-Nights analyzed: 279 | Cross-night findings: 3648
+Generated: 2026-09-19T04:17:56.621863+00:00
+Nights analyzed: 280 | Cross-night findings: 3662
 
 ## Latest nights
 
 | Night | Sources | Replays | New | Reinf | Decay | Unique basins | Stable | Score (mean / max) |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
+| DS-20260919-041631 | 5 | 15 | 6 | 0 | 33 | 13 | 13 | 0.215 / 0.554 |
 | DS-20260918-041657 | 5 | 15 | 4 | 0 | 34 | 13 | 13 | 0.237 / 0.612 |
 | DS-20260917-041750 | 5 | 15 | 4 | 1 | 34 | 13 | 13 | 0.262 / 0.675 |
 | DS-20260916-041738 | 5 | 15 | 3 | 0 | 35 | 13 | 13 | 0.289 / 0.746 |
@@ -16,7 +17,6 @@ Nights analyzed: 279 | Cross-night findings: 3648
 | DS-20260913-042008 | 5 | 15 | 5 | 0 | 35 | 13 | 13 | 0.194 / 0.502 |
 | DS-20260912-041607 | 5 | 15 | 5 | 2 | 33 | 13 | 13 | 0.215 / 0.554 |
 | DS-20260911-041804 | 5 | 15 | 6 | 0 | 35 | 13 | 13 | 0.237 / 0.612 |
-| DS-20260910-041733 | 5 | 15 | 4 | 0 | 34 | 13 | 13 | 0.262 / 0.675 |
 
 ## New / recurring stable basins
 
@@ -25,13 +25,13 @@ Nights analyzed: 279 | Cross-night findings: 3648
 | `basin:0d23b5e8` | recurring_basin | ✓ | ★ | 6 | 7 | Basin mass_hash=0d23b5e8 observed on 6 night(s) across 7 source cortex session(s); stable on 6 night(s). |
 | `basin:6cb5e793` | recurring_basin | ✓ | ★ | 6 | 6 | Basin mass_hash=6cb5e793 observed on 6 night(s) across 6 source cortex session(s); stable on 6 night(s). |
 | `basin:6339d8ff` | recurring_basin | ✓ | ★ | 5 | 7 | Basin mass_hash=6339d8ff observed on 5 night(s) across 7 source cortex session(s); stable on 5 night(s). |
+| `basin:33d0336b` | recurring_basin | ✓ | ★ | 4 | 5 | Basin mass_hash=33d0336b observed on 4 night(s) across 5 source cortex session(s); stable on 4 night(s). |
 | `basin:44ef3b24` | recurring_basin | ✓ | ★ | 4 | 6 | Basin mass_hash=44ef3b24 observed on 4 night(s) across 6 source cortex session(s); stable on 4 night(s). |
 | `basin:7a295027` | recurring_basin | ✓ | ★ | 4 | 6 | Basin mass_hash=7a295027 observed on 4 night(s) across 6 source cortex session(s); stable on 4 night(s). |
 | `basin:7a7d19f6` | recurring_basin | ✓ | ★ | 4 | 10 | Basin mass_hash=7a7d19f6 observed on 4 night(s) across 10 source cortex session(s); stable on 4 night(s). |
 | `basin:ab36083e` | recurring_basin | ✓ | ★ | 4 | 14 | Basin mass_hash=ab36083e observed on 4 night(s) across 14 source cortex session(s); stable on 4 night(s). |
 | `basin:ee5d8909` | recurring_basin | ✓ | ★ | 4 | 11 | Basin mass_hash=ee5d8909 observed on 4 night(s) across 11 source cortex session(s); stable on 4 night(s). |
 | `basin:188734be` | recurring_basin | ✓ | ★ | 3 | 5 | Basin mass_hash=188734be observed on 3 night(s) across 5 source cortex session(s); stable on 3 night(s). |
-| `basin:33d0336b` | recurring_basin | ✓ | ★ | 3 | 5 | Basin mass_hash=33d0336b observed on 3 night(s) across 5 source cortex session(s); stable on 3 night(s). |
 | `basin:558e9722` | recurring_basin | ✓ | ★ | 3 | 5 | Basin mass_hash=558e9722 observed on 3 night(s) across 5 source cortex session(s); stable on 3 night(s). |
 | `basin:55abb7ef` | recurring_basin | ✓ | ★ | 3 | 6 | Basin mass_hash=55abb7ef observed on 3 night(s) across 6 source cortex session(s); stable on 3 night(s). |
 | `basin:611cc53d` | recurring_basin | ✓ | ★ | 3 | 6 | Basin mass_hash=611cc53d observed on 3 night(s) across 6 source cortex session(s); stable on 3 night(s). |
@@ -47,7 +47,7 @@ Nights analyzed: 279 | Cross-night findings: 3648
 
 | Finding | Class | Stable | Promote | Nights | Sources | Description |
 |---|---|:-:|:-:|---:|---:|---|
-| `dominant_basin_turnover` | basin_turnover | ✓ | · | 275 | 0 | Dominant basin shifted on 275/279 nights. |
+| `dominant_basin_turnover` | basin_turnover | ✓ | · | 276 | 0 | Dominant basin shifted on 276/280 nights. |
 
 ## Possible information-transfer mechanisms
 
