@@ -1,6 +1,6 @@
 # Dream Findings — Consolidated
 
-Generated: 2026-09-28T04:22:16.038099+00:00
+Generated: 2026-09-28T06:45:28.957597+00:00
 
 Findings stable across multiple nights or source cortex sessions, eligible as proof-packet candidates. Each row links back to the originating dream session ids under `data/dream_sessions/`.
 

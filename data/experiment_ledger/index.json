@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-09-28T04:22:15.453737+00:00",
-  "records": 1815,
-  "runs": 395,
+  "generated_at": "2026-09-28T06:45:28.370897+00:00",
+  "records": 1816,
+  "runs": 396,
   "experiments": {
     "cortex": {
-      "runs": 86,
-      "generations": 86,
-      "accepted_generations": 69,
-      "acceptance_rate": 0.8023255813953488,
+      "runs": 87,
+      "generations": 87,
+      "accepted_generations": 70,
+      "acceptance_rate": 0.8045977011494253,
       "top_runs_by_anchor": [
         {
           "experiment": "cortex",
@@ -192,9 +192,9 @@
           "best_full_delta": 1.0
         },
         "unpromoted": {
-          "generations": 31,
-          "runs": 31,
-          "accepted_generations": 31,
+          "generations": 32,
+          "runs": 32,
+          "accepted_generations": 32,
           "acceptance_rate": 1.0,
           "best_anchor_delta": 1.0,
           "best_full_delta": 5.0
@@ -746,8 +746,8 @@
   },
   "knowledge_domains": {
     "sol_manifold": {
-      "records": 1514,
-      "accepted_generations": 384,
+      "records": 1515,
+      "accepted_generations": 385,
       "experiments": [
         "cortex",
         "dream",
@@ -804,8 +804,8 @@
       ]
     },
     "injection:grail": {
-      "records": 85,
-      "accepted_generations": 69,
+      "records": 86,
+      "accepted_generations": 70,
       "experiments": [
         "cortex"
       ]
@@ -1042,8 +1042,8 @@
       ]
     },
     "dt": {
-      "records": 27,
-      "accepted_generations": 27,
+      "records": 28,
+      "accepted_generations": 28,
       "experiments": [
         "cortex"
       ]
@@ -1125,6 +1125,13 @@
         "dream"
       ]
     },
+    "psi_diffusion": {
+      "records": 9,
+      "accepted_generations": 9,
+      "experiments": [
+        "cortex"
+      ]
+    },
     "rho:1139": {
       "records": 9,
       "accepted_generations": 9,
@@ -1158,13 +1165,6 @@
       "accepted_generations": 9,
       "experiments": [
         "dream"
-      ]
-    },
-    "psi_diffusion": {
-      "records": 8,
-      "accepted_generations": 8,
-      "experiments": [
-        "cortex"
       ]
     },
     "rho:1027": {
@@ -26706,8 +26706,8 @@
       ]
     },
     "stable_replay": {
-      "records": 65,
-      "accepted_generations": 65,
+      "records": 66,
+      "accepted_generations": 66,
       "experiments": [
         "cortex"
       ]
@@ -26792,8 +26792,8 @@
       ]
     },
     "mechanistic_gap": {
-      "records": 54,
-      "accepted_generations": 54,
+      "records": 55,
+      "accepted_generations": 55,
       "experiments": [
         "cortex"
       ]
