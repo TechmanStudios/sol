@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOL: Living System | Techman Studios</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0a0a12;
+            --panel-bg: #161621;
+            --text-color: #e0e0e0;
+            --accent-color: #00bcd4;
+            --accent-glow: #00bcd480;
+            --mode-spirit: #9c27b0;
+            --mode-logic: #4caf50;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Sidebar Controls */
+        #controls {
+            width: 320px;
+            background-color: var(--panel-bg);
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        h1 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; color: var(--accent-color); }
+        h2 { font-size: 0.9rem; text-transform: uppercase; color: #888; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+
+        .help-text { font-size: 0.8rem; color: #aaa; margin: 6px 0 0; line-height: 1.25; }
+
+        .help-text.tight { margin-top: 4px; }
+
+        .help-hint { font-size: 0.75rem; color: #666; margin-top: 6px; }
+
+        .help-hint.tight { margin-top: 4px; }
+        
+        .metric-box {
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        /* Inputs */
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus { outline: none; border-color: var(--accent-color); }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: var(--accent-color);
+            border: none;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+        button:hover { background: white; box-shadow: 0 0 10px var(--accent-glow); }
+
+        /* Sliders */
+        .slider-container { margin-top: 10px; }
+        label { font-size: 0.8rem; display: flex; justify-content: space-between; }
+        input[type="range"] { width: 100%; cursor: pointer; }
+
+        /* Visualization Area */
+        #network-container {
+            flex-grow: 1;
+            position: relative;
+            background: radial-gradient(circle at center, #1a1a24 0%, #000 100%);
+            cursor: crosshair;
+        }
+
+        #network {
+            position: absolute;
+            inset: 0;
+            outline: none;
+        }
+
+        #overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            pointer-events: none;
+            text-align: right;
+        }
+
+        #metrics-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 6;
+            width: min(360px, calc(100vw - 40px));
+            pointer-events: none;
+            background: rgba(0,0,0,0.28);
+            border: 1px solid #222;
+            padding: 10px 12px;
+            border-radius: 8px;
+        }
+
+        #metrics-overlay .hud-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            column-gap: 10px;
+            row-gap: 6px;
+            align-items: baseline;
+        }
+
+        #metrics-overlay .hud-row-4 {
+            display: grid;
+            grid-template-columns: auto 1fr auto 1fr;
+            column-gap: 10px;
+            align-items: baseline;
+        }
+
+        #metrics-overlay .hud-label {
+            color: #9aa;
+            font-size: 0.72rem;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        #metrics-overlay .hud-value {
+            color: var(--text-color);
+            font-size: 0.88rem;
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        #metrics-overlay .hud-divider {
+            height: 1px;
+            background: #222;
+            margin: 8px 0;
+        }
+        .mode-indicator {
+            font-size: 2rem;
+            font-weight: bold;
+            opacity: 0.2;
+            transition: 0.5s;
+        }
+
+        /* Help Drawer (side window) */
+        #helpDrawerBackdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 19;
+        }
+
+        /* Ensure the backdrop is truly non-interactive when hidden.
+           (Some extensions/styles can accidentally override UA [hidden] rules.) */
+        #helpDrawerBackdrop[hidden] {
+            display: none !important;
+        }
+
+        #helpDrawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: min(420px, 92vw);
+            background: var(--panel-bg);
+            box-shadow: -8px 0 24px rgba(0,0,0,0.6);
+            z-index: 20;
+            transform: translateX(102%);
+            transition: transform 180ms ease;
+            overflow-y: auto;
+            padding: 18px;
+            color: var(--text-color);
+        }
+
+        /* Help drawer typography: unify color + bump sizes ~25%. */
+        #helpDrawer .drawer-title,
+        #helpDrawer h2,
+        #helpDrawer .help-text,
+        #helpDrawer .help-hint {
+            color: inherit;
+        }
+
+        #helpDrawer .help-text { font-size: 1rem; }
+        #helpDrawer .help-hint { font-size: 0.9375rem; }
+        #helpDrawer h2 { font-size: 1.125rem; }
+        #helpDrawer .drawer-title { font-size: 1.1875rem; }
+
+        #helpDrawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .drawer-title {
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #888;
+            border-bottom: 1px solid #333;
+            padding-bottom: 6px;
+            flex: 1;
+        }
+
+        .help-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .help-link {
+            width: auto;
+            align-self: flex-start;
+            padding: 6px 10px;
+            background: transparent;
+            border: 1px solid #333;
+            color: #aaa;
+            font-weight: 600;
+            font-size: 0.78rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .help-link:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: #444;
+            color: var(--text-color);
+            box-shadow: none;
+        }
+
+        .drawer-close {
+            width: auto;
+            padding: 8px 10px;
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .drawer-close:hover {
+            background: rgba(255,255,255,0.06);
+            box-shadow: none;
+        }
+
+        /* Only appears if something throws */
+        #fatalError {
+            position: fixed;
+            left: 12px;
+            bottom: 12px;
+            z-index: 50;
+            max-width: min(640px, calc(100vw - 24px));
+            background: rgba(0,0,0,0.78);
+            border: 1px solid #400;
+            color: #f2c0c0;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px;
+            display: none;
+            white-space: pre-wrap;
+        }
+        
+        .pulse-text {
+            animation: pulse-animation 2s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+    </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+
+    <div id="controls">
+        <div>
+            <h1>SOL Engine v1.2</h1>
+            <div style="font-size: 0.8rem; opacity: 0.7;">Living System Dashboard</div>
+            <div style="font-size: 0.8rem; opacity: 0.7;">Techman Studios</div>
+        </div>
+
+        <div class="help-row">
+            <button type="button" id="helpBtn" class="help-link" aria-expanded="false" aria-controls="helpDrawer" title="Open the help / explanation panel">Help ▾</button>
+        </div>
+
+        <div>
+            <h2>1. Inject Density</h2>
+            <div class="help-hint" style="margin-bottom:10px;">
+                <strong style="color:var(--accent-color)">NEW:</strong> Click & Hold any node to manually inject density.
+            </div>
+            <label class="sr-only" for="queryInput">Concept to inject</label>
+            <input type="text" id="queryInput" placeholder="e.g., Soul, Code, Energy..." autocomplete="off" title="Adds density (mass) to a matching concept node">
+            <div class="help-hint">Try: Soul, Logic, Matrix, God, Python</div>
+            <button type="button" id="injectBtn" style="margin-top:10px;">INJECT</button>
+            <div class="help-hint">Tip: press Enter to inject.</div>
+        </div>
+
+        <div>
+            <h2>2. Belief Field ($\psi$)</h2>
+            <div class="slider-container">
+                <label>
+                    <span>Materialism</span>
+                    <span>Mysticism</span>
+                </label>
+                <input type="range" id="beliefSlider" min="0" max="100" value="50" title="Controls how strongly belief-mode ($\psi$) shapes edge conductance (center = neutral, ends = stronger gating)">
+            </div>
+            <div style="font-size: 0.75rem; color: #aaa; margin-top: 5px; text-align: center;" id="mode-text">Balanced View</div>
+            <p class="help-hint">Tip: center is neutral; ends are stronger.</p>
+        </div>
+
+        <div>
+            <h2>3. Physics Constants</h2>
+            <div class="slider-container">
+                <label>Pressure Sensitivity ($\Pi$)</label>
+                <input type="range" id="pressureSlider" min="1" max="50" value="20" title="Higher = pressure rises faster with density; flow propagates more aggressively">
+            </div>
+            <div class="slider-container">
+                <label>Damping (Decay $\kappa$)</label>
+                <input type="range" id="dampSlider" min="1" max="20" value="5" title="Higher = faster decay of density; motion settles sooner">
+            </div>
+            <div class="slider-container">
+                <label>Circulation ($j^{(r)}$)</label>
+                <input type="range" id="curlSlider" min="0" max="20" value="5" title="Strength of rotational thought loops">
+            </div>
+        </div>
+    </div>
+
+    <div id="helpDrawerBackdrop" hidden></div>
+    <aside id="helpDrawer" aria-hidden="true">
+        <div class="drawer-header">
+            <div class="drawer-title">About & How To</div>
+            <button type="button" id="helpCloseBtn" class="drawer-close" title="Close help (Esc)">Close</button>
+        </div>
+
+        <p class="help-text tight"><strong>What is this?</strong> A tiny semantic “manifold” where concepts hold density ($\rho$) and push flow across links.</p>
+        <p class="help-text"><strong>How to:</strong> Inject a word → watch it spread → adjust Belief ($\psi$) to open/close pathways → tune Pressure ($\Pi$) and Damping to change speed/persistence.</p>
+
+        <h2 style="margin-top: 14px;">Live Metrics</h2>
+        <div class="help-hint">
+            <div><strong>Entropy</strong>: normalized Shannon entropy of the density distribution (higher = more spread out).</div>
+            <div><strong>Flux</strong>: how much is moving across edges per step.</div>
+            <div><strong>Curl</strong>: triangle-loop pressure “emf” used to drive circulation in this v2 experiment.</div>
+            <div><strong>Active</strong>: how many nodes are currently “lit”.</div>
+        </div>
+
+        <h2 style="margin-top: 14px;">Controls</h2>
+        <p class="help-text"><strong>Inject Density (Query)</strong>: adds “mass” ($\rho$) to a concept node. Bigger injections create stronger pressure gradients and faster propagation.</p>
+        <p class="help-text"><strong>Click & Hold (Manual)</strong>: hold a node to continuously inject density (“hand of god”).</p>
+        <p class="help-text"><strong>Belief Field ($\psi$)</strong>: biases which links become more conductive. Left privileges tech/logic pathways; right privileges spirit/mythos pathways.</p>
+        <p class="help-text"><strong>Pressure ($\Pi$)</strong>: higher = denser nodes push harder, so waves spread faster.</p>
+        <p class="help-text"><strong>Damping</strong>: higher = faster fade-out (less persistence). Lower = longer-lasting activation.</p>
+        <p class="help-text"><strong>Circulation ($j^{(r)}$)</strong>: experimental rotational component driven by triangle curl (separate from pressure-driven transport).</p>
+
+        <h2 style="margin-top: 14px;">Equations (as implemented)</h2>
+        <div class="help-hint">
+            <div><strong>State:</strong> each node carries density $\rho_i(t)\ge 0$ and a mode/belief scalar $\psi_i(t)$.</div>
+
+            <div style="margin-top:6px;"><strong>Pressure (equation of state):</strong></div>
+            <div>$$p_i = \Pi(\rho_i) = c\,\log(1+\rho_i)$$</div>
+
+            <div style="margin-top:6px;"><strong>Mode-shaped conductance (strictly positive):</strong></div>
+            <div>$$w_{ij} = \mathrm{clip}\Big(w^{(0)}_{ij}\,\exp\big(\gamma\,\tfrac{\psi_i+\psi_j}{2}\big),\;w_{\min},\;w_{\max}\Big)$$</div>
+
+            <div style="margin-top:6px;"><strong>Edge flux (Darcy-style):</strong></div>
+            <div>$$j_{ij} = w_{ij}\,(p_i - p_j)$$</div>
+
+            <div style="margin-top:6px;"><strong>Continuity (graph form):</strong></div>
+            <div>$$\dot{\rho} + B^\top j = s_{\rho}$$</div>
+
+            <div style="margin-top:6px;"><strong>This demo uses (implementation note):</strong></div>
+            <div style="opacity:0.92;">We apply edge-wise transfers (finite-volume style) and then damping:</div>
+            <div>$$\rho_i \leftarrow \rho_i - \tfrac{1}{2}\,j_{ij}\,\Delta t,\quad \rho_j \leftarrow \rho_j + \tfrac{1}{2}\,j_{ij}\,\Delta t$$</div>
+            <div>$$\rho_i \leftarrow \rho_i\,(1-\kappa\,\Delta t),\quad \rho_i\ge 0$$</div>
+            <div style="opacity:0.92;">For numerical stability in the visualization we smooth flux:</div>
+            <div>$$j_{ij}\leftarrow (1-\Delta t)\,j_{ij}+\Delta t\,\big(w_{ij}(p_i-p_j)\big)$$</div>
+        </div>
+    </aside>
+
+    <div id="fatalError" role="status" aria-live="polite"></div>
+
+    <div id="network-container">
+        <div id="metrics-overlay" class="metric-box">
+            <div class="hud-grid">
+                <div class="hud-label">Entropy</div><div id="val-entropy" class="hud-value">0.00</div>
+
+                <div class="hud-row-4" style="grid-column: 1 / -1;">
+                    <div class="hud-label">Flux</div><div id="val-flux" class="hud-value">0.00</div>
+                    <div class="hud-label">Curl</div><div id="val-curl" class="hud-value">0.00</div>
+                </div>
+
+                <div class="hud-row-4" style="grid-column: 1 / -1;">
+                    <div class="hud-label">Mass</div><div id="val-mass" class="hud-value">0.00</div>
+                    <div class="hud-label">Active</div><div id="val-active" class="hud-value">0</div>
+                </div>
+            </div>
+
+            <div class="hud-divider"></div>
+
+            <div class="hud-grid">
+                <div class="hud-row-4" style="grid-column: 1 / -1;">
+                    <div class="hud-label">Bias</div><div id="val-bias" class="hud-value">0.00</div>
+                    <div class="hud-label">γ</div><div id="val-gamma" class="hud-value">0.00</div>
+                </div>
+            </div>
+        </div>
+        <div id="network"></div>
+        <div id="overlay">
+            <div class="mode-indicator" id="ind-logic" style="color:var(--mode-logic)">LOGOS</div>
+            <div class="mode-indicator" id="ind-spirit" style="color:var(--mode-spirit)">MYTHOS</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+(() => {
+  'use strict';
+
+  // ---------------------------------------------------------------------------
+  // App Configuration
+  // ---------------------------------------------------------------------------
+  const App = {
+    config: {
+      injectAmountDefault: 50.0,
+      holdInjectRate: 200.0, // Density per second when holding click
+      beliefGammaMax: 1.25,
+      pressureSliderScale: 0.1,
+      curlSliderScale: 0.05,
+      dtCap: 0.1,
+
+      viz: {
+        nodeColorByGroup: {
+          spirit: '#9c27b0',
+          tech: '#4caf50',
+          bridge: '#00bcd4',
+          default: '#00bcd4'
+        },
+        particles: {
+            maxCount: 200,
+            threshold: 0.05, // Flux needed to spawn
+            speedScale: 0.8
+        }
+      }
+    },
+    dom: {},
+    state: {
+      lastTimeMs: Date.now(),
+      physics: null,
+      visNodes: null,
+      visEdges: null,
+      network: null,
+      holdingNodeId: null, // For tactile interaction
+      particles: [] // Particle system pool
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // 1) DATA: Semantic Graph
+  // ---------------------------------------------------------------------------
+  App.data = (() => {
+        const rawNodes = [
+            { id: 1, label: "Source", group: "spirit" },
+            { id: 2, label: "Soul", group: "spirit" },
+            { id: 3, label: "Consciousness", group: "spirit" },
+            { id: 4, label: "Vibration", group: "spirit" },
+            { id: 5, label: "God", group: "spirit" },
+            
+            { id: 6, label: "Matrix", group: "bridge" },
+            { id: 7, label: "Energy", group: "bridge" },
+            { id: 8, label: "Information", group: "bridge" },
+            { id: 9, label: "Recursion", group: "bridge" },
+            
+            { id: 10, label: "Python", group: "tech" },
+            { id: 11, label: "Logic", group: "tech" },
+            { id: 12, label: "Algorithm", group: "tech" },
+            { id: 13, label: "Hardware", group: "tech" },
+            { id: 14, label: "Code", group: "tech" }
+        ];
+
+        const rawEdges = [
+            { from: 1, to: 5 }, { from: 1, to: 2 }, { from: 2, to: 3 }, { from: 3, to: 4 },
+            { from: 10, to: 11 }, { from: 11, to: 12 }, { from: 12, to: 13 }, { from: 10, to: 14 },
+            { from: 4, to: 7 }, { from: 7, to: 13 }, { from: 3, to: 8 },
+            { from: 8, to: 10 }, { from: 6, to: 12 }, { from: 6, to: 5 },
+            { from: 9, to: 14 }, { from: 9, to: 2 }
+        ];
+
+        const USE_ALL_TO_ALL_EDGES = true;
+        const BACKGROUND_W0 = 0.14;
+
+        function edgeKey(a, b) {
+            const lo = Math.min(a, b);
+            const hi = Math.max(a, b);
+            return `${lo}-${hi}`;
+        }
+
+        const allEdges = (() => {
+            if (!USE_ALL_TO_ALL_EDGES) return rawEdges.map(e => ({ ...e, w0: 1.0, background: false }));
+            const strong = rawEdges.map(e => ({ ...e, w0: 1.0, background: false }));
+            const existing = new Set(strong.map(e => edgeKey(e.from, e.to)));
+            const ids = rawNodes.map(n => n.id);
+            const background = [];
+            for (let i = 0; i < ids.length; i++) {
+                for (let j = i + 1; j < ids.length; j++) {
+                    const a = ids[i], b = ids[j];
+                    if (existing.has(edgeKey(a, b))) continue;
+                    background.push({ from: a, to: b, w0: BACKGROUND_W0, background: true });
+                }
+            }
+            return strong.concat(background);
+        })();
+
+    return { rawNodes, rawEdges, allEdges };
+  })();
+
+  // ---------------------------------------------------------------------------
+  // 2) PHYSICS: Enhanced SOL Engine
+  // ---------------------------------------------------------------------------
+  class SOLPhysics {
+    constructor(nodes, edges) {
+        this.nodes = nodes.map(n => ({ 
+            ...n, 
+            rho: 0, 
+            p: 0,
+            psi: n.group === 'spirit' ? 1 : (n.group === 'tech' ? -1 : 0),
+            psi_bias: n.group === 'spirit' ? 1 : (n.group === 'tech' ? -1 : 0)
+        }));
+
+        this.nodeById = new Map(this.nodes.map(n => [n.id, n]));
+        this.nodeIndexById = new Map(this.nodes.map((n, idx) => [n.id, idx]));
+        
+        // Edge maps for graph algorithms
+        this.adj = new Map();
+        nodes.forEach(n => this.adj.set(n.id, []));
+
+        this.edges = edges.map(e => {
+            const edgeObj = { 
+                ...e,
+                w0: (e.w0 || 1.0),
+                flux: 0,
+                rotationalFlux: 0,
+                conductance: 1.0
+            };
+            this.adj.get(e.from).push({ to: e.to, edge: edgeObj });
+            this.adj.get(e.to).push({ to: e.from, edge: edgeObj });
+            return edgeObj;
+        });
+
+        // Precompute Triangles for Circulation (Improvement D)
+        this.triangles = this.detectTriangles();
+        
+        // Sim parameters
+        this.globalBias = 0;
+        this.psiDiffusion = 0.6;
+        this.psiRelaxBase = 0.12;
+        this.conductanceGamma = 0.0;
+    }
+
+    // Identify all 3-cycles (triangles) for curl calculation
+    detectTriangles() {
+        const triangles = [];
+        const seen = new Set();
+        // A naive O(N*d^2) approach, sufficient for small graphs
+        const nodeIds = this.nodes.map(n => n.id);
+        
+        // Sort for unique key generation
+        nodeIds.sort((a,b) => a - b);
+
+        for (let i = 0; i < nodeIds.length; i++) {
+            const u = nodeIds[i];
+            const uNeighbors = this.adj.get(u).map(x => x.to);
+            
+            for (let j = 0; j < uNeighbors.length; j++) {
+                const v = uNeighbors[j];
+                if (v <= u) continue; // enforce ordering to avoid duplicates
+
+                const vNeighbors = this.adj.get(v).map(x => x.to);
+                for (let k = 0; k < vNeighbors.length; k++) {
+                    const w = vNeighbors[k];
+                    if (w <= v) continue;
+
+                    // Check if w connects back to u
+                    if (uNeighbors.includes(w)) {
+                        // Found triangle u-v-w
+                        triangles.push({ nodes: [u, v, w] });
+                    }
+                }
+            }
+        }
+        return triangles;
+    }
+
+    step(dt, c_press, damping, curlStrength) {
+        // A. Evolve Fields (Psi & Pressure)
+        this.updatePsi(dt);
+        this.nodes.forEach(n => n.p = c_press * Math.log(1 + n.rho));
+        this.updateConductance();
+
+        // B. Calculate Forces (Rotational + Linear)
+        // 1. Calculate Standard Linear Flux Targets (Darcy)
+        const targetFluxes = new Map(); // edge object -> flux value
+        this.edges.forEach(e => {
+            const src = this.nodeById.get(e.from);
+            const dst = this.nodeById.get(e.to);
+            const dp = src.p - dst.p;
+            targetFluxes.set(e, e.conductance * dp);
+        });
+
+        // 2. Calculate Circulation (Improvement D)
+        // Curl = sum of pressure diffs around the cycle
+        let totalCurlMag = 0;
+        
+        // Reset rotational component
+        this.edges.forEach(e => e.rotationalFlux = 0);
+
+        this.triangles.forEach(tri => {
+            const nA = this.nodeById.get(tri.nodes[0]);
+            const nB = this.nodeById.get(tri.nodes[1]);
+            const nC = this.nodeById.get(tri.nodes[2]);
+
+            // Calculate Curl (Pressure electromotive force)
+            // Loop A->B->C->A
+            const dAB = nA.p - nB.p;
+            const dBC = nB.p - nC.p;
+            const dCA = nC.p - nA.p;
+            
+            const curl = (dAB + dBC + dCA); // Net rotation pressure
+            totalCurlMag += Math.abs(curl);
+
+            // Apply rotational current j_r proportional to curl
+            const j_rot = curl * curlStrength;
+
+            // Helper to add flux to edge (u, v)
+            const addRot = (u, v, val) => {
+                // Find edge between u and v
+                const connection = this.adj.get(u).find(x => x.to === v);
+                if(connection) {
+                    const e = connection.edge;
+                    // If edge definition matches direction u->v, add. Else subtract.
+                    if (e.from === u && e.to === v) e.rotationalFlux += val;
+                    else e.rotationalFlux -= val;
+                }
+            };
+
+            addRot(tri.nodes[0], tri.nodes[1], j_rot);
+            addRot(tri.nodes[1], tri.nodes[2], j_rot);
+            addRot(tri.nodes[2], tri.nodes[0], j_rot);
+        });
+
+        // C. Update Flux State (Smoothing)
+        let totalFluxMag = 0;
+        this.edges.forEach(e => {
+            const linear = targetFluxes.get(e);
+            // Total target = Darcy + Circulation
+            // Note: Circulation is divergence-free, so it loops without accumulating mass,
+            // but we add it to visual/transport flux to simulate "active thought loops".
+            const totalTarget = linear + e.rotationalFlux;
+            
+            e.flux = e.flux * (1 - dt) + totalTarget * dt;
+            totalFluxMag += Math.abs(e.flux);
+        });
+
+        // D. Mass Transport (Phase 2 - strictly separate from flux calc)
+        const dRho = new Array(this.nodes.length).fill(0);
+        this.edges.forEach(e => {
+            const ia = this.nodeIndexById.get(e.from);
+            const ib = this.nodeIndexById.get(e.to);
+            // Use the calculated flux to move mass
+            const flow = e.flux * dt * 0.5;
+            dRho[ia] -= flow;
+            dRho[ib] += flow;
+        });
+
+        // Apply transport + Decay
+        let activeCount = 0;
+        this.nodes.forEach((n, idx) => {
+            n.rho += dRho[idx];
+            // Decay
+            n.rho *= (1.0 - (damping * dt * 0.1));
+            if(n.rho < 0) n.rho = 0;
+            if(n.rho > 0.1) activeCount++;
+        });
+
+        return { totalFlux: totalFluxMag, totalCurl: totalCurlMag, activeCount };
+    }
+
+    updatePsi(dt) {
+        const lap = new Array(this.nodes.length).fill(0);
+        this.edges.forEach(e => {
+            const ia = this.nodeIndexById.get(e.from);
+            const ib = this.nodeIndexById.get(e.to);
+            const d = this.nodes[ib].psi - this.nodes[ia].psi;
+            lap[ia] += d; 
+            lap[ib] -= d;
+        });
+        this.nodes.forEach((n, i) => {
+            const relax = (this.psiRelaxBase) * (n.psi_bias - n.psi);
+            n.psi += dt * (this.psiDiffusion * lap[i] + relax);
+            n.psi = Math.max(-1, Math.min(1, n.psi));
+        });
+    }
+
+    updateConductance() {
+        this.edges.forEach(e => {
+            const s = this.nodeById.get(e.from);
+            const d = this.nodeById.get(e.to);
+            const avgPsi = (s.psi + d.psi) / 2;
+            // Gamma controls how much belief affects conductance
+            const w = (e.w0) * Math.exp(this.conductanceGamma * avgPsi);
+            e.conductance = Math.max(0.05, Math.min(4.0, w));
+        });
+    }
+
+    inject(labelOrId, amount) {
+        let target;
+        if(typeof labelOrId === 'number') target = this.nodes.find(n => n.id === labelOrId);
+        else {
+            const q = String(labelOrId).trim().toLowerCase();
+            target = this.nodes.find(n => n.label.toLowerCase() === q);
+            if (!target && q) {
+                target = this.nodes.find(n => n.label.toLowerCase().includes(q));
+            }
+        }
+        if (target) {
+            target.rho += amount;
+            return true;
+        }
+        return false;
+    }
+  }
+
+  App.sim = {
+    createPhysics: () => new SOLPhysics(App.data.rawNodes, App.data.allEdges)
+  };
+
+  // ---------------------------------------------------------------------------
+  // 3) VISUALIZATION: Network + Particles
+  // ---------------------------------------------------------------------------
+  App.viz = {
+    init() {
+      const container = App.dom.network;
+      const physics = App.state.physics;
+      const { nodeColorByGroup } = App.config.viz;
+
+      const nodes = new vis.DataSet(physics.nodes.map(n => ({
+        id: n.id,
+        label: n.label,
+        value: 1,
+        color: nodeColorByGroup[n.group],
+        font: { color: '#fff', face: 'monospace' }
+      })));
+
+      const edges = new vis.DataSet(physics.edges.map(e => ({
+        id: `${e.from}-${e.to}`,
+        from: e.from,
+        to: e.to,
+        physics: !e.background, // Only strong links affect layout
+        color: { color: '#333', opacity: 0.1 },
+        width: 1
+      })));
+
+      const options = {
+        nodes: { shape: 'dot', borderWidth: 2 },
+        physics: {
+            forceAtlas2Based: { gravitationalConstant: -60, springLength: 100, springConstant: 0.08 },
+            solver: 'forceAtlas2Based',
+            stabilization: { enabled: true, iterations: 100 }
+        },
+        interaction: { hover: true, zoomView: true, selectConnectedEdges: false }
+      };
+
+      const net = new vis.Network(container, { nodes, edges }, options);
+      
+      // Particle System Hook
+      net.on("afterDrawing", (ctx) => App.viz.drawParticles(ctx));
+
+            // Tactile Hook (Click & Hold)
+            // Use pointer events + getNodeAt for reliable hold behavior.
+            const clearHold = () => {
+                App.state.holdingNodeId = null;
+                container.style.cursor = 'crosshair';
+            };
+
+            const pickNodeFromPointerEvent = (ev) => {
+                const rect = container.getBoundingClientRect();
+                const x = ev.clientX - rect.left;
+                const y = ev.clientY - rect.top;
+                return net.getNodeAt({ x, y });
+            };
+
+            container.addEventListener('pointerdown', (ev) => {
+                const id = pickNodeFromPointerEvent(ev);
+                if (id != null) {
+                    App.state.holdingNodeId = id;
+                    container.style.cursor = 'progress';
+                    try { container.setPointerCapture(ev.pointerId); } catch { /* ignore */ }
+                }
+            });
+
+            container.addEventListener('pointerup', (ev) => {
+                clearHold();
+                try { container.releasePointerCapture(ev.pointerId); } catch { /* ignore */ }
+            });
+
+            container.addEventListener('pointercancel', clearHold);
+            container.addEventListener('pointerleave', clearHold);
+            window.addEventListener('blur', clearHold);
+
+      App.state.visNodes = nodes;
+      App.state.visEdges = edges;
+      App.state.network = net;
+    },
+
+    // Improvement A: Particle System Overlay
+    drawParticles(ctx) {
+        const { physics, particles, network } = App.state;
+        const { speedScale } = App.config.viz.particles;
+
+        // Map node IDs to canvas positions
+        const nodePositions = network.getPositions(physics.nodes.map(n=>n.id));
+
+        ctx.save();
+        ctx.fillStyle = "#ffffff";
+        ctx.globalCompositeOperation = "screen"; // glowing effect
+
+        // Update and draw existing particles
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.progress += p.speed * speedScale;
+            
+            if (p.progress >= 1) {
+                particles.splice(i, 1); // Remove when arrived
+                continue;
+            }
+
+            const fromPos = nodePositions[p.from];
+            const toPos = nodePositions[p.to];
+            
+            if(!fromPos || !toPos) continue;
+
+            const x = fromPos.x + (toPos.x - fromPos.x) * p.progress;
+            const y = fromPos.y + (toPos.y - fromPos.y) * p.progress;
+
+            // Size depends on flux magnitude
+            const size = 1 + Math.min(3, p.mag * 5);
+            
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        // Spawn new particles based on flux
+        physics.edges.forEach(e => {
+            const mag = Math.abs(e.flux);
+            if (mag > App.config.viz.particles.threshold) {
+                // Chance to spawn proportional to flux
+                if (Math.random() < mag * 0.5) {
+                    if (particles.length < App.config.viz.particles.maxCount) {
+                        const reverse = e.flux < 0;
+                        particles.push({
+                            from: reverse ? e.to : e.from,
+                            to: reverse ? e.from : e.to,
+                            progress: 0,
+                            speed: 0.02 + mag * 0.05,
+                            mag: mag
+                        });
+                    }
+                }
+            }
+        });
+
+        ctx.restore();
+    },
+
+    updateDom() {
+        const { physics, visNodes, visEdges, holdingNodeId } = App.state;
+        const updatesN = [];
+        const updatesE = [];
+
+        physics.nodes.forEach(n => {
+            let size = 5 + Math.sqrt(n.rho) * 8;
+            // Visual feedback for holding
+            if (n.id === holdingNodeId) size += 5 + Math.sin(Date.now() / 50) * 3;
+            updatesN.push({ id: n.id, value: size });
+        });
+
+        physics.edges.forEach(e => {
+            const flux = Math.abs(e.flux);
+            const width = e.background ? 0.5 + flux * 2 : 1 + flux * 6;
+            let color = '#444';
+            if (flux > 0.05) {
+                if(e.conductance > 1.2) color = '#fff'; // Super-conductive
+                else if(e.conductance < 0.5) color = '#500'; // Resisting
+                else color = '#00bcd4';
+            }
+            updatesE.push({ id: `${e.from}-${e.to}`, width, color: { color, opacity: Math.min(1, 0.1 + flux)} });
+        });
+
+        visNodes.update(updatesN);
+        visEdges.update(updatesE);
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // 4) UI & LOOP
+  // ---------------------------------------------------------------------------
+  App.ui = {
+    init() {
+        const byId = i => document.getElementById(i);
+        App.dom = {
+            queryInput: byId('queryInput'),
+            injectBtn: byId('injectBtn'),
+            beliefSlider: byId('beliefSlider'),
+            pressureSlider: byId('pressureSlider'),
+            dampSlider: byId('dampSlider'),
+            curlSlider: byId('curlSlider'),
+            network: byId('network'),
+            helpBtn: byId('helpBtn'),
+            helpDrawer: byId('helpDrawer'),
+            helpDrawerBackdrop: byId('helpDrawerBackdrop'),
+            helpCloseBtn: byId('helpCloseBtn'),
+            fatalError: byId('fatalError'),
+            metrics: {
+                entropy: byId('val-entropy'),
+                flux: byId('val-flux'),
+                curl: byId('val-curl'),
+                mass: byId('val-mass'),
+                active: byId('val-active'),
+                bias: byId('val-bias'),
+                gamma: byId('val-gamma')
+            }
+        };
+
+        // Bindings
+        App.dom.injectBtn.onclick = App.ui.injectText;
+        App.dom.queryInput.onkeydown = e => e.key === 'Enter' && App.ui.injectText();
+        App.dom.beliefSlider.oninput = App.ui.updateBelief;
+
+        App.ui.initHelpDrawer();
+
+        window.addEventListener('error', (event) => {
+            const el = App.dom.fatalError;
+            if (!el) return;
+            const msg = String(event?.message || event || 'Unknown error');
+            el.style.display = 'block';
+            el.textContent = `Error: ${msg}`;
+        });
+        window.addEventListener('unhandledrejection', (event) => {
+            const el = App.dom.fatalError;
+            if (!el) return;
+            const msg = String(event?.reason?.message || event?.reason || 'Unhandled promise rejection');
+            el.style.display = 'block';
+            el.textContent = `Error: ${msg}`;
+        });
+        
+        App.ui.renderMath();
+    },
+
+    injectText() {
+        const raw = App.dom.queryInput?.value;
+        if (!App.state.physics) return;
+        const input = App.dom.queryInput;
+        const val = String(raw || '').trim().replace(/^['"]|['"]$/g, '');
+        if (!val) return;
+
+        const ok = App.state.physics.inject(val, App.config.injectAmountDefault);
+        if (ok) {
+            input.value = '';
+            input.style.borderColor = 'var(--accent-color)';
+            setTimeout(() => (input.style.borderColor = '#444'), 350);
+        } else {
+            input.style.borderColor = '#600';
+            input.placeholder = `Not found: ${val}`;
+            setTimeout(() => {
+                input.style.borderColor = '#444';
+                input.placeholder = 'e.g., Soul, Code, Energy...';
+            }, 900);
+        }
+    },
+
+    initHelpDrawer() {
+        const helpBtn = App.dom.helpBtn;
+        const drawer = App.dom.helpDrawer;
+        const backdrop = App.dom.helpDrawerBackdrop;
+        const closeBtn = App.dom.helpCloseBtn;
+
+        if (!helpBtn || !drawer || !backdrop || !closeBtn) return;
+
+        const openDrawer = () => {
+            drawer.classList.add('open');
+            drawer.setAttribute('aria-hidden', 'false');
+            backdrop.hidden = false;
+            helpBtn.setAttribute('aria-expanded', 'true');
+        };
+
+        const closeDrawer = () => {
+            drawer.classList.remove('open');
+            drawer.setAttribute('aria-hidden', 'true');
+            backdrop.hidden = true;
+            helpBtn.setAttribute('aria-expanded', 'false');
+        };
+
+        helpBtn.addEventListener('click', () => {
+            const isOpen = drawer.classList.contains('open');
+            if (isOpen) closeDrawer();
+            else openDrawer();
+        });
+
+        closeBtn.addEventListener('click', closeDrawer);
+        backdrop.addEventListener('click', closeDrawer);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+        });
+    },
+
+    updateBelief(e) {
+        if (!App.state.physics) return;
+        const bias = (e.target.value - 50) / 50;
+        App.state.physics.globalBias = bias;
+        App.state.physics.conductanceGamma = bias * App.config.beliefGammaMax;
+        
+        const txt = document.getElementById('mode-text');
+        const sp = document.getElementById('ind-spirit');
+        const lg = document.getElementById('ind-logic');
+        
+        sp.style.opacity = bias > 0.2 ? 1 : 0.2;
+        lg.style.opacity = bias < -0.2 ? 1 : 0.2;
+        
+        if(bias > 0.3) { txt.innerText = "Mysticism Active"; txt.style.color = "var(--mode-spirit)"; }
+        else if(bias < -0.3) { txt.innerText = "Materialism Active"; txt.style.color = "var(--mode-logic)"; }
+        else { txt.innerText = "Balanced View"; txt.style.color = "#aaa"; }
+    },
+
+    renderMath() {
+      if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '$', right: '$', display: false }
+                    ],
+                    throwOnError: false
+        });
+      }
+    }
+  };
+
+  App.loop = {
+    start() {
+        requestAnimationFrame(App.loop.tick);
+    },
+    tick() {
+        try {
+            const now = Date.now();
+            const dt = Math.min((now - App.state.lastTimeMs) / 1000, App.config.dtCap);
+            App.state.lastTimeMs = now;
+
+            // 1. Interactive Injection (Tactile)
+            if (App.state.holdingNodeId) {
+                App.state.physics.inject(App.state.holdingNodeId, App.config.holdInjectRate * dt);
+            }
+
+            // 2. Physics Step
+            const press = Number(App.dom.pressureSlider?.value || 0) * App.config.pressureSliderScale;
+            const damp = Number(App.dom.dampSlider?.value || 0);
+            const curl = Number(App.dom.curlSlider?.value || 0) * App.config.curlSliderScale;
+
+            const metrics = App.state.physics.step(dt, press, damp, curl);
+
+            // 3. Viz Update
+            App.viz.updateDom();
+
+            // 4. HUD
+            const m = App.dom.metrics;
+            m.flux.innerText = metrics.totalFlux.toFixed(4);
+            m.curl.innerText = metrics.totalCurl.toFixed(4);
+            m.active.innerText = metrics.activeCount;
+            m.bias.innerText = App.state.physics.globalBias.toFixed(2);
+            m.gamma.innerText = App.state.physics.conductanceGamma.toFixed(2);
+            
+            // Mass sum for display
+            const totalMass = App.state.physics.nodes.reduce((a,b) => a + b.rho, 0);
+            m.mass.innerText = totalMass.toFixed(2);
+
+            // Entropy
+            let H = 0;
+            if (totalMass > 0) {
+                App.state.physics.nodes.forEach(n => {
+                    const p = n.rho / totalMass;
+                    if(p>0) H -= p * Math.log(p);
+                });
+                const Hmax = Math.log(App.state.physics.nodes.length);
+                m.entropy.innerText = (H/Hmax).toFixed(3);
+            } else {
+                m.entropy.innerText = '0.000';
+            }
+        } catch (err) {
+            const el = App.dom.fatalError;
+            if (el) {
+                el.style.display = 'block';
+                el.textContent = `Error: ${String(err?.message || err)}`;
+            }
+        }
+
+        requestAnimationFrame(App.loop.tick);
+    }
+  };
+
+  // ---------------------------------------------------------------------------
+  // Boot
+  // ---------------------------------------------------------------------------
+  App.init = () => {
+      App.state.physics = App.sim.createPhysics();
+      App.ui.init();
+      App.viz.init();
+      App.loop.start();
+  };
+
+  document.addEventListener('DOMContentLoaded', App.init);
+
+})();
+    </script>
+</body>
+</html>

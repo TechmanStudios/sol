@@ -1,0 +1,17 @@
+{
+  "video": "SOL-Lens-Build-Week-YouTube-Upload.mp4",
+  "source_video": "SOL-Lens-Build-Week-Compliant-Demo.mp4",
+  "captions": "SOL-Lens-Build-Week-YouTube-Captions.en.srt",
+  "caption_mode": "burned-in; no separate subtitle stream",
+  "caption_style": {
+    "font": "Segoe UI",
+    "font_size": 25,
+    "target_maximum_words_per_cue": 7,
+    "actual_maximum_words_per_cue": 8,
+    "minimum_cue_seconds": 1.819,
+    "maximum_lines": 2,
+    "bottom_margin": 34
+  },
+  "cue_count": 57,
+  "sha256": "E3E304DA34651B336C628AA3FB22A5814AA9CDE5F75902B0AF60E3E47D92C400"
+}

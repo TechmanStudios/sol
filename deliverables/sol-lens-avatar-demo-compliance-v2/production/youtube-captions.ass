@@ -1,0 +1,71 @@
+﻿[Script Info]
+Title: SOL Lens YouTube captions
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Caption,Segoe UI,25,&H00FFFFFF,&H000000FF,&H00000000,&H78000000,0,0,0,0,100,100,0,0,3,1,0,2,60,60,34,1
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.38,0:00:03.17,Caption,,0,0,0,,Agent migrations are\Noften approved from
+Dialogue: 0,0:00:03.17,0:00:06.42,Caption,,0,0,0,,polished final answers.\NThat can hide weak
+Dialogue: 0,0:00:06.42,0:00:08.74,Caption,,0,0,0,,evidence, broken\Nconstraints, or unresolved
+Dialogue: 0,0:00:08.74,0:00:11.53,Caption,,0,0,0,,contradictions. SOL Lens\Nmakes the observable
+Dialogue: 0,0:00:11.53,0:00:14.78,Caption,,0,0,0,,workflow inspectable\Nbefore a team promotes it.
+Dialogue: 0,0:00:15.86,0:00:19.04,Caption,,0,0,0,,SOL Lens is a developer\Nworkbench for
+Dialogue: 0,0:00:19.04,0:00:21.32,Caption,,0,0,0,,engineering teams\Ncomparing reference and
+Dialogue: 0,0:00:21.32,0:00:24.50,Caption,,0,0,0,,candidate agents. It\Nbuilds on earlier SOL
+Dialogue: 0,0:00:24.50,0:00:27.68,Caption,,0,0,0,,Engine research; during\NBuild Week, I turned
+Dialogue: 0,0:00:27.68,0:00:30.41,Caption,,0,0,0,,that foundation into\Nthis runnable packet
+Dialogue: 0,0:00:30.41,0:00:32.23,Caption,,0,0,0,,workbench, deterministic\Ncourt, teaching
+Dialogue: 0,0:00:32.23,0:00:34.05,Caption,,0,0,0,,gallery, and replay module.
+Dialogue: 0,0:00:35.13,0:00:38.52,Caption,,0,0,0,,I can start without\Nauthoring JSON. These
+Dialogue: 0,0:00:38.52,0:00:40.93,Caption,,0,0,0,,seven browser-local\Nfixtures cover grounded
+Dialogue: 0,0:00:40.93,0:00:42.87,Caption,,0,0,0,,answers, tool fan-out,\Nself-correction,
+Dialogue: 0,0:00:42.87,0:00:45.29,Caption,,0,0,0,,handoffs, conflict, and\Nprogram-scale traces,
+Dialogue: 0,0:00:45.29,0:00:48.67,Caption,,0,0,0,,while using the same\Nvalidator and scoring
+Dialogue: 0,0:00:48.67,0:00:51.09,Caption,,0,0,0,,path as an imported packet.
+Dialogue: 0,0:00:52.17,0:00:55.26,Caption,,0,0,0,,A Logon is one observable step: a
+Dialogue: 0,0:00:55.26,0:00:57.91,Caption,,0,0,0,,request, tool result,\Ncheck, contradiction, or
+Dialogue: 0,0:00:57.91,0:01:01.00,Caption,,0,0,0,,output. Typed edges\Npreserve how those steps
+Dialogue: 0,0:01:01.00,0:01:04.09,Caption,,0,0,0,,support or constrain\None another. SOL Lens
+Dialogue: 0,0:01:04.09,0:01:07.18,Caption,,0,0,0,,validates the packet,\Nlays out the graph,
+Dialogue: 0,0:01:07.18,0:01:09.38,Caption,,0,0,0,,scores evidence, coherence,\Nand contradiction,
+Dialogue: 0,0:01:09.38,0:01:12.47,Caption,,0,0,0,,then applies explicit\Ngates. This grounded trace
+Dialogue: 0,0:01:12.47,0:01:14.68,Caption,,0,0,0,,moves from HOLD to PROMOTE.
+Dialogue: 0,0:01:15.76,0:01:18.41,Caption,,0,0,0,,Now I load the\Nconflicting-sources fixture. Its
+Dialogue: 0,0:01:18.41,0:01:20.68,Caption,,0,0,0,,candidate contradiction\Nscore reaches point two
+Dialogue: 0,0:01:20.68,0:01:23.34,Caption,,0,0,0,,four, so the same court moves from
+Dialogue: 0,0:01:23.34,0:01:25.99,Caption,,0,0,0,,PROMOTE to QUARANTINE.\NThat is the product's
+Dialogue: 0,0:01:25.99,0:01:28.64,Caption,,0,0,0,,value: a busy-looking\Nagent cannot hide a
+Dialogue: 0,0:01:28.64,0:01:31.29,Caption,,0,0,0,,weak evidence structure\Nbehind a polished answer.
+Dialogue: 0,0:01:32.37,0:01:35.44,Caption,,0,0,0,,The proof packet preserves\Nthe authoritative
+Dialogue: 0,0:01:35.44,0:01:38.00,Caption,,0,0,0,,deterministic result.\NManifold Replay separately
+Dialogue: 0,0:01:38.00,0:01:40.56,Caption,,0,0,0,,visualizes density,\Npressure, conductance, and
+Dialogue: 0,0:01:40.56,0:01:44.15,Caption,,0,0,0,,edge flux. Three Step\Nclicks change the
+Dialogue: 0,0:01:44.15,0:01:47.22,Caption,,0,0,0,,telemetry, but this\Nexperimental layer never
+Dialogue: 0,0:01:47.22,0:01:49.27,Caption,,0,0,0,,rewrites the QUARANTINE verdict.
+Dialogue: 0,0:01:50.35,0:01:53.34,Caption,,0,0,0,,During Build Week, I used Codex to
+Dialogue: 0,0:01:53.34,0:01:55.47,Caption,,0,0,0,,implement the versioned\Npacket validator,
+Dialogue: 0,0:01:55.47,0:01:57.61,Caption,,0,0,0,,deterministic graph\Nlayout, seven fixtures,
+Dialogue: 0,0:01:57.61,0:02:00.17,Caption,,0,0,0,,replay engine, and\Nthirty-seven-test suite. The
+Dialogue: 0,0:02:00.17,0:02:03.15,Caption,,0,0,0,,first judge flow assumed\Nunfamiliar JSON, so
+Dialogue: 0,0:02:03.15,0:02:06.14,Caption,,0,0,0,,I retained the product\Ndecision to replace
+Dialogue: 0,0:02:06.14,0:02:09.13,Caption,,0,0,0,,it with one-click\Nteaching packets. I also
+Dialogue: 0,0:02:09.13,0:02:12.12,Caption,,0,0,0,,kept replay state\Nseparate from the court
+Dialogue: 0,0:02:12.12,0:02:15.53,Caption,,0,0,0,,so an experimental visualization\Ncannot change the decision.
+Dialogue: 0,0:02:16.61,0:02:19.90,Caption,,0,0,0,,GPT-5.6 powered those\NCodex build sessions. It
+Dialogue: 0,0:02:19.90,0:02:22.71,Caption,,0,0,0,,received the build\Nguide, repository, test
+Dialogue: 0,0:02:22.71,0:02:25.53,Caption,,0,0,0,,failures, and interface\Nfeedback, then helped
+Dialogue: 0,0:02:25.53,0:02:28.82,Caption,,0,0,0,,produce patches, tests,\Nand revisions. It is
+Dialogue: 0,0:02:28.82,0:02:32.10,Caption,,0,0,0,,a build-time development\Nmodel here, not a
+Dialogue: 0,0:02:32.10,0:02:35.86,Caption,,0,0,0,,live evaluator; this submitted\Nbrowser app remains deterministic.
+Dialogue: 0,0:02:36.94,0:02:39.97,Caption,,0,0,0,,For engineering teams,\Nthat means migration
+Dialogue: 0,0:02:39.97,0:02:43.50,Caption,,0,0,0,,decisions backed by portable\Nevidence instead of
+Dialogue: 0,0:02:43.50,0:02:46.03,Caption,,0,0,0,,final-answer vibes:\Nvisible, deterministic, and
+Dialogue: 0,0:02:46.03,0:02:49.56,Caption,,0,0,0,,independently reviewable before\Na workflow reaches production.

@@ -1,0 +1,228 @@
+1
+00:00:00,380 --> 00:00:03,167
+Agent migrations are often approved from
+
+2
+00:00:03,167 --> 00:00:06,419
+polished final answers. That can hide weak
+
+3
+00:00:06,419 --> 00:00:08,741
+evidence, broken constraints, or unresolved
+
+4
+00:00:08,741 --> 00:00:11,528
+contradictions. SOL Lens makes the observable
+
+5
+00:00:11,528 --> 00:00:14,780
+workflow inspectable before a team promotes it.
+
+6
+00:00:15,860 --> 00:00:19,043
+SOL Lens is a developer workbench for
+
+7
+00:00:19,043 --> 00:00:21,317
+engineering teams comparing reference and
+
+8
+00:00:21,317 --> 00:00:24,500
+candidate agents. It builds on earlier SOL
+
+9
+00:00:24,500 --> 00:00:27,684
+Engine research; during Build Week, I turned
+
+10
+00:00:27,684 --> 00:00:30,412
+that foundation into this runnable packet
+
+11
+00:00:30,412 --> 00:00:32,231
+workbench, deterministic court, teaching
+
+12
+00:00:32,231 --> 00:00:34,050
+gallery, and replay module.
+
+13
+00:00:35,130 --> 00:00:38,515
+I can start without authoring JSON. These
+
+14
+00:00:38,515 --> 00:00:40,934
+seven browser-local fixtures cover grounded
+
+15
+00:00:40,934 --> 00:00:42,868
+answers, tool fan-out, self-correction,
+
+16
+00:00:42,868 --> 00:00:45,286
+handoffs, conflict, and program-scale traces,
+
+17
+00:00:45,286 --> 00:00:48,672
+while using the same validator and scoring
+
+18
+00:00:48,672 --> 00:00:51,090
+path as an imported packet.
+
+19
+00:00:52,170 --> 00:00:55,260
+A Logon is one observable step: a
+
+20
+00:00:55,260 --> 00:00:57,908
+request, tool result, check, contradiction, or
+
+21
+00:00:57,908 --> 00:01:00,997
+output. Typed edges preserve how those steps
+
+22
+00:01:00,997 --> 00:01:04,087
+support or constrain one another. SOL Lens
+
+23
+00:01:04,087 --> 00:01:07,177
+validates the packet, lays out the graph,
+
+24
+00:01:07,177 --> 00:01:09,384
+scores evidence, coherence, and contradiction,
+
+25
+00:01:09,384 --> 00:01:12,473
+then applies explicit gates. This grounded trace
+
+26
+00:01:12,473 --> 00:01:14,680
+moves from HOLD to PROMOTE.
+
+27
+00:01:15,760 --> 00:01:18,411
+Now I load the conflicting-sources fixture. Its
+
+28
+00:01:18,411 --> 00:01:20,684
+candidate contradiction score reaches point two
+
+29
+00:01:20,684 --> 00:01:23,336
+four, so the same court moves from
+
+30
+00:01:23,336 --> 00:01:25,987
+PROMOTE to QUARANTINE. That is the product's
+
+31
+00:01:25,987 --> 00:01:28,639
+value: a busy-looking agent cannot hide a
+
+32
+00:01:28,639 --> 00:01:31,290
+weak evidence structure behind a polished answer.
+
+33
+00:01:32,370 --> 00:01:35,443
+The proof packet preserves the authoritative
+
+34
+00:01:35,443 --> 00:01:38,003
+deterministic result. Manifold Replay separately
+
+35
+00:01:38,003 --> 00:01:40,564
+visualizes density, pressure, conductance, and
+
+36
+00:01:40,564 --> 00:01:44,149
+edge flux. Three Step clicks change the
+
+37
+00:01:44,149 --> 00:01:47,222
+telemetry, but this experimental layer never
+
+38
+00:01:47,222 --> 00:01:49,270
+rewrites the QUARANTINE verdict.
+
+39
+00:01:50,350 --> 00:01:53,337
+During Build Week, I used Codex to
+
+40
+00:01:53,337 --> 00:01:55,471
+implement the versioned packet validator,
+
+41
+00:01:55,471 --> 00:01:57,605
+deterministic graph layout, seven fixtures,
+
+42
+00:01:57,605 --> 00:02:00,166
+replay engine, and thirty-seven-test suite. The
+
+43
+00:02:00,166 --> 00:02:03,153
+first judge flow assumed unfamiliar JSON, so
+
+44
+00:02:03,153 --> 00:02:06,141
+I retained the product decision to replace
+
+45
+00:02:06,141 --> 00:02:09,128
+it with one-click teaching packets. I also
+
+46
+00:02:09,128 --> 00:02:12,116
+kept replay state separate from the court
+
+47
+00:02:12,116 --> 00:02:15,530
+so an experimental visualization cannot change the decision.
+
+48
+00:02:16,610 --> 00:02:19,897
+GPT-5.6 powered those Codex build sessions. It
+
+49
+00:02:19,897 --> 00:02:22,714
+received the build guide, repository, test
+
+50
+00:02:22,714 --> 00:02:25,531
+failures, and interface feedback, then helped
+
+51
+00:02:25,531 --> 00:02:28,817
+produce patches, tests, and revisions. It is
+
+52
+00:02:28,817 --> 00:02:32,104
+a build-time development model here, not a
+
+53
+00:02:32,104 --> 00:02:35,860
+live evaluator; this submitted browser app remains deterministic.
+
+54
+00:02:36,940 --> 00:02:39,969
+For engineering teams, that means migration
+
+55
+00:02:39,969 --> 00:02:43,502
+decisions backed by portable evidence instead of
+
+56
+00:02:43,502 --> 00:02:46,026
+final-answer vibes: visible, deterministic, and
+
+57
+00:02:46,026 --> 00:02:49,560
+independently reviewable before a workflow reaches production.
+

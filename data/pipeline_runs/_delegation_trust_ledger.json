@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "updated": "2026-08-04T18:17:55.133184+00:00",
+  "agents": {
+    "stage:smoke": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "avg_elapsed_sec": 0.03,
+      "trigger_events": 0,
+      "trigger_counts": {},
+      "last_run_id": "PL-20260804-181755",
+      "last_seen": "2026-08-04T18:17:55.131176+00:00",
+      "trust_score": 0.788,
+      "lifetime_trust_score": 1.0,
+      "dynamic_trust_score": 0.95,
+      "trust_confidence": 0.615,
+      "trust_confidence_ema": 0.504,
+      "base_blended_trust": 0.967,
+      "recent_trigger_history": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "recent_trigger_rate": 0.0,
+      "recent_trigger_load_history": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recent_trigger_load": 0.0
+    },
+    "stage:cortex": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "avg_elapsed_sec": 1.113,
+      "trigger_events": 0,
+      "trigger_counts": {},
+      "last_run_id": "PL-20260804-181753",
+      "last_seen": "2026-08-04T18:17:54.928826+00:00",
+      "trust_score": 0.654,
+      "lifetime_trust_score": 1.0,
+      "dynamic_trust_score": 0.863,
+      "trust_confidence": 0.375,
+      "trust_confidence_ema": 0.197,
+      "base_blended_trust": 0.911,
+      "recent_trigger_history": [
+        0,
+        0,
+        0
+      ],
+      "recent_trigger_rate": 0.0,
+      "recent_trigger_load_history": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recent_trigger_load": 0.0
+    },
+    "stage:consolidate": {
+      "total": 4,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 1,
+      "avg_elapsed_sec": 0.0,
+      "trigger_events": 0,
+      "trigger_counts": {},
+      "last_run_id": "PL-20260804-181755",
+      "last_seen": "2026-08-04T18:17:55.133184+00:00",
+      "trust_score": 0.636,
+      "lifetime_trust_score": 1.0,
+      "dynamic_trust_score": 0.789,
+      "trust_confidence": 0.375,
+      "trust_confidence_ema": 0.25,
+      "base_blended_trust": 0.863,
+      "recent_trigger_history": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "recent_trigger_rate": 0.0,
+      "recent_trigger_load_history": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recent_trigger_load": 0.0
+    },
+    "stage:hippocampus": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "avg_elapsed_sec": 0.037,
+      "trigger_events": 0,
+      "trigger_counts": {},
+      "last_run_id": "PL-20260804-181753",
+      "last_seen": "2026-08-04T18:17:54.954614+00:00",
+      "trust_score": 0.628,
+      "lifetime_trust_score": 1.0,
+      "dynamic_trust_score": 0.754,
+      "trust_confidence": 0.375,
+      "trust_confidence_ema": 0.197,
+      "base_blended_trust": 0.84,
+      "recent_trigger_history": [
+        0,
+        0,
+        0
+      ],
+      "recent_trigger_rate": 0.0,
+      "recent_trigger_load_history": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recent_trigger_load": 0.0
+    },
+    "stage:evolve": {
+      "total": 3,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 3,
+      "avg_elapsed_sec": 0.0,
+      "trigger_events": 0,
+      "trigger_counts": {},
+      "last_run_id": "PL-20260804-181755",
+      "last_seen": "2026-08-04T18:17:55.090258+00:00",
+      "trust_score": 0.5,
+      "lifetime_trust_score": 0.5,
+      "dynamic_trust_score": 0.5,
+      "trust_confidence": 0.0,
+      "trust_confidence_ema": 0.0,
+      "base_blended_trust": 0.5,
+      "recent_trigger_history": [
+        0,
+        0,
+        0
+      ],
+      "recent_trigger_rate": 0.0,
+      "recent_trigger_load_history": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "recent_trigger_load": 0.0
+    }
+  }
+}

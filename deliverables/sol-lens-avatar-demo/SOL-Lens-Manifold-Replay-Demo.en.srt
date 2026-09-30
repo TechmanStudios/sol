@@ -1,0 +1,100 @@
+1
+00:00:00,360 --> 00:00:04,590
+Teams often judge an agent migration from the final answer alone.
+
+2
+00:00:04,590 --> 00:00:09,205
+That hides whether the workflow gained evidence, preserved constraints, or introduced contradictions.
+
+3
+00:00:09,205 --> 00:00:19,204
+SOL Lens turns observable agent activity into an inspectable semantic comparison and asks a more useful question: did the candidate actually improve on the reference agent?
+
+4
+00:00:20,104 --> 00:00:28,331
+Here, SOL means Self-Organizing Logos, the research framework behind this project - not the GPT-5.6 Sol model name.
+
+5
+00:00:28,331 --> 00:00:32,445
+The SOL Engine is the mathematical and experimental foundation.
+
+6
+00:00:32,445 --> 00:00:38,844
+SOL Lens is the browser workbench applying a smaller deterministic profile to observable traces.
+
+7
+00:00:38,844 --> 00:00:41,129
+Both repositories are linked here.
+
+8
+00:00:42,029 --> 00:00:48,406
+Judges do not need to author JSON or understand Logons before trying the product.
+
+9
+00:00:48,406 --> 00:00:56,606
+Seven built-in packets cover grounded answers, branching evidence, parallel tools, self-correction, multi-agent handoffs, conflicting sources, and program-scale work.
+
+10
+00:00:56,606 --> 00:01:03,439
+Each is a deterministic teaching fixture that runs through the real validation and scoring path.
+
+11
+00:01:04,339 --> 00:01:11,180
+Each Logon is one observable atomic unit: a request, tool result, check, contradiction, or output.
+
+12
+00:01:11,180 --> 00:01:16,652
+Typed edges show how those units support, constrain, or challenge one another.
+
+13
+00:01:16,652 --> 00:01:26,685
+SOL Lens replays the packet locally, scores evidence, coherence, and unresolved contradiction, then applies explicit gates to return PROMOTE, HOLD, or QUARANTINE.
+
+14
+00:01:27,585 --> 00:01:31,692
+The conflicting-sources packet compares six evidence branches across one hundred twenty Logons.
+
+15
+00:01:31,692 --> 00:01:39,907
+Contradiction rises from point zero nine in the reference trace to point two four in the candidate, moving the court from PROMOTE to QUARANTINE.
+
+16
+00:01:39,907 --> 00:01:45,384
+A candidate can look productive while its observable evidence structure shows that it is not ready.
+
+17
+00:01:46,284 --> 00:01:54,224
+Every verdict can be exported as a versioned proof packet containing the observable Logons, typed edges, metrics, and recomputed court result.
+
+18
+00:01:54,224 --> 00:01:59,895
+There are no hidden-chain-of-thought claims, and the same packet can be independently validated and replayed.
+
+19
+00:02:00,795 --> 00:02:07,548
+The optional Manifold Replay asks a different question: how might semantic activity propagate through this observable graph?
+
+20
+00:02:08,448 --> 00:02:15,285
+Each deterministic step updates dynamic density and pressure, computes mode-shaped conductance and edge flux, and applies damping.
+
+21
+00:02:15,285 --> 00:02:20,915
+The telemetry makes graph dynamics inspectable without inventing missing events or exposing hidden reasoning.
+
+22
+00:02:20,915 --> 00:02:29,360
+It is an experimental visualization layer: replay state stays separate from the packet and never changes the authoritative Trace Court verdict.
+
+23
+00:02:30,260 --> 00:02:39,547
+SOL Lens was built during OpenAI Build Week with GPT-5.6 and Codex on top of the pre-existing SOL research program.
+
+24
+00:02:39,547 --> 00:02:45,120
+The linked repositories provide the mathematics, experiments, tests, provenance, and application source.
+
+25
+00:02:45,120 --> 00:02:52,085
+SOL Lens makes agent migration evidence visible, deterministic, and reviewable before a workflow reaches production.
+
