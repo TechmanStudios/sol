@@ -1,0 +1,3079 @@
+{
+  "rawNodes": [
+    {
+      "id": 1,
+      "label": "grail",
+      "group": "bridge"
+    },
+    {
+      "id": 2,
+      "label": "christ",
+      "group": "spirit"
+    },
+    {
+      "id": 3,
+      "label": "isis",
+      "group": "bridge"
+    },
+    {
+      "id": 4,
+      "label": "earth star",
+      "group": "bridge"
+    },
+    {
+      "id": 5,
+      "label": "stone",
+      "group": "bridge"
+    },
+    {
+      "id": 6,
+      "label": "solar",
+      "group": "bridge"
+    },
+    {
+      "id": 7,
+      "label": "eye",
+      "group": "bridge"
+    },
+    {
+      "id": 8,
+      "label": "temple doors",
+      "group": "spirit"
+    },
+    {
+      "id": 9,
+      "label": "osiris",
+      "group": "bridge"
+    },
+    {
+      "id": 10,
+      "label": "god",
+      "group": "bridge"
+    },
+    {
+      "id": 11,
+      "label": "golden",
+      "group": "bridge"
+    },
+    {
+      "id": 12,
+      "label": "doors",
+      "group": "bridge"
+    },
+    {
+      "id": 13,
+      "label": "holy",
+      "group": "bridge"
+    },
+    {
+      "id": 14,
+      "label": "numis'om",
+      "group": "spirit"
+    },
+    {
+      "id": 15,
+      "label": "path",
+      "group": "bridge"
+    },
+    {
+      "id": 16,
+      "label": "skull",
+      "group": "bridge"
+    },
+    {
+      "id": 17,
+      "label": "christic",
+      "group": "spirit"
+    },
+    {
+      "id": 18,
+      "label": "fire",
+      "group": "bridge"
+    },
+    {
+      "id": 19,
+      "label": "dna",
+      "group": "bridge"
+    },
+    {
+      "id": 20,
+      "label": "pure",
+      "group": "bridge"
+    },
+    {
+      "id": 21,
+      "label": "thothhorra",
+      "group": "spirit"
+    },
+    {
+      "id": 22,
+      "label": "pyramid",
+      "group": "bridge"
+    },
+    {
+      "id": 23,
+      "label": "ark",
+      "group": "bridge"
+    },
+    {
+      "id": 24,
+      "label": "sun",
+      "group": "bridge"
+    },
+    {
+      "id": 25,
+      "label": "templar",
+      "group": "bridge"
+    },
+    {
+      "id": 26,
+      "label": "master",
+      "group": "bridge"
+    },
+    {
+      "id": 27,
+      "label": "mother",
+      "group": "bridge"
+    },
+    {
+      "id": 28,
+      "label": "metatron",
+      "group": "spirit"
+    },
+    {
+      "id": 29,
+      "label": "johannine",
+      "group": "bridge"
+    },
+    {
+      "id": 30,
+      "label": "universe",
+      "group": "bridge"
+    },
+    {
+      "id": 31,
+      "label": "mystery",
+      "group": "bridge"
+    },
+    {
+      "id": 32,
+      "label": "dweller",
+      "group": "bridge"
+    },
+    {
+      "id": 33,
+      "label": "venus",
+      "group": "spirit"
+    },
+    {
+      "id": 34,
+      "label": "flame",
+      "group": "bridge"
+    },
+    {
+      "id": 35,
+      "label": "gate",
+      "group": "bridge"
+    },
+    {
+      "id": 36,
+      "label": "yeshua",
+      "group": "bridge"
+    },
+    {
+      "id": 37,
+      "label": "matter",
+      "group": "bridge"
+    },
+    {
+      "id": 38,
+      "label": "orion",
+      "group": "bridge"
+    },
+    {
+      "id": 39,
+      "label": "grace",
+      "group": "bridge"
+    },
+    {
+      "id": 40,
+      "label": "lineages",
+      "group": "bridge"
+    },
+    {
+      "id": 41,
+      "label": "love",
+      "group": "bridge"
+    },
+    {
+      "id": 42,
+      "label": "atlantis",
+      "group": "bridge"
+    },
+    {
+      "id": 43,
+      "label": "mind",
+      "group": "bridge"
+    },
+    {
+      "id": 44,
+      "label": "lion",
+      "group": "bridge"
+    },
+    {
+      "id": 45,
+      "label": "crystal",
+      "group": "bridge"
+    },
+    {
+      "id": 46,
+      "label": "matrix",
+      "group": "tech"
+    },
+    {
+      "id": 47,
+      "label": "metatronic",
+      "group": "spirit"
+    },
+    {
+      "id": 48,
+      "label": "skulls",
+      "group": "bridge"
+    },
+    {
+      "id": 49,
+      "label": "power",
+      "group": "bridge"
+    },
+    {
+      "id": 50,
+      "label": "tree",
+      "group": "bridge"
+    },
+    {
+      "id": 51,
+      "label": "blood",
+      "group": "bridge"
+    },
+    {
+      "id": 52,
+      "label": "self",
+      "group": "bridge"
+    },
+    {
+      "id": 53,
+      "label": "maia nartoomid",
+      "group": "bridge"
+    },
+    {
+      "id": 54,
+      "label": "reality",
+      "group": "bridge"
+    },
+    {
+      "id": 55,
+      "label": "system",
+      "group": "tech"
+    },
+    {
+      "id": 56,
+      "label": "old",
+      "group": "bridge"
+    },
+    {
+      "id": 57,
+      "label": "universal",
+      "group": "bridge"
+    },
+    {
+      "id": 58,
+      "label": "creation",
+      "group": "bridge"
+    },
+    {
+      "id": 59,
+      "label": "king",
+      "group": "bridge"
+    },
+    {
+      "id": 60,
+      "label": "john",
+      "group": "bridge"
+    },
+    {
+      "id": 61,
+      "label": "nature",
+      "group": "bridge"
+    },
+    {
+      "id": 62,
+      "label": "jesus",
+      "group": "bridge"
+    },
+    {
+      "id": 63,
+      "label": "atlantean",
+      "group": "bridge"
+    },
+    {
+      "id": 64,
+      "label": "star lineages",
+      "group": "bridge"
+    },
+    {
+      "id": 65,
+      "label": "adam",
+      "group": "bridge"
+    },
+    {
+      "id": 66,
+      "label": "tehuti",
+      "group": "bridge"
+    },
+    {
+      "id": 67,
+      "label": "rose",
+      "group": "bridge"
+    },
+    {
+      "id": 68,
+      "label": "central",
+      "group": "bridge"
+    },
+    {
+      "id": 69,
+      "label": "egypt",
+      "group": "bridge"
+    },
+    {
+      "id": 70,
+      "label": "new earth star",
+      "group": "spirit"
+    },
+    {
+      "id": 71,
+      "label": "mari",
+      "group": "bridge"
+    },
+    {
+      "id": 72,
+      "label": "logos",
+      "group": "bridge"
+    },
+    {
+      "id": 73,
+      "label": "city",
+      "group": "bridge"
+    },
+    {
+      "id": 74,
+      "label": "crystals",
+      "group": "bridge"
+    },
+    {
+      "id": 75,
+      "label": "knowledge",
+      "group": "bridge"
+    },
+    {
+      "id": 76,
+      "label": "black",
+      "group": "bridge"
+    },
+    {
+      "id": 77,
+      "label": "adam kadmon",
+      "group": "bridge"
+    },
+    {
+      "id": 78,
+      "label": "mysteries",
+      "group": "bridge"
+    },
+    {
+      "id": 79,
+      "label": "holorian",
+      "group": "bridge"
+    },
+    {
+      "id": 80,
+      "label": "goddess",
+      "group": "bridge"
+    },
+    {
+      "id": 81,
+      "label": "future",
+      "group": "bridge"
+    },
+    {
+      "id": 82,
+      "label": "activation",
+      "group": "bridge"
+    },
+    {
+      "id": 83,
+      "label": "lotus",
+      "group": "bridge"
+    },
+    {
+      "id": 84,
+      "label": "light codes",
+      "group": "tech"
+    },
+    {
+      "id": 85,
+      "label": "book",
+      "group": "bridge"
+    },
+    {
+      "id": 86,
+      "label": "inner earth",
+      "group": "bridge"
+    },
+    {
+      "id": 87,
+      "label": "simeon",
+      "group": "bridge"
+    },
+    {
+      "id": 88,
+      "label": "name",
+      "group": "bridge"
+    },
+    {
+      "id": 89,
+      "label": "blue star",
+      "group": "bridge"
+    },
+    {
+      "id": 90,
+      "label": "kadmon",
+      "group": "bridge"
+    },
+    {
+      "id": 91,
+      "label": "sea",
+      "group": "bridge"
+    },
+    {
+      "id": 92,
+      "label": "grid",
+      "group": "bridge"
+    },
+    {
+      "id": 93,
+      "label": "queen",
+      "group": "bridge"
+    },
+    {
+      "id": 94,
+      "label": "consciousness",
+      "group": "bridge"
+    },
+    {
+      "id": 95,
+      "label": "presence",
+      "group": "bridge"
+    },
+    {
+      "id": 96,
+      "label": "activation rite",
+      "group": "bridge"
+    },
+    {
+      "id": 97,
+      "label": "space",
+      "group": "bridge"
+    },
+    {
+      "id": 98,
+      "label": "forms",
+      "group": "bridge"
+    },
+    {
+      "id": 99,
+      "label": "high",
+      "group": "bridge"
+    },
+    {
+      "id": 100,
+      "label": "egyptian",
+      "group": "bridge"
+    },
+    {
+      "id": 101,
+      "label": "church",
+      "group": "bridge"
+    },
+    {
+      "id": 102,
+      "label": "akashic practice",
+      "group": "spirit"
+    },
+    {
+      "id": 103,
+      "label": "still",
+      "group": "bridge"
+    },
+    {
+      "id": 104,
+      "label": "lord",
+      "group": "bridge"
+    },
+    {
+      "id": 105,
+      "label": "since",
+      "group": "bridge"
+    },
+    {
+      "id": 106,
+      "label": "great",
+      "group": "bridge"
+    },
+    {
+      "id": 107,
+      "label": "great pyramid",
+      "group": "bridge"
+    },
+    {
+      "id": 108,
+      "label": "gem",
+      "group": "bridge"
+    },
+    {
+      "id": 109,
+      "label": "mar",
+      "group": "bridge"
+    },
+    {
+      "id": 110,
+      "label": "sanctuary",
+      "group": "bridge"
+    },
+    {
+      "id": 111,
+      "label": "dragon",
+      "group": "bridge"
+    },
+    {
+      "id": 112,
+      "label": "journey",
+      "group": "bridge"
+    },
+    {
+      "id": 113,
+      "label": "take",
+      "group": "bridge"
+    },
+    {
+      "id": 114,
+      "label": "lords",
+      "group": "bridge"
+    },
+    {
+      "id": 115,
+      "label": "crystal skull",
+      "group": "bridge"
+    },
+    {
+      "id": 116,
+      "label": "practice",
+      "group": "bridge"
+    },
+    {
+      "id": 117,
+      "label": "lady",
+      "group": "bridge"
+    },
+    {
+      "id": 118,
+      "label": "individual",
+      "group": "bridge"
+    },
+    {
+      "id": 119,
+      "label": "rite",
+      "group": "bridge"
+    },
+    {
+      "id": 120,
+      "label": "valley",
+      "group": "bridge"
+    }
+  ],
+  "rawEdges": [
+    {
+      "from": 82,
+      "to": 96
+    },
+    {
+      "from": 82,
+      "to": 102
+    },
+    {
+      "from": 82,
+      "to": 40
+    },
+    {
+      "from": 82,
+      "to": 116
+    },
+    {
+      "from": 82,
+      "to": 119
+    },
+    {
+      "from": 82,
+      "to": 64
+    },
+    {
+      "from": 96,
+      "to": 102
+    },
+    {
+      "from": 96,
+      "to": 84
+    },
+    {
+      "from": 96,
+      "to": 40
+    },
+    {
+      "from": 96,
+      "to": 53
+    },
+    {
+      "from": 96,
+      "to": 116
+    },
+    {
+      "from": 96,
+      "to": 119
+    },
+    {
+      "from": 96,
+      "to": 64
+    },
+    {
+      "from": 96,
+      "to": 25
+    },
+    {
+      "from": 65,
+      "to": 77
+    },
+    {
+      "from": 65,
+      "to": 101
+    },
+    {
+      "from": 65,
+      "to": 58
+    },
+    {
+      "from": 65,
+      "to": 19
+    },
+    {
+      "from": 65,
+      "to": 79
+    },
+    {
+      "from": 65,
+      "to": 90
+    },
+    {
+      "from": 65,
+      "to": 114
+    },
+    {
+      "from": 65,
+      "to": 37
+    },
+    {
+      "from": 65,
+      "to": 47
+    },
+    {
+      "from": 65,
+      "to": 57
+    },
+    {
+      "from": 77,
+      "to": 17
+    },
+    {
+      "from": 77,
+      "to": 58
+    },
+    {
+      "from": 77,
+      "to": 19
+    },
+    {
+      "from": 77,
+      "to": 79
+    },
+    {
+      "from": 77,
+      "to": 90
+    },
+    {
+      "from": 77,
+      "to": 114
+    },
+    {
+      "from": 77,
+      "to": 47
+    },
+    {
+      "from": 102,
+      "to": 84
+    },
+    {
+      "from": 102,
+      "to": 40
+    },
+    {
+      "from": 102,
+      "to": 53
+    },
+    {
+      "from": 102,
+      "to": 116
+    },
+    {
+      "from": 102,
+      "to": 119
+    },
+    {
+      "from": 102,
+      "to": 64
+    },
+    {
+      "from": 102,
+      "to": 25
+    },
+    {
+      "from": 23,
+      "to": 101
+    },
+    {
+      "from": 23,
+      "to": 39
+    },
+    {
+      "from": 23,
+      "to": 79
+    },
+    {
+      "from": 23,
+      "to": 29
+    },
+    {
+      "from": 23,
+      "to": 44
+    },
+    {
+      "from": 23,
+      "to": 120
+    },
+    {
+      "from": 63,
+      "to": 42
+    },
+    {
+      "from": 63,
+      "to": 101
+    },
+    {
+      "from": 63,
+      "to": 100
+    },
+    {
+      "from": 63,
+      "to": 79
+    },
+    {
+      "from": 63,
+      "to": 60
+    },
+    {
+      "from": 63,
+      "to": 104
+    },
+    {
+      "from": 63,
+      "to": 38
+    },
+    {
+      "from": 42,
+      "to": 101
+    },
+    {
+      "from": 42,
+      "to": 69
+    },
+    {
+      "from": 42,
+      "to": 79
+    },
+    {
+      "from": 42,
+      "to": 59
+    },
+    {
+      "from": 42,
+      "to": 31
+    },
+    {
+      "from": 76,
+      "to": 101
+    },
+    {
+      "from": 76,
+      "to": 80
+    },
+    {
+      "from": 76,
+      "to": 107
+    },
+    {
+      "from": 76,
+      "to": 79
+    },
+    {
+      "from": 76,
+      "to": 59
+    },
+    {
+      "from": 76,
+      "to": 117
+    },
+    {
+      "from": 76,
+      "to": 97
+    },
+    {
+      "from": 51,
+      "to": 101
+    },
+    {
+      "from": 51,
+      "to": 80
+    },
+    {
+      "from": 51,
+      "to": 1
+    },
+    {
+      "from": 51,
+      "to": 79
+    },
+    {
+      "from": 51,
+      "to": 118
+    },
+    {
+      "from": 51,
+      "to": 60
+    },
+    {
+      "from": 51,
+      "to": 59
+    },
+    {
+      "from": 89,
+      "to": 101
+    },
+    {
+      "from": 89,
+      "to": 79
+    },
+    {
+      "from": 89,
+      "to": 29
+    },
+    {
+      "from": 89,
+      "to": 60
+    },
+    {
+      "from": 89,
+      "to": 38
+    },
+    {
+      "from": 89,
+      "to": 120
+    },
+    {
+      "from": 89,
+      "to": 33
+    },
+    {
+      "from": 85,
+      "to": 101
+    },
+    {
+      "from": 85,
+      "to": 79
+    },
+    {
+      "from": 85,
+      "to": 60
+    },
+    {
+      "from": 85,
+      "to": 59
+    },
+    {
+      "from": 85,
+      "to": 104
+    },
+    {
+      "from": 85,
+      "to": 31
+    },
+    {
+      "from": 68,
+      "to": 101
+    },
+    {
+      "from": 68,
+      "to": 107
+    },
+    {
+      "from": 68,
+      "to": 79
+    },
+    {
+      "from": 68,
+      "to": 86
+    },
+    {
+      "from": 68,
+      "to": 104
+    },
+    {
+      "from": 68,
+      "to": 37
+    },
+    {
+      "from": 68,
+      "to": 67
+    },
+    {
+      "from": 68,
+      "to": 6
+    },
+    {
+      "from": 68,
+      "to": 97
+    },
+    {
+      "from": 68,
+      "to": 24
+    },
+    {
+      "from": 68,
+      "to": 55
+    },
+    {
+      "from": 2,
+      "to": 17
+    },
+    {
+      "from": 2,
+      "to": 101
+    },
+    {
+      "from": 2,
+      "to": 79
+    },
+    {
+      "from": 2,
+      "to": 62
+    },
+    {
+      "from": 2,
+      "to": 60
+    },
+    {
+      "from": 2,
+      "to": 36
+    },
+    {
+      "from": 17,
+      "to": 101
+    },
+    {
+      "from": 17,
+      "to": 34
+    },
+    {
+      "from": 17,
+      "to": 79
+    },
+    {
+      "from": 17,
+      "to": 62
+    },
+    {
+      "from": 17,
+      "to": 90
+    },
+    {
+      "from": 17,
+      "to": 36
+    },
+    {
+      "from": 101,
+      "to": 73
+    },
+    {
+      "from": 101,
+      "to": 94
+    },
+    {
+      "from": 101,
+      "to": 74
+    },
+    {
+      "from": 101,
+      "to": 12
+    },
+    {
+      "from": 101,
+      "to": 111
+    },
+    {
+      "from": 101,
+      "to": 69
+    },
+    {
+      "from": 101,
+      "to": 34
+    },
+    {
+      "from": 101,
+      "to": 98
+    },
+    {
+      "from": 101,
+      "to": 81
+    },
+    {
+      "from": 101,
+      "to": 35
+    },
+    {
+      "from": 101,
+      "to": 108
+    },
+    {
+      "from": 101,
+      "to": 10
+    },
+    {
+      "from": 101,
+      "to": 80
+    },
+    {
+      "from": 101,
+      "to": 11
+    },
+    {
+      "from": 101,
+      "to": 39
+    },
+    {
+      "from": 101,
+      "to": 1
+    },
+    {
+      "from": 101,
+      "to": 106
+    },
+    {
+      "from": 101,
+      "to": 107
+    },
+    {
+      "from": 101,
+      "to": 92
+    },
+    {
+      "from": 101,
+      "to": 99
+    },
+    {
+      "from": 101,
+      "to": 79
+    },
+    {
+      "from": 101,
+      "to": 13
+    },
+    {
+      "from": 101,
+      "to": 118
+    },
+    {
+      "from": 101,
+      "to": 86
+    },
+    {
+      "from": 101,
+      "to": 3
+    },
+    {
+      "from": 101,
+      "to": 62
+    },
+    {
+      "from": 101,
+      "to": 29
+    },
+    {
+      "from": 101,
+      "to": 60
+    },
+    {
+      "from": 101,
+      "to": 112
+    },
+    {
+      "from": 101,
+      "to": 59
+    },
+    {
+      "from": 101,
+      "to": 75
+    },
+    {
+      "from": 101,
+      "to": 117
+    },
+    {
+      "from": 101,
+      "to": 44
+    },
+    {
+      "from": 101,
+      "to": 72
+    },
+    {
+      "from": 101,
+      "to": 104
+    },
+    {
+      "from": 101,
+      "to": 114
+    },
+    {
+      "from": 101,
+      "to": 83
+    },
+    {
+      "from": 101,
+      "to": 41
+    },
+    {
+      "from": 101,
+      "to": 109
+    },
+    {
+      "from": 101,
+      "to": 71
+    },
+    {
+      "from": 101,
+      "to": 26
+    },
+    {
+      "from": 101,
+      "to": 46
+    },
+    {
+      "from": 101,
+      "to": 37
+    },
+    {
+      "from": 101,
+      "to": 47
+    },
+    {
+      "from": 101,
+      "to": 43
+    },
+    {
+      "from": 101,
+      "to": 27
+    },
+    {
+      "from": 101,
+      "to": 78
+    },
+    {
+      "from": 101,
+      "to": 31
+    },
+    {
+      "from": 101,
+      "to": 88
+    },
+    {
+      "from": 101,
+      "to": 61
+    },
+    {
+      "from": 101,
+      "to": 56
+    },
+    {
+      "from": 101,
+      "to": 9
+    },
+    {
+      "from": 101,
+      "to": 15
+    },
+    {
+      "from": 101,
+      "to": 49
+    },
+    {
+      "from": 101,
+      "to": 95
+    },
+    {
+      "from": 101,
+      "to": 20
+    },
+    {
+      "from": 101,
+      "to": 22
+    },
+    {
+      "from": 101,
+      "to": 67
+    },
+    {
+      "from": 101,
+      "to": 110
+    },
+    {
+      "from": 101,
+      "to": 91
+    },
+    {
+      "from": 101,
+      "to": 52
+    },
+    {
+      "from": 101,
+      "to": 87
+    },
+    {
+      "from": 101,
+      "to": 105
+    },
+    {
+      "from": 101,
+      "to": 97
+    },
+    {
+      "from": 101,
+      "to": 103
+    },
+    {
+      "from": 101,
+      "to": 5
+    },
+    {
+      "from": 101,
+      "to": 55
+    },
+    {
+      "from": 101,
+      "to": 113
+    },
+    {
+      "from": 101,
+      "to": 66
+    },
+    {
+      "from": 101,
+      "to": 8
+    },
+    {
+      "from": 101,
+      "to": 50
+    },
+    {
+      "from": 101,
+      "to": 57
+    },
+    {
+      "from": 101,
+      "to": 30
+    },
+    {
+      "from": 101,
+      "to": 120
+    },
+    {
+      "from": 101,
+      "to": 36
+    },
+    {
+      "from": 73,
+      "to": 81
+    },
+    {
+      "from": 73,
+      "to": 11
+    },
+    {
+      "from": 73,
+      "to": 99
+    },
+    {
+      "from": 73,
+      "to": 79
+    },
+    {
+      "from": 73,
+      "to": 86
+    },
+    {
+      "from": 73,
+      "to": 112
+    },
+    {
+      "from": 73,
+      "to": 104
+    },
+    {
+      "from": 73,
+      "to": 109
+    },
+    {
+      "from": 73,
+      "to": 56
+    },
+    {
+      "from": 73,
+      "to": 22
+    },
+    {
+      "from": 73,
+      "to": 91
+    },
+    {
+      "from": 73,
+      "to": 105
+    },
+    {
+      "from": 73,
+      "to": 16
+    },
+    {
+      "from": 73,
+      "to": 120
+    },
+    {
+      "from": 94,
+      "to": 98
+    },
+    {
+      "from": 94,
+      "to": 79
+    },
+    {
+      "from": 94,
+      "to": 114
+    },
+    {
+      "from": 94,
+      "to": 47
+    },
+    {
+      "from": 94,
+      "to": 66
+    },
+    {
+      "from": 58,
+      "to": 79
+    },
+    {
+      "from": 58,
+      "to": 90
+    },
+    {
+      "from": 58,
+      "to": 104
+    },
+    {
+      "from": 58,
+      "to": 114
+    },
+    {
+      "from": 45,
+      "to": 115
+    },
+    {
+      "from": 45,
+      "to": 74
+    },
+    {
+      "from": 45,
+      "to": 32
+    },
+    {
+      "from": 45,
+      "to": 79
+    },
+    {
+      "from": 45,
+      "to": 16
+    },
+    {
+      "from": 45,
+      "to": 48
+    },
+    {
+      "from": 115,
+      "to": 32
+    },
+    {
+      "from": 115,
+      "to": 79
+    },
+    {
+      "from": 115,
+      "to": 117
+    },
+    {
+      "from": 115,
+      "to": 83
+    },
+    {
+      "from": 115,
+      "to": 93
+    },
+    {
+      "from": 115,
+      "to": 16
+    },
+    {
+      "from": 115,
+      "to": 48
+    },
+    {
+      "from": 115,
+      "to": 21
+    },
+    {
+      "from": 74,
+      "to": 92
+    },
+    {
+      "from": 74,
+      "to": 79
+    },
+    {
+      "from": 74,
+      "to": 60
+    },
+    {
+      "from": 74,
+      "to": 120
+    },
+    {
+      "from": 19,
+      "to": 108
+    },
+    {
+      "from": 19,
+      "to": 79
+    },
+    {
+      "from": 19,
+      "to": 90
+    },
+    {
+      "from": 19,
+      "to": 28
+    },
+    {
+      "from": 19,
+      "to": 21
+    },
+    {
+      "from": 12,
+      "to": 79
+    },
+    {
+      "from": 12,
+      "to": 60
+    },
+    {
+      "from": 12,
+      "to": 46
+    },
+    {
+      "from": 12,
+      "to": 31
+    },
+    {
+      "from": 12,
+      "to": 66
+    },
+    {
+      "from": 12,
+      "to": 8
+    },
+    {
+      "from": 111,
+      "to": 7
+    },
+    {
+      "from": 111,
+      "to": 18
+    },
+    {
+      "from": 111,
+      "to": 35
+    },
+    {
+      "from": 111,
+      "to": 92
+    },
+    {
+      "from": 111,
+      "to": 99
+    },
+    {
+      "from": 111,
+      "to": 79
+    },
+    {
+      "from": 111,
+      "to": 59
+    },
+    {
+      "from": 111,
+      "to": 83
+    },
+    {
+      "from": 111,
+      "to": 28
+    },
+    {
+      "from": 111,
+      "to": 61
+    },
+    {
+      "from": 111,
+      "to": 14
+    },
+    {
+      "from": 111,
+      "to": 54
+    },
+    {
+      "from": 111,
+      "to": 5
+    },
+    {
+      "from": 111,
+      "to": 113
+    },
+    {
+      "from": 111,
+      "to": 30
+    },
+    {
+      "from": 111,
+      "to": 120
+    },
+    {
+      "from": 111,
+      "to": 33
+    },
+    {
+      "from": 32,
+      "to": 3
+    },
+    {
+      "from": 32,
+      "to": 117
+    },
+    {
+      "from": 32,
+      "to": 93
+    },
+    {
+      "from": 32,
+      "to": 16
+    },
+    {
+      "from": 32,
+      "to": 48
+    },
+    {
+      "from": 4,
+      "to": 79
+    },
+    {
+      "from": 4,
+      "to": 29
+    },
+    {
+      "from": 4,
+      "to": 28
+    },
+    {
+      "from": 4,
+      "to": 70
+    },
+    {
+      "from": 4,
+      "to": 14
+    },
+    {
+      "from": 4,
+      "to": 105
+    },
+    {
+      "from": 69,
+      "to": 100
+    },
+    {
+      "from": 69,
+      "to": 107
+    },
+    {
+      "from": 69,
+      "to": 79
+    },
+    {
+      "from": 69,
+      "to": 60
+    },
+    {
+      "from": 69,
+      "to": 59
+    },
+    {
+      "from": 69,
+      "to": 22
+    },
+    {
+      "from": 100,
+      "to": 107
+    },
+    {
+      "from": 100,
+      "to": 79
+    },
+    {
+      "from": 100,
+      "to": 59
+    },
+    {
+      "from": 100,
+      "to": 44
+    },
+    {
+      "from": 100,
+      "to": 78
+    },
+    {
+      "from": 100,
+      "to": 9
+    },
+    {
+      "from": 7,
+      "to": 79
+    },
+    {
+      "from": 7,
+      "to": 44
+    },
+    {
+      "from": 7,
+      "to": 28
+    },
+    {
+      "from": 7,
+      "to": 14
+    },
+    {
+      "from": 7,
+      "to": 87
+    },
+    {
+      "from": 18,
+      "to": 79
+    },
+    {
+      "from": 18,
+      "to": 60
+    },
+    {
+      "from": 18,
+      "to": 44
+    },
+    {
+      "from": 18,
+      "to": 104
+    },
+    {
+      "from": 18,
+      "to": 120
+    },
+    {
+      "from": 34,
+      "to": 79
+    },
+    {
+      "from": 34,
+      "to": 62
+    },
+    {
+      "from": 34,
+      "to": 60
+    },
+    {
+      "from": 34,
+      "to": 67
+    },
+    {
+      "from": 98,
+      "to": 108
+    },
+    {
+      "from": 98,
+      "to": 107
+    },
+    {
+      "from": 98,
+      "to": 99
+    },
+    {
+      "from": 98,
+      "to": 79
+    },
+    {
+      "from": 98,
+      "to": 118
+    },
+    {
+      "from": 98,
+      "to": 104
+    },
+    {
+      "from": 98,
+      "to": 61
+    },
+    {
+      "from": 98,
+      "to": 54
+    },
+    {
+      "from": 81,
+      "to": 79
+    },
+    {
+      "from": 81,
+      "to": 60
+    },
+    {
+      "from": 81,
+      "to": 44
+    },
+    {
+      "from": 81,
+      "to": 31
+    },
+    {
+      "from": 35,
+      "to": 79
+    },
+    {
+      "from": 35,
+      "to": 60
+    },
+    {
+      "from": 35,
+      "to": 44
+    },
+    {
+      "from": 35,
+      "to": 120
+    },
+    {
+      "from": 108,
+      "to": 107
+    },
+    {
+      "from": 108,
+      "to": 79
+    },
+    {
+      "from": 108,
+      "to": 44
+    },
+    {
+      "from": 108,
+      "to": 104
+    },
+    {
+      "from": 108,
+      "to": 20
+    },
+    {
+      "from": 108,
+      "to": 55
+    },
+    {
+      "from": 10,
+      "to": 79
+    },
+    {
+      "from": 10,
+      "to": 44
+    },
+    {
+      "from": 10,
+      "to": 104
+    },
+    {
+      "from": 10,
+      "to": 41
+    },
+    {
+      "from": 10,
+      "to": 31
+    },
+    {
+      "from": 10,
+      "to": 66
+    },
+    {
+      "from": 80,
+      "to": 79
+    },
+    {
+      "from": 80,
+      "to": 13
+    },
+    {
+      "from": 80,
+      "to": 59
+    },
+    {
+      "from": 80,
+      "to": 117
+    },
+    {
+      "from": 80,
+      "to": 71
+    },
+    {
+      "from": 80,
+      "to": 27
+    },
+    {
+      "from": 80,
+      "to": 31
+    },
+    {
+      "from": 80,
+      "to": 88
+    },
+    {
+      "from": 80,
+      "to": 95
+    },
+    {
+      "from": 80,
+      "to": 67
+    },
+    {
+      "from": 80,
+      "to": 110
+    },
+    {
+      "from": 11,
+      "to": 79
+    },
+    {
+      "from": 11,
+      "to": 44
+    },
+    {
+      "from": 11,
+      "to": 67
+    },
+    {
+      "from": 11,
+      "to": 120
+    },
+    {
+      "from": 39,
+      "to": 79
+    },
+    {
+      "from": 39,
+      "to": 117
+    },
+    {
+      "from": 39,
+      "to": 104
+    },
+    {
+      "from": 39,
+      "to": 41
+    },
+    {
+      "from": 39,
+      "to": 43
+    },
+    {
+      "from": 39,
+      "to": 31
+    },
+    {
+      "from": 39,
+      "to": 15
+    },
+    {
+      "from": 39,
+      "to": 52
+    },
+    {
+      "from": 1,
+      "to": 79
+    },
+    {
+      "from": 1,
+      "to": 29
+    },
+    {
+      "from": 1,
+      "to": 59
+    },
+    {
+      "from": 1,
+      "to": 104
+    },
+    {
+      "from": 106,
+      "to": 107
+    },
+    {
+      "from": 106,
+      "to": 79
+    },
+    {
+      "from": 106,
+      "to": 59
+    },
+    {
+      "from": 106,
+      "to": 44
+    },
+    {
+      "from": 106,
+      "to": 22
+    },
+    {
+      "from": 107,
+      "to": 92
+    },
+    {
+      "from": 107,
+      "to": 79
+    },
+    {
+      "from": 107,
+      "to": 3
+    },
+    {
+      "from": 107,
+      "to": 59
+    },
+    {
+      "from": 107,
+      "to": 44
+    },
+    {
+      "from": 107,
+      "to": 37
+    },
+    {
+      "from": 107,
+      "to": 38
+    },
+    {
+      "from": 107,
+      "to": 9
+    },
+    {
+      "from": 107,
+      "to": 22
+    },
+    {
+      "from": 107,
+      "to": 97
+    },
+    {
+      "from": 92,
+      "to": 79
+    },
+    {
+      "from": 92,
+      "to": 60
+    },
+    {
+      "from": 92,
+      "to": 120
+    },
+    {
+      "from": 99,
+      "to": 79
+    },
+    {
+      "from": 99,
+      "to": 31
+    },
+    {
+      "from": 79,
+      "to": 13
+    },
+    {
+      "from": 79,
+      "to": 118
+    },
+    {
+      "from": 79,
+      "to": 86
+    },
+    {
+      "from": 79,
+      "to": 3
+    },
+    {
+      "from": 79,
+      "to": 62
+    },
+    {
+      "from": 79,
+      "to": 29
+    },
+    {
+      "from": 79,
+      "to": 60
+    },
+    {
+      "from": 79,
+      "to": 112
+    },
+    {
+      "from": 79,
+      "to": 90
+    },
+    {
+      "from": 79,
+      "to": 59
+    },
+    {
+      "from": 79,
+      "to": 75
+    },
+    {
+      "from": 79,
+      "to": 117
+    },
+    {
+      "from": 79,
+      "to": 84
+    },
+    {
+      "from": 79,
+      "to": 44
+    },
+    {
+      "from": 79,
+      "to": 72
+    },
+    {
+      "from": 79,
+      "to": 104
+    },
+    {
+      "from": 79,
+      "to": 114
+    },
+    {
+      "from": 79,
+      "to": 83
+    },
+    {
+      "from": 79,
+      "to": 41
+    },
+    {
+      "from": 79,
+      "to": 109
+    },
+    {
+      "from": 79,
+      "to": 71
+    },
+    {
+      "from": 79,
+      "to": 26
+    },
+    {
+      "from": 79,
+      "to": 46
+    },
+    {
+      "from": 79,
+      "to": 37
+    },
+    {
+      "from": 79,
+      "to": 28
+    },
+    {
+      "from": 79,
+      "to": 47
+    },
+    {
+      "from": 79,
+      "to": 43
+    },
+    {
+      "from": 79,
+      "to": 27
+    },
+    {
+      "from": 79,
+      "to": 78
+    },
+    {
+      "from": 79,
+      "to": 31
+    },
+    {
+      "from": 79,
+      "to": 88
+    },
+    {
+      "from": 79,
+      "to": 61
+    },
+    {
+      "from": 79,
+      "to": 56
+    },
+    {
+      "from": 79,
+      "to": 38
+    },
+    {
+      "from": 79,
+      "to": 9
+    },
+    {
+      "from": 79,
+      "to": 15
+    },
+    {
+      "from": 79,
+      "to": 49
+    },
+    {
+      "from": 79,
+      "to": 95
+    },
+    {
+      "from": 79,
+      "to": 20
+    },
+    {
+      "from": 79,
+      "to": 22
+    },
+    {
+      "from": 79,
+      "to": 93
+    },
+    {
+      "from": 79,
+      "to": 54
+    },
+    {
+      "from": 79,
+      "to": 67
+    },
+    {
+      "from": 79,
+      "to": 110
+    },
+    {
+      "from": 79,
+      "to": 91
+    },
+    {
+      "from": 79,
+      "to": 52
+    },
+    {
+      "from": 79,
+      "to": 87
+    },
+    {
+      "from": 79,
+      "to": 105
+    },
+    {
+      "from": 79,
+      "to": 16
+    },
+    {
+      "from": 79,
+      "to": 48
+    },
+    {
+      "from": 79,
+      "to": 6
+    },
+    {
+      "from": 79,
+      "to": 97
+    },
+    {
+      "from": 79,
+      "to": 103
+    },
+    {
+      "from": 79,
+      "to": 5
+    },
+    {
+      "from": 79,
+      "to": 24
+    },
+    {
+      "from": 79,
+      "to": 55
+    },
+    {
+      "from": 79,
+      "to": 113
+    },
+    {
+      "from": 79,
+      "to": 8
+    },
+    {
+      "from": 79,
+      "to": 50
+    },
+    {
+      "from": 79,
+      "to": 57
+    },
+    {
+      "from": 79,
+      "to": 30
+    },
+    {
+      "from": 79,
+      "to": 120
+    },
+    {
+      "from": 79,
+      "to": 33
+    },
+    {
+      "from": 79,
+      "to": 36
+    },
+    {
+      "from": 13,
+      "to": 62
+    },
+    {
+      "from": 13,
+      "to": 59
+    },
+    {
+      "from": 13,
+      "to": 117
+    },
+    {
+      "from": 118,
+      "to": 62
+    },
+    {
+      "from": 118,
+      "to": 52
+    },
+    {
+      "from": 86,
+      "to": 29
+    },
+    {
+      "from": 86,
+      "to": 105
+    },
+    {
+      "from": 86,
+      "to": 120
+    },
+    {
+      "from": 3,
+      "to": 117
+    },
+    {
+      "from": 3,
+      "to": 71
+    },
+    {
+      "from": 3,
+      "to": 9
+    },
+    {
+      "from": 62,
+      "to": 60
+    },
+    {
+      "from": 62,
+      "to": 41
+    },
+    {
+      "from": 62,
+      "to": 71
+    },
+    {
+      "from": 62,
+      "to": 26
+    },
+    {
+      "from": 62,
+      "to": 20
+    },
+    {
+      "from": 62,
+      "to": 52
+    },
+    {
+      "from": 62,
+      "to": 113
+    },
+    {
+      "from": 62,
+      "to": 36
+    },
+    {
+      "from": 29,
+      "to": 60
+    },
+    {
+      "from": 29,
+      "to": 109
+    },
+    {
+      "from": 29,
+      "to": 71
+    },
+    {
+      "from": 29,
+      "to": 70
+    },
+    {
+      "from": 29,
+      "to": 67
+    },
+    {
+      "from": 29,
+      "to": 105
+    },
+    {
+      "from": 29,
+      "to": 5
+    },
+    {
+      "from": 29,
+      "to": 120
+    },
+    {
+      "from": 60,
+      "to": 75
+    },
+    {
+      "from": 60,
+      "to": 72
+    },
+    {
+      "from": 60,
+      "to": 104
+    },
+    {
+      "from": 60,
+      "to": 71
+    },
+    {
+      "from": 60,
+      "to": 26
+    },
+    {
+      "from": 60,
+      "to": 78
+    },
+    {
+      "from": 60,
+      "to": 31
+    },
+    {
+      "from": 60,
+      "to": 56
+    },
+    {
+      "from": 60,
+      "to": 110
+    },
+    {
+      "from": 60,
+      "to": 8
+    },
+    {
+      "from": 60,
+      "to": 50
+    },
+    {
+      "from": 60,
+      "to": 120
+    },
+    {
+      "from": 60,
+      "to": 33
+    },
+    {
+      "from": 60,
+      "to": 36
+    },
+    {
+      "from": 112,
+      "to": 59
+    },
+    {
+      "from": 112,
+      "to": 31
+    },
+    {
+      "from": 112,
+      "to": 87
+    },
+    {
+      "from": 90,
+      "to": 114
+    },
+    {
+      "from": 90,
+      "to": 47
+    },
+    {
+      "from": 90,
+      "to": 57
+    },
+    {
+      "from": 59,
+      "to": 44
+    },
+    {
+      "from": 59,
+      "to": 104
+    },
+    {
+      "from": 59,
+      "to": 27
+    },
+    {
+      "from": 59,
+      "to": 31
+    },
+    {
+      "from": 59,
+      "to": 88
+    },
+    {
+      "from": 59,
+      "to": 49
+    },
+    {
+      "from": 59,
+      "to": 93
+    },
+    {
+      "from": 59,
+      "to": 103
+    },
+    {
+      "from": 75,
+      "to": 44
+    },
+    {
+      "from": 75,
+      "to": 72
+    },
+    {
+      "from": 75,
+      "to": 43
+    },
+    {
+      "from": 75,
+      "to": 31
+    },
+    {
+      "from": 117,
+      "to": 104
+    },
+    {
+      "from": 117,
+      "to": 83
+    },
+    {
+      "from": 117,
+      "to": 71
+    },
+    {
+      "from": 117,
+      "to": 27
+    },
+    {
+      "from": 117,
+      "to": 88
+    },
+    {
+      "from": 117,
+      "to": 95
+    },
+    {
+      "from": 117,
+      "to": 93
+    },
+    {
+      "from": 117,
+      "to": 67
+    },
+    {
+      "from": 117,
+      "to": 16
+    },
+    {
+      "from": 117,
+      "to": 103
+    },
+    {
+      "from": 117,
+      "to": 24
+    },
+    {
+      "from": 84,
+      "to": 116
+    },
+    {
+      "from": 84,
+      "to": 119
+    },
+    {
+      "from": 84,
+      "to": 64
+    },
+    {
+      "from": 40,
+      "to": 53
+    },
+    {
+      "from": 40,
+      "to": 116
+    },
+    {
+      "from": 40,
+      "to": 119
+    },
+    {
+      "from": 40,
+      "to": 64
+    },
+    {
+      "from": 40,
+      "to": 25
+    },
+    {
+      "from": 44,
+      "to": 72
+    },
+    {
+      "from": 44,
+      "to": 104
+    },
+    {
+      "from": 44,
+      "to": 114
+    },
+    {
+      "from": 44,
+      "to": 26
+    },
+    {
+      "from": 44,
+      "to": 78
+    },
+    {
+      "from": 44,
+      "to": 31
+    },
+    {
+      "from": 44,
+      "to": 61
+    },
+    {
+      "from": 44,
+      "to": 38
+    },
+    {
+      "from": 44,
+      "to": 49
+    },
+    {
+      "from": 44,
+      "to": 95
+    },
+    {
+      "from": 44,
+      "to": 22
+    },
+    {
+      "from": 44,
+      "to": 91
+    },
+    {
+      "from": 44,
+      "to": 52
+    },
+    {
+      "from": 44,
+      "to": 6
+    },
+    {
+      "from": 44,
+      "to": 24
+    },
+    {
+      "from": 44,
+      "to": 66
+    },
+    {
+      "from": 44,
+      "to": 50
+    },
+    {
+      "from": 44,
+      "to": 57
+    },
+    {
+      "from": 44,
+      "to": 30
+    },
+    {
+      "from": 72,
+      "to": 104
+    },
+    {
+      "from": 72,
+      "to": 31
+    },
+    {
+      "from": 72,
+      "to": 15
+    },
+    {
+      "from": 72,
+      "to": 6
+    },
+    {
+      "from": 72,
+      "to": 55
+    },
+    {
+      "from": 104,
+      "to": 114
+    },
+    {
+      "from": 104,
+      "to": 41
+    },
+    {
+      "from": 104,
+      "to": 88
+    },
+    {
+      "from": 104,
+      "to": 56
+    },
+    {
+      "from": 104,
+      "to": 38
+    },
+    {
+      "from": 104,
+      "to": 49
+    },
+    {
+      "from": 104,
+      "to": 95
+    },
+    {
+      "from": 104,
+      "to": 20
+    },
+    {
+      "from": 104,
+      "to": 91
+    },
+    {
+      "from": 104,
+      "to": 52
+    },
+    {
+      "from": 104,
+      "to": 6
+    },
+    {
+      "from": 104,
+      "to": 103
+    },
+    {
+      "from": 104,
+      "to": 5
+    },
+    {
+      "from": 104,
+      "to": 24
+    },
+    {
+      "from": 104,
+      "to": 113
+    },
+    {
+      "from": 104,
+      "to": 50
+    },
+    {
+      "from": 114,
+      "to": 48
+    },
+    {
+      "from": 114,
+      "to": 24
+    },
+    {
+      "from": 114,
+      "to": 57
+    },
+    {
+      "from": 83,
+      "to": 14
+    },
+    {
+      "from": 83,
+      "to": 48
+    },
+    {
+      "from": 83,
+      "to": 21
+    },
+    {
+      "from": 53,
+      "to": 116
+    },
+    {
+      "from": 53,
+      "to": 119
+    },
+    {
+      "from": 53,
+      "to": 64
+    },
+    {
+      "from": 53,
+      "to": 25
+    },
+    {
+      "from": 109,
+      "to": 46
+    },
+    {
+      "from": 109,
+      "to": 91
+    },
+    {
+      "from": 109,
+      "to": 87
+    },
+    {
+      "from": 109,
+      "to": 50
+    },
+    {
+      "from": 109,
+      "to": 36
+    },
+    {
+      "from": 71,
+      "to": 27
+    },
+    {
+      "from": 71,
+      "to": 110
+    },
+    {
+      "from": 71,
+      "to": 36
+    },
+    {
+      "from": 26,
+      "to": 120
+    },
+    {
+      "from": 46,
+      "to": 87
+    },
+    {
+      "from": 46,
+      "to": 8
+    },
+    {
+      "from": 37,
+      "to": 31
+    },
+    {
+      "from": 28,
+      "to": 47
+    },
+    {
+      "from": 28,
+      "to": 70
+    },
+    {
+      "from": 28,
+      "to": 14
+    },
+    {
+      "from": 28,
+      "to": 87
+    },
+    {
+      "from": 43,
+      "to": 52
+    },
+    {
+      "from": 43,
+      "to": 66
+    },
+    {
+      "from": 78,
+      "to": 31
+    },
+    {
+      "from": 31,
+      "to": 61
+    },
+    {
+      "from": 31,
+      "to": 56
+    },
+    {
+      "from": 31,
+      "to": 15
+    },
+    {
+      "from": 31,
+      "to": 49
+    },
+    {
+      "from": 31,
+      "to": 67
+    },
+    {
+      "from": 31,
+      "to": 103
+    },
+    {
+      "from": 31,
+      "to": 5
+    },
+    {
+      "from": 31,
+      "to": 8
+    },
+    {
+      "from": 31,
+      "to": 30
+    },
+    {
+      "from": 70,
+      "to": 14
+    },
+    {
+      "from": 70,
+      "to": 87
+    },
+    {
+      "from": 70,
+      "to": 105
+    },
+    {
+      "from": 14,
+      "to": 87
+    },
+    {
+      "from": 14,
+      "to": 33
+    },
+    {
+      "from": 38,
+      "to": 55
+    },
+    {
+      "from": 9,
+      "to": 16
+    },
+    {
+      "from": 15,
+      "to": 87
+    },
+    {
+      "from": 116,
+      "to": 119
+    },
+    {
+      "from": 116,
+      "to": 64
+    },
+    {
+      "from": 20,
+      "to": 66
+    },
+    {
+      "from": 93,
+      "to": 16
+    },
+    {
+      "from": 93,
+      "to": 48
+    },
+    {
+      "from": 54,
+      "to": 87
+    },
+    {
+      "from": 54,
+      "to": 66
+    },
+    {
+      "from": 54,
+      "to": 120
+    },
+    {
+      "from": 119,
+      "to": 64
+    },
+    {
+      "from": 119,
+      "to": 25
+    },
+    {
+      "from": 110,
+      "to": 87
+    },
+    {
+      "from": 91,
+      "to": 113
+    },
+    {
+      "from": 87,
+      "to": 66
+    },
+    {
+      "from": 87,
+      "to": 8
+    },
+    {
+      "from": 87,
+      "to": 33
+    },
+    {
+      "from": 105,
+      "to": 5
+    },
+    {
+      "from": 16,
+      "to": 48
+    },
+    {
+      "from": 16,
+      "to": 21
+    },
+    {
+      "from": 48,
+      "to": 21
+    },
+    {
+      "from": 6,
+      "to": 33
+    },
+    {
+      "from": 97,
+      "to": 30
+    },
+    {
+      "from": 64,
+      "to": 25
+    },
+    {
+      "from": 113,
+      "to": 21
+    },
+    {
+      "from": 66,
+      "to": 8
+    },
+    {
+      "from": 66,
+      "to": 120
+    },
+    {
+      "from": 57,
+      "to": 30
+    }
+  ],
+  "meta": {
+    "input": "KB\\ThothStream_Knowledgebase.md",
+    "docCount": 2887,
+    "maxNodes": 120,
+    "topKEdges": 6,
+    "nodeCount": 120,
+    "edgeCount": 616,
+    "notes": "Edges are undirected co-occurrence links scored by positive PMI over heading sections."
+  }
+}

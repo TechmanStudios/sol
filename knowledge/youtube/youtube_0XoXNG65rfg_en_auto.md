@@ -1,0 +1,515 @@
+# YouTube Transcript (0XoXNG65rfg)
+
+- Source: https://www.youtube.com/watch?v=0XoXNG65rfg
+- Language: en
+- Auto-generated: true
+
+## Transcript
+
+- [00:00–00:04] For a long time, I have wondered what
+- [00:02–00:06] the difference is between prompt files,
+- [00:04–00:09] custom instructions, and custom agents
+- [00:06–00:10] in Visual Studio Code. And it's a
+- [00:09–00:12] question I hear a lot. So, in this
+- [00:10–00:13] video, we're going to dive in. We're
+- [00:12–00:15] going to take a look at all of those
+- [00:13–00:17] things, how they work together to
+- [00:15–00:20] completely understand when and where to
+- [00:17–00:22] use them. Are you ready? Let's go.
+- [00:20–00:24] Before we actually look at custom
+- [00:22–00:26] instructions or prompt files or custom
+- [00:24–00:29] agents, it's really important for you to
+- [00:26–00:31] understand how the agent system prompt
+- [00:29–00:33] works in Visual Studio Code. And this is
+- [00:31–00:35] important because you're going to need
+- [00:33–00:37] to know where in fact these instructions
+- [00:35–00:40] get inserted into that prompt. So, let's
+- [00:37–00:42] run through that just real quick. So, if
+- [00:40–00:44] we were to type some sort of a message,
+- [00:42–00:47] just say hello world here and send it to
+- [00:44–00:49] the chat, it gets sent. But let's take a
+- [00:47–00:52] look at what actually happens behind the
+- [00:49–00:56] scenes here. Behind the scenes, Copilot
+- [00:52–00:59] composes a prompt and it starts with a
+- [00:56–01:03] system prompt like this here. And the
+- [00:59–01:05] system prompt starts off with some core
+- [01:03–01:07] identity and global rules. And this is
+- [01:05–01:09] just very generic stuff. In fact, I
+- [01:07–01:11] think there's only two or three lines.
+- [01:09–01:13] It's like you are an intelligent AI
+- [01:11–01:16] coding assistant. Kind of this just
+- [01:13–01:19] generic identity. And then underneath
+- [01:16–01:21] that there's general instructions. And
+- [01:19–01:23] these instructions can vary by model
+- [01:21–01:25] because the models have various quirks.
+- [01:23–01:27] So for instance, if a model is very
+- [01:25–01:29] aggressive about writing the code out to
+- [01:27–01:31] the chat when it should just be writing
+- [01:29–01:33] it to the file, there might be an
+- [01:31–01:35] instruction never print out code blocks
+- [01:33–01:38] with file changes. And then underneath
+- [01:35–01:39] that there's tool use instructions. And
+- [01:38–01:42] these are instructions for the model
+- [01:39–01:45] about how to use the tools that are
+- [01:42–01:48] included in Copilot like um the edit
+- [01:45–01:51] tool or the terminal tool or the to-do
+- [01:48–01:53] list tool, any of the built-in tools.
+- [01:51–01:55] And then underneath that, there's some
+- [01:53–01:59] output format instructions that just
+- [01:55–02:01] tell the agent how to format the output
+- [01:59–02:03] for tokenization in the chat so that
+- [02:01–02:05] things like the little file pills that
+- [02:03–02:08] you'll see in Visual Studio Code
+- [02:05–02:10] actually show up correctly. Now the next
+- [02:08–02:13] thing that happens is a user prompt gets
+- [02:10–02:15] added to the message that's sent to the
+- [02:13–02:18] model. It hasn't been sent yet. The user
+- [02:15–02:20] message contains the in environment
+- [02:18–02:22] info. So information about the user's
+- [02:20–02:24] operating system, etc. And it also
+- [02:22–02:25] includes workspace info. And it
+- [02:24–02:29] literally looks like this. It's kind of
+- [02:25–02:34] your project structure in text format.
+- [02:29–02:37] Project name, folders, files. And then
+- [02:34–02:39] another user prompt gets added to the
+- [02:37–02:42] message which has still has not yet been
+- [02:39–02:44] sent and that contains context info like
+- [02:42–02:47] the current date and time list of open
+- [02:44–02:51] terminals that you have. It also
+- [02:47–02:53] contains any files that you have added
+- [02:51–02:55] to the chat. Now, in our case, we didn't
+- [02:53–02:58] have any files added to the message, but
+- [02:55–03:00] if we were to add files like that, then
+- [02:58–03:03] they would show up here, right here into
+- [03:00–03:07] this editor context. And then finally,
+- [03:03–03:09] we have the hello world. And then all of
+- [03:07–03:11] this gets sent up to the model and the
+- [03:09–03:13] model responds with this assistant
+- [03:11–03:16] message. And all of these things
+- [03:13–03:18] together are the context window. So the
+- [03:16–03:20] context window is just being built up
+- [03:18–03:22] here. We have one and then another one
+- [03:20–03:25] gets added and then uh another one gets
+- [03:22–03:27] added here and then all of this gets
+- [03:25–03:30] sent and then the response comes back
+- [03:27–03:33] and then this gets added and now this is
+- [03:30–03:35] the whole context window here right all
+- [03:33–03:37] of this and if we were to add another
+- [03:35–03:40] user message this would just get added
+- [03:37–03:43] here and would become part of the
+- [03:40–03:46] context. Okay so now you understand what
+- [03:43–03:48] actually happens when you send a prompt.
+- [03:46–03:50] Now the question is what are custom
+- [03:48–03:53] instructions, prompt files, and custom
+- [03:50–03:55] agents and where do they actually go in
+- [03:53–03:58] this prompt? So let's take a look at
+- [03:55–04:02] that. It's probably best if we start
+- [03:58–04:05] with something like custom instructions.
+- [04:02–04:08] So the most canonical use for custom
+- [04:05–04:10] instructions is to contain highlevel
+- [04:08–04:13] information about your project that
+- [04:10–04:16] might help the model do a better job
+- [04:13–04:18] giving you answers. So for instance in
+- [04:16–04:20] Visual Studio Code there if you click
+- [04:18–04:23] the gear here we can generate chat
+- [04:20–04:24] instructions
+- [04:23–04:26] and this will do exactly what I just
+- [04:24–04:29] said. It will create an instructions
+- [04:26–04:31] file that has the highle information
+- [04:29–04:34] your project architecture any patterns
+- [04:31–04:36] you can use. You can actually go and
+- [04:34–04:38] read this prompt here so you can see
+- [04:36–04:41] exactly what it's being asked to write.
+- [04:38–04:44] But we recommend this for every project.
+- [04:41–04:47] And this is probably the most common use
+- [04:44–04:49] case for custom instructions. Once we've
+- [04:47–04:52] generated these custom instructions, if
+- [04:49–04:54] we were to send another message, you'll
+- [04:52–04:56] see when we do that, the custom
+- [04:54–04:58] instructions automatically get passed
+- [04:56–05:00] right there. There they are. So this
+- [04:58–05:03] file is being passed as part of the
+- [05:00–05:06] context. So the question is where
+- [05:03–05:08] exactly does that show up in the prompt?
+- [05:06–05:10] So in our diagram here, custom
+- [05:08–05:12] instructions should show up right here
+- [05:10–05:17] in the system prompt and they're
+- [05:12–05:21] actually added right here. So they are
+- [05:17–05:24] the last thing in the agent system
+- [05:21–05:27] prompt. And it should be noted that the
+- [05:24–05:29] copilot instructions will always be the
+- [05:27–05:31] last thing in the agent system prompt
+- [05:29–05:34] because you can create as many
+- [05:31–05:36] instruction files as you like. So let me
+- [05:34–05:38] give you an example.
+- [05:36–05:41] This site is called Awesome Copilot and
+- [05:38–05:43] it is full of community contributed
+- [05:41–05:46] prompt files, custom instructions, and
+- [05:43–05:49] custom agents. It is a treasure trove of
+- [05:46–05:51] custom instructions that you can look at
+- [05:49–05:54] for inspiration. So, we could go here
+- [05:51–05:55] and find some instructions that we like.
+- [05:54–05:58] So, here's a table of all the different
+- [05:55–06:03] ones that are available. So let's go
+- [05:58–06:06] down here and let's pick maybe um NextJS
+- [06:03–06:10] best practices for LLM. So if we click
+- [06:06–06:12] install, this will install the file in
+- [06:10–06:14] Visual Studio Code. We can go ahead and
+- [06:12–06:16] accept it. It asks us where we want to
+- [06:14–06:18] put it. We can put it in the user data
+- [06:16–06:20] folder which makes it globally available
+- [06:18–06:22] or we can put it in the
+- [06:20–06:23] github/instructions
+- [06:22–06:26] folder which means it will only be
+- [06:23–06:28] available in this project which is
+- [06:26–06:29] exactly what I'm going to do. And uh now
+- [06:28–06:31] if you look we'll see we have an
+- [06:29–06:34] instructions folder and a next.js
+- [06:31–06:36] instructions inside. And if we were to
+- [06:34–06:38] pass another prompt here
+- [06:36–06:40] now you probably guess what's going to
+- [06:38–06:44] happen. Both of those files actually get
+- [06:40–06:47] passed. And just to clarify, remember
+- [06:44–06:51] that the nextjs instructions will always
+- [06:47–06:54] come before the co-pilot instructions
+- [06:51–06:57] file. That always comes last. So at a
+- [06:54–06:59] high level, that's custom instructions.
+- [06:57–07:01] Now, let's talk about prompt files.
+- [06:59–07:04] Prompt files are reusable prompts that
+- [07:01–07:06] you can define and then use right in the
+- [07:04–07:09] chat. Now, why would you do this? Well,
+- [07:06–07:11] let me give you an example. If we want
+- [07:09–07:13] to define a prompt file, we can go to
+- [07:11–07:15] configure prompt files. And you can see
+- [07:13–07:18] that I've got a bunch of different
+- [07:15–07:19] prompt files here. So, let's go ahead
+- [07:18–07:21] and look at this one here, which is
+- [07:19–07:23] called remember. So, I'm going to look
+- [07:21–07:25] at the remember prompt. And in the
+- [07:23–07:28] remember prompt, this is a prompt that I
+- [07:25–07:30] have that just builds up a memory file.
+- [07:28–07:32] So, I can tell the AI at any time to
+- [07:30–07:34] just remember something and it will do
+- [07:32–07:36] that. Now, you can see up here in the
+- [07:34–07:38] front matter that I can specify the
+- [07:36–07:40] agent down here. We're just going to
+- [07:38–07:43] stick with the agent. Um, but then we
+- [07:40–07:44] can also let's add a description. But
+- [07:43–07:46] then the other very powerful thing here
+- [07:44–07:48] is that we can also add a model. And you
+- [07:46–07:51] can see we get IntelliSense for all of
+- [07:48–07:53] the models that we have available. Many
+- [07:51–07:55] of these are on open router. Some of
+- [07:53–07:56] them are built in. I'm going to use a
+- [07:55–07:58] small model for this so that I don't
+- [07:56–08:01] waste premium requests. And what this
+- [07:58–08:04] means is when I use this prompt file, it
+- [08:01–08:06] will automatically move us over to the
+- [08:04–08:08] correct model. So let me show you what I
+- [08:06–08:10] mean. So let's say the model keeps
+- [08:08–08:12] making the same mistake of trying to use
+- [08:10–08:15] a use effect on server components which
+- [08:12–08:16] you cannot do in Nex.js and so we just
+- [08:15–08:19] want it to remember not to do that. So
+- [08:16–08:23] we can use that prompt file with just
+- [08:19–08:25] the slash here and then paste in our
+- [08:23–08:27] message. And when we send this, you'll
+- [08:25–08:30] notice that we're on Claude Opus 45,
+- [08:27–08:32] which is a premium model at 3x. But when
+- [08:30–08:35] we send it, it actually gets sent with
+- [08:32–08:39] GPT41 because that's what we specified
+- [08:35–08:41] in the prompt file right here,
+- [08:39–08:43] gpt41.
+- [08:41–08:46] And now it's created an instructions
+- [08:43–08:48] file for us. And this instructions file
+- [08:46–08:51] will be added automatically to every
+- [08:48–08:52] single request. So you can see here how
+- [08:51–08:54] I'm kind of starting to build up
+- [08:52–08:59] workflows using actually both prompt
+- [08:54–09:01] files and custom instructions. Now let's
+- [08:59–09:04] go back to our diagram and let's take a
+- [09:01–09:07] look at where actually in the system
+- [09:04–09:11] prompt these prompt files actually show
+- [09:07–09:14] up. So the answer is they don't not in
+- [09:11–09:18] the system prompt. They actually show up
+- [09:14–09:21] down here in the user prompt. So in the
+- [09:18–09:25] user prompt what happens is these prompt
+- [09:21–09:28] files their contents get added right
+- [09:25–09:31] here at the very top. So even before the
+- [09:28–09:33] context info, we'll have prompt files.
+- [09:31–09:35] And then we're going to have just the
+- [09:33–09:38] contents of the prompt file that was
+- [09:35–09:41] used. And then what happens is down here
+- [09:38–09:43] in this message, it says follow the
+- [09:41–09:47] instructions
+- [09:43–09:48] in and then it points back up to the
+- [09:47–09:51] contents of that prompt file, but it
+- [09:48–09:53] actually uses a special syntax to do
+- [09:51–09:54] that. It's kind of it's pointing to it
+- [09:53–09:57] by name even though it's actually
+- [09:54–10:00] included in the user prompt. And then
+- [09:57–10:03] after that it has your system message
+- [10:00–10:07] which would be use effect can only be
+- [10:03–10:09] used uh in client components. Right? So
+- [10:07–10:11] that's where prompt files come in. And
+- [10:09–10:14] so if we have a lot of messages, they
+- [10:11–10:16] may be way way way down in the list,
+- [10:14–10:18] right? Maybe way down here. Each time we
+- [10:16–10:22] use a prompt file, it gets it's part of
+- [10:18–10:24] the user prompt, not part of the system
+- [10:22–10:27] prompt. Now, the question that you're
+- [10:24–10:30] going to ask is does the placement of
+- [10:27–10:33] the prompt within the message hierarchy
+- [10:30–10:38] actually matter? And the answer to that
+- [10:33–10:41] is I don't know. However, context rot is
+- [10:38–10:43] a real thing. And the basic idea here is
+- [10:41–10:45] that as the context window grows and
+- [10:43–10:48] gets longer, the performance of the
+- [10:45–10:50] model degrades. Now, this has gotten
+- [10:48–10:53] better over time. As the article dives
+- [10:50–10:55] into here, it's improved. But you can
+- [10:53–10:58] still see here that as the context
+- [10:55–11:01] window grows, for example, a 32,000
+- [10:58–11:04] token prompt, accuracy drops
+- [11:01–11:08] dramatically. Even Claude 35 Sonnet goes
+- [11:04–11:10] from 88% to 30% accuracy.
+- [11:08–11:13] So it's important to remember that as
+- [11:10–11:15] your prompt is growing here. So if we
+- [11:13–11:17] have
+- [11:15–11:18] a system prompt and a user prompt and a
+- [11:17–11:20] user and then an assistant message and
+- [11:18–11:22] then a user prompt and then we have
+- [11:20–11:24] another assistant message because we
+- [11:22–11:26] haven't started a new chat. So we just
+- [11:24–11:28] keep going and going and going. It
+- [11:26–11:30] doesn't really matter if you're using
+- [11:28–11:33] custom instructions or prompt files. The
+- [11:30–11:36] performance or the accuracy of the model
+- [11:33–11:38] is just going to degrade. And this is
+- [11:36–11:41] one of the reasons that the token
+- [11:38–11:44] windows or the context windows in VS
+- [11:41–11:47] code are limited at a certain point and
+- [11:44–11:49] that is to maintain performance. So it's
+- [11:47–11:51] hard to answer the question would you be
+- [11:49–11:53] more accurate to pass your instructions
+- [11:51–11:55] as a prompt file or a custom
+- [11:53–11:56] instruction. The best thing to do is
+- [11:55–11:58] instead of worrying about the
+- [11:56–12:01] positioning just use them as they are
+- [11:58–12:02] designed which is to help you compose
+- [12:01–12:05] workflows and not worry about their
+- [12:02–12:07] position in the prompt. Now, let's talk
+- [12:05–12:10] about one last thing, and that's custom
+- [12:07–12:13] agents. Custom agents used to be called
+- [12:10–12:15] custom modes, and I built one a while
+- [12:13–12:19] back that was called beast mode that was
+- [12:15–12:21] designed to help GPT4.1 perform better.
+- [12:19–12:23] And the idea here is that you can pass
+- [12:21–12:27] instructions to sort of override or
+- [12:23–12:30] augment the default agent behavior. So,
+- [12:27–12:31] let's take a look at these. What I want
+- [12:30–12:33] to look at is one of the ones that we're
+- [12:31–12:36] now shipping in Visual Studio Code,
+- [12:33–12:37] which is the plan mode. So, you can
+- [12:36–12:40] actually click on configure custom
+- [12:37–12:42] agents and you can look at our built-in
+- [12:40–12:44] plan mode here. So, let's take a look at
+- [12:42–12:46] the plan mode. You can see that it the
+- [12:44–12:48] name and the description and then
+- [12:46–12:50] there's these tools and then there's
+- [12:48–12:54] these things called handoffs which we'll
+- [12:50–12:57] get to in just a second. And then you
+- [12:54–12:59] can see that it's very much like we're
+- [12:57–13:00] writing an agent prompt. This is very
+- [12:59–13:01] different from custom instructions,
+- [13:00–13:04] right? If we look at the custom
+- [13:01–13:06] instructions, this is different. It's
+- [13:04–13:08] just giving it information. This is
+- [13:06–13:11] giving it an identity. So, it's very
+- [13:08–13:13] much like an agent system prompt.
+- [13:11–13:15] And then it's going to go through and it
+- [13:13–13:17] uses a workflow
+- [13:15–13:19] to start a planning process with the
+- [13:17–13:21] user. The first step is to gather
+- [13:19–13:23] context and research, then present a
+- [13:21–13:26] concise plan for iteration, and then
+- [13:23–13:28] handle user feedback. And then uh it
+- [13:26–13:32] will give you the option to either
+- [13:28–13:33] implement the plan or to put the plan
+- [13:32–13:36] write it out to the editor and it does
+- [13:33–13:37] that via handoffs. So let's actually run
+- [13:36–13:40] this and take a look at what this
+- [13:37–13:41] actually looks like in action. So I'm
+- [13:40–13:43] going to pick a model that's a little
+- [13:41–13:46] bit better at planning here. I'm using
+- [13:43–13:47] our built-in plan mode. So let's do
+- [13:46–13:48] something that is always done in these
+- [13:47–13:50] demos. We're just going to add dark mode
+- [13:48–13:52] to an app. I don't know why that's the
+- [13:50–13:54] the prompt that's always used, but it's
+- [13:52–13:56] because it's visual and it's because
+- [13:54–13:58] something we can see. So, we're going to
+- [13:56–14:00] let Haiku go through and work through
+- [13:58–14:02] this plan. You can see this and then
+- [14:00–14:04] we'll come back and talk about what is
+- [14:02–14:06] actually happening here. Okay, so we're
+- [14:04–14:08] using this new plan agent and we've sent
+- [14:06–14:10] this prompt. What is actually happening
+- [14:08–14:13] behind the scenes? Let's go back and
+- [14:10–14:15] take a look at our diagram.
+- [14:13–14:19] So, what happens when you use a custom
+- [14:15–14:22] agent is this. it actually gets added to
+- [14:19–14:26] the system prompt here. So, let's make
+- [14:22–14:29] some more room. And the custom agent is
+- [14:26–14:33] always added here below your custom
+- [14:29–14:34] instructions. So, that's the order in
+- [14:33–14:36] the system prompt. The custom
+- [14:34–14:38] instructions will be added to the end of
+- [14:36–14:40] the system prompt and then the custom
+- [14:38–14:43] agent instructions are added to the end
+- [14:40–14:47] of the system prompts. They are the last
+- [14:43–14:49] thing in the agent system prompt. So now
+- [14:47–14:51] let's take a look at how we can use
+- [14:49–14:54] custom instructions, prompt files, and
+- [14:51–14:56] custom agents to compose Agentic
+- [14:54–14:58] workflows because that's what they are.
+- [14:56–14:59] There isn't really a right or wrong way
+- [14:58–15:02] to use them. They're just building
+- [14:59–15:04] blocks for composing your own workflows,
+- [15:02–15:06] but that doesn't really make any sense
+- [15:04–15:08] in the abstract. It's going to help you
+- [15:06–15:10] if you see how someone else has done it.
+- [15:08–15:12] So what I want to do now is show you how
+- [15:10–15:15] I compose workflows. So what I'm going
+- [15:12–15:17] to do is I'm going to use a prompt file
+- [15:15–15:19] for planning. I have a custom planning
+- [15:17–15:21] prompt file and then I'm going to ask it
+- [15:19–15:23] to refactor the UI of this application
+- [15:21–15:24] to be more clean and modern. And you'll
+- [15:23–15:27] notice the first thing that it does is
+- [15:24–15:30] it switches us over to Opus45
+- [15:27–15:31] because that's what I've defined in the
+- [15:30–15:34] prompt file. We can actually take a look
+- [15:31–15:36] at that. If we go here, here's my prompt
+- [15:34–15:39] file. You can see I've defined the model
+- [15:36–15:42] and then my prompt file is for planning
+- [15:39–15:44] is very similar to the built-in agent
+- [15:42–15:47] but my prompt file actually instructs
+- [15:44–15:51] the agent to work in the concept of a
+- [15:47–15:53] branch. So the plan is really defining
+- [15:51–15:56] one PR or one branch and it's just
+- [15:53–15:58] defining the highle steps. So, it's
+- [15:56–16:01] going to do things that the built-in
+- [15:58–16:04] plan uh custom agent does, like
+- [16:01–16:06] researching the codebase and asking me
+- [16:04–16:08] questions, but the plan format that it
+- [16:06–16:10] spits out is a little bit different
+- [16:08–16:13] because this is just one of the building
+- [16:10–16:15] blocks and it'll make more sense here in
+- [16:13–16:18] a second. Okay, so planning mode is done
+- [16:15–16:19] and we have one file here that's been
+- [16:18–16:21] created and I have it create the file
+- [16:19–16:24] automatically. It does have some
+- [16:21–16:26] questions, but they're they're mild. Not
+- [16:24–16:27] anything that I really need to address.
+- [16:26–16:29] But you can see it just breaks things
+- [16:27–16:31] down into steps. Step one, do this. Step
+- [16:29–16:34] two, do this. The idea is that each one
+- [16:31–16:37] of these steps is a commit. And commits
+- [16:34–16:39] should be small and testable. And
+- [16:37–16:42] commits will build up and create a
+- [16:39–16:43] single PR that we can then submit. We
+- [16:42–16:46] don't have any code though. So the next
+- [16:43–16:48] step is to actually get code. So let's
+- [16:46–16:51] go ahead and keep this. And because we
+- [16:48–16:53] don't want context rot, let's start a
+- [16:51–16:56] new chat session here. Clear the
+- [16:53–16:58] context. So now what I'm going to do is
+- [16:56–17:01] something a little bit unique. Instead
+- [16:58–17:04] of actually implementing the plan, I am
+- [17:01–17:07] going to have it generate
+- [17:04–17:08] a document based on that plan. And then
+- [17:07–17:11] I'm just going to pass the plan file
+- [17:08–17:14] here. So in this case, I'm using a
+- [17:11–17:16] generate prompt and passing in the plan
+- [17:14–17:18] that we just created. And I'll explain
+- [17:16–17:21] what it's doing.
+- [17:18–17:24] So the generate prompt takes the plan
+- [17:21–17:27] and then it writes all of the code
+- [17:24–17:29] required to implement this plan, but it
+- [17:27–17:32] doesn't write that code in the project.
+- [17:29–17:36] It actually writes it in a markdown file
+- [17:32–17:38] step by step. And the reason why I'm
+- [17:36–17:41] doing this is because I'm trying to
+- [17:38–17:44] maximize my premium model usage. I've
+- [17:41–17:49] used Claude Opus 45 twice now. It is a
+- [17:44–17:52] 3x multiplier. the six premium requests.
+- [17:49–17:53] I want to make sure that I'm getting the
+- [17:52–17:55] most bang for my buck. So, I'm actually
+- [17:53–17:58] going to use a smaller model to
+- [17:55–18:00] implement and a bigger model to write
+- [17:58–18:02] the code. The smaller model will
+- [18:00–18:04] implement it, but the bigger model
+- [18:02–18:07] writes it. So, in just a second, we'll
+- [18:04–18:09] take a look at this implementation plan,
+- [18:07–18:11] and you can see exactly how this works.
+- [18:09–18:14] It's not complicated. The implementation
+- [18:11–18:18] plan that gets generated is long. It's
+- [18:14–18:20] very long. This one's almost 2,000 lines
+- [18:18–18:22] long, but you can see that every single
+- [18:20–18:25] piece of code that is needed to
+- [18:22–18:27] accomplish this job is actually in this
+- [18:25–18:29] file. But what's more uh important here
+- [18:27–18:32] is that they're all broken up into
+- [18:29–18:34] steps. And each step has a checkbox
+- [18:32–18:37] here. So now that we have that, we're
+- [18:34–18:39] going to clear the context window again,
+- [18:37–18:41] making the best use of our context. And
+- [18:39–18:44] now we're going to use a custom agent,
+- [18:41–18:46] which is just called implement. And all
+- [18:44–18:49] we have to do is then pass in the
+- [18:46–18:51] implementation plan here like this uh
+- [18:49–18:53] and give it a simple prompt and then we
+- [18:51–18:56] just send it. And you can see it
+- [18:53–18:59] automatically moves to the VS code prime
+- [18:56–19:01] or raptor prime which is a five mini
+- [18:59–19:04] variant and it's the model that I like
+- [19:01–19:07] to use for implementation. So we'll go
+- [19:04–19:09] ahead and send that off. Now, as this
+- [19:07–19:12] smaller model works on this document,
+- [19:09–19:14] it's going to implement what's in the
+- [19:12–19:16] document just verbatim. It isn't
+- [19:14–19:18] actually writing any code. It's just
+- [19:16–19:21] implementing the code that the large
+- [19:18–19:24] model wrote. And this strategy lets you
+- [19:21–19:27] sort of oneshot with a huge model and
+- [19:24–19:29] then implement and iterate with a small
+- [19:27–19:31] free model. And this model will keep
+- [19:29–19:33] going until it's completed whatever step
+- [19:31–19:36] it's on in the implementation plan. And
+- [19:33–19:38] then it will stop and it will return
+- [19:36–19:41] control to me so that I can test make
+- [19:38–19:43] sure that I like it and then I will just
+- [19:41–19:47] stage and commit. And then I will just
+- [19:43–19:49] redo what I did. Use the implement agent
+- [19:47–19:50] pass the implementation document and it
+- [19:49–19:52] will just pick up with step two and
+- [19:50–19:54] continue. And I will just iterate with
+- [19:52–19:56] it like that until we get to the end of
+- [19:54–19:58] the implementation and everything's
+- [19:56–20:01] working. And then I have a pull request
+- [19:58–20:03] that I feel really good about. Okay. So
+- [20:01–20:06] now you have a really good understanding
+- [20:03–20:09] of how things work behind the scenes for
+- [20:06–20:11] the agent in VS Code. You understand the
+- [20:09–20:13] agent system prompt and how the user
+- [20:11–20:15] prompts are added on and where custom
+- [20:13–20:18] instructions and prompt files actually
+- [20:15–20:21] go in that prompt. Go forth and create
+- [20:18–20:23] AI workflows that work for you. I'll put
+- [20:21–20:25] links to mine below and check out the
+- [20:23–20:29] awesome co-pilot repo where you'll find
+- [20:25–20:31] my workflows plus tons of other prompt
+- [20:29–20:34] files, instructions, and custom agents
+- [20:31–20:37] that you can use today. And as always,
+- [20:34–20:37] happy coding.

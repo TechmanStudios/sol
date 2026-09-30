@@ -1,0 +1,44 @@
+[
+  {
+    "id": "H-001",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unpromoted",
+      "priority": 2,
+      "claim_id": "CL-3",
+      "description": "CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins \u2014 no proof packet found",
+      "suggested_action": "Design and run a protocol to test: The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins",
+      "metadata": {
+        "claim_status": "Robust",
+        "falsifier": "stable indefinitely at dt\u22650.12 under identical signature + detector."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": ""
+    }
+  }
+]

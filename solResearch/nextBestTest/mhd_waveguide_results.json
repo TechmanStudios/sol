@@ -1,0 +1,21 @@
+{
+  "mhd": {
+    "peak_write_cond": 5.0,
+    "baseline_cond": 0.002428844433358762,
+    "end_settle_cond": 0.00011951629297150875,
+    "host_leakage": 0.00031824093663360316,
+    "battery_leakage": -0.19709060611383888,
+    "readout_leakage": -0.3229735170923007,
+    "total_leakage": -0.519745882269506
+  },
+  "baseline": {
+    "peak_write_cond": 0.004671862543988396,
+    "baseline_cond": 0.002428844433358762,
+    "end_settle_cond": 2.5607240408291337e-06,
+    "host_leakage": -0.0007230249094900541,
+    "battery_leakage": 2.8319408815332076e-05,
+    "readout_leakage": -0.0011192992332219598,
+    "total_leakage": -0.0018140047338966818
+  },
+  "passed": true
+}

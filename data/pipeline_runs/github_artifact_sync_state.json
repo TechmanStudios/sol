@@ -1,0 +1,65 @@
+{
+  "synced_artifacts": {
+    "22051991831:self-train-fast-22051991831": {
+      "run_id": 22051991831,
+      "workflow": "SOL Self-Train",
+      "artifact": "self-train-fast-22051991831",
+      "synced_at": "2026-02-16T19:46:35.745756+00:00",
+      "paths": [
+        "G:/docs/TechmanStudios/sol/data/pipeline_runs/github_actions_artifacts/sol-self-train/22051991831/self-train-fast-22051991831",
+        "G:/docs/TechmanStudios/sol/data/sol_self_train_runs/github-actions/fast/22051991831"
+      ]
+    },
+    "22052059066:self-train-full-22052059066": {
+      "run_id": 22052059066,
+      "workflow": "SOL Self-Train",
+      "artifact": "self-train-full-22052059066",
+      "synced_at": "2026-02-16T19:46:36.871692+00:00",
+      "paths": [
+        "G:/docs/TechmanStudios/sol/data/pipeline_runs/github_actions_artifacts/sol-self-train/22052059066/self-train-full-22052059066",
+        "G:/docs/TechmanStudios/sol/data/sol_self_train_runs/github-actions/full/22052059066"
+      ]
+    },
+    "22052118217:self-train-full-22052118217": {
+      "run_id": 22052118217,
+      "workflow": "SOL Self-Train",
+      "artifact": "self-train-full-22052118217",
+      "synced_at": "2026-02-16T19:46:42.480760+00:00",
+      "paths": [
+        "G:/docs/TechmanStudios/sol/data/pipeline_runs/github_actions_artifacts/sol-self-train/22052118217/self-train-full-22052118217",
+        "G:/docs/TechmanStudios/sol/data/sol_self_train_runs/github-actions/full/22052118217"
+      ]
+    },
+    "22052842191:self-train-overnight-22052842191": {
+      "run_id": 22052842191,
+      "workflow": "SOL Self-Train Overnight Preset",
+      "artifact": "self-train-overnight-22052842191",
+      "synced_at": "2026-02-16T19:46:43.554370+00:00",
+      "paths": [
+        "G:/docs/TechmanStudios/sol/data/pipeline_runs/github_actions_artifacts/sol-self-train-overnight-preset/22052842191/self-train-overnight-22052842191",
+        "G:/docs/TechmanStudios/sol/data/sol_self_train_runs/github-actions/overnight/22052842191"
+      ]
+    },
+    "22053054662:self-train-overnight-22053054662": {
+      "run_id": 22053054662,
+      "workflow": "SOL Self-Train",
+      "artifact": "self-train-overnight-22053054662",
+      "synced_at": "2026-02-16T19:46:45.083675+00:00",
+      "paths": [
+        "G:/docs/TechmanStudios/sol/data/pipeline_runs/github_actions_artifacts/sol-self-train/22053054662/self-train-overnight-22053054662",
+        "G:/docs/TechmanStudios/sol/data/sol_self_train_runs/github-actions/overnight/22053054662"
+      ]
+    },
+    "22053459642:self-train-full-22053459642": {
+      "run_id": 22053459642,
+      "workflow": "SOL Self-Train",
+      "artifact": "self-train-full-22053459642",
+      "synced_at": "2026-02-16T19:47:34.827898+00:00",
+      "paths": [
+        "G:/docs/TechmanStudios/sol/data/pipeline_runs/github_actions_artifacts/sol-self-train/22053459642/self-train-full-22053459642",
+        "G:/docs/TechmanStudios/sol/data/sol_self_train_runs/github-actions/full/22053459642"
+      ]
+    }
+  },
+  "last_synced_at": "2026-02-16T19:48:48.772536+00:00"
+}

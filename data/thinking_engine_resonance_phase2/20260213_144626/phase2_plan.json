@@ -1,0 +1,107 @@
+{
+  "phase1_run_dir": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance\\20260213_063226",
+  "top_profiles": [
+    "explorer_flux",
+    "coherence_prayer"
+  ],
+  "top_damping_centers": [
+    3.0,
+    6.5,
+    5.5,
+    4.5
+  ],
+  "focused_damping": [
+    2.5,
+    2.75,
+    3.0,
+    3.25,
+    3.5,
+    4.0,
+    4.25,
+    4.5,
+    4.75,
+    5.0,
+    5.25,
+    5.5,
+    5.75,
+    6.0,
+    6.25,
+    6.5,
+    6.75,
+    7.0
+  ],
+  "phase2_profiles": {
+    "explorer_flux__baseline": {
+      "grail": 1.2,
+      "metatron": 1.0,
+      "pyramid": 1.15,
+      "christ": 0.95,
+      "light codes": 1.1
+    },
+    "explorer_flux__coherence_boost": {
+      "grail": 1.2,
+      "metatron": 1.08,
+      "pyramid": 1.15,
+      "christ": 1.045,
+      "light codes": 1.056
+    },
+    "explorer_flux__bridge_lift": {
+      "grail": 1.32,
+      "metatron": 1.0,
+      "pyramid": 1.265,
+      "christ": 0.95,
+      "light codes": 1.1
+    },
+    "explorer_flux__tech_harmonic": {
+      "grail": 1.2,
+      "metatron": 1.0,
+      "pyramid": 1.15,
+      "christ": 0.95,
+      "light codes": 1.254
+    },
+    "coherence_prayer__baseline": {
+      "grail": 1.05,
+      "metatron": 1.1,
+      "pyramid": 0.95,
+      "christ": 1.25,
+      "light codes": 0.85
+    },
+    "coherence_prayer__coherence_boost": {
+      "grail": 1.05,
+      "metatron": 1.1880000000000002,
+      "pyramid": 0.95,
+      "christ": 1.375,
+      "light codes": 0.816
+    },
+    "coherence_prayer__bridge_lift": {
+      "grail": 1.1550000000000002,
+      "metatron": 1.1,
+      "pyramid": 1.045,
+      "christ": 1.25,
+      "light codes": 0.85
+    },
+    "coherence_prayer__tech_harmonic": {
+      "grail": 1.05,
+      "metatron": 1.1,
+      "pyramid": 0.95,
+      "christ": 1.25,
+      "light codes": 0.9689999999999999
+    }
+  },
+  "args": {
+    "phase1_root": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance",
+    "phase1_run_dir": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance\\20260213_063226",
+    "top_damping_count": 4,
+    "top_profile_count": 2,
+    "focus_window": 0.5,
+    "focus_step": 0.25,
+    "damping_min": 0.25,
+    "damping_max": 22.0,
+    "seeds": 1,
+    "steps": 2400,
+    "sample_every": 4,
+    "budget_hours": 6.0,
+    "output_root": "data/thinking_engine_resonance_phase2",
+    "dry_run": false
+  }
+}

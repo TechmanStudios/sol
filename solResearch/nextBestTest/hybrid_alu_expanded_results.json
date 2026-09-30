@@ -1,0 +1,397 @@
+{
+  "suite_passed": true,
+  "results": {
+    "OR": [
+      {
+        "A": 0,
+        "B": 0,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 4.791505450342989,
+        "mass_b": 4.789267074058586,
+        "mass_c": 3.6500297292717407,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 0,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 216.73323924277554,
+        "mass_b": 9.02165363072823,
+        "mass_c": 275.88712759970133,
+        "passed": true
+      },
+      {
+        "A": 0,
+        "B": 1,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 6.118878597054001,
+        "mass_b": 228.4409724004343,
+        "mass_c": 267.9189489723394,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 1,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 205.58141001672175,
+        "mass_b": 229.06057600741406,
+        "mass_c": 270.48565908452844,
+        "passed": true
+      }
+    ],
+    "AND": [
+      {
+        "A": 0,
+        "B": 0,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 4.859599311308142,
+        "mass_b": 4.8596988225807864,
+        "mass_c": 2.6271047865052957,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 0,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 42.812372688843965,
+        "mass_b": 5.518104072827831,
+        "mass_c": 16.70630555490251,
+        "passed": true
+      },
+      {
+        "A": 0,
+        "B": 1,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 5.447236404463498,
+        "mass_b": 43.65106523865283,
+        "mass_c": 15.126962900295595,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 1,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 46.92843677515109,
+        "mass_b": 49.49774791847234,
+        "mass_c": 255.2754739477009,
+        "passed": true
+      }
+    ],
+    "OR_MS": [
+      {
+        "A": 0,
+        "B": 0,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 4.85689221638118,
+        "mass_b": 4.855306636981423,
+        "mass_c": 4.881943596581992,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 0,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 233.25335120712236,
+        "mass_b": 6.376617602992518,
+        "mass_c": 229.03397821433535,
+        "passed": true
+      },
+      {
+        "A": 0,
+        "B": 1,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 4.86181770162095,
+        "mass_b": 228.29066564493803,
+        "mass_c": 253.74792166441011,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 1,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 232.81492765103948,
+        "mass_b": 231.32218213730184,
+        "mass_c": 251.3026032799129,
+        "passed": true
+      }
+    ],
+    "AND_MS": [
+      {
+        "A": 0,
+        "B": 0,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 4.85689221638118,
+        "mass_b": 4.855306636981423,
+        "mass_c": 4.881943596581992,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 0,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 232.96684360079107,
+        "mass_b": 6.374323253459667,
+        "mass_c": 5.719784779284004,
+        "passed": true
+      },
+      {
+        "A": 0,
+        "B": 1,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 4.861312392005005,
+        "mass_b": 228.6259587754497,
+        "mass_c": 6.8280129493718915,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 1,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 232.81492765103948,
+        "mass_b": 231.32218213730184,
+        "mass_c": 251.3026032799129,
+        "passed": true
+      }
+    ],
+    "NOT": [
+      {
+        "A": 0,
+        "B": 0,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 4.857260539448558,
+        "mass_b": 4.855685952974707,
+        "mass_c": 223.8977218616613,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 0,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 232.96684360079107,
+        "mass_b": 6.374323253459667,
+        "mass_c": 5.719784779284004,
+        "passed": true
+      }
+    ],
+    "NAND": [
+      {
+        "A": 0,
+        "B": 0,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 4.857260539448558,
+        "mass_b": 4.855685952974707,
+        "mass_c": 223.8977218616613,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 0,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 233.25335120712236,
+        "mass_b": 6.376617602992518,
+        "mass_c": 229.03397821433535,
+        "passed": true
+      },
+      {
+        "A": 0,
+        "B": 1,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 4.86181770162095,
+        "mass_b": 228.29066564493803,
+        "mass_c": 253.74792166441011,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 1,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 233.43277440278248,
+        "mass_b": 231.72427261401316,
+        "mass_c": 7.216302781990847,
+        "passed": true
+      }
+    ],
+    "NOR": [
+      {
+        "A": 0,
+        "B": 0,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 4.857260539448558,
+        "mass_b": 4.855685952974707,
+        "mass_c": 223.8977218616613,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 0,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 232.96684360079107,
+        "mass_b": 6.374323253459667,
+        "mass_c": 5.719784779284004,
+        "passed": true
+      },
+      {
+        "A": 0,
+        "B": 1,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 4.861312392005005,
+        "mass_b": 228.6259587754497,
+        "mass_c": 6.8280129493718915,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 1,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 233.43277440278248,
+        "mass_b": 231.72427261401316,
+        "mass_c": 7.216302781990847,
+        "passed": true
+      }
+    ],
+    "XOR": [
+      {
+        "A": 0,
+        "B": 0,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 4.85689221638118,
+        "mass_b": 4.855306636981423,
+        "mass_c": 4.881943596581992,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 0,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 233.25335120712236,
+        "mass_b": 6.376617602992518,
+        "mass_c": 229.03397821433535,
+        "passed": true
+      },
+      {
+        "A": 0,
+        "B": 1,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 4.86181770162095,
+        "mass_b": 228.29066564493803,
+        "mass_c": 253.74792166441011,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 1,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 233.43277440278248,
+        "mass_b": 231.72427261401316,
+        "mass_c": 7.216302781990847,
+        "passed": true
+      }
+    ],
+    "XNOR": [
+      {
+        "A": 0,
+        "B": 0,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 4.857260539448558,
+        "mass_b": 4.855685952974707,
+        "mass_c": 223.8977218616613,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 0,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 232.96684360079107,
+        "mass_b": 6.374323253459667,
+        "mass_c": 5.719784779284004,
+        "passed": true
+      },
+      {
+        "A": 0,
+        "B": 1,
+        "expected": 0,
+        "reg_c_comp": -1.0,
+        "basin_c_stored": 0,
+        "mass_a": 4.861312392005005,
+        "mass_b": 228.6259587754497,
+        "mass_c": 6.8280129493718915,
+        "passed": true
+      },
+      {
+        "A": 1,
+        "B": 1,
+        "expected": 1,
+        "reg_c_comp": 1.0,
+        "basin_c_stored": 1,
+        "mass_a": 232.81492765103948,
+        "mass_b": 231.32218213730184,
+        "mass_c": 251.3026032799129,
+        "passed": true
+      }
+    ]
+  }
+}

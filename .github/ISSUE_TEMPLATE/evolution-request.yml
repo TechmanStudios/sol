@@ -1,0 +1,82 @@
+name: SOL Evolve — Evolution Request
+description: Request an A/B regression test for a candidate parameter change
+title: "[evolve] "
+labels: ["sol-evolve", "evolution-request"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## SOL Evolve — Evolution Request
+        Propose a parameter change candidate for A/B regression testing.
+        The evolve agent will run the candidate against golden baselines and
+        report PASS / IMPROVE / REGRESS / MIXED verdicts.
+
+  - type: dropdown
+    id: candidate
+    attributes:
+      label: Candidate
+      description: Which registered candidate to test?
+      options:
+        - tune_conductance_gamma_up
+        - tune_conductance_gamma_down
+        - tune_battery_flip_threshold
+        - tune_battery_resonance_boost
+        - tune_psi_diffusion_up
+        - tune_psi_relax_base
+        - tune_phase_omega
+        - tune_mhd_build_rate
+        - tune_jeans_critical
+    validations:
+      required: true
+
+  - type: dropdown
+    id: protocol
+    attributes:
+      label: Target Protocol
+      description: Which canonical protocol to test against? Leave empty for all.
+      options:
+        - "(all canonical protocols)"
+        - single_inject_baseline
+        - damping_sweep_smoke
+        - dual_inject_timing
+    validations:
+      required: false
+
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis
+      description: |
+        What do you expect this candidate change to achieve?
+      placeholder: "Increasing gamma by 20% should improve field coherence without breaking energy conservation"
+    validations:
+      required: false
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: |
+        Why should this change be tested? Reference any prior cortex sessions,
+        proof packets, or claims.
+      placeholder: "CX-20260208-040833 showed gamma sensitivity in entropy metric. PP-007 suggests gamma is under-tuned."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: rebuild_golden
+    attributes:
+      label: Rebuild Golden Baselines
+      description: Force rebuild of deterministic baselines before testing
+      options:
+        - label: Rebuild golden baselines (use if engine code has changed)
+
+  - type: checkboxes
+    id: sacred_math_check
+    attributes:
+      label: Sacred Math Acknowledgment
+      description: Confirm this candidate does not modify sacred equations
+      options:
+        - label: "I confirm this candidate does NOT alter P=c·log(1+ρ/m), Lighthouse cos(ω·t·10), or other sacred equations"
+          required: true

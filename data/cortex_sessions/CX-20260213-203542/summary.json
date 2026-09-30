@@ -1,0 +1,47 @@
+{
+  "session_id": "CX-20260213-203542",
+  "completed_at": "2026-02-13T20:36:48.637757Z",
+  "protocols_run": 5,
+  "total_steps": 17000,
+  "hypotheses_generated": 5,
+  "gaps_addressed": [
+    "open_question:Open Q: At what timescale does damping s",
+    "open_question:Open Q: Do dashboard results match these",
+    "open_question:Open Q: Are the decay rate differences t",
+    "open_question:Open Q: Does basin migration (RhoMaxNode",
+    "open_question:Open Q: What happens in the unexplored g"
+  ],
+  "sanity_results": [
+    {
+      "hypothesis": "H-001",
+      "series": "h-001",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-002",
+      "series": "h-002",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-003",
+      "series": "h-003",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-004",
+      "series": "h-004",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-005",
+      "series": "h-005",
+      "sanity_passed": true,
+      "anomalies": []
+    }
+  ],
+  "dry_run": false
+}

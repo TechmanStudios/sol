@@ -1,0 +1,19 @@
+Conjecture 19: Phonon Speed Limit (Conjecture 19)
+=================================================
+
+Conjecture:
+Under high damping, acoustic-like density wave packets (phonons) can propagate down a multi-node linear manifold faster and with less attenuation than gradient-driven diffusion (constant flow) or high-amplitude single-pulse injections. Tuning the source injection frequency to the resonant dispersion band of the damped lattice accelerates signal arrival time and increases the total mass delivered to the destination.
+
+Specifically:
+1. Topology: 6-node linear chain network (`N0 -> N1 -> N2 -> N3 -> N4 -> N5`) connected via directed tax edges of weight $w_0 = 1.0$.
+2. Dispersion & Filtering:
+   - High damping ($\kappa \ge 4.0$) acts as a low-pass filter, blocking high-frequency oscillations (short periods, e.g. 2 to 6 steps) which decay rapidly near the source.
+   - Low-frequency oscillations (long periods, e.g. 40 to 50 steps) propagate as stable wave packets down the line.
+3. Propagation Acceleration:
+   - Due to the pressure-density wave dynamics of the manifold solver, periodic phonon injections generate dynamic pressure waves that travel faster than the slower decay-heavy diffusion of constant flow.
+   - At $\kappa = 4.0$, a period of 40 steps arrives 2 steps faster than constant flow and delivers 1.9% more mass.
+
+Success Criteria:
+- Optimal phonon wave packet arrives faster at the destination than constant flow ($T_{arrival}$ improvement).
+- Delivered mass is higher for the optimal phonon wave packet compared to constant flow.
+- High-frequency oscillations are heavily attenuated under high damping, confirming low-pass acoustic filtering.

@@ -1,0 +1,27 @@
+Conjecture 17: Heartbeat-Driven Dual-Substrate Clocking (Conjecture 17)
+======================================================================
+
+Conjecture:
+Modulating substrate transport via the engine's global phase heartbeat (Phi = cos(omega * t * 10)) by grouping Register A under 'tech' and Register B under 'spirit' enables a self-sustained, dual-phase clock oscillator. The global heartbeat acts as a physical power grid that alternates active substrates, synchronizing the charging, latching, and isolation of registers without requiring programmatic gating or state-dependent overrides.
+
+Specifically:
+1. Topology: 6-node closed loop oscillator graph:
+   - Pocket A (Tech Domain): HOST_A <-> BATTERY_A (group: "tech")
+   - Pocket B (Spirit Domain): HOST_B <-> BATTERY_B (group: "spirit")
+   - Gate AB (Bridge Domain): GATE_AB connecting HOST_A to HOST_B (group: "bridge")
+   - Gate BA (Bridge Domain): GATE_BA connecting HOST_B to HOST_A (group: "bridge")
+2. Phase-Gating Physics:
+   - Tech nodes are active when phase > -0.2 (allowing Register A to transmit/receive).
+   - Spirit nodes are active when phase < 0.2 (allowing Register B to transmit/receive).
+   - A zero-crossing transition window (-0.2 < phase < 0.2) exists where both substrates are active, permitting mass handoff.
+3. Clock Oscillation:
+   - When A is active and B is inactive, A discharges mass over GATE_AB. During the zero-crossing transition, mass enters B, charging BATTERY_B.
+   - When B becomes active and A goes to sleep, Register A's state is frozen and isolated. B's battery latches to state 1.
+   - B then discharges mass back over GATE_BA to A. During the next transition, mass enters A, charging BATTERY_A.
+   - Alternating active substrates creates a continuous, self-sustained clock cycle.
+
+Success Criteria:
+- Completion of at least 3 full oscillation cycles over 500 steps (dt = 0.05).
+- Periodic battery state transitions observed for both Battery A and Battery B.
+- Damping-isolated hold (mass is preserved in the sleeping domain).
+- Single-substrate baseline (all nodes in "bridge" group) fails to oscillate and decays to static equilibrium.

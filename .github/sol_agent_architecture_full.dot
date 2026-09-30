@@ -1,0 +1,146 @@
+digraph sol_agent_architecture {
+  graph [
+    rankdir=LR,
+    splines=true,
+    overlap=false,
+    pad="0.25",
+    nodesep="0.45",
+    ranksep="0.65",
+    bgcolor="#ffffff",
+    fontname="Helvetica",
+    label="SOL Agent Architecture (Full Workspace View)",
+    labelloc="t",
+    fontsize=24
+  ];
+
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, color="#2f3b52", penwidth=1.0];
+  edge [fontname="Helvetica", fontsize=10, color="#4b5d7a", arrowsize=0.8, penwidth=1.0];
+
+  // Entry and orchestration
+  user [label="User / Trigger\n(Local VS Code | Issue label | Schedule)", fillcolor="#eef4ff"];
+  manager [label="SolTech-StructureManager\n(.github/agents/soltech-structure-manager.agent.md)", fillcolor="#d8e8ff", color="#1f4f9f", penwidth=1.4];
+  lab_master [label="sol-lab-master", fillcolor="#d8e8ff", color="#1f4f9f", penwidth=1.2];
+
+  // Agent layer
+  subgraph cluster_agents {
+    label="Agent Layer (.github/agents)";
+    color="#ccd6e6";
+    style="rounded";
+
+    research [label="soltech-research", fillcolor="#ebf3ff"];
+    architect [label="soltech-architect", fillcolor="#ebf3ff"];
+    implementer [label="soltech-implementer", fillcolor="#ebf3ff"];
+
+    experiment_runner [label="sol-experiment-runner", fillcolor="#e7fff2", color="#277a4b"];
+    data_analyst [label="sol-data-analyst", fillcolor="#e7fff2", color="#277a4b"];
+    knowledge_compiler [label="sol-knowledge-compiler", fillcolor="#e7fff2", color="#277a4b"];
+
+    continuity [label="continuity", fillcolor="#fff4e8", color="#a05a16"];
+    auto_mapper [label="sol-auto-mapper", fillcolor="#fff4e8", color="#a05a16"];
+    rsi_agent [label="sol-rsi", fillcolor="#f5ecff", color="#6940a5"];
+    cortex_agent [label="sol-cortex", fillcolor="#f5ecff", color="#6940a5"];
+    evolve_agent [label="sol-evolve", fillcolor="#f5ecff", color="#6940a5"];
+    hippocampus_agent [label="sol-hippocampus", fillcolor="#f5ecff", color="#6940a5"];
+  }
+
+  // Runtime tooling
+  subgraph cluster_runtime {
+    label="Runtime / Tooling Layer (tools/*)";
+    color="#ccd6e6";
+    style="rounded";
+
+    orchestrator [label="tools/sol-orchestrator/orchestrator.py", fillcolor="#edf2ff"];
+    core [label="tools/sol-core\n(cli.py, sol_engine.py, default_graph.json)", fillcolor="#edf2ff"];
+    rsi_engine [label="tools/sol-rsi/rsi_engine.py", fillcolor="#f1edff"];
+    cortex_loop [label="tools/sol-cortex/run_loop.py", fillcolor="#f1edff"];
+    evolve_loop [label="tools/sol-evolve/*", fillcolor="#f1edff"];
+    hippocampus_loop [label="tools/sol-hippocampus/*", fillcolor="#f1edff"];
+    continuity_cli [label="tools/continuity/*", fillcolor="#fff8ef"];
+  }
+
+  // Governance/config layer
+  subgraph cluster_kit {
+    label="Behavior Contract Layer (.github kit)";
+    color="#ccd6e6";
+    style="rounded";
+
+    instructions [label="Instructions\n(.github/instructions/*.md)", fillcolor="#e9fbe9", color="#2b7f2f"];
+    prompts [label="Prompts\n(.github/prompts/*.md)", fillcolor="#fff0df", color="#9b5e18"];
+    skills [label="Skills\n(.github/skills/*)", fillcolor="#f1eaff", color="#6b3e9d"];
+    workflows [label="GitHub Workflows\nsol-pipeline.yml, sol-cortex.yml, sol-rsi.yml, ...", fillcolor="#eef3ff", color="#3b5696"];
+  }
+
+  // Data and outputs
+  subgraph cluster_outputs {
+    label="Artifacts & Knowledge";
+    color="#ccd6e6";
+    style="rounded";
+
+    data [label="data/*\n(cortex_sessions, pipeline_runs, rsi, traces)", fillcolor="#f5f8fc"];
+    knowledge [label="solKnowledge/*\n(working, consolidated, proof_packets)", fillcolor="#f5f8fc"];
+    kb [label="knowledge/youtube\n(source corpus)", fillcolor="#f5f8fc"];
+  }
+
+  // High-level control flow
+  user -> manager [label="request / trigger"];
+  manager -> lab_master [label="orchestrates SOL research"];
+
+  manager -> research [label="handoff"];
+  manager -> architect [label="handoff"];
+  manager -> implementer [label="handoff"];
+  manager -> experiment_runner [label="handoff"];
+  manager -> data_analyst [label="handoff"];
+  manager -> knowledge_compiler [label="handoff"];
+  manager -> continuity [label="handoff"];
+  manager -> auto_mapper [label="handoff"];
+  manager -> rsi_agent [label="handoff"];
+  manager -> cortex_agent [label="handoff"];
+  manager -> evolve_agent [label="handoff"];
+  manager -> hippocampus_agent [label="handoff"];
+
+  // Research loop
+  lab_master -> experiment_runner [label="protocol execution"];
+  experiment_runner -> data_analyst [label="run bundle -> analysis"];
+  data_analyst -> knowledge_compiler [label="derived metrics"];
+  knowledge_compiler -> lab_master [label="compiled findings"];
+  lab_master -> manager [label="status / escalation"];
+
+  // Tool execution mappings
+  experiment_runner -> orchestrator [label="invoke"];
+  data_analyst -> orchestrator [label="invoke"];
+  knowledge_compiler -> orchestrator [label="invoke"];
+
+  orchestrator -> core [label="engine + integrity checks"];
+  rsi_agent -> rsi_engine [label="execute RSI loop"];
+  cortex_agent -> cortex_loop [label="execute cortex session"];
+  evolve_agent -> evolve_loop [label="execute evolve stage"];
+  hippocampus_agent -> hippocampus_loop [label="execute replay/consolidation"];
+  continuity -> continuity_cli [label="memory ops"];
+
+  // GitHub workflow triggers
+  workflows -> orchestrator [label="pipeline runs"];
+  workflows -> rsi_engine [label="scheduled RSI"];
+  workflows -> cortex_loop [label="scheduled cortex"];
+
+  // Config influence
+  instructions -> manager [style=dashed, label="governs behavior"];
+  prompts -> manager [style=dashed, label="task templates"];
+  skills -> manager [style=dashed, label="progressive load"];
+
+  instructions -> lab_master [style=dashed, label="standards/provenance"];
+  prompts -> experiment_runner [style=dashed, label="run bundle/protocol templates"];
+  skills -> continuity [style=dashed, label="continuity-memory skill"];
+  skills -> auto_mapper [style=dashed, label="sol-auto-mapper skill"];
+
+  // Outputs
+  core -> data [label="simulation outputs"];
+  orchestrator -> data [label="pipeline artifacts"];
+  rsi_engine -> data [label="fitness/history"];
+  cortex_loop -> data [label="session outputs"];
+  continuity_cli -> data [label="continuity logs"];
+
+  data -> knowledge [label="promotion/compilation"];
+  kb -> knowledge [label="source grounding"];
+  knowledge_compiler -> knowledge [label="canonical artifacts"];
+
+}

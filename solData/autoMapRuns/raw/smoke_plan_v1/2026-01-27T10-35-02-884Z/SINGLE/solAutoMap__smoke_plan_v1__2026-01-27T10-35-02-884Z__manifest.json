@@ -1,0 +1,36 @@
+{
+  "planName": "smoke_plan_v1",
+  "runIso": "2026-01-27T10-35-02-884Z",
+  "version": "auto_mapper_pack_v1",
+  "basins": [
+    90
+  ],
+  "replicates": 1,
+  "grid": {
+    "damping": [
+      8
+    ],
+    "pressureC": [
+      20
+    ]
+  },
+  "scenario": {
+    "injectAmount": 30,
+    "preDt": 0.12,
+    "preSteps": 1,
+    "type": "inject_then_watch"
+  },
+  "measurement": {
+    "dt": 0.12,
+    "durationMs": 3000,
+    "everyMs": 250,
+    "includeBackgroundEdges": false
+  },
+  "timing": {
+    "spinWaitMs": 2,
+    "timingMode": "tight"
+  },
+  "notes": "Tiny smoke plan: one basin, one grid point, short duration. Intended to validate wiring + downloads + organizer + candidate creation.",
+  "summaryRows": 1,
+  "traceRows": 12
+}

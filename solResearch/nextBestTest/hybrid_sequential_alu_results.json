@@ -1,0 +1,61 @@
+{
+  "trials": {
+    "trial_0_0": {
+      "initial_A": 0,
+      "initial_B": 0,
+      "expected_C1": false,
+      "expected_A1": false,
+      "expected_C2": false,
+      "c1_lat": false,
+      "a_copied": false,
+      "c_cleared": true,
+      "c2_lat": false,
+      "a_mass": 4.8664788612126015,
+      "b_mass": 4.866537149693811,
+      "passed": true
+    },
+    "trial_1_0": {
+      "initial_A": 1,
+      "initial_B": 0,
+      "expected_C1": true,
+      "expected_A1": true,
+      "expected_C2": false,
+      "c1_lat": true,
+      "a_copied": true,
+      "c_cleared": true,
+      "c2_lat": false,
+      "a_mass": 48.98098478951908,
+      "b_mass": 5.276182812654228,
+      "passed": true
+    },
+    "trial_0_1": {
+      "initial_A": 0,
+      "initial_B": 1,
+      "expected_C1": true,
+      "expected_A1": true,
+      "expected_C2": true,
+      "c1_lat": true,
+      "a_copied": true,
+      "c_cleared": true,
+      "c2_lat": true,
+      "a_mass": 53.61659311899568,
+      "b_mass": 51.85749806146485,
+      "passed": true
+    },
+    "trial_1_1": {
+      "initial_A": 1,
+      "initial_B": 1,
+      "expected_C1": true,
+      "expected_A1": true,
+      "expected_C2": true,
+      "c1_lat": true,
+      "a_copied": true,
+      "c_cleared": true,
+      "c2_lat": true,
+      "a_mass": 52.17343774396278,
+      "b_mass": 52.5794021701513,
+      "passed": true
+    }
+  },
+  "passed": true
+}

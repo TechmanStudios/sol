@@ -1,0 +1,27 @@
+{"ts": "2026-05-11T07:27:52.361119Z", "event": "session_start", "session_id": "CX-20260511-072752", "config": {"max_protocols": "3", "max_total_steps": "100000", "gap_type_filter": "None", "dry_run": "False", "out_dir": "/home/runner/work/sol/sol/data/cortex_sessions", "strict_guardrails": "True", "verbose": "True"}}
+{"ts": "2026-05-11T07:27:53.381913Z", "event": "knowledge_scan", "total_gaps": 593, "by_type": {"open_question": 225, "unpromoted": 6, "headless_baseline": 1, "weak_evidence": 55, "unfalsified": 4, "replication": 298, "unexplored_param": 4}}
+{"ts": "2026-05-11T07:27:53.399288Z", "event": "gap_selected", "gap_id": "open_question:Open Q: Does basin migration (RhoMaxNode", "gap_type": "open_question", "priority": 1, "description": "Open Q: Does basin migration (RhoMaxNode 132\u219243) at damping=0.5 signal the beginning of a topological reorganization?"}
+{"ts": "2026-05-11T07:27:53.400205Z", "event": "gap_enriched", "gap_id": "open_question:Open Q: Does basin migration (RhoMaxNode", "memory_context": "Memory nodes: 30 | Memory edges: 130 | Avg confidence: 0.359 | Tags: basin(30), entropy(30), rhoMax(30)"}
+{"ts": "2026-05-11T07:27:53.400255Z", "event": "hypothesis_generated", "hypothesis_id": "H-001", "template": "threshold_scan", "question": "At what value of damping does the system behavior qualitatively change?"}
+{"ts": "2026-05-11T07:27:53.400423Z", "event": "hypothesis_augmented", "hypothesis_id": "H-001", "memory_falsifiers": 2}
+{"ts": "2026-05-11T07:27:53.400744Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260511-072752/protocols/h-001_protocol.json"}
+{"ts": "2026-05-11T07:27:53.665726Z", "event": "execution_start", "hypothesis_id": "H-001", "series": "h-001"}
+{"ts": "2026-05-11T07:28:27.393746Z", "event": "execution_complete", "hypothesis_id": "H-001", "elapsed_sec": 33.73, "sanity_passed": true, "anomalies": [], "total_session_steps": 12000}
+{"ts": "2026-05-11T07:28:27.393974Z", "event": "meta_recorded", "hypothesis_id": "H-001", "template": "threshold_scan", "gap_type": "open_question"}
+{"ts": "2026-05-11T07:28:27.411029Z", "event": "gap_selected", "gap_id": "open_question:Open Q: What happens in the unexplored g", "gap_type": "open_question", "priority": 1, "description": "Open Q: What happens in the unexplored gap between damping=0.5 and the known critical threshold?"}
+{"ts": "2026-05-11T07:28:27.411799Z", "event": "gap_enriched", "gap_id": "open_question:Open Q: What happens in the unexplored g", "memory_context": "Memory nodes: 30 | Memory edges: 130 | Avg confidence: 0.359 | Tags: basin(30), entropy(30), rhoMax(30)"}
+{"ts": "2026-05-11T07:28:27.411867Z", "event": "hypothesis_generated", "hypothesis_id": "H-002", "template": "parameter_sweep", "question": "How does damping affect entropy, flux, and mass over 200 steps?"}
+{"ts": "2026-05-11T07:28:27.412051Z", "event": "hypothesis_augmented", "hypothesis_id": "H-002", "memory_falsifiers": 2}
+{"ts": "2026-05-11T07:28:27.412332Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260511-072752/protocols/h-002_protocol.json"}
+{"ts": "2026-05-11T07:28:27.412376Z", "event": "execution_start", "hypothesis_id": "H-002", "series": "h-002"}
+{"ts": "2026-05-11T07:28:34.137309Z", "event": "execution_complete", "hypothesis_id": "H-002", "elapsed_sec": 6.72, "sanity_passed": true, "anomalies": [], "total_session_steps": 14400}
+{"ts": "2026-05-11T07:28:34.137523Z", "event": "meta_recorded", "hypothesis_id": "H-002", "template": "parameter_sweep", "gap_type": "open_question"}
+{"ts": "2026-05-11T07:28:34.154819Z", "event": "gap_selected", "gap_id": "open_question:Open Q: At what timescale does damping s", "gap_type": "open_question", "priority": 1, "description": "Open Q: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 ste"}
+{"ts": "2026-05-11T07:28:34.155720Z", "event": "gap_enriched", "gap_id": "open_question:Open Q: At what timescale does damping s", "memory_context": "Memory nodes: 30 | Memory edges: 130 | Avg confidence: 0.359 | Tags: basin(30), entropy(30), rhoMax(30)"}
+{"ts": "2026-05-11T07:28:34.155766Z", "event": "hypothesis_generated", "hypothesis_id": "H-003", "template": "replication", "question": "Can headless sol-core reproduce: ?"}
+{"ts": "2026-05-11T07:28:34.155855Z", "event": "hypothesis_augmented", "hypothesis_id": "H-003", "memory_falsifiers": 2}
+{"ts": "2026-05-11T07:28:34.156023Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260511-072752/protocols/h-003_protocol.json"}
+{"ts": "2026-05-11T07:28:34.156058Z", "event": "execution_start", "hypothesis_id": "H-003", "series": "h-003"}
+{"ts": "2026-05-11T07:28:38.337818Z", "event": "execution_complete", "hypothesis_id": "H-003", "elapsed_sec": 4.18, "sanity_passed": true, "anomalies": [], "total_session_steps": 15900}
+{"ts": "2026-05-11T07:28:38.338032Z", "event": "meta_recorded", "hypothesis_id": "H-003", "template": "replication", "gap_type": "open_question"}
+{"ts": "2026-05-11T07:28:38.338061Z", "event": "budget_stop", "reason": "max_protocols reached (3/3)"}

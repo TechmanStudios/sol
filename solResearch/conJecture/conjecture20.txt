@@ -1,0 +1,23 @@
+Conjecture 20: Phonon Multiplexing (Conjecture 20)
+===================================================
+
+Conjecture:
+Superimposing multiple independent acoustic-like density wave frequencies (phonons) on a shared transmission channel (junction) and decoding them simultaneously at separate destination branches is physically achievable via parametric resonant rectification and back-pressure routing. The shared channel routes superimposed signals concurrently, and parametric resonant gates filter and steer wave packets to their resonant destinations without cross-talk.
+
+Specifically:
+1. Topology: 5-node routing network:
+   - Shared Source: Node `Source` (group: "bridge")
+   - Parametric Routers: Nodes `Router_A` and `Router_B` (group: "bridge")
+   - Destinations: Nodes `Dest_A` and `Dest_B` (group: "bridge")
+2. Parametric Resonant Rectification:
+   - Driving the routing gates' $\psi$ fields at distinct frequencies ($\omega_A$ and $\omega_B$) modulates their connection conductance.
+   - When the source's pressure peak matches the gate's open window, mass is rectified and pumped downstream.
+3. Back-Pressure Rejection:
+   - For mismatched frequencies, out-of-phase open gates allow back-pressure ($r_{bias} = 0.0$) from the destination to push mass back, resulting in a net zero or slightly negative mass accumulation (rejecting non-resonant inputs).
+4. Superposition:
+   - Superimposing multiple wave frequencies at `Source` (e.g. $\omega_A$ and $\omega_B$) routes mass to both destinations concurrently. The mass accumulation is linear and proportional to input signal amplitudes, validating zero cross-talk multiplexing.
+
+Success Criteria:
+- Scenario A_only: Mass steering to Dest_A ($\Delta\rho_A > 0$) and rejection at Dest_B ($\Delta\rho_B \le 0$).
+- Scenario B_only: Mass steering to Dest_B ($\Delta\rho_B > 0$) and rejection at Dest_A ($\Delta\rho_A \le 0$).
+- Scenario multiplexed: Simultaneous steering to both Dest_A and Dest_B ($\Delta\rho_A > 0, \Delta\rho_B > 0$) with proportional accumulation.

@@ -1,0 +1,60 @@
+{
+    "admission_decision_digests": [
+        "2cb1b96318152e72e815ad8722963920e525512e7141cdf7e59b16602d406ecd"
+    ],
+    "candidate_level": "foundation",
+    "capability_resolution_digest": "346734bcc2048f2bb1ced2764ac3fcaafe30cafd3b890f6d08bdc5a0151e1a7e",
+    "compiler_profile": "COST_MODEL_DEBUG",
+    "executed_pass_count": 0,
+    "execution_record_digests": [
+        "d30bf573d03bf39c3d5f4ffac64d1ff05b48b4e3433625db0f5541fb73040c02"
+    ],
+    "failed_replay_count": 0,
+    "final_output_payload_digest": "197fd115a8162ddbf2c9aa84f68b84bd34ea07e92e0d26354bd6ba35bea92e80",
+    "handler_ids_used": [],
+    "input_payload_digest": "8c8149029cf90bc1051a181e0d4dbbdaee866ee2ba983bf833fd2b590d69a969",
+    "invocation_record_digest": "7af64b2af5d6e8e17531d87563eac01ab9edc2697fe16b364760d0b9172c9a3a",
+    "invocation_record_id": "SOL-WAVEGUIDE-COMPILER-INVOCATION-RECORD-RC1",
+    "invocation_request_id": "SOL-WAVEGUIDE-COMPILER-INVOCATION-REQUEST-RC1",
+    "invocation_status": "invocation_rejected_verified",
+    "notes": "Governed compiler session completed with status invocation_rejected_verified.",
+    "pass_plan": [
+        {
+            "expected_admission_status": "pass_blocked",
+            "expected_execution_status": "pass_rejected",
+            "hybrid_execution_allowed": false,
+            "lane_fabric_fallback_allowed": false,
+            "pass_index": 0,
+            "production_mutation_allowed": false,
+            "requested_pass": "cost_model_evaluation",
+            "requested_profile": "COST_MODEL_DEBUG",
+            "requested_scope": "profile_selection",
+            "required_handler_id": "SOL-PASS-HANDLER-COST-MODEL-EVALUATION-V1",
+            "strict_waveguide_required": true
+        }
+    ],
+    "rc_id": "SOL-WAVEGUIDE-RC1",
+    "reason_codes": [
+        "COMPILER_INVOCATION_CAPABILITY_RESOLUTION_VALID",
+        "COMPILER_INVOCATION_PASS_PLAN_CANONICAL",
+        "COMPILER_INVOCATION_PASS_REJECTED",
+        "COMPILER_INVOCATION_REJECTIONS_VERIFIED",
+        "COMPILER_INVOCATION_REPLAY_REPORT_VALID",
+        "COMPILER_INVOCATION_REQUEST_CANONICAL",
+        "COMPILER_INVOCATION_SOFTWARE_CAVEAT_INCLUDED",
+        "COMPILER_INVOCATION_STRICT_WAVEGUIDE_REQUIRED",
+        "COMPILER_INVOCATION_TRACE_LEDGER_VALID"
+    ],
+    "rejected_pass_count": 1,
+    "replay_report_digest": "964a3b765014cfc33f6b70434fd5aecd70069e1b51e0cc2d5c1cfcaff67dce42",
+    "requested_pass_sequence": [
+        "cost_model_evaluation"
+    ],
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+    "trace_entry_digests": [
+        "e51c4981effda2f51bf56a9d675ad3ce65d8c9e9b36c59903acb7049d903007c"
+    ],
+    "trace_ledger_digest": "0730d84464f980504555c6b199071a7dfb0c13e7ce499101db6d186ecbf610b9",
+    "verified_execution_count": 0,
+    "verified_rejection_count": 1
+}

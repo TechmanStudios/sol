@@ -1,0 +1,21 @@
+{
+  "kind": "skill_candidate",
+  "slug": "sol-auto-map-smoke-plan-v1-2026-01-27t10-35-02-884z",
+  "title": "SOL AutoMap smoke_plan_v1 (headless)",
+  "description": "Headless Selenium run of solAutoMap smoke plan on sol_dashboard_v3_7_2.",
+  "domain": "sol",
+  "tags": [
+    "sol-auto-map",
+    "smoke-plan-v1",
+    "sol.autoMap.smoke"
+  ],
+  "createdAt": "2026-01-27T10:35:47+00:00",
+  "sourceRuns": [],
+  "evidence": [
+    "G:\\docs\\TechmanStudios\\sol\\solData\\autoMapRuns\\raw\\smoke_plan_v1\\2026-01-27T10-35-02-884Z",
+    "G:\\docs\\TechmanStudios\\sol\\solData\\autoMapRuns\\raw\\smoke_plan_v1\\2026-01-27T10-35-02-884Z\\run_manifest.json",
+    "G:\\docs\\TechmanStudios\\sol\\solData\\autoMapRuns\\raw\\smoke_plan_v1\\2026-01-27T10-35-02-884Z\\SINGLE\\solAutoMap__smoke_plan_v1__2026-01-27T10-35-02-884Z__manifest.json"
+  ],
+  "triggers": [],
+  "status": "candidate"
+}

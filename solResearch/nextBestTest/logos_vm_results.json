@@ -1,0 +1,17 @@
+{
+  "results": [
+    {
+      "input_a": 0,
+      "expected_sum": 1,
+      "basin_sum_stored": 1,
+      "passed": true
+    },
+    {
+      "input_a": 1,
+      "expected_sum": 0,
+      "basin_sum_stored": 0,
+      "passed": true
+    }
+  ],
+  "suite_passed": true
+}

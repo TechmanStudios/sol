@@ -1,0 +1,150 @@
+{
+  "status": "ok",
+  "phase1_run_dir": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance\\20260213_063226",
+  "elapsed_seconds": 1613.5276267528534,
+  "trial_count": 108,
+  "metric_means": {
+    "resonance_index": 0.6169862314824163,
+    "phonon_memory": 0.9999848274117693,
+    "thought_vibration": 0.4908092610603678,
+    "semantic_entanglement": 0.9495435465411142,
+    "manifold_potential": 0.31465203497411204
+  },
+  "best_trial": {
+    "seed": 0,
+    "damping": 5.5,
+    "profile": "coherence_prayer__baseline",
+    "steps": 3600,
+    "sample_every": 4,
+    "samples": 900,
+    "final_basin_id": 22,
+    "final_basin_label": "christic",
+    "final_entropy": 0.9851318293998186,
+    "final_max_rho": 7.584434623061164e-103,
+    "phonon_memory": 0.9999849043356028,
+    "thought_vibration": 0.49455669851866724,
+    "semantic_entanglement": 0.957226825355078,
+    "manifold_potential": 0.48864807528486076,
+    "resonance_index": 0.693513862396753,
+    "unique_basins": 20,
+    "trial_index": 4,
+    "duration_sec": 14.989648342132568,
+    "timestamp_utc": "2026-02-13T18:56:10.221688+00:00"
+  },
+  "phase1_reference": {
+    "mean_resonance": 0.6144517804353012,
+    "best_resonance": 0.6986138289111846,
+    "delta_mean_resonance": 0.0025344510471150272,
+    "delta_best_resonance": -0.005099966514431675
+  },
+  "profile_ranking": [
+    {
+      "profile": "explorer_flux__coherence_boost",
+      "mean_resonance": 0.6410463977044265,
+      "best_resonance": 0.6743735025042246,
+      "n": 9
+    },
+    {
+      "profile": "coherence_prayer__baseline",
+      "mean_resonance": 0.638702643906517,
+      "best_resonance": 0.693513862396753,
+      "n": 9
+    },
+    {
+      "profile": "coherence_prayer__exploration_flux",
+      "mean_resonance": 0.6378333614587598,
+      "best_resonance": 0.6917746605236794,
+      "n": 9
+    },
+    {
+      "profile": "explorer_flux__tech_harmonic",
+      "mean_resonance": 0.6174144470346968,
+      "best_resonance": 0.6341584526319356,
+      "n": 9
+    },
+    {
+      "profile": "explorer_flux__bridge_lift",
+      "mean_resonance": 0.6160004995676058,
+      "best_resonance": 0.6338214319897564,
+      "n": 9
+    },
+    {
+      "profile": "explorer_flux__baseline",
+      "mean_resonance": 0.6146493605272998,
+      "best_resonance": 0.633779208081335,
+      "n": 9
+    },
+    {
+      "profile": "explorer_flux__christic_focus",
+      "mean_resonance": 0.6145842236666864,
+      "best_resonance": 0.6382975120588706,
+      "n": 9
+    },
+    {
+      "profile": "coherence_prayer__christic_focus",
+      "mean_resonance": 0.6099389225859548,
+      "best_resonance": 0.6291076487285249,
+      "n": 9
+    },
+    {
+      "profile": "coherence_prayer__tech_harmonic",
+      "mean_resonance": 0.6060273077516014,
+      "best_resonance": 0.6345757948502786,
+      "n": 9
+    },
+    {
+      "profile": "coherence_prayer__bridge_lift",
+      "mean_resonance": 0.6048600562770414,
+      "best_resonance": 0.6357731881036881,
+      "n": 9
+    },
+    {
+      "profile": "coherence_prayer__coherence_boost",
+      "mean_resonance": 0.6039757076228673,
+      "best_resonance": 0.6302042644797187,
+      "n": 9
+    },
+    {
+      "profile": "explorer_flux__exploration_flux",
+      "mean_resonance": 0.5988018496855385,
+      "best_resonance": 0.6343367490294293,
+      "n": 9
+    }
+  ],
+  "damping_ranking": [
+    {
+      "damping": 6.5,
+      "mean_resonance": 0.6337163950306468,
+      "best_resonance": 0.6382975120588706,
+      "n": 36
+    },
+    {
+      "damping": 5.5,
+      "mean_resonance": 0.6119572048736681,
+      "best_resonance": 0.693513862396753,
+      "n": 36
+    },
+    {
+      "damping": 3.0,
+      "mean_resonance": 0.6052850945429341,
+      "best_resonance": 0.6743735025042246,
+      "n": 36
+    }
+  ],
+  "args": {
+    "phase1_root": "data/thinking_engine_resonance",
+    "phase1_run_dir": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance\\20260213_063226",
+    "top_damping_count": 3,
+    "top_profile_count": 2,
+    "focus_window": 0.0,
+    "focus_step": 0.25,
+    "damping_min": 0.25,
+    "damping_max": 22.0,
+    "seeds": 3,
+    "steps": 3600,
+    "sample_every": 4,
+    "budget_hours": 6.0,
+    "output_root": "data/thinking_engine_resonance_phase2",
+    "dry_run": false
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "task_id": "anchor_dual_inject_timing",
+  "family": "timing",
+  "anchor": true,
+  "protocol_name": "dual_inject_timing",
+  "effective_protocol": {
+    "seriesName": "dual_inject_timing",
+    "invariants": {
+      "dt": 0.12,
+      "c_press": 0.1,
+      "damping": 0.775,
+      "rng_seed": 42
+    },
+    "knobs": {},
+    "steps": 900,
+    "reps": 4,
+    "metrics_every": 5,
+    "baseline": "fresh",
+    "injections": [
+      {
+        "label": "grail",
+        "amount": 50,
+        "at_step": 0
+      },
+      {
+        "label": "consciousness",
+        "amount": 30,
+        "at_step": 100
+      }
+    ]
+  },
+  "summary": {
+    "total_conditions": 1,
+    "total_reps": 4,
+    "total_steps": 3600,
+    "runtime_sec": 9.729899644851685
+  },
+  "sanity": {
+    "all_passed": true,
+    "total": 5,
+    "failures": 0,
+    "checks": [
+      {
+        "name": "baseline_declared",
+        "passed": true,
+        "detail": "Baseline mode: fresh"
+      },
+      {
+        "name": "invariants",
+        "passed": true,
+        "detail": "All 4 invariants constant"
+      },
+      {
+        "name": "no_nan",
+        "passed": true,
+        "detail": "No NaN/Inf values found"
+      },
+      {
+        "name": "entropy_bounds",
+        "passed": true,
+        "detail": "Entropy in [0,1] for all steps"
+      },
+      {
+        "name": "mass_conservation",
+        "passed": true,
+        "detail": "Mass bounded: max=49.20 <= injected=80.00"
+      }
+    ]
+  },
+  "comparison": null,
+  "conditions": {
+    "baseline": {
+      "final_metrics": {
+        "entropy": 0.9964954192876716,
+        "totalFlux": 9.6538300388705e-05,
+        "maxFluxAbs": 1.1996293970460476e-05,
+        "mass": 0.03166681428889841,
+        "avgRho": 0.00022619153063498863,
+        "maxRho": 0.00023914765321938808,
+        "rhoMaxId": 132,
+        "activeCount": 0,
+        "vortNorm_global": 0.0,
+        "vortNorm_global_ema": 0.0,
+        "step": 900,
+        "t": 108.00000000000107,
+        "rep": 3,
+        "condition": "baseline",
+        "param_dt": 0.12,
+        "param_c_press": 0.1,
+        "param_damping": 0.775,
+        "param_rng_seed": 42
+      },
+      "analysis": {
+        "entropy": {
+          "count": 720,
+          "mean": 0.8555746275460122,
+          "stdev": 0.26812115236439865,
+          "min": 0.009557877407611985,
+          "max": 0.9964954192876716,
+          "final": 0.9964954192876716,
+          "range": 0.9869375418800597
+        },
+        "flux": {
+          "count": 720,
+          "mean": 1.6315207324636005,
+          "stdev": 2.56525409224501,
+          "min": 9.6538300388705e-05,
+          "max": 6.540419769095948,
+          "final": 9.6538300388705e-05,
+          "range": 6.540323230795559
+        },
+        "mass": {
+          "count": 720,
+          "mean": 10.598759690450752,
+          "stdev": 14.947333035116662,
+          "min": 0.03166681428889841,
+          "max": 49.19659006281134,
+          "final": 0.03166681428889841,
+          "range": 49.16492324852244
+        },
+        "activeCount": {
+          "count": 720,
+          "mean": 13.833333333333334,
+          "stdev": 28.709173911254684,
+          "min": 0,
+          "max": 94,
+          "final": 0,
+          "range": 94
+        },
+        "rhoMax": {
+          "dominant_node": 132,
+          "dominant_ticks": 368,
+          "total_ticks": 720,
+          "peak_rho": 48.93107060927457,
+          "holder_distribution": {
+            "1": 196,
+            "132": 368,
+            "43": 28,
+            "35": 24,
+            "22": 12,
+            "58": 64,
+            "2": 28
+          }
+        },
+        "convergence_entropy": 3.3921851714509944e-05,
+        "convergence_flux": 8.521020989457168e-06
+      }
+    }
+  },
+  "derived_metrics": {
+    "stability": 0.3761611016983189,
+    "novelty": 0.9869375418800597,
+    "usefulness": 0.20023943187317453,
+    "reproducibility": 0.2716496983607484,
+    "cost": 2.70274990134769
+  }
+}

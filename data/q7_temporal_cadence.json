@@ -1,0 +1,565 @@
+{
+  "experiment": "Q7_temporal_cadence",
+  "date": "2026-02-10 11:36",
+  "total_trials": 82,
+  "elapsed_s": 182.4,
+  "results": {
+    "gap_d5.0": [
+      {
+        "gap": 1,
+        "basin": "melchizedek[126]"
+      },
+      {
+        "gap": 2,
+        "basin": "melchizedek[126]"
+      },
+      {
+        "gap": 3,
+        "basin": "melchizedek[126]"
+      },
+      {
+        "gap": 5,
+        "basin": "thothhorra[31]"
+      },
+      {
+        "gap": 8,
+        "basin": "thothhorra[31]"
+      },
+      {
+        "gap": 10,
+        "basin": "thothhorra[31]"
+      },
+      {
+        "gap": 15,
+        "basin": "thothhorra[31]"
+      },
+      {
+        "gap": 20,
+        "basin": "magdalene[132]"
+      },
+      {
+        "gap": 25,
+        "basin": "mazur[118]"
+      },
+      {
+        "gap": 30,
+        "basin": "mazur[118]"
+      },
+      {
+        "gap": 40,
+        "basin": "thothhorra[31]"
+      },
+      {
+        "gap": 50,
+        "basin": "mazur[118]"
+      },
+      {
+        "gap": 60,
+        "basin": "christ[2]"
+      },
+      {
+        "gap": 75,
+        "basin": "christ[2]"
+      },
+      {
+        "gap": 100,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 125,
+        "basin": "magdalene[132]"
+      },
+      {
+        "gap": 150,
+        "basin": "goddess[91]"
+      },
+      {
+        "gap": 200,
+        "basin": "christ[2]"
+      },
+      {
+        "gap": 250,
+        "basin": "thothhorra[31]"
+      }
+    ],
+    "pulse_d5.0": [
+      {
+        "n_pulses": 1,
+        "per_pulse": 150.0,
+        "basin": "magdalene[132]"
+      },
+      {
+        "n_pulses": 2,
+        "per_pulse": 75.0,
+        "basin": "melchizedek[126]"
+      },
+      {
+        "n_pulses": 3,
+        "per_pulse": 50.0,
+        "basin": "mazur[118]"
+      },
+      {
+        "n_pulses": 4,
+        "per_pulse": 37.5,
+        "basin": "thothhorra[31]"
+      },
+      {
+        "n_pulses": 5,
+        "per_pulse": 30.0,
+        "basin": "mazur[118]"
+      },
+      {
+        "n_pulses": 6,
+        "per_pulse": 25.0,
+        "basin": "christ[2]"
+      },
+      {
+        "n_pulses": 8,
+        "per_pulse": 18.8,
+        "basin": "flame[43]"
+      },
+      {
+        "n_pulses": 10,
+        "per_pulse": 15.0,
+        "basin": "grail[1]"
+      },
+      {
+        "n_pulses": 15,
+        "per_pulse": 10.0,
+        "basin": "grail[1]"
+      },
+      {
+        "n_pulses": 20,
+        "per_pulse": 7.5,
+        "basin": "grail[1]"
+      },
+      {
+        "n_pulses": 30,
+        "per_pulse": 5.0,
+        "basin": "magdalene[132]"
+      }
+    ],
+    "onset_d5.0": [
+      {
+        "delay": 0,
+        "basin": "simeon[98]"
+      },
+      {
+        "delay": 5,
+        "basin": "simeon[98]"
+      },
+      {
+        "delay": 10,
+        "basin": "simeon[98]"
+      },
+      {
+        "delay": 20,
+        "basin": "john[64]"
+      },
+      {
+        "delay": 30,
+        "basin": "john[64]"
+      },
+      {
+        "delay": 50,
+        "basin": "christic[22]"
+      },
+      {
+        "delay": 75,
+        "basin": "simeon[98]"
+      },
+      {
+        "delay": 100,
+        "basin": "john[64]"
+      },
+      {
+        "delay": 150,
+        "basin": "venus[10]"
+      },
+      {
+        "delay": 200,
+        "basin": "spirit heart[67]"
+      },
+      {
+        "delay": 300,
+        "basin": "metatron[9]"
+      },
+      {
+        "delay": 400,
+        "basin": "metatron[9]"
+      }
+    ],
+    "ordering_d5.0": [
+      {
+        "name": "standard",
+        "sequence": "grai\u2192meta\u2192pyra\u2192chri\u2192ligh",
+        "basin": "numis'om[7]"
+      },
+      {
+        "name": "reverse",
+        "sequence": "ligh\u2192chri\u2192pyra\u2192meta\u2192grai",
+        "basin": "john[64]"
+      },
+      {
+        "name": "big_first",
+        "sequence": "grai\u2192meta\u2192pyra\u2192chri\u2192ligh",
+        "basin": "numis'om[7]"
+      },
+      {
+        "name": "small_first",
+        "sequence": "ligh\u2192chri\u2192pyra\u2192meta\u2192grai",
+        "basin": "john[64]"
+      },
+      {
+        "name": "alternating",
+        "sequence": "grai\u2192ligh\u2192meta\u2192chri\u2192pyra",
+        "basin": "simeon[98]"
+      },
+      {
+        "name": "middle_out",
+        "sequence": "pyra\u2192meta\u2192chri\u2192grai\u2192ligh",
+        "basin": "numis'om[7]"
+      },
+      {
+        "name": "random_a",
+        "sequence": "chri\u2192grai\u2192ligh\u2192pyra\u2192meta",
+        "basin": "christic[22]"
+      },
+      {
+        "name": "random_b",
+        "sequence": "meta\u2192ligh\u2192grai\u2192chri\u2192pyra",
+        "basin": "simeon[98]"
+      },
+      {
+        "name": "simultaneous",
+        "sequence": "all-at-once",
+        "basin": "simeon[98]"
+      }
+    ],
+    "fine_gap_d5.0": [
+      {
+        "param": 3,
+        "basin": "melchizedek[126]"
+      },
+      {
+        "param": 4,
+        "basin": "thothhorra[31]"
+      },
+      {
+        "param": 5,
+        "basin": "thothhorra[31]"
+      }
+    ],
+    "gap_d0.2": [
+      {
+        "gap": 1,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 2,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 3,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 5,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 8,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 10,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 15,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 20,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 25,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 30,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 40,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 50,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 60,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 75,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 100,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 125,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 150,
+        "basin": "grail[1]"
+      },
+      {
+        "gap": 200,
+        "basin": "magdalene[132]"
+      },
+      {
+        "gap": 250,
+        "basin": "flame[43]"
+      }
+    ],
+    "ordering_d0.2": [
+      {
+        "name": "standard",
+        "sequence": "grai\u2192meta\u2192pyra\u2192chri\u2192ligh",
+        "basin": "numis'om[7]"
+      },
+      {
+        "name": "reverse",
+        "sequence": "ligh\u2192chri\u2192pyra\u2192meta\u2192grai",
+        "basin": "earth star[5]"
+      },
+      {
+        "name": "big_first",
+        "sequence": "grai\u2192meta\u2192pyra\u2192chri\u2192ligh",
+        "basin": "numis'om[7]"
+      },
+      {
+        "name": "small_first",
+        "sequence": "ligh\u2192chri\u2192pyra\u2192meta\u2192grai",
+        "basin": "earth star[5]"
+      },
+      {
+        "name": "alternating",
+        "sequence": "grai\u2192ligh\u2192meta\u2192chri\u2192pyra",
+        "basin": "numis'om[7]"
+      },
+      {
+        "name": "middle_out",
+        "sequence": "pyra\u2192meta\u2192chri\u2192grai\u2192ligh",
+        "basin": "numis'om[7]"
+      },
+      {
+        "name": "random_a",
+        "sequence": "chri\u2192grai\u2192ligh\u2192pyra\u2192meta",
+        "basin": "metatron[9]"
+      },
+      {
+        "name": "random_b",
+        "sequence": "meta\u2192ligh\u2192grai\u2192chri\u2192pyra",
+        "basin": "christic[22]"
+      },
+      {
+        "name": "simultaneous",
+        "sequence": "all-at-once",
+        "basin": "numis'om[7]"
+      }
+    ]
+  },
+  "transitions": {
+    "gap_d5.0": [
+      [
+        3,
+        5,
+        "melchizedek[126]",
+        "thothhorra[31]"
+      ],
+      [
+        15,
+        20,
+        "thothhorra[31]",
+        "magdalene[132]"
+      ],
+      [
+        20,
+        25,
+        "magdalene[132]",
+        "mazur[118]"
+      ],
+      [
+        30,
+        40,
+        "mazur[118]",
+        "thothhorra[31]"
+      ],
+      [
+        40,
+        50,
+        "thothhorra[31]",
+        "mazur[118]"
+      ],
+      [
+        50,
+        60,
+        "mazur[118]",
+        "christ[2]"
+      ],
+      [
+        75,
+        100,
+        "christ[2]",
+        "grail[1]"
+      ],
+      [
+        100,
+        125,
+        "grail[1]",
+        "magdalene[132]"
+      ],
+      [
+        125,
+        150,
+        "magdalene[132]",
+        "goddess[91]"
+      ],
+      [
+        150,
+        200,
+        "goddess[91]",
+        "christ[2]"
+      ],
+      [
+        200,
+        250,
+        "christ[2]",
+        "thothhorra[31]"
+      ]
+    ],
+    "pulse_d5.0": [
+      [
+        1,
+        2,
+        "magdalene[132]",
+        "melchizedek[126]"
+      ],
+      [
+        2,
+        3,
+        "melchizedek[126]",
+        "mazur[118]"
+      ],
+      [
+        3,
+        4,
+        "mazur[118]",
+        "thothhorra[31]"
+      ],
+      [
+        4,
+        5,
+        "thothhorra[31]",
+        "mazur[118]"
+      ],
+      [
+        5,
+        6,
+        "mazur[118]",
+        "christ[2]"
+      ],
+      [
+        6,
+        8,
+        "christ[2]",
+        "flame[43]"
+      ],
+      [
+        8,
+        10,
+        "flame[43]",
+        "grail[1]"
+      ],
+      [
+        20,
+        30,
+        "grail[1]",
+        "magdalene[132]"
+      ]
+    ],
+    "onset_d5.0": [
+      [
+        10,
+        20,
+        "simeon[98]",
+        "john[64]"
+      ],
+      [
+        30,
+        50,
+        "john[64]",
+        "christic[22]"
+      ],
+      [
+        50,
+        75,
+        "christic[22]",
+        "simeon[98]"
+      ],
+      [
+        75,
+        100,
+        "simeon[98]",
+        "john[64]"
+      ],
+      [
+        100,
+        150,
+        "john[64]",
+        "venus[10]"
+      ],
+      [
+        150,
+        200,
+        "venus[10]",
+        "spirit heart[67]"
+      ],
+      [
+        200,
+        300,
+        "spirit heart[67]",
+        "metatron[9]"
+      ]
+    ],
+    "fine_gap_d5.0": [
+      [
+        3,
+        4,
+        "melchizedek[126]",
+        "thothhorra[31]"
+      ]
+    ],
+    "gap_d0.2": [
+      [
+        150,
+        200,
+        "grail[1]",
+        "magdalene[132]"
+      ],
+      [
+        200,
+        250,
+        "magdalene[132]",
+        "flame[43]"
+      ]
+    ]
+  }
+}

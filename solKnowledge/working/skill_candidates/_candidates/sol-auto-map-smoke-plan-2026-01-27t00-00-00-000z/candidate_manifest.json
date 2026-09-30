@@ -1,0 +1,21 @@
+{
+  "kind": "skill_candidate",
+  "slug": "sol-auto-map-smoke-plan-2026-01-27t00-00-00-000z",
+  "title": "SOL Auto Map Run: smoke_plan 2026-01-27T00-00-00-000Z",
+  "description": "Auto-created during SOL Auto Mapper smoke test.",
+  "domain": "sol",
+  "tags": [
+    "sol-auto-map",
+    "smoke-plan",
+    "smoke-test"
+  ],
+  "createdAt": "2026-01-27T10:19:35+00:00",
+  "sourceRuns": [],
+  "evidence": [
+    "g:\\aiAgents\\data\\sol_auto_map_smoke\\raw\\smoke_plan\\2026-01-27T00-00-00-000Z",
+    "g:\\aiAgents\\data\\sol_auto_map_smoke\\raw\\smoke_plan\\2026-01-27T00-00-00-000Z\\run_manifest.json",
+    "g:\\aiAgents\\data\\sol_auto_map_smoke\\raw\\smoke_plan\\2026-01-27T00-00-00-000Z\\SINGLE\\solAutoMap__smoke_plan__2026-01-27T00-00-00-000Z__manifest.json"
+  ],
+  "triggers": [],
+  "status": "candidate"
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "sol.level6.storedprogram.v1",
+  "run_id": "logos_vm_stored_program_20260605_150139",
+  "primitive": "stored_program_substrate",
+  "level": "6.2",
+  "suite_passed": true,
+  "results": [
+    {
+      "x0_active": true,
+      "final_out": 0,
+      "steps_run": 3,
+      "history": [
+        {
+          "pc_before": 0,
+          "pc_after": 1,
+          "instruction": "LOAD A, Basin_X0",
+          "branch_taken": false
+        },
+        {
+          "pc_before": 1,
+          "pc_after": 3,
+          "instruction": "JUMP_IF_ACTIVE A, 3",
+          "branch_taken": true
+        },
+        {
+          "pc_before": 3,
+          "pc_after": 4,
+          "instruction": "STORE B, Basin_Out",
+          "branch_taken": false
+        }
+      ]
+    },
+    {
+      "x0_active": false,
+      "final_out": 1,
+      "steps_run": 4,
+      "history": [
+        {
+          "pc_before": 0,
+          "pc_after": 1,
+          "instruction": "LOAD A, Basin_X0",
+          "branch_taken": false
+        },
+        {
+          "pc_before": 1,
+          "pc_after": 2,
+          "instruction": "JUMP_IF_ACTIVE A, 3",
+          "branch_taken": false
+        },
+        {
+          "pc_before": 2,
+          "pc_after": 3,
+          "instruction": "LOAD B, Basin_One",
+          "branch_taken": false
+        },
+        {
+          "pc_before": 3,
+          "pc_after": 4,
+          "instruction": "STORE B, Basin_Out",
+          "branch_taken": false
+        }
+      ]
+    }
+  ]
+}

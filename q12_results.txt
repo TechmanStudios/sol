@@ -1,0 +1,498 @@
+﻿======================================================================
+EXPERIMENT 14 ΓÇö Q12: Symmetry-Breaking Group Specificity
+======================================================================
+
+======================================================================
+PROBE A: Group ├ù Damping Matrix (12 groups ├ù 9 dampings)
+======================================================================
+
+  Group: standard
+    d=  0.2: basin=metatron[9]                     iton=0.201  coh=0.9656  mass=81.9577  [same]
+    d=  2.0: basin=metatron[9]                     iton=0.000  coh=0.9864  mass=0.0326  [same]
+    d=  5.0: basin=metatron[9]                     iton=0.000  coh=0.9945  mass=0.0000  [same]
+    d= 10.0: basin=christic[22]                    iton=0.000  coh=0.9975  mass=0.0000  [same]
+    d= 15.0: basin=christic[22]                    iton=0.000  coh=0.9984  mass=0.0000  [same]
+    d= 20.0: basin=christic[22]                    iton=0.000  coh=0.9988  mass=0.0000  [same]
+    d= 30.0: basin=christic[22]                    iton=0.000  coh=0.9991  mass=0.0000  [same]
+    d= 40.0: basin=christic[22]                    iton=0.000  coh=0.9993  mass=0.0000  [same]
+    d= 55.0: basin=numis'om[7]                     iton=0.000  coh=0.9993  mass=0.0000  [same]
+
+  Group: spirit_core
+    d=  0.2: basin=christ[2]                       iton=0.143  coh=0.9937  mass=124.3822  [SHIFT]
+    d=  2.0: basin=christ[2]                       iton=0.000  coh=0.4832  mass=0.2012  [SHIFT]
+    d=  5.0: basin=christ[2]                       iton=0.000  coh=0.6517  mass=0.0000  [SHIFT]
+    d= 10.0: basin=christ[2]                       iton=0.000  coh=0.6626  mass=0.0000  [SHIFT]
+    d= 15.0: basin=christ[2]                       iton=0.000  coh=0.6403  mass=0.0000  [SHIFT]
+    d= 20.0: basin=numis'om[7]                     iton=0.000  coh=0.6163  mass=0.0000  [SHIFT]
+    d= 30.0: basin=numis'om[7]                     iton=0.000  coh=0.5758  mass=0.0000  [SHIFT]
+    d= 40.0: basin=numis'om[7]                     iton=0.000  coh=0.5471  mass=0.0000  [SHIFT]
+    d= 55.0: basin=numis'om[7]                     iton=0.000  coh=0.5274  mass=0.0000  [same]
+
+  Group: spirit_periphery
+    d=  0.2: basin=thothhorra[31]                  iton=0.179  coh=0.9978  mass=125.4345  [SHIFT]
+    d=  2.0: basin=thothhorra[31]                  iton=0.000  coh=0.9664  mass=0.2053  [SHIFT]
+    d=  5.0: basin=thothhorra[31]                  iton=0.000  coh=0.9187  mass=0.0000  [SHIFT]
+    d= 10.0: basin=thothhorra khandr[138]          iton=0.000  coh=0.8331  mass=0.0000  [SHIFT]
+    d= 15.0: basin=thothhorra khandr[138]          iton=0.000  coh=0.7746  mass=0.0000  [SHIFT]
+    d= 20.0: basin=thothhorra khandr[138]          iton=0.000  coh=0.7390  mass=0.0000  [SHIFT]
+    d= 30.0: basin=maia christianne[136]           iton=0.000  coh=0.6988  mass=0.0000  [SHIFT]
+    d= 40.0: basin=maia christianne[136]           iton=0.000  coh=0.6762  mass=0.0000  [SHIFT]
+    d= 55.0: basin=maia christianne[136]           iton=0.000  coh=0.6628  mass=0.0000  [SHIFT]
+
+  Group: temple_cluster
+    d=  0.2: basin=temple of[52]                   iton=0.136  coh=0.9699  mass=133.1313  [SHIFT]
+    d=  2.0: basin=temple of[52]                   iton=0.000  coh=0.9450  mass=0.0970  [SHIFT]
+    d=  5.0: basin=temple of[52]                   iton=0.000  coh=0.9134  mass=0.0000  [SHIFT]
+    d= 10.0: basin=akashic practice[28]            iton=0.000  coh=0.8328  mass=0.0000  [SHIFT]
+    d= 15.0: basin=akashic practice[28]            iton=0.000  coh=0.7750  mass=0.0000  [SHIFT]
+    d= 20.0: basin=akashic practice[28]            iton=0.000  coh=0.7383  mass=0.0000  [SHIFT]
+    d= 30.0: basin=akashic practice[28]            iton=0.000  coh=0.6954  mass=0.0000  [SHIFT]
+    d= 40.0: basin=akashic practice[28]            iton=0.000  coh=0.6724  mass=0.0000  [SHIFT]
+    d= 55.0: basin=akashic practice[28]            iton=0.000  coh=0.6543  mass=0.0000  [SHIFT]
+
+  Group: christine_solo
+    d=  0.2: basin=lords[122]                      iton=0.300  coh=0.6279  mass=99.7604  [SHIFT]
+    d=  2.0: basin=christine hayes[90]             iton=0.000  coh=0.9100  mass=0.0064  [SHIFT]
+    d=  5.0: basin=knowledge[78]                   iton=0.000  coh=0.8881  mass=0.0000  [SHIFT]
+    d= 10.0: basin=christ[2]                       iton=0.000  coh=0.8113  mass=0.0000  [SHIFT]
+    d= 15.0: basin=christ[2]                       iton=0.000  coh=0.7504  mass=0.0000  [SHIFT]
+    d= 20.0: basin=christ[2]                       iton=0.000  coh=0.7109  mass=0.0000  [SHIFT]
+    d= 30.0: basin=christ[2]                       iton=0.000  coh=0.6671  mass=0.0000  [SHIFT]
+    d= 40.0: basin=christ[2]                       iton=0.000  coh=0.6306  mass=0.0000  [SHIFT]
+    d= 55.0: basin=christ[2]                       iton=0.000  coh=0.6128  mass=0.0000  [SHIFT]
+
+  Group: metatronic_cluster
+    d=  0.2: basin=metatron[9]                     iton=0.179  coh=0.9966  mass=126.5591  [same]
+    d=  2.0: basin=metatron[9]                     iton=0.000  coh=0.6592  mass=0.1428  [same]
+    d=  5.0: basin=metatron[9]                     iton=0.000  coh=0.7402  mass=0.0000  [same]
+    d= 10.0: basin=spirit heart[67]                iton=0.000  coh=0.7046  mass=0.0000  [SHIFT]
+    d= 15.0: basin=numis'om[7]                     iton=0.000  coh=0.6632  mass=0.0000  [SHIFT]
+    d= 20.0: basin=numis'om[7]                     iton=0.000  coh=0.6316  mass=0.0000  [SHIFT]
+    d= 30.0: basin=numis'om[7]                     iton=0.000  coh=0.5873  mass=0.0000  [SHIFT]
+    d= 40.0: basin=numis'om[7]                     iton=0.000  coh=0.5567  mass=0.0000  [SHIFT]
+    d= 55.0: basin=numis'om[7]                     iton=0.000  coh=0.5316  mass=0.0000  [same]
+
+  Group: bridge_low_deg
+    d=  0.2: basin=journey[123]                    iton=0.181  coh=0.9698  mass=56.2392  [SHIFT]
+    d=  2.0: basin=journey[123]                    iton=0.000  coh=0.9757  mass=0.0144  [SHIFT]
+    d=  5.0: basin=journey[123]                    iton=0.000  coh=0.9297  mass=0.0000  [SHIFT]
+    d= 10.0: basin=christ[2]                       iton=0.000  coh=0.8395  mass=0.0000  [SHIFT]
+    d= 15.0: basin=christ[2]                       iton=0.000  coh=0.7781  mass=0.0000  [SHIFT]
+    d= 20.0: basin=christ[2]                       iton=0.000  coh=0.7407  mass=0.0000  [SHIFT]
+    d= 30.0: basin=christ[2]                       iton=0.000  coh=0.6974  mass=0.0000  [SHIFT]
+    d= 40.0: basin=christ[2]                       iton=0.000  coh=0.6742  mass=0.0000  [SHIFT]
+    d= 55.0: basin=christ[2]                       iton=0.000  coh=0.6624  mass=0.0000  [SHIFT]
+
+  Group: bridge_high_deg
+    d=  0.2: basin=temple of[52]                   iton=0.450  coh=0.9432  mass=46.9287  [SHIFT]
+    d=  2.0: basin=lion[53]                        iton=0.000  coh=0.9749  mass=0.0012  [SHIFT]
+    d=  5.0: basin=lion[53]                        iton=0.000  coh=0.9362  mass=0.0000  [SHIFT]
+    d= 10.0: basin=thothhorra[31]                  iton=0.000  coh=0.8689  mass=0.0000  [SHIFT]
+    d= 15.0: basin=numis'om[7]                     iton=0.000  coh=0.8269  mass=0.0000  [SHIFT]
+    d= 20.0: basin=numis'om[7]                     iton=0.000  coh=0.8073  mass=0.0000  [SHIFT]
+    d= 30.0: basin=numis'om[7]                     iton=0.000  coh=0.7941  mass=0.0000  [SHIFT]
+    d= 40.0: basin=numis'om[7]                     iton=0.000  coh=0.7835  mass=0.0000  [SHIFT]
+    d= 55.0: basin=numis'om[7]                     iton=0.000  coh=0.7357  mass=0.0000  [same]
+
+  Group: cold_nodes
+    d=  0.2: basin=christ[2]                       iton=0.562  coh=0.8337  mass=53.2395  [SHIFT]
+    d=  2.0: basin=christ[2]                       iton=0.000  coh=0.9597  mass=0.0017  [SHIFT]
+    d=  5.0: basin=crystals[87]                    iton=0.000  coh=0.9177  mass=0.0000  [SHIFT]
+    d= 10.0: basin=christic[22]                    iton=0.000  coh=0.8613  mass=0.0000  [same]
+    d= 15.0: basin=christos[94]                    iton=0.000  coh=0.8293  mass=0.0000  [SHIFT]
+    d= 20.0: basin=christos[94]                    iton=0.000  coh=0.8115  mass=0.0000  [SHIFT]
+    d= 30.0: basin=christos[94]                    iton=0.000  coh=0.7948  mass=0.0000  [SHIFT]
+    d= 40.0: basin=christos[94]                    iton=0.000  coh=0.7771  mass=0.0000  [SHIFT]
+    d= 55.0: basin=christos[94]                    iton=0.000  coh=0.7162  mass=0.0000  [SHIFT]
+
+  Group: tech_solo
+    d=  0.2: basin=light codes[23]                 iton=0.050  coh=0.9983  mass=140.1956  [SHIFT]
+    d=  2.0: basin=light codes[23]                 iton=0.444  coh=0.6608  mass=0.8926  [SHIFT]
+    d=  5.0: basin=light codes[23]                 iton=0.000  coh=0.7333  mass=0.0000  [SHIFT]
+    d= 10.0: basin=light codes[23]                 iton=0.000  coh=0.7459  mass=0.0000  [SHIFT]
+    d= 15.0: basin=numis'om[7]                     iton=0.000  coh=0.7321  mass=0.0000  [SHIFT]
+    d= 20.0: basin=numis'om[7]                     iton=0.000  coh=0.7183  mass=0.0000  [SHIFT]
+    d= 30.0: basin=numis'om[7]                     iton=0.000  coh=0.6950  mass=0.0000  [SHIFT]
+    d= 40.0: basin=numis'om[7]                     iton=0.000  coh=0.6765  mass=0.0000  [SHIFT]
+    d= 55.0: basin=numis'om[7]                     iton=0.000  coh=0.6639  mass=0.0000  [same]
+
+  Group: christ_solo
+    d=  0.2: basin=christ[2]                       iton=0.107  coh=0.9964  mass=125.2576  [SHIFT]
+    d=  2.0: basin=christ[2]                       iton=0.258  coh=0.7416  mass=2.6575  [SHIFT]
+    d=  5.0: basin=christ[2]                       iton=0.000  coh=0.6735  mass=0.0000  [SHIFT]
+    d= 10.0: basin=christic[22]                    iton=0.000  coh=0.6692  mass=0.0000  [same]
+    d= 15.0: basin=christic[22]                    iton=0.000  coh=0.6379  mass=0.0000  [same]
+    d= 20.0: basin=christic[22]                    iton=0.000  coh=0.6115  mass=0.0000  [same]
+    d= 30.0: basin=christic[22]                    iton=0.000  coh=0.5725  mass=0.0000  [same]
+    d= 40.0: basin=christic[22]                    iton=0.000  coh=0.5436  mass=0.0000  [same]
+    d= 55.0: basin=christic[22]                    iton=0.000  coh=0.5143  mass=0.0000  [SHIFT]
+
+  Group: scattered_bridge
+    d=  0.2: basin=rite[112]                       iton=0.079  coh=0.5837  mass=53.8957  [SHIFT]
+    d=  2.0: basin=lineages[41]                    iton=0.000  coh=0.7116  mass=0.0039  [SHIFT]
+    d=  5.0: basin=lineages[41]                    iton=0.000  coh=0.7233  mass=0.0000  [SHIFT]
+    d= 10.0: basin=christ[2]                       iton=0.000  coh=0.6642  mass=0.0000  [SHIFT]
+    d= 15.0: basin=christ[2]                       iton=0.000  coh=0.6156  mass=0.0000  [SHIFT]
+    d= 20.0: basin=christ[2]                       iton=0.000  coh=0.5816  mass=0.0000  [SHIFT]
+    d= 30.0: basin=christ[2]                       iton=0.000  coh=0.5364  mass=0.0000  [SHIFT]
+    d= 40.0: basin=christ[2]                       iton=0.000  coh=0.5142  mass=0.0000  [SHIFT]
+    d= 55.0: basin=christ[2]                       iton=0.000  coh=0.5078  mass=0.0000  [SHIFT]
+
+  --- SHIFT SUMMARY ---
+  Group                   d=0.2    d=2.0    d=5.0    d=10.0   d=15.0   d=20.0   d=30.0   d=40.0   d=55.0 
+  standard                    ---      ---      ---      ---      ---      ---      ---      ---      ---
+  spirit_core               SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT      ---
+  spirit_periphery          SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT
+  temple_cluster            SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT
+  christine_solo            SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT
+  metatronic_cluster          ---      ---      ---    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT      ---
+  bridge_low_deg            SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT
+  bridge_high_deg           SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT      ---
+  cold_nodes                SHIFT    SHIFT    SHIFT      ---    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT
+  tech_solo                 SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT      ---
+  christ_solo               SHIFT    SHIFT    SHIFT      ---      ---      ---      ---      ---    SHIFT
+  scattered_bridge          SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT    SHIFT
+
+  --- GROUP RELIABILITY ---
+  standard              : 0/9 dampings shifted, 3 unique basins
+  spirit_core           : 8/9 dampings shifted, 2 unique basins
+  spirit_periphery      : 9/9 dampings shifted, 3 unique basins
+  temple_cluster        : 9/9 dampings shifted, 2 unique basins
+  christine_solo        : 9/9 dampings shifted, 4 unique basins
+  metatronic_cluster    : 5/9 dampings shifted, 3 unique basins
+  bridge_low_deg        : 9/9 dampings shifted, 2 unique basins
+  bridge_high_deg       : 8/9 dampings shifted, 4 unique basins
+  cold_nodes            : 8/9 dampings shifted, 4 unique basins
+  tech_solo             : 8/9 dampings shifted, 2 unique basins
+  christ_solo           : 4/9 dampings shifted, 2 unique basins
+  scattered_bridge      : 9/9 dampings shifted, 3 unique basins
+
+======================================================================
+PROBE B: Single-Node Injection Atlas (28 nodes ├ù 3 dampings)
+======================================================================
+
+  Node: christ[2] (group=spirit)
+    d=  0.2: basin=christ[2]                       mass=125.2576  [SHIFT]
+    d=  5.0: basin=christ[2]                       mass=0.0000  [SHIFT]
+    d= 20.0: basin=christic[22]                    mass=0.0000  [same]
+
+  Node: temple doors[6] (group=spirit)
+    d=  0.2: basin=temple doors[6]                 mass=127.0408  [SHIFT]
+    d=  5.0: basin=temple doors[6]                 mass=0.0000  [SHIFT]
+    d= 20.0: basin=merkabah[48]                    mass=0.0000  [SHIFT]
+
+  Node: numis'om[7] (group=spirit)
+    d=  0.2: basin=numis'om[7]                     mass=127.9872  [SHIFT]
+    d=  5.0: basin=numis'om[7]                     mass=0.0000  [SHIFT]
+    d= 20.0: basin=new earth star[19]              mass=0.0000  [SHIFT]
+
+  Node: metatron[9] (group=spirit)
+    d=  0.2: basin=metatron[9]                     mass=125.0545  [same]
+    d=  5.0: basin=metatron[9]                     mass=0.0000  [same]
+    d= 20.0: basin=numis'om[7]                     mass=0.0000  [SHIFT]
+
+  Node: venus[10] (group=spirit)
+    d=  0.2: basin=venus[10]                       mass=125.0427  [SHIFT]
+    d=  5.0: basin=venus[10]                       mass=0.0000  [SHIFT]
+    d= 20.0: basin=maia christianne[136]           mass=0.0000  [SHIFT]
+
+  Node: new earth star[19] (group=spirit)
+    d=  0.2: basin=new earth star[19]              mass=123.8847  [SHIFT]
+    d=  5.0: basin=new earth star[19]              mass=0.0000  [SHIFT]
+    d= 20.0: basin=numis'om[7]                     mass=0.0000  [SHIFT]
+
+  Node: christic[22] (group=spirit)
+    d=  0.2: basin=christic[22]                    mass=125.5322  [SHIFT]
+    d=  5.0: basin=christic[22]                    mass=0.0000  [SHIFT]
+    d= 20.0: basin=christ[2]                       mass=0.0000  [SHIFT]
+
+  Node: akashic practice[28] (group=spirit)
+    d=  0.2: basin=akashic practice[28]            mass=149.9574  [SHIFT]
+    d=  5.0: basin=akashic practice[28]            mass=0.0000  [SHIFT]
+    d= 20.0: basin=rite akashic[51]                mass=0.0000  [SHIFT]
+
+  Node: thothhorra[31] (group=spirit)
+    d=  0.2: basin=thothhorra[31]                  mass=126.4240  [SHIFT]
+    d=  5.0: basin=thothhorra[31]                  mass=0.0000  [SHIFT]
+    d= 20.0: basin=thothhorra khandr[138]          mass=0.0000  [SHIFT]
+
+  Node: merkabah[48] (group=spirit)
+    d=  0.2: basin=merkabah[48]                    mass=123.9950  [SHIFT]
+    d=  5.0: basin=merkabah[48]                    mass=0.0000  [SHIFT]
+    d= 20.0: basin=temple doors[6]                 mass=0.0000  [SHIFT]
+
+  Node: rite akashic[51] (group=spirit)
+    d=  0.2: basin=rite akashic[51]                mass=149.9574  [SHIFT]
+    d=  5.0: basin=rite akashic[51]                mass=0.0000  [SHIFT]
+    d= 20.0: basin=akashic practice[28]            mass=0.0000  [SHIFT]
+
+  Node: temple of[52] (group=spirit)
+    d=  0.2: basin=temple of[52]                   mass=126.2568  [SHIFT]
+    d=  5.0: basin=temple of[52]                   mass=0.0000  [SHIFT]
+    d= 20.0: basin=christ[2]                       mass=0.0000  [SHIFT]
+
+  Node: metatronic[58] (group=spirit)
+    d=  0.2: basin=metatronic[58]                  mass=126.6307  [SHIFT]
+    d=  5.0: basin=metatronic[58]                  mass=0.0000  [SHIFT]
+    d= 20.0: basin=numis'om[7]                     mass=0.0000  [SHIFT]
+
+  Node: spirit heart[67] (group=spirit)
+    d=  0.2: basin=spirit heart[67]                mass=124.5753  [SHIFT]
+    d=  5.0: basin=spirit heart[67]                mass=0.0000  [SHIFT]
+    d= 20.0: basin=numis'om[7]                     mass=0.0000  [SHIFT]
+
+  Node: christine hayes[90] (group=spirit)
+    d=  0.2: basin=lords[122]                      mass=99.7604  [SHIFT]
+    d=  5.0: basin=knowledge[78]                   mass=0.0000  [SHIFT]
+    d= 20.0: basin=christ[2]                       mass=0.0000  [SHIFT]
+
+  Node: christos[94] (group=spirit)
+    d=  0.2: basin=christos[94]                    mass=126.1950  [SHIFT]
+    d=  5.0: basin=christos[94]                    mass=0.0000  [SHIFT]
+    d= 20.0: basin=thothhorra khandr[138]          mass=0.0000  [SHIFT]
+
+  Node: maia christianne[136] (group=spirit)
+    d=  0.2: basin=maia christianne[136]           mass=130.2990  [SHIFT]
+    d=  5.0: basin=maia christianne[136]           mass=0.0000  [SHIFT]
+    d= 20.0: basin=venus[10]                       mass=0.0000  [SHIFT]
+
+  Node: thothhorra khandr[138] (group=spirit)
+    d=  0.2: basin=thothhorra khandr[138]          mass=126.0641  [SHIFT]
+    d=  5.0: basin=thothhorra khandr[138]          mass=0.0000  [SHIFT]
+    d= 20.0: basin=thothhorra[31]                  mass=0.0000  [SHIFT]
+
+  Node: grail[1] (group=bridge)
+    d=  0.2: basin=grail[1]                        mass=74.1773  [SHIFT]
+    d=  5.0: basin=grail[1]                        mass=0.0000  [SHIFT]
+    d= 20.0: basin=numis'om[7]                     mass=0.0000  [SHIFT]
+
+  Node: pyramid[29] (group=bridge)
+    d=  0.2: basin=pyramid[29]                     mass=75.9483  [SHIFT]
+    d=  5.0: basin=pyramid[29]                     mass=0.0000  [SHIFT]
+    d= 20.0: basin=christ[2]                       mass=0.0000  [SHIFT]
+
+  Node: johannine grove[82] (group=bridge)
+    d=  0.2: basin=temple of[52]                   mass=45.9770  [SHIFT]
+    d=  5.0: basin=thothhorra[31]                  mass=0.0000  [SHIFT]
+    d= 20.0: basin=numis'om[7]                     mass=0.0000  [SHIFT]
+
+  Node: mystery school[89] (group=bridge)
+    d=  0.2: basin=lion[53]                        mass=45.9505  [SHIFT]
+    d=  5.0: basin=crystal skull[34]               mass=0.0000  [SHIFT]
+    d= 20.0: basin=numis'om[7]                     mass=0.0000  [SHIFT]
+
+  Node: par[79] (group=bridge)
+    d=  0.2: basin=temple of[52]                   mass=45.8468  [SHIFT]
+    d=  5.0: basin=thothhorra[31]                  mass=0.0000  [SHIFT]
+    d= 20.0: basin=numis'om[7]                     mass=0.0000  [SHIFT]
+
+  Node: john[64] (group=bridge)
+    d=  0.2: basin=john[64]                        mass=53.6140  [SHIFT]
+    d=  5.0: basin=blue star[25]                   mass=0.0000  [SHIFT]
+    d= 20.0: basin=christic[22]                    mass=0.0000  [same]
+
+  Node: church[104] (group=bridge)
+    d=  0.2: basin=christic[22]                    mass=45.9536  [SHIFT]
+    d=  5.0: basin=thothhorra[31]                  mass=0.0000  [SHIFT]
+    d= 20.0: basin=merkabah[48]                    mass=0.0000  [SHIFT]
+
+  Node: plain[92] (group=bridge)
+    d=  0.2: basin=metatronic[58]                  mass=51.9494  [SHIFT]
+    d=  5.0: basin=pyramid[29]                     mass=0.0000  [SHIFT]
+    d= 20.0: basin=thothhorra khandr[138]          mass=0.0000  [SHIFT]
+
+  Node: journey[123] (group=bridge)
+    d=  0.2: basin=journey[123]                    mass=74.6855  [SHIFT]
+    d=  5.0: basin=journey[123]                    mass=0.0000  [SHIFT]
+    d= 20.0: basin=merkabah[48]                    mass=0.0000  [SHIFT]
+
+  Node: dragon[124] (group=bridge)
+    d=  0.2: basin=dragon[124]                     mass=75.2258  [SHIFT]
+    d=  5.0: basin=dragon[124]                     mass=0.0000  [SHIFT]
+    d= 20.0: basin=christ[2]                       mass=0.0000  [SHIFT]
+
+  --- SYMMETRY BREAKERS ---
+  temple doors              (spirit): 3/3 dampings shifted
+  numis'om                  (spirit): 3/3 dampings shifted
+  venus                     (spirit): 3/3 dampings shifted
+  new earth star            (spirit): 3/3 dampings shifted
+  christic                  (spirit): 3/3 dampings shifted
+  akashic practice          (spirit): 3/3 dampings shifted
+  thothhorra                (spirit): 3/3 dampings shifted
+  merkabah                  (spirit): 3/3 dampings shifted
+  rite akashic              (spirit): 3/3 dampings shifted
+  temple of                 (spirit): 3/3 dampings shifted
+  metatronic                (spirit): 3/3 dampings shifted
+  spirit heart              (spirit): 3/3 dampings shifted
+  christine hayes           (spirit): 3/3 dampings shifted
+  christos                  (spirit): 3/3 dampings shifted
+  maia christianne          (spirit): 3/3 dampings shifted
+  thothhorra khandr         (spirit): 3/3 dampings shifted
+  grail                     (bridge): 3/3 dampings shifted
+  pyramid                   (bridge): 3/3 dampings shifted
+  johannine grove           (bridge): 3/3 dampings shifted
+  mystery school            (bridge): 3/3 dampings shifted
+  par                       (bridge): 3/3 dampings shifted
+  church                    (bridge): 3/3 dampings shifted
+  plain                     (bridge): 3/3 dampings shifted
+  journey                   (bridge): 3/3 dampings shifted
+  dragon                    (bridge): 3/3 dampings shifted
+  christ                    (spirit): 2/3 dampings shifted
+  john                      (bridge): 2/3 dampings shifted
+  metatron                  (spirit): 1/3 dampings shifted
+
+======================================================================
+PROBE C: Group Cooperation Test
+======================================================================
+
+  Group: bridge_high_deg
+    d=  0.2: groupΓåÆtemple of[52]              solos=[johannine groveΓåÆtemple of[52], mystery schoolΓåÆlion[53], parΓåÆtemple of[52]]  [DOMINATED]
+    d=  5.0: groupΓåÆlion[53]                   solos=[johannine groveΓåÆthothhorra[31], mystery schoolΓåÆcrystal skull[34], parΓåÆthothhorra[31]]  [COOPERATIVE]
+
+  Group: bridge_low_deg
+    d=  0.2: groupΓåÆjourney[123]               solos=[journeyΓåÆjourney[123], dragonΓåÆdragon[124], moonΓåÆmoon[135]]  [DOMINATED]
+    d=  5.0: groupΓåÆjourney[123]               solos=[journeyΓåÆjourney[123], dragonΓåÆdragon[124], moonΓåÆmoon[135]]  [DOMINATED]
+
+  christ_solo: solo injection, skip cooperation test
+
+  christine_solo: solo injection, skip cooperation test
+
+  Group: cold_nodes
+    d=  0.2: groupΓåÆchrist[2]                  solos=[johnΓåÆjohn[64], parΓåÆtemple of[52], johannine groveΓåÆtemple of[52], mystery schoolΓåÆlion[53], christine hayesΓåÆlords[122]]  [COOPERATIVE]
+    d=  5.0: groupΓåÆcrystals[87]               solos=[johnΓåÆblue star[25], parΓåÆthothhorra[31], johannine groveΓåÆthothhorra[31], mystery schoolΓåÆcrystal skull[34], christine hayesΓåÆknowledge[78]]  [COOPERATIVE]
+
+  Group: scattered_bridge
+    d=  0.2: groupΓåÆrite[112]                  solos=[isisΓåÆisis[3], osirisΓåÆosiris[4], arkΓåÆark[8], orionΓåÆorion[11], eyeΓåÆeye[12], lochΓåÆloch[13], maia nartoomidΓåÆmaia nartoomid[14], godΓåÆgod[15], pyramidΓåÆpyramid[29], templarΓåÆtemplar[30], plainΓåÆmetatronic[58], holorianΓåÆholorian[107], mazurΓåÆmazur[118], star lineagesΓåÆstar lineages[17], sunΓåÆsun[55]]  [COOPERATIVE]
+    d=  5.0: groupΓåÆlineages[41]               solos=[isisΓåÆisis[3], osirisΓåÆosiris[4], arkΓåÆark[8], orionΓåÆorion[11], eyeΓåÆeye[12], lochΓåÆcrystal[71], maia nartoomidΓåÆmaia nartoomid[14], godΓåÆgod[15], pyramidΓåÆpyramid[29], templarΓåÆtemplar[30], plainΓåÆpyramid[29], holorianΓåÆcrystal[71], mazurΓåÆmazur[118], star lineagesΓåÆmaia nartoomid[14], sunΓåÆsun[55]]  [COOPERATIVE]
+
+  Group: spirit_core
+    d=  0.2: groupΓåÆchrist[2]                  solos=[christΓåÆchrist[2], metatronΓåÆmetatron[9], christicΓåÆchristic[22]]  [DOMINATED]
+    d=  5.0: groupΓåÆchrist[2]                  solos=[christΓåÆchrist[2], metatronΓåÆmetatron[9], christicΓåÆchristic[22]]  [DOMINATED]
+
+  Group: spirit_periphery
+    d=  0.2: groupΓåÆthothhorra[31]             solos=[venusΓåÆvenus[10], thothhorraΓåÆthothhorra[31], merkabahΓåÆmerkabah[48]]  [DOMINATED]
+    d=  5.0: groupΓåÆthothhorra[31]             solos=[venusΓåÆvenus[10], thothhorraΓåÆthothhorra[31], merkabahΓåÆmerkabah[48]]  [DOMINATED]
+
+  tech_solo: solo injection, skip cooperation test
+
+  Group: temple_cluster
+    d=  0.2: groupΓåÆtemple of[52]              solos=[temple doorsΓåÆtemple doors[6], temple ofΓåÆtemple of[52], rite akashicΓåÆrite akashic[51]]  [DOMINATED]
+    d=  5.0: groupΓåÆtemple of[52]              solos=[temple doorsΓåÆtemple doors[6], temple ofΓåÆtemple of[52], rite akashicΓåÆrite akashic[51]]  [DOMINATED]
+
+======================================================================
+PROBE D: Energy Scaling Stability
+======================================================================
+
+  Group: spirit_periphery
+    E=   50, d=  0.2: basin=thothhorra[31]             mass=33.3913
+    E=   50, d=  5.0: basin=thothhorra[31]             mass=0.0000
+    E=   50, d= 20.0: basin=thothhorra khandr[138]     mass=0.0000
+    E=  150, d=  0.2: basin=thothhorra[31]             mass=125.4345
+    E=  150, d=  5.0: basin=thothhorra[31]             mass=0.0000
+    E=  150, d= 20.0: basin=thothhorra khandr[138]     mass=0.0000
+    E=  300, d=  0.2: basin=thothhorra[31]             mass=257.7528
+    E=  300, d=  5.0: basin=thothhorra[31]             mass=0.0000
+    E=  300, d= 20.0: basin=thothhorra khandr[138]     mass=0.0000
+
+  Group: temple_cluster
+    E=   50, d=  0.2: basin=temple of[52]              mass=30.5094
+    E=   50, d=  5.0: basin=temple of[52]              mass=0.0000
+    E=   50, d= 20.0: basin=akashic practice[28]       mass=0.0000
+    E=  150, d=  0.2: basin=temple of[52]              mass=133.1313
+    E=  150, d=  5.0: basin=temple of[52]              mass=0.0000
+    E=  150, d= 20.0: basin=akashic practice[28]       mass=0.0000
+    E=  300, d=  0.2: basin=temple of[52]              mass=275.4633
+    E=  300, d=  5.0: basin=temple of[52]              mass=0.0000
+    E=  300, d= 20.0: basin=akashic practice[28]       mass=0.0000
+
+  Group: christine_solo
+    E=   50, d=  0.2: basin=christ[2]                  mass=24.6795
+    E=   50, d=  5.0: basin=christ[2]                  mass=0.0000
+    E=   50, d= 20.0: basin=christ[2]                  mass=0.0000
+    E=  150, d=  0.2: basin=lords[122]                 mass=99.7604
+    E=  150, d=  5.0: basin=knowledge[78]              mass=0.0000
+    E=  150, d= 20.0: basin=christ[2]                  mass=0.0000
+    E=  300, d=  0.2: basin=christine hayes[90]        mass=343.8741
+    E=  300, d=  5.0: basin=christine hayes[90]        mass=0.0000
+    E=  300, d= 20.0: basin=christ[2]                  mass=0.0000
+
+  Group: bridge_low_deg
+    E=   50, d=  0.2: basin=journey[123]               mass=16.2449
+    E=   50, d=  5.0: basin=prima matra[88]            mass=0.0000
+    E=   50, d= 20.0: basin=christ[2]                  mass=0.0000
+    E=  150, d=  0.2: basin=journey[123]               mass=56.2392
+    E=  150, d=  5.0: basin=journey[123]               mass=0.0000
+    E=  150, d= 20.0: basin=christ[2]                  mass=0.0000
+    E=  300, d=  0.2: basin=journey[123]               mass=135.7058
+    E=  300, d=  5.0: basin=journey[123]               mass=0.0000
+    E=  300, d= 20.0: basin=christ[2]                  mass=0.0000
+
+  --- SCALING STABILITY ---
+  spirit_periphery     d=  0.2: thothhorra[31] / thothhorra[31] / thothhorra[31]  [STABLE]
+  spirit_periphery     d=  5.0: thothhorra[31] / thothhorra[31] / thothhorra[31]  [STABLE]
+  spirit_periphery     d= 20.0: thothhorra khandr[138] / thothhorra khandr[138] / thothhorra khandr[138]  [STABLE]
+  temple_cluster       d=  0.2: temple of[52] / temple of[52] / temple of[52]  [STABLE]
+  temple_cluster       d=  5.0: temple of[52] / temple of[52] / temple of[52]  [STABLE]
+  temple_cluster       d= 20.0: akashic practice[28] / akashic practice[28] / akashic practice[28]  [STABLE]
+  christine_solo       d=  0.2: christ[2] / lords[122] / christine hayes[90]  [VARIABLE]
+  christine_solo       d=  5.0: christ[2] / knowledge[78] / christine hayes[90]  [VARIABLE]
+  christine_solo       d= 20.0: christ[2] / christ[2] / christ[2]  [STABLE]
+  bridge_low_deg       d=  0.2: journey[123] / journey[123] / journey[123]  [STABLE]
+  bridge_low_deg       d=  5.0: prima matra[88] / journey[123] / journey[123]  [VARIABLE]
+  bridge_low_deg       d= 20.0: christ[2] / christ[2] / christ[2]  [STABLE]
+
+======================================================================
+PROBE E: Cross-Group Mixtures
+======================================================================
+
+  Mix: spirit+bridge_hi
+    d=  0.2: basin=christ[2]                       iton=0.179  [SHIFT]
+    d=  5.0: basin=christ[2]                       iton=0.000  [SHIFT]
+    d= 20.0: basin=christic[22]                    iton=0.000  [same]
+
+  Mix: spirit+cold
+    d=  0.2: basin=metatronic[58]                  iton=0.157  [SHIFT]
+    d=  5.0: basin=metatronic[58]                  iton=0.000  [SHIFT]
+    d= 20.0: basin=christ[2]                       iton=0.000  [SHIFT]
+
+  Mix: temple+meta
+    d=  0.2: basin=metatronic[58]                  iton=0.186  [SHIFT]
+    d=  5.0: basin=temple of[52]                   iton=0.000  [SHIFT]
+    d= 20.0: basin=numis'om[7]                     iton=0.000  [SHIFT]
+
+  Mix: bridge_hi+lo
+    d=  0.2: basin=journey[123]                    iton=0.324  [SHIFT]
+    d=  5.0: basin=prima matra[88]                 iton=0.000  [SHIFT]
+    d= 20.0: basin=merkabah[48]                    iton=0.000  [SHIFT]
+
+  Mix: core+periphery
+    d=  0.2: basin=thothhorra[31]                  iton=0.214  [SHIFT]
+    d=  5.0: basin=thothhorra[31]                  iton=0.000  [SHIFT]
+    d= 20.0: basin=christic[22]                    iton=0.000  [same]
+
+  Mix: tech+spirit
+    d=  0.2: basin=light codes[23]                 iton=0.114  [SHIFT]
+    d=  5.0: basin=light codes[23]                 iton=0.000  [SHIFT]
+    d= 20.0: basin=christine hayes[90]             iton=0.000  [SHIFT]
+
+======================================================================
+GRAND SUMMARY
+======================================================================
+
+  Probe A: 11/12 groups can shift basins
+           86/108 group├ùdamping combinations shift
+           20 unique basins across all groups
+
+  Probe B: 28/28 nodes are symmetry breakers
+           18 spirit, 10 bridge
+
+  Probe C: 5/14 cooperative (group Γëá any solo)
+
+  Probe D: 9/12 group├ùdamping combos energy-stable
+
+  Probe E: 16/18 cross-group mixtures shift basin
+
+  Total trials: 345
+  Total time:   709.4s (11.8 min)
+
+  Data saved to G:\docs\TechmanStudios\sol\data\q12_symmetry_breaking.json

@@ -1,0 +1,109 @@
+{
+  "baseline": {
+    "5.0": {
+      "self_attract_pct": 32.5,
+      "n_probes": 40
+    },
+    "7.0": {
+      "self_attract_pct": 7.5,
+      "n_probes": 40
+    },
+    "10.0": {
+      "self_attract_pct": 0.0,
+      "n_probes": 40
+    }
+  },
+  "results": [
+    {
+      "strategy": "self_loop_w2",
+      "damping": 5.0,
+      "self_attract_pct": 32.5,
+      "baseline_self_pct": 32.5,
+      "delta": 0.0
+    },
+    {
+      "strategy": "self_loop_w2",
+      "damping": 7.0,
+      "self_attract_pct": 7.5,
+      "baseline_self_pct": 7.5,
+      "delta": 0.0
+    },
+    {
+      "strategy": "self_loop_w2",
+      "damping": 10.0,
+      "self_attract_pct": 0.0,
+      "baseline_self_pct": 0.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "low_deg_boost_3x",
+      "damping": 5.0,
+      "self_attract_pct": 32.5,
+      "baseline_self_pct": 32.5,
+      "delta": 0.0
+    },
+    {
+      "strategy": "low_deg_boost_3x",
+      "damping": 7.0,
+      "self_attract_pct": 7.5,
+      "baseline_self_pct": 7.5,
+      "delta": 0.0
+    },
+    {
+      "strategy": "low_deg_boost_3x",
+      "damping": 10.0,
+      "self_attract_pct": 0.0,
+      "baseline_self_pct": 0.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "global_w0_double",
+      "damping": 5.0,
+      "self_attract_pct": 22.5,
+      "baseline_self_pct": 32.5,
+      "delta": -10.0
+    },
+    {
+      "strategy": "global_w0_double",
+      "damping": 7.0,
+      "self_attract_pct": 0.0,
+      "baseline_self_pct": 7.5,
+      "delta": -7.5
+    },
+    {
+      "strategy": "global_w0_double",
+      "damping": 10.0,
+      "self_attract_pct": 0.0,
+      "baseline_self_pct": 0.0,
+      "delta": 0.0
+    },
+    {
+      "strategy": "global_w0_half",
+      "damping": 5.0,
+      "self_attract_pct": 72.5,
+      "baseline_self_pct": 32.5,
+      "delta": 40.0
+    },
+    {
+      "strategy": "global_w0_half",
+      "damping": 7.0,
+      "self_attract_pct": 55.0,
+      "baseline_self_pct": 7.5,
+      "delta": 47.5
+    },
+    {
+      "strategy": "global_w0_half",
+      "damping": 10.0,
+      "self_attract_pct": 7.5,
+      "baseline_self_pct": 0.0,
+      "delta": 7.5
+    }
+  ],
+  "best_intervention": {
+    "strategy": "global_w0_half",
+    "damping": 7.0,
+    "self_attract_pct": 55.0,
+    "baseline_self_pct": 7.5,
+    "delta": 47.5
+  }
+}

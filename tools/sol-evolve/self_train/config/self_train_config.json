@@ -1,0 +1,21 @@
+{
+  "task_file": "tools/sol-evolve/self_train/config/tasks.json",
+  "baseline_knobs": {
+    "damping": 1.0,
+    "c_press": 0.1
+  },
+  "knob_bounds": {
+    "damping": [0.5, 2.0],
+    "c_press": [0.05, 0.2]
+  },
+  "teacher_step_scale": 0.15,
+  "judge_weights": {
+    "stability": 0.35,
+    "novelty": 0.15,
+    "usefulness": 0.30,
+    "reproducibility": 0.30,
+    "cost": 0.20
+  },
+  "min_anchor_delta": 0.005,
+  "max_full_regression": -0.002
+}

@@ -1,0 +1,19 @@
+{
+  "stage": "hippocampus",
+  "status": "passed",
+  "started_at": "2026-02-14T03:14:49.065810+00:00",
+  "completed_at": "2026-02-14T03:19:23.594248+00:00",
+  "elapsed_sec": 274.53,
+  "output": {
+    "dream_session_id": "DS-20260214-031449",
+    "sessions_replayed": 5,
+    "replays_run": 34,
+    "basins_discovered": 5,
+    "basins_reinforced": 0,
+    "basins_decayed": 20,
+    "memory_nodes": 21,
+    "memory_edges": 142,
+    "dry_run": false
+  },
+  "error": null
+}

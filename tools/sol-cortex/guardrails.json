@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sol-cortex-guardrails",
+  "title": "SOL Cortex Guard Rails",
+  "description": "Safety limits for autonomous experiment sessions. These values are NON-NEGOTIABLE without human approval.",
+  "version": "1.0.0",
+
+  "execution_limits": {
+    "max_steps_per_run": 2000,
+    "max_conditions_per_protocol": 20,
+    "max_reps_per_condition": 10,
+    "max_total_steps_per_session": 100000,
+    "max_protocols_per_session": 10
+  },
+
+  "safety_checks": {
+    "require_baseline": true,
+    "require_falsifier": true,
+    "require_sanity_pass_before_promotion": true,
+    "require_minimum_reps": 3,
+    "allow_engine_modification": false
+  },
+
+  "anomaly_thresholds": {
+    "max_entropy_zscore": 4.0,
+    "min_mass_fraction": 0.01,
+    "max_rho_single_node_fraction": 0.95,
+    "max_nan_fraction": 0.0
+  },
+
+  "session_hygiene": {
+    "log_format": "jsonl",
+    "save_all_protocols": true,
+    "save_hypotheses": true,
+    "save_summary": true,
+    "auto_save_on_crash": true
+  },
+
+  "promotion_requirements": {
+    "min_reps": 3,
+    "sanity_pass": true,
+    "no_anomalies": true,
+    "has_falsifier": true,
+    "has_baseline_comparison": true
+  },
+
+  "notes": "These limits protect against runaway compute and ensure reproducibility. Changing them requires explicit human approval and a rationale logged in the session.",
+
+  "hippocampus_limits": {
+    "max_memory_nodes": 500,
+    "max_memory_edges": 2000,
+    "memory_node_id_start": 1000,
+    "memory_confidence_floor": 0.05,
+    "memory_decay_rate_default": 0.02,
+    "memory_coupling_w0": 0.30,
+    "max_sessions_per_dream": 5,
+    "max_replays_per_session": 10,
+    "core_graph_immutable": true,
+    "core_engine_immutable": true,
+    "memory_group": "memory",
+    "notes": "Memory nodes are additive only. Core manifold (default_graph.json) and engine (sol_engine.py) are NEVER modified. Memory nodes use IDs >= 1000 to avoid collision with core nodes (1-140)."
+  }
+}

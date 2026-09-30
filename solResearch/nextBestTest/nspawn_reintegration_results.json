@@ -1,0 +1,25 @@
+[
+  {
+    "scenario": "Scenario 1: Path A (Topological Collapse)",
+    "status": "PASSED",
+    "details": {
+      "pre_collapse_mass": 122.58959729481718,
+      "post_collapse_mass": 122.58959729481717,
+      "mass_divergence": 1.4210854715202004e-14,
+      "gate_output": 1,
+      "thermal_dissipation": 45.0,
+      "coordinator_belief": 1.0
+    }
+  },
+  {
+    "scenario": "Scenario 2: Path B (Manifold Gluing)",
+    "status": "PASSED",
+    "details": {
+      "max_pocket_density": 103.32766972320525,
+      "hub_stellar_state": true,
+      "suture_count": 3,
+      "two_way_mass_propagation": 1.9269711926266582,
+      "two_way_belief_propagation": 0.01004292712475546
+    }
+  }
+]

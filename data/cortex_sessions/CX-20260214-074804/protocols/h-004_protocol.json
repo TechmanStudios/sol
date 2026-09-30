@@ -1,0 +1,36 @@
+{
+  "seriesName": "h-004",
+  "question": "Do different injection targets produce distinct basin formations?",
+  "invariants": {
+    "dt": 0.12,
+    "c_press": 0.1,
+    "damping": 0.2,
+    "rng_seed": 42
+  },
+  "injections": [
+    {
+      "label": "grail",
+      "amount": 50
+    }
+  ],
+  "steps": 200,
+  "reps": 3,
+  "baseline": "fresh",
+  "metrics_every": 5,
+  "outputs": {
+    "summary_csv": true,
+    "trace_csv": true,
+    "run_bundle_md": true
+  },
+  "falsifiers": [
+    "All injection targets produce identical metric trajectories",
+    "RhoMaxId is always the same regardless of injection target"
+  ],
+  "notes": "Comparing targets: ['grail', 'consciousness', 'gravity', 'entropy']\nManual: run separately for each target in ['grail', 'consciousness', 'gravity', 'entropy']",
+  "_multi_injection_targets": [
+    "grail",
+    "consciousness",
+    "gravity",
+    "entropy"
+  ]
+}

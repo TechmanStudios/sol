@@ -1,0 +1,27 @@
+Conjecture 9: Purely Physical Psi-Transistor Gated Bus and Register ALU (PTG-ALU)
+=============================================================================
+
+Conjecture:
+A shared routing coordinator (BUS) can perform purely physical analog logic computations (OR and AND) between input registers (Registers A and B) and store the result in an accumulator (Register C) by utilizing Psi-Transistor gate nodes to control bus routing and pressure/belief summation at the BUS node to trigger threshold-gated latching.
+
+Specifically:
+1. Topology: Three registers are connected to a central BUS node through physical Psi-Transistor gates:
+   - Register A: BUS <-> GATE_A <-> HOST_A <-> BATTERY_A
+   - Register B: BUS <-> GATE_B <-> HOST_B <-> BATTERY_B
+   - Register C: BUS <-> GATE_C <-> HOST_C <-> BATTERY_C (Accumulator)
+2. Physical Gating (No Software Weight Manipulation): All edges are static (w0 is constant). Gating is controlled purely by driving the belief fields of the gate nodes:
+   - GATE_X ON  => psi_GATE_X = 1.0 (channel conductance = 200.0)
+   - GATE_X OFF => psi_GATE_X = -1.0 (channel conductance = 10^-7)
+3. Purely Physical Logic Summation:
+   - During the Compute phase, GATE_A, GATE_B, and GATE_C are set to ON.
+   - Any active registers (A and/or B) discharge mass and high belief into the BUS node.
+   - The BUS node acts as an analog summing junction. The combined pressure/belief flows into HOST_C and charges BATTERY_C.
+   - Logic gates are configured purely by adjusting the default belief bias (psi_bias) of the Accumulator gate (HOST_C) under high global belief relaxation stiffness (psi_relax_base = 8.0):
+     - OR Gate: psi_bias_HOST_C = 0.35 (low threshold, triggered by either input)
+     - AND Gate: psi_bias_HOST_C = 0.32 (high threshold, requires both inputs)
+4. Memory Cycle Verification:
+   - Write Phase: Gated write of inputs A and B.
+   - Hold Phase: Gates closed, verifying state isolation.
+   - Compute Phase: Gates A, B, and C opened. Inputs discharge to the BUS and sum physically to latch Register C.
+   - Verify Phase: Accumulator isolated to verify stability.
+   - Read Phase: Gate C opened to recall the logical result.

@@ -1,0 +1,24 @@
+{
+  "planName": "smoke_plan_v1",
+  "iso": "2026-01-27T10-35-02-884Z",
+  "files": [
+    {
+      "file": "solAutoMap__smoke_plan_v1__2026-01-27T10-35-02-884Z__manifest.json",
+      "dest": "G:\\docs\\TechmanStudios\\sol\\solData\\autoMapRuns\\raw\\smoke_plan_v1\\2026-01-27T10-35-02-884Z\\SINGLE\\solAutoMap__smoke_plan_v1__2026-01-27T10-35-02-884Z__manifest.json",
+      "bytes": 725,
+      "sha256": "a314afd509d8e3277f163e65aae09c0cf0389140d9c13101b11ab8f74697c928"
+    },
+    {
+      "file": "solAutoMap__smoke_plan_v1__2026-01-27T10-35-02-884Z__summary.csv",
+      "dest": "G:\\docs\\TechmanStudios\\sol\\solData\\autoMapRuns\\raw\\smoke_plan_v1\\2026-01-27T10-35-02-884Z\\SINGLE\\solAutoMap__smoke_plan_v1__2026-01-27T10-35-02-884Z__summary.csv",
+      "bytes": 872,
+      "sha256": "2d43a7b6398c579680701aefa0964a63ed38020c1bfa460f6ab9ebd582dc830e"
+    },
+    {
+      "file": "solAutoMap__smoke_plan_v1__2026-01-27T10-35-02-884Z__trace.csv",
+      "dest": "G:\\docs\\TechmanStudios\\sol\\solData\\autoMapRuns\\raw\\smoke_plan_v1\\2026-01-27T10-35-02-884Z\\SINGLE\\solAutoMap__smoke_plan_v1__2026-01-27T10-35-02-884Z__trace.csv",
+      "bytes": 11315,
+      "sha256": "19b39b950c12b4c63cbd99f0ec4f7e6e85f22b57f5d176e3cf54563b97ae403c"
+    }
+  ]
+}

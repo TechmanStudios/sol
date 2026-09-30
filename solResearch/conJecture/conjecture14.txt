@@ -1,0 +1,24 @@
+Conjecture 14: MHD-Steered Waveguides (Conjecture 14)
+=====================================================
+
+Conjecture:
+An analog signal conduit utilizing Magneto-Hydrodynamics (MHD) physics can dynamically open and self-shutter connections between registers in response to the flow flux of the signal itself, achieving zero-leak state isolation after transmission without any programmatic weight modifications.
+
+Specifically:
+1. Topology: 5-node test graph:
+   - SOURCE <-> GATE <-> HOST <-> BATTERY
+   - GATE <-> READOUT (for measurement)
+2. MHD Physics Model:
+   - As flow flux traverses the edges connected to the GATE node, the edge-level magnetic field (bMag) builds up:
+     b_next = b_prev * e^(-decay * dt) + build * |flux| * dt
+   - Conductance (w) is dynamically scaled by the magnetic field:
+     w = w_base * exp(gamma * avg_psi) * (1 + bGamma * bMag)
+3. Dynamic Self-Shuttering Cycle:
+   - Write: Injecting mass and positive belief at SOURCE creates a high-flux gradient. This builds bMag, raising edge conductance to allow efficient mass transfer to the HOST/BATTERY capacitor.
+   - Settle/Decay: Once the source is depleted, flux falls. The magnetic field decays exponentially, pinching the gate conductance back to its baseline minimum.
+   - Hold (Noise Test): Injecting a high-mass noise pulse at SOURCE tests the gate's off-state. Because the gate is pinched off, it restricts leakage, preserving the register's stored state.
+
+Success Criteria:
+- Demonstrate that edge conductance rises by at least 10x during the active Write phase.
+- Demonstrate that edge conductance decays to baseline during the Settle phase.
+- Demonstrate that the stored register mass remains stable (leakage < 1e-3 mass units) during the Noise phase, showing significantly better isolation compared to a non-MHD baseline.

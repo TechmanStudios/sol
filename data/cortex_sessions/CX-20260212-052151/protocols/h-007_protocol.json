@@ -1,0 +1,39 @@
+{
+  "seriesName": "h-007",
+  "question": "How does psi_diffusion affect entropy distribution and basin selection?",
+  "invariants": {
+    "dt": 0.12,
+    "c_press": 0.1,
+    "damping": 0.2,
+    "rng_seed": 42
+  },
+  "injections": [
+    {
+      "label": "grail",
+      "amount": 50
+    }
+  ],
+  "steps": 300,
+  "reps": 3,
+  "baseline": "fresh",
+  "metrics_every": 5,
+  "outputs": {
+    "summary_csv": true,
+    "trace_csv": true,
+    "run_bundle_md": true
+  },
+  "falsifiers": [
+    "Entropy is invariant to psi_diffusion changes",
+    "RhoMaxId distribution is identical across all values"
+  ],
+  "notes": "",
+  "knobs": {
+    "psi_diffusion": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ]
+  }
+}

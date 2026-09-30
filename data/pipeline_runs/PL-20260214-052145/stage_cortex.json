@@ -1,0 +1,76 @@
+{
+  "stage": "cortex",
+  "status": "passed",
+  "started_at": "2026-02-14T05:21:45.846289+00:00",
+  "completed_at": "2026-02-14T05:24:43.401339+00:00",
+  "elapsed_sec": 177.56,
+  "output": {
+    "session_id": "CX-20260214-052145",
+    "session_dir": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260214-052145",
+    "protocols_run": 8,
+    "total_steps": 46000,
+    "hypotheses": 8,
+    "gaps_addressed": [
+      "open_question:Open Q: Is the truncated replication tar",
+      "open_question:Open Q: Are the decay rate differences t",
+      "open_question:Open Q: Do consciousness, gravity, and e",
+      "open_question:Open Q: Do dashboard results match these",
+      "open_question:Open Q: Does basin migration (RhoMaxNode",
+      "open_question:Open Q: At what timescale does damping s",
+      "open_question:Open Q: Is the node-1 basin specific to ",
+      "open_question:Open Q: What happens in the unexplored g"
+    ],
+    "sanity_results": [
+      {
+        "hypothesis": "H-001",
+        "series": "h-001",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-002",
+        "series": "h-002",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-003",
+        "series": "h-003",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-004",
+        "series": "h-004",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-005",
+        "series": "h-005",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-006",
+        "series": "h-006",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-007",
+        "series": "h-007",
+        "sanity_passed": true,
+        "anomalies": []
+      },
+      {
+        "hypothesis": "H-008",
+        "series": "h-008",
+        "sanity_passed": true,
+        "anomalies": []
+      }
+    ],
+    "dry_run": false
+  },
+  "error": null
+}

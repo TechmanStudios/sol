@@ -1,0 +1,27 @@
+Conjecture 13: Self-Oscillating Clock (Astable Multivibrator) (Conjecture 13)
+=============================================================================
+
+Conjecture:
+The SOL micro-architecture can support purely physical, self-sustained periodic clock oscillations (state A and B alternating) indefinitely without external timing inputs, by coupling two Host/Battery register loops via cross-inhibitory gating and mass-dependent symmetry breaking.
+
+Specifically:
+1. Topology: 8-node closed loop oscillator graph.
+   - Register A: HOST_A <-> BATTERY_A
+   - Register B: HOST_B <-> BATTERY_B
+   - Charging Gate AB: HOST_A <-> GATE_AB <-> HOST_B
+   - Charging Gate BA: HOST_B <-> GATE_BA <-> HOST_A
+   - Drain A: HOST_A <-> GATE_A_DRAIN <-> DRAIN_A (bias -1.0)
+   - Drain B: HOST_B <-> GATE_B_DRAIN <-> DRAIN_B (bias -1.0)
+2. Gated Charging Control:
+   - GATE_AB is opened (psi_bias = 1.0) only when Register A is active and B is collapsed.
+   - GATE_BA is opened (psi_bias = 1.0) only when Register B is active and A is collapsed.
+3. Gated Drain & Host Bias (Inhibition):
+   - When both registers are active (overlap phase), both drains GATE_A_DRAIN and GATE_B_DRAIN are opened.
+   - Symmetry breaking is applied based on host mass: the register with less mass (which has been active longer and has depleted its mass reservoir) is biased negative (psi_bias = -1.0) to force its collapse, while the newer register is biased positive (psi_bias = 1.0) to maintain its active state.
+4. Autonomous Cycles:
+   - The collapse of the older register immediately closes both drains and opens the charging gate of the newly active register, starting the next half-cycle.
+
+Success Criteria:
+- Verify that the simulation alternates states between Register A and Register B autonomously.
+- Demonstrate at least 2 full oscillation periods over a 500-step simulation.
+- Generate results in astable_oscillator_results.json and astable_oscillator_report.md.

@@ -1,0 +1,22 @@
+Conjecture 10: Non-Destructive Readout (NDRO) via Charge-Preserving Gated Transistors
+==================================================================================
+
+Conjecture:
+An analog register can undergo multiple sequential readout operations without depleting its stored mass or collapsing its binary latch state, by utilizing short-pulse gating (controlling the gate opening duration) and conductance scaling to limit the discharge rate, thereby preserving the register's active memory state for subsequent computational cycles.
+
+Specifically:
+1. Topology: A single register is connected to a BUS node through a physical Psi-Transistor gate:
+   - BUS <-> GATE_A <-> HOST_A <-> BATTERY_A
+   - Readout channel: BUS <-> READOUT
+2. Short-Pulse Gating: Instead of long Compute phases (which lead to complete pressure equalization and mass depletion), the gate GATE_A is opened for a short duration (e.g., 30 steps) and then closed, limiting the outflux.
+3. Self-Healing / State Preservation:
+   - Because the readout is short, only a fraction of the register's mass flows into the BUS.
+   - The positive belief (psi = 1.0) of BATTERY_A remains active because the remaining mass and the host's positive bias sustain the battery's charge above the collapse threshold.
+   - When the gate is closed, the register isolates and stabilizes back to a high-density, high-belief state.
+4. Multi-Cycle Verification:
+   - Write Phase: Write state 1 to Register A (charge BATTERY_A and load mass to HOST_A).
+   - Hold Phase: Close GATE_A. Reset fluxes.
+   - Read 1 Phase: Temporarily open GATE_A and GATE_READOUT. Measure the mass surge at READOUT.
+   - Hold 2 Phase: Close all gates. Reset fluxes. Verify that BATTERY_A is still latched (b_state = 1) and HOST_A holds significant mass.
+   - Read 2 Phase: Temporarily open GATE_A and GATE_READOUT again. Measure the second mass surge at READOUT.
+   - Success Criteria: Both Read 1 and Read 2 must deliver distinct mass surges to READOUT (e.g., rho > 2.0), and BATTERY_A must remain latched throughout both readouts.

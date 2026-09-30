@@ -1,0 +1,40 @@
+{
+  "session_id": "CX-20260217-013501",
+  "completed_at": "2026-02-17T01:36:14.306676Z",
+  "protocols_run": 4,
+  "total_steps": 21500,
+  "hypotheses_generated": 4,
+  "gaps_addressed": [
+    "unexplored_param:conductance_gamma: Conductance psi-sensi",
+    "unexplored_param:psi_diffusion: Psi diffusion rate \u2014 neve",
+    "unexplored_param:c_press: Pressure coefficient \u2014 not swep",
+    "unexplored_param:dt: Time step \u2014 proven in dashboard, not"
+  ],
+  "sanity_results": [
+    {
+      "hypothesis": "H-001",
+      "series": "h-001",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-002",
+      "series": "h-002",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-003",
+      "series": "h-003",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-004",
+      "series": "h-004",
+      "sanity_passed": true,
+      "anomalies": []
+    }
+  ],
+  "dry_run": false
+}

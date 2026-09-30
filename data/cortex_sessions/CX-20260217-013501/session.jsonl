@@ -1,0 +1,35 @@
+{"ts": "2026-02-17T01:35:04.885752Z", "event": "session_start", "session_id": "CX-20260217-013501", "config": {"max_protocols": "10", "max_total_steps": "100000", "gap_type_filter": "unexplored_param", "dry_run": "False", "out_dir": "/home/runner/work/sol/sol/data/cortex_sessions", "strict_guardrails": "True", "verbose": "True"}}
+{"ts": "2026-02-17T01:35:05.804343Z", "event": "knowledge_scan", "total_gaps": 524, "by_type": {"open_question": 225, "unpromoted": 6, "headless_baseline": 1, "weak_evidence": 33, "unfalsified": 4, "replication": 251, "unexplored_param": 4}}
+{"ts": "2026-02-17T01:35:05.804583Z", "event": "gap_selected", "gap_id": "unexplored_param:c_press: Pressure coefficient \u2014 not swep", "gap_type": "unexplored_param", "priority": 4, "description": "c_press: Pressure coefficient \u2014 not swept in headless"}
+{"ts": "2026-02-17T01:35:05.805560Z", "event": "gap_enriched", "gap_id": "unexplored_param:c_press: Pressure coefficient \u2014 not swep", "memory_context": "Memory nodes: 24 | Memory edges: 136 | Avg confidence: 0.381 | Tags: basin(24), entropy(24), rhoMax(24)"}
+{"ts": "2026-02-17T01:35:05.805611Z", "event": "hypothesis_generated", "hypothesis_id": "H-001", "template": "parameter_sweep", "question": "How does c_press affect entropy, flux, and mass over 200 steps?"}
+{"ts": "2026-02-17T01:35:05.805807Z", "event": "hypothesis_augmented", "hypothesis_id": "H-001", "memory_falsifiers": 2}
+{"ts": "2026-02-17T01:35:05.806137Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-013501/protocols/h-001_protocol.json"}
+{"ts": "2026-02-17T01:35:05.829182Z", "event": "execution_start", "hypothesis_id": "H-001", "series": "h-001"}
+{"ts": "2026-02-17T01:35:23.113401Z", "event": "execution_complete", "hypothesis_id": "H-001", "elapsed_sec": 17.28, "sanity_passed": true, "anomalies": [], "total_session_steps": 3000}
+{"ts": "2026-02-17T01:35:23.113671Z", "event": "meta_recorded", "hypothesis_id": "H-001", "template": "parameter_sweep", "gap_type": "unexplored_param"}
+{"ts": "2026-02-17T01:35:23.113879Z", "event": "gap_selected", "gap_id": "unexplored_param:dt: Time step \u2014 proven in dashboard, not", "gap_type": "unexplored_param", "priority": 4, "description": "dt: Time step \u2014 proven in dashboard, not headless"}
+{"ts": "2026-02-17T01:35:23.115378Z", "event": "gap_enriched", "gap_id": "unexplored_param:dt: Time step \u2014 proven in dashboard, not", "memory_context": "Memory nodes: 24 | Memory edges: 136 | Avg confidence: 0.381 | Tags: basin(24), entropy(24), rhoMax(24)"}
+{"ts": "2026-02-17T01:35:23.115457Z", "event": "hypothesis_generated", "hypothesis_id": "H-002", "template": "dt_compression", "question": "Does dt compress time-to-failure in headless sol-core as it does in the dashboard?"}
+{"ts": "2026-02-17T01:35:23.115746Z", "event": "hypothesis_augmented", "hypothesis_id": "H-002", "memory_falsifiers": 2}
+{"ts": "2026-02-17T01:35:23.116024Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-013501/protocols/h-002_protocol.json"}
+{"ts": "2026-02-17T01:35:23.116072Z", "event": "execution_start", "hypothesis_id": "H-002", "series": "h-002"}
+{"ts": "2026-02-17T01:35:57.619752Z", "event": "execution_complete", "hypothesis_id": "H-002", "elapsed_sec": 34.5, "sanity_passed": true, "anomalies": [], "total_session_steps": 15500}
+{"ts": "2026-02-17T01:35:57.620040Z", "event": "meta_recorded", "hypothesis_id": "H-002", "template": "dt_compression", "gap_type": "unexplored_param"}
+{"ts": "2026-02-17T01:35:57.620247Z", "event": "gap_selected", "gap_id": "unexplored_param:psi_diffusion: Psi diffusion rate \u2014 neve", "gap_type": "unexplored_param", "priority": 4, "description": "psi_diffusion: Psi diffusion rate \u2014 never swept systematically"}
+{"ts": "2026-02-17T01:35:57.621259Z", "event": "gap_enriched", "gap_id": "unexplored_param:psi_diffusion: Psi diffusion rate \u2014 neve", "memory_context": "Memory nodes: 24 | Memory edges: 136 | Avg confidence: 0.381 | Tags: basin(24), entropy(24), rhoMax(24)"}
+{"ts": "2026-02-17T01:35:57.621308Z", "event": "hypothesis_generated", "hypothesis_id": "H-003", "template": "psi_sensitivity", "question": "How does psi_diffusion affect entropy distribution and basin selection?"}
+{"ts": "2026-02-17T01:35:57.621483Z", "event": "hypothesis_augmented", "hypothesis_id": "H-003", "memory_falsifiers": 2}
+{"ts": "2026-02-17T01:35:57.621670Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-013501/protocols/h-003_protocol.json"}
+{"ts": "2026-02-17T01:35:57.621706Z", "event": "execution_start", "hypothesis_id": "H-003", "series": "h-003"}
+{"ts": "2026-02-17T01:36:10.168627Z", "event": "execution_complete", "hypothesis_id": "H-003", "elapsed_sec": 12.55, "sanity_passed": true, "anomalies": [], "total_session_steps": 20000}
+{"ts": "2026-02-17T01:36:10.168902Z", "event": "meta_recorded", "hypothesis_id": "H-003", "template": "psi_sensitivity", "gap_type": "unexplored_param"}
+{"ts": "2026-02-17T01:36:10.169134Z", "event": "gap_selected", "gap_id": "unexplored_param:conductance_gamma: Conductance psi-sensi", "gap_type": "unexplored_param", "priority": 4, "description": "conductance_gamma: Conductance psi-sensitivity \u2014 never swept"}
+{"ts": "2026-02-17T01:36:10.170085Z", "event": "gap_enriched", "gap_id": "unexplored_param:conductance_gamma: Conductance psi-sensi", "memory_context": "Memory nodes: 24 | Memory edges: 136 | Avg confidence: 0.381 | Tags: basin(24), entropy(24), rhoMax(24)"}
+{"ts": "2026-02-17T01:36:10.170136Z", "event": "hypothesis_generated", "hypothesis_id": "H-004", "template": "replication", "question": "Can headless sol-core reproduce: ?"}
+{"ts": "2026-02-17T01:36:10.170248Z", "event": "hypothesis_augmented", "hypothesis_id": "H-004", "memory_falsifiers": 2}
+{"ts": "2026-02-17T01:36:10.170428Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260217-013501/protocols/h-004_protocol.json"}
+{"ts": "2026-02-17T01:36:10.170464Z", "event": "execution_start", "hypothesis_id": "H-004", "series": "h-004"}
+{"ts": "2026-02-17T01:36:14.306185Z", "event": "execution_complete", "hypothesis_id": "H-004", "elapsed_sec": 4.14, "sanity_passed": true, "anomalies": [], "total_session_steps": 21500}
+{"ts": "2026-02-17T01:36:14.306443Z", "event": "meta_recorded", "hypothesis_id": "H-004", "template": "replication", "gap_type": "unexplored_param"}
+{"ts": "2026-02-17T01:36:14.306662Z", "event": "no_gaps_remaining"}

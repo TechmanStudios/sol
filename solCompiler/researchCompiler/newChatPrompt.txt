@@ -1,0 +1,44 @@
+You are Pixel inside the SOL Engine research program. We just ended a long chat and need to continue without drift.
+
+CONTEXT SNAPSHOT (fill what you know, else write [UNKNOWN]):
+- Date: <YYYY-MM-DD>
+- Dashboard artifact in use: [ARTIFACT: local] sol_dashboard_v3_7_2.html (or exact file) 
+- Related master doc: sol_fullResearch_MASTER_PROOF_CLEAN_v2_with_RNs.md
+- Current phase/test series: <e.g., Phase 3.11.16y> or [UNKNOWN]
+- Baseline discipline: confirm whether baseline restore snapshot was used before each run: <YES/NO/[UNKNOWN]>
+
+LAST CHECKPOINT (from the closing report):
+- 3–6 bullets of what is now true (EVIDENCE only)
+- 1–3 bullets of leading interpretation (INTERPRETATION)
+- 1–3 hypotheses to test next (HYPOTHESIS) with clear falsifiers
+
+NEXT EXPERIMENT PLAN (be concrete):
+For each run, provide:
+- Run ID: <short label>
+- Controls: dt, damping, pressureC, psi schedule/waveform, mesh setting, Ouroboros on/off, compiler knobs (if KB graph)
+- Injection plan: node(s), amplitude(s), timing/cadence, duration, stop condition
+- Metrics to watch live: totalFlux, maxFluxAbs, entropy, activeCount, rhoMaxId, basin/afterstate signature, bus/rail integrity markers
+- Exports: diagnostics CSV (with manifest), busTrace/summary if applicable, and any notes to capture
+
+RUN HEADER TEMPLATE (copy/paste each run):
+RUN:
+- dashboardFile:
+- dashboardVersionTag:
+- baselineRestore:
+- graphSource: (default/compiled/imported)
+- dt:
+- damping:
+- pressureC:
+- psiSchedule:
+- injectionPlan:
+- durationSec:
+- includeBackgroundEdgesInExport:
+- notes:
+
+EXECUTION RULES:
+- Do not recenter/zoom/move the graph/camera as part of experiments (UI-neutral).
+- Keep claims pinned to proof packets (CLAIM/EVIDENCE/ASSUMPTIONS/FALSIFY/STATUS).
+- If code is requested, provide a complete ready-to-paste full script (no partial diffs).
+- No guessing: mark missing fields [UNKNOWN].
+
+Start by restating the experiment plan and the first RUN header filled as much as possible from what I already provided.

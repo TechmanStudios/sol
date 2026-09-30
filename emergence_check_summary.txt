@@ -1,0 +1,19 @@
+# Emergent Manifold Scaling Report (PME Mode)
+
+## Experiment 1: Mass Conservation
+- **Initial Mass:** 600.000
+- **Max Deviation during expansion:** 1.25055521e-12 (Tolerance: 1e-6)
+- **Status:** ✅ SUCCESS (Perfect mass conservation under flux limiter)
+
+## Experiment 2: Topological Hysteresis and Memory Scars
+- **Initial Size:** 64 Nodes, 2016 Edges
+- **Peak Expanded Size:** 1725 Nodes, 3677 Edges
+- **Post-Decay Final Size:** 64 Nodes, 2016 Edges
+- **Status:** ✅ Elastic return (Manifold fully contracted back to baseline 8x8 grid)
+
+## Experiment 3: Continuous Write Storm Sweep
+| Inflow Rate | Peak Size (Nodes) | Steady State Behavior |
+|---|---|---|
+| 10.0 | 64 | Static Equilibrium at 64 nodes |
+| 50.0 | 1806 | Oscillatory (Limit Cycle) between 1472 and 1806 nodes |
+| 150.0 | 7072 | Oscillatory (Limit Cycle) between 6208 and 6803 nodes |

@@ -1,0 +1,792 @@
+{
+  "version": 1,
+  "created": "2026-02-09T05:17:20.475980+00:00",
+  "last_cycle": 294,
+  "fitness_weights": {
+    "claim_density": 0.14277412011425156,
+    "question_ratio": 0.49999999999989797,
+    "coverage_score": 0.14277412011425156,
+    "productivity": 0.21445175977159883
+  },
+  "template_preferences": {
+    "parameter_sweep": 0.1541115908334732,
+    "replication": 0.2321412265443155,
+    "topology_surgery": 1.9454024271143222,
+    "injection_protocol": 0.8928580478039313,
+    "logic_gate": 0.3695070357819917,
+    "clock_signal": 0.4697131505909761,
+    "cascade_pipeline": 1.802805693314159,
+    "isa_program": 0.44565636031419587,
+    "analog_fidelity": 0.6569547383076704
+  },
+  "parameter_focus": {
+    "damping_range": [
+      0.0,
+      84.0
+    ],
+    "damping_priority_zones": [
+      {
+        "range": [
+          0.0,
+          10.0
+        ],
+        "priority": 0.1,
+        "note": "well-explored turbulent regime"
+      },
+      {
+        "range": [
+          10.0,
+          15.0
+        ],
+        "priority": 0.9,
+        "note": "transition zone"
+      },
+      {
+        "range": [
+          15.0,
+          40.0
+        ],
+        "priority": 1.0,
+        "note": "dead zone \u2014 poorly understood"
+      },
+      {
+        "range": [
+          40.0,
+          55.0
+        ],
+        "priority": 0.8,
+        "note": "re-activation zone"
+      },
+      {
+        "range": [
+          55.0,
+          84.0
+        ],
+        "priority": 0.7,
+        "note": "extinction approach"
+      }
+    ],
+    "w0_range": [
+      0.1,
+      100.0
+    ],
+    "injection_energy_range": [
+      1.0,
+      500.0
+    ]
+  },
+  "experiment_types": {
+    "enabled": [
+      "parameter_sweep",
+      "topology_surgery",
+      "injection_protocol",
+      "logic_gate",
+      "clock_signal",
+      "cascade",
+      "isa_program",
+      "hardware_validation",
+      "adaptive_damping",
+      "information_theoretic",
+      "error_correction",
+      "graph_evolution",
+      "temporal_encoding",
+      "multi_engine_coupling",
+      "capacity_measurement",
+      "phase_space_mapping",
+      "multi_damping_sweep",
+      "symmetry_breaking",
+      "stochastic_injection",
+      "perturbation_analysis",
+      "boundary_cartography",
+      "resonance_hunting"
+    ],
+    "scope_frontier": []
+  },
+  "mutation_rate": 0.5,
+  "exploration_rate": 0.8,
+  "history": [
+    {
+      "cycle": 245,
+      "timestamp": "2026-02-17T01:41:36.567548+00:00",
+      "mutations": [
+        "REWARD template_pref[replication]: 0.49 -> 0.46 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.93 -> 1.90 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 1.00 -> 0.96 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.86 -> 1.91 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.54 -> 0.56 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.52 -> 0.54 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 246,
+      "timestamp": "2026-02-17T01:41:36.623556+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.17 -> 0.21 (avg_reward=+0.00)",
+        "REWARD template_pref[replication]: 0.46 -> 0.41 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.96 -> 0.95 (avg_reward=+0.00)",
+        "REWARD template_pref[clock_signal]: 0.53 -> 0.50 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.56 -> 0.57 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": -8.91463842833673e-06
+    },
+    {
+      "cycle": 247,
+      "timestamp": "2026-02-17T01:41:36.675413+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.21 -> 0.18 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.95 -> 0.94 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.40 -> 0.36 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.91 -> 1.88 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -4.4573163648919945e-06
+    },
+    {
+      "cycle": 248,
+      "timestamp": "2026-02-17T01:41:36.727613+00:00",
+      "mutations": [
+        "REWARD template_pref[topology_surgery]: 1.90 -> 1.88 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.94 -> 0.95 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.36 -> 0.35 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.88 -> 1.86 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 249,
+      "timestamp": "2026-02-17T01:41:36.784072+00:00",
+      "mutations": [
+        "REWARD template_pref[replication]: 0.41 -> 0.43 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.88 -> 1.87 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.35 -> 0.38 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.86 -> 1.81 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.57 -> 0.56 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": -2.2286574576924068e-06
+    },
+    {
+      "cycle": 250,
+      "timestamp": "2026-02-17T01:41:36.836991+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.18 -> 0.16 (avg_reward=+0.00)",
+        "REWARD template_pref[replication]: 0.43 -> 0.40 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.87 -> 1.83 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.95 -> 0.93 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.38 -> 0.41 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.81 -> 1.78 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -1.1143285476578058e-06
+    },
+    {
+      "cycle": 251,
+      "timestamp": "2026-02-17T01:41:36.899632+00:00",
+      "mutations": [
+        "REWARD template_pref[isa_program]: 0.56 -> 0.55 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.55 -> 0.58 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 252,
+      "timestamp": "2026-02-17T01:41:36.951598+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.16 -> 0.13 (avg_reward=+0.00)",
+        "REWARD template_pref[replication]: 0.40 -> 0.37 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.83 -> 1.85 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": -5.571642418544798e-07
+    },
+    {
+      "cycle": 253,
+      "timestamp": "2026-02-17T01:41:37.005976+00:00",
+      "mutations": [
+        "REWARD template_pref[topology_surgery]: 1.85 -> 1.82 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.93 -> 0.95 (avg_reward=+0.00)",
+        "REWARD template_pref[clock_signal]: 0.51 -> 0.53 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.54 -> 0.51 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.58 -> 0.61 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -2.7858211382181253e-07
+    },
+    {
+      "cycle": 254,
+      "timestamp": "2026-02-17T01:41:37.067113+00:00",
+      "mutations": [
+        "REWARD template_pref[topology_surgery]: 1.82 -> 1.86 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.95 -> 1.00 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.40 -> 0.36 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.61 -> 0.57 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 255,
+      "timestamp": "2026-02-17T01:41:37.122676+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.13 -> 0.11 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 1.00 -> 0.95 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.36 -> 0.40 (avg_reward=+0.00)",
+        "REWARD template_pref[clock_signal]: 0.54 -> 0.50 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.78 -> 1.76 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.50 -> 0.47 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 256,
+      "timestamp": "2026-02-17T01:41:37.177001+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.11 -> 0.13 (avg_reward=+0.00)",
+        "REWARD template_pref[replication]: 0.37 -> 0.33 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 257,
+      "timestamp": "2026-02-17T01:41:37.269998+00:00",
+      "mutations": [
+        "REWARD template_pref[topology_surgery]: 1.86 -> 1.82 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 258,
+      "timestamp": "2026-02-17T01:41:37.322377+00:00",
+      "mutations": [
+        "REWARD template_pref[replication]: 0.33 -> 0.31 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.82 -> 1.85 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.95 -> 1.00 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.41 -> 0.39 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.47 -> 0.44 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.57 -> 0.53 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 259,
+      "timestamp": "2026-02-17T01:41:37.405768+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.13 -> 0.18 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.85 -> 1.82 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 1.00 -> 0.97 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.76 -> 1.81 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 260,
+      "timestamp": "2026-02-17T01:41:37.443766+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.18 -> 0.22 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.97 -> 0.98 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.53 -> 0.57 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 261,
+      "timestamp": "2026-02-17T01:41:37.507709+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.22 -> 0.25 (avg_reward=+0.00)",
+        "REWARD template_pref[replication]: 0.31 -> 0.32 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.81 -> 1.79 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 262,
+      "timestamp": "2026-02-17T01:41:37.540825+00:00",
+      "mutations": [
+        "REWARD template_pref[injection_protocol]: 0.98 -> 0.95 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.79 -> 1.76 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 263,
+      "timestamp": "2026-02-17T01:41:37.577081+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.25 -> 0.21 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.40 -> 0.36 (avg_reward=+0.00)",
+        "REWARD template_pref[clock_signal]: 0.49 -> 0.47 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.44 -> 0.47 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.57 -> 0.56 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -1.3929103914733787e-07
+    },
+    {
+      "cycle": 264,
+      "timestamp": "2026-02-17T01:41:37.609713+00:00",
+      "mutations": [
+        "REWARD template_pref[topology_surgery]: 1.82 -> 1.86 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.95 -> 0.98 (avg_reward=+0.00)",
+        "REWARD template_pref[clock_signal]: 0.47 -> 0.45 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.76 -> 1.73 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 265,
+      "timestamp": "2026-02-17T01:41:37.646441+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.21 -> 0.18 (avg_reward=+0.00)",
+        "REWARD template_pref[replication]: 0.31 -> 0.33 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.86 -> 1.84 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.47 -> 0.51 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -6.964552312638261e-08
+    },
+    {
+      "cycle": 266,
+      "timestamp": "2026-02-17T01:41:37.678875+00:00",
+      "mutations": [
+        "REWARD template_pref[injection_protocol]: 0.98 -> 1.00 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.36 -> 0.38 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 267,
+      "timestamp": "2026-02-17T01:41:37.715453+00:00",
+      "mutations": [
+        "REWARD template_pref[topology_surgery]: 1.84 -> 1.86 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 1.00 -> 0.96 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.38 -> 0.35 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.51 -> 0.50 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.56 -> 0.61 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 268,
+      "timestamp": "2026-02-17T01:41:37.747633+00:00",
+      "mutations": [
+        "REWARD template_pref[topology_surgery]: 1.86 -> 1.90 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.96 -> 0.92 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 269,
+      "timestamp": "2026-02-17T01:41:37.780262+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.18 -> 0.20 (avg_reward=+0.00)",
+        "REWARD template_pref[replication]: 0.33 -> 0.34 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.92 -> 0.87 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.35 -> 0.37 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.73 -> 1.76 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.50 -> 0.46 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 270,
+      "timestamp": "2026-02-17T01:41:37.815886+00:00",
+      "mutations": [
+        "REWARD template_pref[topology_surgery]: 1.91 -> 1.88 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.46 -> 0.43 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 271,
+      "timestamp": "2026-02-17T01:41:37.848292+00:00",
+      "mutations": [
+        "REWARD template_pref[replication]: 0.34 -> 0.35 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.87 -> 0.84 (avg_reward=+0.00)",
+        "REWARD template_pref[clock_signal]: 0.44 -> 0.43 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.76 -> 1.74 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.43 -> 0.46 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": -3.482276156319131e-08
+    },
+    {
+      "cycle": 272,
+      "timestamp": "2026-02-17T01:41:37.884882+00:00",
+      "mutations": [
+        "REWARD template_pref[replication]: 0.35 -> 0.37 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.84 -> 0.87 (avg_reward=+0.00)",
+        "REWARD template_pref[clock_signal]: 0.43 -> 0.47 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.46 -> 0.49 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": -1.7411380781595653e-08
+    },
+    {
+      "cycle": 273,
+      "timestamp": "2026-02-17T01:41:37.917828+00:00",
+      "mutations": [
+        "REWARD template_pref[replication]: 0.37 -> 0.33 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.88 -> 1.85 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.87 -> 0.89 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.37 -> 0.34 (avg_reward=+0.00)",
+        "REWARD template_pref[clock_signal]: 0.47 -> 0.50 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.74 -> 1.75 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -8.705690390797827e-09
+    },
+    {
+      "cycle": 274,
+      "timestamp": "2026-02-17T01:41:37.950199+00:00",
+      "mutations": [
+        "REWARD template_pref[clock_signal]: 0.50 -> 0.47 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.49 -> 0.54 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.61 -> 0.59 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 275,
+      "timestamp": "2026-02-22T03:48:00.257209+00:00",
+      "mutations": [
+        "REWARD template_pref[replication]: 0.33 -> 0.35 (avg_reward=+0.00)",
+        "template_pref[logic_gate]: 0.34 -> 0.21",
+        "REWARD template_pref[clock_signal]: 0.47 -> 0.44 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.75 -> 1.74 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.54 -> 0.58 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 276,
+      "timestamp": "2026-02-23T03:57:15.793544+00:00",
+      "mutations": [
+        "REWARD template_pref[replication]: 0.35 -> 0.33 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -4.35285585353995e-09
+    },
+    {
+      "cycle": 277,
+      "timestamp": "2026-02-23T04:27:46.799665+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.21 -> 0.19 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.89 -> 0.93 (avg_reward=+0.00)",
+        "template_pref[logic_gate]: 0.21 -> 0.38",
+        "REWARD template_pref[clock_signal]: 0.44 -> 0.47 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.74 -> 1.79 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.58 -> 0.55 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.59 -> 0.61 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 278,
+      "timestamp": "2026-02-23T04:58:17.901000+00:00",
+      "mutations": [
+        "REWARD template_pref[cascade_pipeline]: 1.79 -> 1.81 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.55 -> 0.52 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.61 -> 0.64 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -2.1763995050605445e-09
+    },
+    {
+      "cycle": 279,
+      "timestamp": "2026-02-24T01:43:17.029913+00:00",
+      "mutations": [
+        "REWARD template_pref[topology_surgery]: 1.85 -> 1.89 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.38 -> 0.43 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.81 -> 1.77 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 280,
+      "timestamp": "2026-02-24T02:13:47.461080+00:00",
+      "mutations": [
+        "REWARD template_pref[replication]: 0.33 -> 0.31 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.43 -> 0.41 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.77 -> 1.80 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.52 -> 0.49 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.64 -> 0.66 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": -1.0882175160986662e-09
+    },
+    {
+      "cycle": 281,
+      "timestamp": "2026-02-24T02:44:48.283928+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.18 -> 0.14 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.89 -> 1.91 (avg_reward=+0.00)",
+        "REWARD template_pref[clock_signal]: 0.47 -> 0.43 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.49 -> 0.54 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.66 -> 0.64 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": -5.440980999082967e-10
+    },
+    {
+      "cycle": 282,
+      "timestamp": "2026-02-24T03:15:18.647787+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.14 -> 0.10 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.93 -> 0.90 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.80 -> 1.84 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -2.7205970809518476e-10
+    },
+    {
+      "cycle": 283,
+      "timestamp": "2026-02-24T03:45:49.082819+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.10 -> 0.10 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.84 -> 1.82 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 284,
+      "timestamp": "2026-02-24T04:16:19.548296+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.10 -> 0.11 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.92 -> 1.90 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.90 -> 0.86 (avg_reward=+0.00)",
+        "REWARD template_pref[clock_signal]: 0.43 -> 0.46 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.82 -> 1.81 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.54 -> 0.49 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 285,
+      "timestamp": "2026-02-26T00:40:39.935678+00:00",
+      "mutations": [
+        "REWARD template_pref[topology_surgery]: 1.90 -> 1.95 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.41 -> 0.42 (avg_reward=+0.00)",
+        "REWARD template_pref[clock_signal]: 0.46 -> 0.47 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.81 -> 1.79 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.64 -> 0.63 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -1.3602630133391358e-10
+    },
+    {
+      "cycle": 286,
+      "timestamp": "2026-02-26T01:11:40.962303+00:00",
+      "mutations": [
+        "REWARD template_pref[logic_gate]: 0.42 -> 0.41 (avg_reward=+0.00)",
+        "REWARD template_pref[isa_program]: 0.49 -> 0.45 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.63 -> 0.66 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 287,
+      "timestamp": "2026-02-26T01:42:11.437792+00:00",
+      "mutations": [
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -6.802025609431439e-11
+    },
+    {
+      "cycle": 288,
+      "timestamp": "2026-02-26T02:12:42.121761+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.11 -> 0.13 (avg_reward=+0.00)",
+        "REWARD template_pref[replication]: 0.31 -> 0.27 (avg_reward=+0.00)",
+        "REWARD template_pref[logic_gate]: 0.41 -> 0.40 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.79 -> 1.76 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 289,
+      "timestamp": "2026-02-26T02:15:42.861903+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.13 -> 0.15 (avg_reward=+0.00)",
+        "REWARD template_pref[replication]: 0.27 -> 0.32 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.94 -> 1.97 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.76 -> 1.79 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": -3.4006575333478395e-11
+    },
+    {
+      "cycle": 290,
+      "timestamp": "2026-03-01T03:50:52.009699+00:00",
+      "mutations": [
+        "REWARD template_pref[replication]: 0.32 -> 0.29 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.79 -> 1.80 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.65 -> 0.68 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": -1.7024603948812e-11
+    },
+    {
+      "cycle": 291,
+      "timestamp": "2026-03-08T03:46:03.872747+00:00",
+      "mutations": [
+        "REWARD template_pref[cascade_pipeline]: 1.80 -> 1.81 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -8.469669410260394e-12
+    },
+    {
+      "cycle": 292,
+      "timestamp": "2026-03-15T03:57:06.836570+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.15 -> 0.11 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.86 -> 0.91 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.81 -> 1.77 (avg_reward=+0.00)",
+        "REWARD template_pref[analog_fidelity]: 0.69 -> 0.66 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 293,
+      "timestamp": "2026-03-22T03:48:49.626812+00:00",
+      "mutations": [
+        "REWARD template_pref[parameter_sweep]: 0.11 -> 0.15 (avg_reward=+0.00)",
+        "REWARD template_pref[replication]: 0.28 -> 0.23 (avg_reward=+0.00)",
+        "REWARD template_pref[topology_surgery]: 1.96 -> 1.95 (avg_reward=+0.00)",
+        "REWARD template_pref[injection_protocol]: 0.91 -> 0.89 (avg_reward=+0.00)",
+        "REWARD template_pref[cascade_pipeline]: 1.77 -> 1.80 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50",
+        "FITNESS_WEIGHT boosted 'question_ratio': 0.50 -> 0.50"
+      ],
+      "fitness_delta": 0.0
+    },
+    {
+      "cycle": 294,
+      "timestamp": "2026-05-30T07:50:57.142502+00:00",
+      "mutations": [
+        "REWARD template_pref[logic_gate]: 0.41 -> 0.37 (avg_reward=+0.00)",
+        "PLATEAU RESPONSE: exploration_rate 0.80->0.80, mutation_rate 0.50->0.50"
+      ],
+      "fitness_delta": -4.277467269275803e-12
+    }
+  ],
+  "synthesis_insights": {
+    "cycle": 165,
+    "meta_patterns": [
+      {
+        "pattern": "Higher damping regimes (damping > 55) consistently lead to system extinction or frozen states with low activity and entropy, indicating a collapse or quiescent phase.",
+        "supporting_experiments": [
+          "Experiment 1",
+          "Experiment 6",
+          "C105",
+          "C130"
+        ],
+        "confidence": 0.9
+      },
+      {
+        "pattern": "Intermediate damping (around 15-40) exhibits metastability and sensitivity to initial conditions and parameters, with evidence of bifurcations between active and inactive states.",
+        "supporting_experiments": [
+          "Experiment 3",
+          "Experiment 4",
+          "C111"
+        ],
+        "confidence": 0.85
+      },
+      {
+        "pattern": "Pressure coefficient (c_press) critical threshold at 10 determines a phase transition: below threshold, all nodes undergo collapse; above, only directly injected nodes do.",
+        "supporting_experiments": [
+          "C105"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "pattern": "Dt robustness in coarse-scale metrics (peak outflux, retention) suggests that certain global measures are insensitive to discretization step size within a range (0.08 to 0.16), indicating scale-invariant behavior.",
+        "supporting_experiments": [
+          "Experiment 3",
+          "Experiment 4"
+        ],
+        "confidence": 0.8
+      },
+      {
+        "pattern": "Resonance phenomena (e.g., \u03c8 frequency) can modulate system metrics such as rho90_frac, indicating that external oscillatory inputs influence basin structures and energy distributions.",
+        "supporting_experiments": [
+          "Experiment 5"
+        ],
+        "confidence": 0.75
+      }
+    ],
+    "critical_experiments": [
+      {
+        "experiment": "Systematically vary damping from low to high (0-84) with fixed pressure and external inputs to map precise phase boundaries and metastability zones.",
+        "what_it_would_resolve": "Unify the understanding of damping regimes and clarify the transition points between active, metastable, and frozen states."
+      },
+      {
+        "experiment": "Sweep pressure coefficient c_press across the critical value 10 with fixed damping and external inputs to verify the universality of the phase transition.",
+        "what_it_would_resolve": "Confirm the pressure-driven phase boundary and its impact on node collapse behavior."
+      },
+      {
+        "experiment": "Introduce controlled external oscillatory inputs (vary \u03c8 frequency and amplitude) across different damping regimes to test resonance effects on basin structure and rho distribution.",
+        "what_it_would_resolve": "Elucidate how external resonances modulate system stability and basin configurations, bridging the observed influence of \u03c8 frequency."
+      }
+    ],
+    "unifying_principles": [
+      {
+        "principle": "System stability and phase transitions are governed by a combination of damping, pressure coefficients, and external resonances, with critical thresholds leading to collapse or frozen states.",
+        "scope": "All damping regimes and pressure thresholds",
+        "evidence": "Multiple experiments show sharp transitions at specific damping and pressure values, with metastability and bifurcations near these thresholds."
+      },
+      {
+        "principle": "Global measures such as outflux, entropy, and basin structure exhibit scale invariance within certain parameter ranges, indicating underlying coarse-grained universality.",
+        "scope": "Dt robustness experiments and entropy analyses",
+        "evidence": "Experiment 3 and 4 demonstrate insensitivity of key metrics to dt variations."
+      }
+    ]
+  }
+}

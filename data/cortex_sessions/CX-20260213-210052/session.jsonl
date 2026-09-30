@@ -1,0 +1,67 @@
+{"ts": "2026-02-13T21:00:53.099113Z", "event": "session_start", "session_id": "CX-20260213-210052", "config": {"max_protocols": "8", "max_total_steps": "100000", "gap_type_filter": "None", "dry_run": "False", "out_dir": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions", "strict_guardrails": "True", "verbose": "True"}}
+{"ts": "2026-02-13T21:00:53.905890Z", "event": "knowledge_scan", "total_gaps": 403, "by_type": {"open_question": 205, "unpromoted": 6, "headless_baseline": 1, "weak_evidence": 21, "unfalsified": 4, "replication": 162, "unexplored_param": 4}}
+{"ts": "2026-02-13T21:00:53.907892Z", "event": "gap_selected", "gap_id": "open_question:Open Q: Does basin migration (RhoMaxNode", "gap_type": "open_question", "priority": 1, "description": "Open Q: Does basin migration (RhoMaxNode 132\u219243) at damping=0.5 signal the beginning of a topological reorganization?"}
+{"ts": "2026-02-13T21:00:53.909894Z", "event": "gap_enriched", "gap_id": "open_question:Open Q: Does basin migration (RhoMaxNode", "memory_context": "Memory nodes: 18 | Memory edges: 126 | Avg confidence: 0.436 | Tags: basin(18), entropy(18), rhoMax(18)"}
+{"ts": "2026-02-13T21:00:53.909894Z", "event": "hypothesis_generated", "hypothesis_id": "H-001", "template": "threshold_scan", "question": "At what value of damping does the system behavior qualitatively change?"}
+{"ts": "2026-02-13T21:00:53.910895Z", "event": "hypothesis_augmented", "hypothesis_id": "H-001", "memory_falsifiers": 2}
+{"ts": "2026-02-13T21:00:53.911896Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260213-210052\\protocols\\h-001_protocol.json"}
+{"ts": "2026-02-13T21:00:53.917901Z", "event": "execution_start", "hypothesis_id": "H-001", "series": "h-001"}
+{"ts": "2026-02-13T21:01:39.950985Z", "event": "execution_complete", "hypothesis_id": "H-001", "elapsed_sec": 46.03, "sanity_passed": true, "anomalies": [], "total_session_steps": 12000}
+{"ts": "2026-02-13T21:01:39.950985Z", "event": "meta_recorded", "hypothesis_id": "H-001", "template": "threshold_scan", "gap_type": "open_question"}
+{"ts": "2026-02-13T21:01:39.951986Z", "event": "gap_selected", "gap_id": "open_question:Open Q: What happens in the unexplored g", "gap_type": "open_question", "priority": 1, "description": "Open Q: What happens in the unexplored gap between damping=0.5 and the known critical threshold?"}
+{"ts": "2026-02-13T21:01:39.953988Z", "event": "gap_enriched", "gap_id": "open_question:Open Q: What happens in the unexplored g", "memory_context": "Memory nodes: 18 | Memory edges: 126 | Avg confidence: 0.436 | Tags: basin(18), entropy(18), rhoMax(18)"}
+{"ts": "2026-02-13T21:01:39.953988Z", "event": "hypothesis_generated", "hypothesis_id": "H-002", "template": "parameter_sweep", "question": "How does damping affect entropy, flux, and mass over 200 steps?"}
+{"ts": "2026-02-13T21:01:39.954989Z", "event": "hypothesis_augmented", "hypothesis_id": "H-002", "memory_falsifiers": 2}
+{"ts": "2026-02-13T21:01:39.954989Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260213-210052\\protocols\\h-002_protocol.json"}
+{"ts": "2026-02-13T21:01:39.954989Z", "event": "execution_start", "hypothesis_id": "H-002", "series": "h-002"}
+{"ts": "2026-02-13T21:01:49.186843Z", "event": "execution_complete", "hypothesis_id": "H-002", "elapsed_sec": 9.23, "sanity_passed": true, "anomalies": [], "total_session_steps": 14400}
+{"ts": "2026-02-13T21:01:49.187844Z", "event": "meta_recorded", "hypothesis_id": "H-002", "template": "parameter_sweep", "gap_type": "open_question"}
+{"ts": "2026-02-13T21:01:49.187844Z", "event": "gap_selected", "gap_id": "open_question:Open Q: At what timescale does damping s", "gap_type": "open_question", "priority": 1, "description": "Open Q: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 ste"}
+{"ts": "2026-02-13T21:01:49.189846Z", "event": "gap_enriched", "gap_id": "open_question:Open Q: At what timescale does damping s", "memory_context": "Memory nodes: 18 | Memory edges: 126 | Avg confidence: 0.436 | Tags: basin(18), entropy(18), rhoMax(18)"}
+{"ts": "2026-02-13T21:01:49.189846Z", "event": "hypothesis_generated", "hypothesis_id": "H-003", "template": "replication", "question": "Can headless sol-core reproduce: ?"}
+{"ts": "2026-02-13T21:01:49.190847Z", "event": "hypothesis_augmented", "hypothesis_id": "H-003", "memory_falsifiers": 2}
+{"ts": "2026-02-13T21:01:49.190847Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260213-210052\\protocols\\h-003_protocol.json"}
+{"ts": "2026-02-13T21:01:49.190847Z", "event": "execution_start", "hypothesis_id": "H-003", "series": "h-003"}
+{"ts": "2026-02-13T21:01:54.933357Z", "event": "execution_complete", "hypothesis_id": "H-003", "elapsed_sec": 5.74, "sanity_passed": true, "anomalies": [], "total_session_steps": 15900}
+{"ts": "2026-02-13T21:01:54.934359Z", "event": "meta_recorded", "hypothesis_id": "H-003", "template": "replication", "gap_type": "open_question"}
+{"ts": "2026-02-13T21:01:54.934359Z", "event": "gap_selected", "gap_id": "open_question:Open Q: Are the decay rate differences t", "gap_type": "open_question", "priority": 1, "description": "Open Q: Are the decay rate differences topology-dependent, or purely a function of damping magnitude?"}
+{"ts": "2026-02-13T21:01:54.936360Z", "event": "gap_enriched", "gap_id": "open_question:Open Q: Are the decay rate differences t", "memory_context": "Memory nodes: 18 | Memory edges: 126 | Avg confidence: 0.436 | Tags: basin(18), entropy(18), rhoMax(18)"}
+{"ts": "2026-02-13T21:01:54.936360Z", "event": "hypothesis_generated", "hypothesis_id": "H-004", "template": "injection_comparison", "question": "Do different injection targets produce distinct basin formations?"}
+{"ts": "2026-02-13T21:01:54.936360Z", "event": "hypothesis_augmented", "hypothesis_id": "H-004", "memory_falsifiers": 2}
+{"ts": "2026-02-13T21:01:54.937361Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260213-210052\\protocols\\h-004_protocol.json"}
+{"ts": "2026-02-13T21:01:54.937361Z", "event": "execution_start", "hypothesis_id": "H-004", "series": "h-004"}
+{"ts": "2026-02-13T21:01:57.269099Z", "event": "execution_complete", "hypothesis_id": "H-004", "elapsed_sec": 2.33, "sanity_passed": true, "anomalies": [], "total_session_steps": 16500}
+{"ts": "2026-02-13T21:01:57.270100Z", "event": "meta_recorded", "hypothesis_id": "H-004", "template": "injection_comparison", "gap_type": "open_question"}
+{"ts": "2026-02-13T21:01:57.270100Z", "event": "gap_selected", "gap_id": "open_question:Open Q: Do dashboard results match these", "gap_type": "open_question", "priority": 1, "description": "Open Q: Do dashboard results match these headless outputs at the same parameter set?"}
+{"ts": "2026-02-13T21:01:57.272102Z", "event": "gap_enriched", "gap_id": "open_question:Open Q: Do dashboard results match these", "memory_context": "Memory nodes: 18 | Memory edges: 126 | Avg confidence: 0.436 | Tags: basin(18), entropy(18), rhoMax(18)"}
+{"ts": "2026-02-13T21:01:57.272102Z", "event": "hypothesis_generated", "hypothesis_id": "H-005", "template": "baseline_golden", "question": "What are the canonical metric outputs for standard injection protocols?"}
+{"ts": "2026-02-13T21:01:57.272102Z", "event": "hypothesis_augmented", "hypothesis_id": "H-005", "memory_falsifiers": 1}
+{"ts": "2026-02-13T21:01:57.273103Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260213-210052\\protocols\\h-005_protocol.json"}
+{"ts": "2026-02-13T21:01:57.273103Z", "event": "execution_start", "hypothesis_id": "H-005", "series": "h-005"}
+{"ts": "2026-02-13T21:01:59.173425Z", "event": "execution_complete", "hypothesis_id": "H-005", "elapsed_sec": 1.9, "sanity_passed": true, "anomalies": [], "total_session_steps": 17000}
+{"ts": "2026-02-13T21:01:59.174426Z", "event": "meta_recorded", "hypothesis_id": "H-005", "template": "baseline_golden", "gap_type": "open_question"}
+{"ts": "2026-02-13T21:01:59.174426Z", "event": "gap_selected", "gap_id": "open_question:Open Q: Is the truncated replication tar", "gap_type": "open_question", "priority": 1, "description": "Open Q: Is the truncated replication target a systematic template issue requiring a fix?"}
+{"ts": "2026-02-13T21:01:59.176427Z", "event": "gap_enriched", "gap_id": "open_question:Open Q: Is the truncated replication tar", "memory_context": "Memory nodes: 18 | Memory edges: 126 | Avg confidence: 0.436 | Tags: basin(18), entropy(18), rhoMax(18)"}
+{"ts": "2026-02-13T21:01:59.176427Z", "event": "hypothesis_generated", "hypothesis_id": "H-006", "template": "dt_compression", "question": "Does dt compress time-to-failure in headless sol-core as it does in the dashboard?"}
+{"ts": "2026-02-13T21:01:59.176427Z", "event": "hypothesis_augmented", "hypothesis_id": "H-006", "memory_falsifiers": 2}
+{"ts": "2026-02-13T21:01:59.178429Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260213-210052\\protocols\\h-006_protocol.json"}
+{"ts": "2026-02-13T21:01:59.178429Z", "event": "execution_start", "hypothesis_id": "H-006", "series": "h-006"}
+{"ts": "2026-02-13T21:02:46.936716Z", "event": "execution_complete", "hypothesis_id": "H-006", "elapsed_sec": 47.76, "sanity_passed": true, "anomalies": [], "total_session_steps": 29500}
+{"ts": "2026-02-13T21:02:46.937717Z", "event": "meta_recorded", "hypothesis_id": "H-006", "template": "dt_compression", "gap_type": "open_question"}
+{"ts": "2026-02-13T21:02:46.937717Z", "event": "gap_selected", "gap_id": "open_question:Open Q: Do consciousness, gravity, and e", "gap_type": "open_question", "priority": 1, "description": "Open Q: Do consciousness, gravity, and entropy injection targets produce different basin locations (RhoMaxNode)?"}
+{"ts": "2026-02-13T21:02:46.940720Z", "event": "gap_enriched", "gap_id": "open_question:Open Q: Do consciousness, gravity, and e", "memory_context": "Memory nodes: 18 | Memory edges: 126 | Avg confidence: 0.436 | Tags: basin(18), entropy(18), rhoMax(18)"}
+{"ts": "2026-02-13T21:02:46.940720Z", "event": "hypothesis_generated", "hypothesis_id": "H-007", "template": "psi_sensitivity", "question": "How does injection affect entropy distribution and basin selection?"}
+{"ts": "2026-02-13T21:02:46.940720Z", "event": "hypothesis_augmented", "hypothesis_id": "H-007", "memory_falsifiers": 2}
+{"ts": "2026-02-13T21:02:46.941721Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260213-210052\\protocols\\h-007_protocol.json"}
+{"ts": "2026-02-13T21:02:46.941721Z", "event": "execution_start", "hypothesis_id": "H-007", "series": "h-007"}
+{"ts": "2026-02-13T21:03:04.239807Z", "event": "execution_complete", "hypothesis_id": "H-007", "elapsed_sec": 17.3, "sanity_passed": true, "anomalies": [], "total_session_steps": 34000}
+{"ts": "2026-02-13T21:03:04.240808Z", "event": "meta_recorded", "hypothesis_id": "H-007", "template": "psi_sensitivity", "gap_type": "open_question"}
+{"ts": "2026-02-13T21:03:04.240808Z", "event": "gap_selected", "gap_id": "open_question:Open Q: Is the node-1 basin specific to ", "gap_type": "open_question", "priority": 1, "description": "Open Q: Is the node-1 basin specific to grail injection or a general topological attractor?"}
+{"ts": "2026-02-13T21:03:04.243811Z", "event": "gap_enriched", "gap_id": "open_question:Open Q: Is the node-1 basin specific to ", "memory_context": "Memory nodes: 18 | Memory edges: 126 | Avg confidence: 0.436 | Tags: basin(18), entropy(18), rhoMax(18)"}
+{"ts": "2026-02-13T21:03:04.243811Z", "event": "hypothesis_generated", "hypothesis_id": "H-008", "template": "threshold_scan", "question": "At what value of injection does the system behavior qualitatively change?"}
+{"ts": "2026-02-13T21:03:04.243811Z", "event": "hypothesis_augmented", "hypothesis_id": "H-008", "memory_falsifiers": 2}
+{"ts": "2026-02-13T21:03:04.244812Z", "event": "protocol_saved", "path": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260213-210052\\protocols\\h-008_protocol.json"}
+{"ts": "2026-02-13T21:03:04.244812Z", "event": "execution_start", "hypothesis_id": "H-008", "series": "h-008"}
+{"ts": "2026-02-13T21:03:50.186806Z", "event": "execution_complete", "hypothesis_id": "H-008", "elapsed_sec": 45.94, "sanity_passed": true, "anomalies": [], "total_session_steps": 46000}
+{"ts": "2026-02-13T21:03:50.187807Z", "event": "meta_recorded", "hypothesis_id": "H-008", "template": "threshold_scan", "gap_type": "open_question"}
+{"ts": "2026-02-13T21:03:50.187807Z", "event": "budget_stop", "reason": "max_protocols reached (8/8)"}

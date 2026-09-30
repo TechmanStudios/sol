@@ -1,0 +1,12 @@
+{
+  "accuracy_pct": 2.1,
+  "correct": 3,
+  "total": 140,
+  "improvement_over_static": -1.4,
+  "phase_at_t0": {
+    "t": 0.12,
+    "cos_val": 0.9838,
+    "surface_active": true,
+    "deep_active": false
+  }
+}

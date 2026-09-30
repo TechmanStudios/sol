@@ -1,0 +1,38 @@
+{
+  "seriesName": "h-006",
+  "question": "Does dt compress time-to-failure in headless sol-core as it does in the dashboard?",
+  "invariants": {
+    "c_press": 0.1,
+    "damping": 0.2,
+    "rng_seed": 42
+  },
+  "injections": [
+    {
+      "label": "grail",
+      "amount": 50
+    }
+  ],
+  "steps": 500,
+  "reps": 5,
+  "baseline": "fresh",
+  "metrics_every": 10,
+  "outputs": {
+    "summary_csv": true,
+    "trace_csv": true,
+    "run_bundle_md": true
+  },
+  "falsifiers": [
+    "Time-to-failure is constant across dt values",
+    "Relationship is non-monotonic (failure time increases then decreases)"
+  ],
+  "notes": "",
+  "knobs": {
+    "dt": [
+      0.08,
+      0.1,
+      0.12,
+      0.16,
+      0.2
+    ]
+  }
+}

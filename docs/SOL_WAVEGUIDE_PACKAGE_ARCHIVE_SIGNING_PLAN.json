@@ -1,0 +1,141 @@
+{
+    "archive_candidate_count": 1,
+    "archive_signing_plan_entries": [
+        {
+            "archive_candidate_digest": "b00628c0435b36035c4552d70b4b9a451d869cb2828b1afccaa5ac467054621d",
+            "archive_candidate_entry_id": "SOL-WAVEGUIDE-ARCHIVE-CANDIDATE-ENTRY-000",
+            "archive_candidate_kind": "local_verified_zip_archive_candidate",
+            "archive_digest_verified": true,
+            "archive_display_path": "",
+            "archive_file_digest": "b00628c0435b36035c4552d70b4b9a451d869cb2828b1afccaa5ac467054621d",
+            "archive_file_set_verified": true,
+            "archive_file_size_bytes": 70162,
+            "archive_filename": "SOL_WAVEGUIDE_PACKAGE_ASSEMBLY.zip",
+            "archive_format": "zip",
+            "archive_member_paths_safe": true,
+            "archive_signing_plan_entry_digest": "55797881302172f447a57d4b6e22a4ed8d6b1c12edbf157278756a76deba4cab",
+            "archive_signing_plan_entry_id": "SOL-WAVEGUIDE-SIGNING-PLAN-ENTRY-000",
+            "archive_signing_plan_entry_status": "archive_signing_plan_entry_ready",
+            "deployment_allowed": false,
+            "digest_attestation_allowed": true,
+            "digest_attestation_required": true,
+            "expected_archive_file_count": 28,
+            "external_publication_allowed": false,
+            "external_signing_allowed": false,
+            "notes": [],
+            "production_mutation_allowed": false,
+            "real_key_signing_allowed": false,
+            "real_key_signing_required": false,
+            "reason_codes": [
+                "SIGNING_ENTRY_READY"
+            ],
+            "signing_allowances": [
+                "LOCAL_DIGEST_ATTESTATION_ALLOWED"
+            ],
+            "signing_constraints": [
+                "REAL_KEY_SIGNING_DISABLED",
+                "NO_EXTERNAL_SIGNING_SERVICES",
+                "NO_TIMESTAMP_AUTHORITY"
+            ],
+            "signing_guard_requirements": [
+                "REQUIRES_DIGEST_ATTESTATION_VALIDATOR",
+                "REQUIRES_FUTURE_KEY_MANAGEMENT_GATE"
+            ],
+            "signing_policy": "SOL Waveguide Digest Attestation Policy - Real private key signing is strictly disabled. Local digest attestation only.",
+            "signing_prohibitions": [
+                "REAL_KEY_SIGNING_PROHIBITED",
+                "UPLOAD_PROHIBITED",
+                "DEPLOYMENT_PROHIBITED",
+                "EXTERNAL_PUBLICATION_PROHIBITED",
+                "PRODUCTION_MUTATION_PROHIBITED"
+            ],
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "source_archive_candidate_entry_digest": "8cc6c29fe424cdf94f42c8218c3b3f337bfe817e61fdf69af2c0113209337530",
+            "source_package_archive_audit_report_digest": "5f32f8fbc1b2bb996185ad993bcaf02549a9fa7f929e83254ba638999565ff65",
+            "source_package_archive_build_record_digest": "98ef9f3ab29de0d55ae3d2db8d46d77e8540f44432c2cdf85edac4c87bcb4507",
+            "source_package_archive_manifest_digest": "ea9fa31afeaae0a76b2f6c2343a24830963a46c11cc5ae130710f92e8a836942",
+            "source_package_archive_plan_digest": "c81f779955c433e49227e3c6dc2cbb07457c70053c58f9ebcfe09ea4409c5c69",
+            "source_package_archive_release_candidate_index_digest": "7c1906d177cd74a56fbb375a7a10172ced21b79b8a8765250194cba2c83d38f1",
+            "timestamp_authority_allowed": false,
+            "upload_allowed": false,
+            "verified_archive_member_count": 28
+        }
+    ],
+    "blocked_archive_signing_plan_entries": [],
+    "blocked_archive_signing_plan_entry_count": 0,
+    "blocked_operation_attempt_counts": {
+        "archive_creation": 0,
+        "deployment": 0,
+        "directory_creation": 0,
+        "external_publication": 0,
+        "external_signing": 0,
+        "file_copy": 0,
+        "production_mutation": 0,
+        "upload": 0
+    },
+    "current_archive_candidate_digest": "b00628c0435b36035c4552d70b4b9a451d869cb2828b1afccaa5ac467054621d",
+    "current_archive_candidate_display_path": "",
+    "current_archive_candidate_format": "zip",
+    "current_archive_candidate_size_bytes": 70162,
+    "deployment_allowed": false,
+    "deployment_performed": false,
+    "digest_attestation_allowed": true,
+    "digest_attestation_performed": false,
+    "digest_attestation_required": true,
+    "external_publication_allowed": false,
+    "external_publication_performed": false,
+    "external_signing_allowed": false,
+    "external_signing_performed": false,
+    "invalid_archive_signing_plan_entries": [],
+    "invalid_archive_signing_plan_entry_count": 0,
+    "package_archive_signing_plan_digest": "a169f8515f12142bf742b5e30f75dcaef23d9d8de5b8da17ec4cc28d247e49ed",
+    "package_archive_signing_plan_id": "SOL-WAVEGUIDE-PACKAGE-ARCHIVE-SIGNING-PLAN",
+    "package_archive_signing_plan_status": "package_archive_signing_plan_ready",
+    "package_archive_signing_plan_version": 1,
+    "production_mutation_allowed": false,
+    "production_mutation_performed": false,
+    "ready_archive_signing_plan_entries": [
+        "SOL-WAVEGUIDE-SIGNING-PLAN-ENTRY-000"
+    ],
+    "ready_archive_signing_plan_entry_count": 1,
+    "real_key_signature_performed": false,
+    "real_key_signing_allowed": false,
+    "real_key_signing_required": false,
+    "reason_codes": [
+        "PACKAGE_ARCHIVE_SIGNING_PLAN_READY"
+    ],
+    "signing_allowances": [
+        "LOCAL_DIGEST_ATTESTATION_ALLOWED"
+    ],
+    "signing_constraints": [
+        "REAL_KEY_SIGNING_DISABLED",
+        "NO_EXTERNAL_SIGNING_SERVICES",
+        "NO_TIMESTAMP_AUTHORITY"
+    ],
+    "signing_guard_requirements": [
+        "REQUIRES_DIGEST_ATTESTATION_VALIDATOR",
+        "REQUIRES_FUTURE_KEY_MANAGEMENT_GATE"
+    ],
+    "signing_performed": false,
+    "signing_policy": "SOL Waveguide Digest Attestation Policy - Real private key signing is strictly disabled. Local digest attestation only.",
+    "signing_prohibitions": [
+        "REAL_KEY_SIGNING_PROHIBITED",
+        "UPLOAD_PROHIBITED",
+        "DEPLOYMENT_PROHIBITED",
+        "EXTERNAL_PUBLICATION_PROHIBITED",
+        "PRODUCTION_MUTATION_PROHIBITED"
+    ],
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+    "source_package_archive_audit_report_digest": "5f32f8fbc1b2bb996185ad993bcaf02549a9fa7f929e83254ba638999565ff65",
+    "source_package_archive_build_record_digest": "",
+    "source_package_archive_manifest_digest": "",
+    "source_package_archive_plan_digest": "",
+    "source_package_archive_release_candidate_index_digest": "7c1906d177cd74a56fbb375a7a10172ced21b79b8a8765250194cba2c83d38f1",
+    "timestamp_authority_allowed": false,
+    "timestamp_authority_performed": false,
+    "upload_allowed": false,
+    "upload_performed": false,
+    "verified_archive_candidate_count": 1,
+    "warning_archive_signing_plan_entries": [],
+    "warning_archive_signing_plan_entry_count": 0
+}

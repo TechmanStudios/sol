@@ -1,0 +1,286 @@
+{
+  "schema": "sol.level6.tolerance.v1",
+  "run_id": "logos_vm_4bit_adder_tolerance_20260605_150026",
+  "primitive": "4bit_serial_adder",
+  "level": "6.1",
+  "runtime_seconds": 1501.8798847198486,
+  "envelope": {
+    "dt_drift_range": [
+      "-20.0%",
+      "+20.0%"
+    ],
+    "damping_factor_range": [
+      "0.50x",
+      "1.50x"
+    ],
+    "timing_jitter_range": [
+      -5,
+      5
+    ],
+    "max_safe_mass_noise": 2.0,
+    "max_safe_psi_noise": 0.1,
+    "max_safe_repetitions": 20
+  },
+  "sweeps": {
+    "dt_sweep": [
+      {
+        "sweep_name": "dt_sweep",
+        "val": 0.04,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 117.67613514573881
+      },
+      {
+        "sweep_name": "dt_sweep",
+        "val": 0.045,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 94.71437957698893
+      },
+      {
+        "sweep_name": "dt_sweep",
+        "val": 0.0475,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 85.7433855819099
+      },
+      {
+        "sweep_name": "dt_sweep",
+        "val": 0.05,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.54769774070053
+      },
+      {
+        "sweep_name": "dt_sweep",
+        "val": 0.0525,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.51607609901072
+      },
+      {
+        "sweep_name": "dt_sweep",
+        "val": 0.055,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.95221478986457
+      },
+      {
+        "sweep_name": "dt_sweep",
+        "val": 0.06,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 75.2080171141541
+      }
+    ],
+    "damping_sweep": [
+      {
+        "sweep_name": "damping_sweep",
+        "val": 0.005,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.54769774070053
+      },
+      {
+        "sweep_name": "damping_sweep",
+        "val": 0.0075,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.54769774070053
+      },
+      {
+        "sweep_name": "damping_sweep",
+        "val": 0.01,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.54769774070053
+      },
+      {
+        "sweep_name": "damping_sweep",
+        "val": 0.0125,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.54769774070053
+      },
+      {
+        "sweep_name": "damping_sweep",
+        "val": 0.015,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.54769774070053
+      }
+    ],
+    "timing_jitter_sweep": [
+      {
+        "sweep_name": "timing_jitter_sweep",
+        "val": -5,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 95.31254276862572
+      },
+      {
+        "sweep_name": "timing_jitter_sweep",
+        "val": -2,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 83.83552724667628
+      },
+      {
+        "sweep_name": "timing_jitter_sweep",
+        "val": -1,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 82.01040058194928
+      },
+      {
+        "sweep_name": "timing_jitter_sweep",
+        "val": 0,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.54769774070053
+      },
+      {
+        "sweep_name": "timing_jitter_sweep",
+        "val": 1,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 77.43669529125388
+      },
+      {
+        "sweep_name": "timing_jitter_sweep",
+        "val": 2,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.51250422360704
+      },
+      {
+        "sweep_name": "timing_jitter_sweep",
+        "val": 5,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 78.68354812385911
+      }
+    ],
+    "mass_noise_sweep": [
+      {
+        "sweep_name": "mass_noise_sweep",
+        "val": 0.0,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.54769774070053
+      },
+      {
+        "sweep_name": "mass_noise_sweep",
+        "val": 0.1,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 73.51115163703722
+      },
+      {
+        "sweep_name": "mass_noise_sweep",
+        "val": 0.5,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 73.52523542099715
+      },
+      {
+        "sweep_name": "mass_noise_sweep",
+        "val": 1.0,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 72.5653984836851
+      },
+      {
+        "sweep_name": "mass_noise_sweep",
+        "val": 2.0,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 73.05640884751297
+      }
+    ],
+    "psi_noise_sweep": [
+      {
+        "sweep_name": "psi_noise_sweep",
+        "val": 0.0,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.54769774070053
+      },
+      {
+        "sweep_name": "psi_noise_sweep",
+        "val": 0.01,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.55864501401412
+      },
+      {
+        "sweep_name": "psi_noise_sweep",
+        "val": 0.05,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.4702984726287
+      },
+      {
+        "sweep_name": "psi_noise_sweep",
+        "val": 0.1,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.36186932208032
+      }
+    ],
+    "repeated_execution_sweep": [
+      {
+        "sweep_name": "repeated_execution_sweep",
+        "val": 1,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 81.54769774070053
+      },
+      {
+        "sweep_name": "repeated_execution_sweep",
+        "val": 5,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 93.61780630843661
+      },
+      {
+        "sweep_name": "repeated_execution_sweep",
+        "val": 20,
+        "passed": true,
+        "passed_cases": 8,
+        "total_cases": 8,
+        "min_active_register_mass": 93.61780630843661
+      }
+    ]
+  }
+}

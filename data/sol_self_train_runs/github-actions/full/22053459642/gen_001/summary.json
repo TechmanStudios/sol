@@ -1,0 +1,10 @@
+{
+  "generation": 1,
+  "mode": "full",
+  "baseline_policy_id": "policy-g000",
+  "candidate_policy_id": "policy-g001",
+  "accepted": false,
+  "reason": "Full-task delta -0.0036 below allowed floor -0.0020",
+  "delta_anchor": 0.016931835702436948,
+  "delta_full": -0.003634245652473292
+}

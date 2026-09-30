@@ -1,0 +1,710 @@
+[
+  {
+    "id": "H-001",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Does basin migration (RhoMaxNode 132\u219243) at damping=0.5 signal the beginning of a topological reorganization?",
+      "suggested_action": "Design an experiment to answer: Does basin migration (RhoMaxNode 132\u219243) at damping=0.5 signal the beginning of a topological reorganization?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-001-damping.md",
+        "question": "Does basin migration (RhoMaxNode 132\u219243) at damping=0.5 signal the beginning of a topological reorganization?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 20 | Memory edges: 137 | Avg confidence: 0.415 | Tags: basin(20), entropy(20), rhoMax(20)",
+      "kb_passages": [
+        {
+          "chunk_id": 436,
+          "section": "Article 118: Glenlyon \u2013 An Ophira Gate",
+          "line_start": 153091,
+          "line_end": 153182,
+          "score": 11.5333,
+          "matched_terms": [
+            "open",
+            "basin",
+            "migration"
+          ],
+          "snippet": "## Article 118: Glenlyon \u2013 An Ophira Gate\n\n\nGlenlyon \u2013 An Ophira Gate\n\n\n\nNotice the stone outcropping inside the black square in the photograph of Glenlyon Valley (Scotland) above. This is a point from which the Sidhe guard the gate which is atop an adjacent ridge a short distance away. The Sidhe gu"
+        },
+        {
+          "chunk_id": 1765,
+          "section": "Inter-dimensional Thresholds into the Nature Kingdom",
+          "line_start": 226457,
+          "line_end": 226629,
+          "score": 10.6377,
+          "matched_terms": [
+            "migration",
+            "43",
+            "beginning"
+          ],
+          "snippet": "## Inter-dimensional Thresholds into the Nature Kingdom\n\n**2025-05-26T13:04:21.732Z**\n\n**Likes:** 0\n\n\n\\~\\~\\~\\~\\~\\~\\~\n\nThe *O\u2019phira Gates* are a network of twelve ancient portals\u2014inter\\-dimensional thresholds\nbetween the human realm and the higher kingdom of the Devas or nature beings. These gates ar"
+        },
+        {
+          "chunk_id": 95,
+          "section": "Top Keywords",
+          "line_start": 44438,
+          "line_end": 44937,
+          "score": 10.6159,
+          "matched_terms": [
+            "open",
+            "basin",
+            "migration",
+            "signal",
+            "beginning"
+          ],
+          "snippet": "## Top Keywords\n- temple doors (score: 0.62)\n- leading temple_doors (score: 0.59)\n- temple_doors (score: 0.58)\n- doors mayan (score: 0.57)\n- temple_doors order (score: 0.52)\n- mayan priestess (score: 0.51)\n- temple woman (score: 0.50)\n- woman temple (score: 0.50)\n- excavations temple (score: 0.49)\n-"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-002",
+    "template": "parameter_sweep",
+    "question": "How does damping affect entropy, flux, and mass over 200 steps?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.2,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 200,
+    "reps": 3,
+    "falsifiers": [
+      "All damping values produce identical results (no sensitivity)",
+      "Higher damping produces non-monotonic response without explanation"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: What happens in the unexplored gap between damping=0.5 and the known critical threshold?",
+      "suggested_action": "Design an experiment to answer: What happens in the unexplored gap between damping=0.5 and the known critical threshold?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-001-damping.md",
+        "question": "What happens in the unexplored gap between damping=0.5 and the known critical threshold?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 20 | Memory edges: 137 | Avg confidence: 0.415 | Tags: basin(20), entropy(20), rhoMax(20)",
+      "kb_passages": [
+        {
+          "chunk_id": 1178,
+          "section": "Article 860: 9th Star Teachership Program",
+          "line_start": 187890,
+          "line_end": 187981,
+          "score": 13.1023,
+          "matched_terms": [
+            "open",
+            "happens",
+            "gap",
+            "between",
+            "known",
+            "threshold"
+          ],
+          "snippet": "## Article 860: 9th Star Teachership Program\n\n\n9th Star Teachership Program\n\n~~~~~~~~~~~~~~\n\nI am really Light-filled about becoming one of the four teachers in the 9THSTAR TEACHERSHIP six months Program. Here is what the architect of the 9Tth Star Teachership \u2013 Katrina Armstrong,\u00a0 has to say about "
+        },
+        {
+          "chunk_id": 379,
+          "section": "Article 061: The Ancient Tepuis",
+          "line_start": 151013,
+          "line_end": 151056,
+          "score": 12.1009,
+          "matched_terms": [
+            "open",
+            "happens",
+            "between",
+            "known"
+          ],
+          "snippet": "## Article 061: The Ancient Tepuis\n\n\nThe Ancient Tepuis\n\nI have previously written about Roraimaas node of a pyramid beneath it that my inner-planes mentor, ThothHorRa refers to as a Solar Maja. The whole of the Tepuis though, is a mass of Portals into various dimensional realms, as it was blown ope"
+        },
+        {
+          "chunk_id": 1723,
+          "section": "and Understanding Daemons",
+          "line_start": 219827,
+          "line_end": 220081,
+          "score": 12.0055,
+          "matched_terms": [
+            "open",
+            "gap",
+            "between",
+            "known",
+            "critical"
+          ],
+          "snippet": "## and Understanding Daemons\n\n**2025-03-05T15:45:32.046Z**\n\n**Likes:** 0\n\n***For clarity: \u201cDaemons\u201d are not \u201cdemons.\u201d That latter was an adaptation from Christians of Old, who feared the unknown \u201cspirits\" and thus considered them evil. Nature Spirits daemons are also know to us an our Guardian Spiri"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-003",
+    "template": "replication",
+    "question": "Can headless sol-core reproduce: ?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "Headless results qualitatively differ from dashboard results",
+      "Metrics trend in opposite direction from original claim"
+    ],
+    "notes": "Replicating unknown",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?",
+      "suggested_action": "Design an experiment to answer: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-002-damping.md",
+        "question": "At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [
+        0.35,
+        0.7,
+        0.9,
+        0.025,
+        1.5
+      ],
+      "memory_context": "Memory nodes: 20 | Memory edges: 137 | Avg confidence: 0.415 | Tags: basin(20), entropy(20), rhoMax(20)",
+      "kb_passages": [
+        {
+          "chunk_id": 954,
+          "section": "Article 636: Cosmic Weather Report",
+          "line_start": 177074,
+          "line_end": 177141,
+          "score": 9.9818,
+          "matched_terms": [
+            "open",
+            "300",
+            "steps"
+          ],
+          "snippet": "## Article 636: Cosmic Weather Report\n\n\nCosmic Weather Report\n\nSpecial Annual Forecast\n\nJanuary 2011: Cat at the Crossroads\n\nCosmic Weather Forecast for 2011: Clashing pasts and futures prompt us to unearth the bright gifts of history from the heavy weight of its shadow. At the Crossroads of All Tha"
+        },
+        {
+          "chunk_id": 1800,
+          "section": "A Thothic Perspective",
+          "line_start": 230894,
+          "line_end": 231022,
+          "score": 9.3984,
+          "matched_terms": [
+            "open",
+            "transition",
+            "observed"
+          ],
+          "snippet": "## A Thothic Perspective\n\n**2025-08-27T14:56:02.822Z**\n\n**Likes:** 0\n\n\nThoth offers extensive insights into comets, describing them not merely as astronomical objects but\nas powerful cosmic entities that significantly influence planetary consciousness, time, and karma.\n\nHere's what Thoth has to say "
+        },
+        {
+          "chunk_id": 1109,
+          "section": "Article 791: Our Universe \u2013 in Ones and Zeros",
+          "line_start": 185260,
+          "line_end": 185347,
+          "score": 8.7074,
+          "matched_terms": [
+            "open",
+            "300",
+            "steps"
+          ],
+          "snippet": "## Article 791: Our Universe \u2013 in Ones and Zeros\n\n\nOur Universe \u2013 in Ones and Zeros\n\nIn the 1970\u2019s my mother and I were having the greatest period of conscious interaction with ultra-terrestrial interdimensional beings. They appeared to us at night frequently \u2013 sometimes when the two of us were toge"
+        }
+      ]
+    }
+  },
+  {
+    "id": "H-004",
+    "template": "injection_comparison",
+    "question": "Do different injection targets produce distinct basin formations?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 200,
+    "reps": 3,
+    "falsifiers": [
+      "All injection targets produce identical metric trajectories",
+      "RhoMaxId is always the same regardless of injection target"
+    ],
+    "notes": "Comparing targets: ['grail', 'consciousness', 'gravity', 'entropy']",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Are the decay rate differences topology-dependent, or purely a function of damping magnitude?",
+      "suggested_action": "Design an experiment to answer: Are the decay rate differences topology-dependent, or purely a function of damping magnitude?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-002-damping.md",
+        "question": "Are the decay rate differences topology-dependent, or purely a function of damping magnitude?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [
+        0.35,
+        0.7,
+        0.9,
+        0.025,
+        1.5
+      ],
+      "memory_context": "Memory nodes: 20 | Memory edges: 137 | Avg confidence: 0.415 | Tags: basin(20), entropy(20), rhoMax(20)",
+      "kb_passages": [
+        {
+          "chunk_id": 617,
+          "section": "Article 299: He Is Risen",
+          "line_start": 162288,
+          "line_end": 162347,
+          "score": 11.1999,
+          "matched_terms": [
+            "open",
+            "decay",
+            "differences"
+          ],
+          "snippet": "## Article 299: He Is Risen\n\n\nHe Is Risen\n\n\n\nOSIRIS, thou art the Receptacle, the Vault of Stars that separates the Pillars of Heaven for the Initiate. To whom doth thy Word enliven, but he who is made vivid in thy Light and whose limbs become supple in the fragrance of thy breath?\n\n~ an excerpt fro"
+        },
+        {
+          "chunk_id": 965,
+          "section": "Article 647: The Antahkarana \u2013 Bridging the Universe",
+          "line_start": 177952,
+          "line_end": 178041,
+          "score": 8.3591,
+          "matched_terms": [
+            "open",
+            "differences",
+            "function"
+          ],
+          "snippet": "## Article 647: The Antahkarana \u2013 Bridging the Universe\n\n\nThe Antahkarana \u2013 Bridging the Universe\n\nGATHERING ON New EarthStar Island in Second Life \u2013 7/17/11STARRY (starheart.erdhein):In ancient Lemuria, the Antahkarana\u00a0was known as the Au\u2019Atmun \u2013 that Rainbow Bridge of Light connecting the consciou"
+        },
+        {
+          "chunk_id": 148,
+          "section": "Top Keywords",
+          "line_start": 66943,
+          "line_end": 67408,
+          "score": 8.3558,
+          "matched_terms": [
+            "open",
+            "decay",
+            "purely",
+            "function"
+          ],
+          "snippet": "Greys. The Khumor (Greys) are playing their game once again with the skull.\nFurther Questions:\nSimeon: Please define the three dynamic universes more clearly for the purposes of our\nfuture work\nTehuti: Negative, Positive, and Neutral. This has been expounded upon in some detail\nin past transmissions"
+        }
+      ]
+    }
+  },
+  {
+    "id": "H-005",
+    "template": "baseline_golden",
+    "question": "What are the canonical metric outputs for standard injection protocols?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 500,
+    "reps": 1,
+    "falsifiers": [
+      "Output changes between identical runs with same seed (non-determinism)"
+    ],
+    "notes": "Golden baseline for Phase 3 regression suite. Single rep, high step count, full trace.",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Do dashboard results match these headless outputs at the same parameter set?",
+      "suggested_action": "Design an experiment to answer: Do dashboard results match these headless outputs at the same parameter set?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-003-None.md",
+        "question": "Do dashboard results match these headless outputs at the same parameter set?",
+        "param": null
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 20 | Memory edges: 137 | Avg confidence: 0.415 | Tags: basin(20), entropy(20), rhoMax(20)",
+      "kb_passages": [
+        {
+          "chunk_id": 1563,
+          "section": "A Match Made in Heaven",
+          "line_start": 204669,
+          "line_end": 204757,
+          "score": 9.7257,
+          "matched_terms": [
+            "open",
+            "match",
+            "same",
+            "set"
+          ],
+          "snippet": "## A Match Made in Heaven\n\n**2023-10-12T21:22:13.612Z**\n\n**Likes:** 0\n\n*Much has been written on and can be googled concerning Metatron\u2019s Cube geometry, so I\u2019ll not address this here. I wish to simply add to this equation with a few words from my inner\\-planes benefactor ThothHorRa\u2026*\n\n**Thoth:** Wha"
+        },
+        {
+          "chunk_id": 1045,
+          "section": "Article 727: The Cross of Quetzalcoatl",
+          "line_start": 182124,
+          "line_end": 182167,
+          "score": 8.9405,
+          "matched_terms": [
+            "open",
+            "match",
+            "set"
+          ],
+          "snippet": "## Article 727: The Cross of Quetzalcoatl\n\n\nThe Cross of Quetzalcoatl\n\nThis article was first released in 2006 in my on-line Numis\u2019OM publication. I was reading it just now again, and that the result of this dynamic being set in place in 2006 are quite evident in the condition of the mass consciousn"
+        },
+        {
+          "chunk_id": 152,
+          "section": "Top Keywords",
+          "line_start": 68838,
+          "line_end": 69321,
+          "score": 8.6853,
+          "matched_terms": [
+            "open",
+            "results",
+            "same",
+            "set"
+          ],
+          "snippet": "IONA - Island of the Druids\nby Maia C.M. Shamayyim\nlona is one of several small islands off the western coast of Scotland. Historically, it is\nknown as a 'sacred isle' because of its pagan and then Christian spiritual activity through\nthe ages. With the arrival of St. Columba on its shores in 563 AD"
+        }
+      ]
+    }
+  },
+  {
+    "id": "H-006",
+    "template": "dt_compression",
+    "question": "Does dt compress time-to-failure in headless sol-core as it does in the dashboard?",
+    "knob": "dt",
+    "knob_values": [
+      0.08,
+      0.1,
+      0.12,
+      0.16,
+      0.2
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 500,
+    "reps": 5,
+    "falsifiers": [
+      "Time-to-failure is constant across dt values",
+      "Relationship is non-monotonic (failure time increases then decreases)"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Is the truncated replication target a systematic template issue requiring a fix?",
+      "suggested_action": "Design an experiment to answer: Is the truncated replication target a systematic template issue requiring a fix?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-003-None.md",
+        "question": "Is the truncated replication target a systematic template issue requiring a fix?",
+        "param": null
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 20 | Memory edges: 137 | Avg confidence: 0.415 | Tags: basin(20), entropy(20), rhoMax(20)",
+      "kb_passages": [
+        {
+          "chunk_id": 98,
+          "section": "Top Keywords",
+          "line_start": 45702,
+          "line_end": 45995,
+          "score": 11.8841,
+          "matched_terms": [
+            "open",
+            "target",
+            "template",
+            "issue"
+          ],
+          "snippet": "deck in the first place),\nTHOTH: You have created the matrice for transmutation. Remember,\nyou (as a human being) are the alchemist\nYour Philosopher's Stone is\nyour higher mind, and the actual transmuation is freed from the baser\nself via your belief/faith.\nCH: So should I meditate and work with thi"
+        },
+        {
+          "chunk_id": 1482,
+          "section": "Article 1164: Notre Dame: A Queen Departs",
+          "line_start": 198849,
+          "line_end": 198996,
+          "score": 9.359,
+          "matched_terms": [
+            "target",
+            "fix"
+          ],
+          "snippet": "## Article 1164: Notre Dame: A Queen Departs\n\n\nNotre Dame: A Queen Departs\n\nOn April 15th, 2019 I sat in disbelief and great sorrow, as many did on the planet, while watching the ageless temple to \u201cOur Lady\u201d being consumed in flames.\u00a0 I have received (as probably others have) that it was no accident"
+        },
+        {
+          "chunk_id": 1276,
+          "section": "Article 958: The Ghost in the Machine",
+          "line_start": 191976,
+          "line_end": 192001,
+          "score": 9.0631,
+          "matched_terms": [
+            "systematic"
+          ],
+          "snippet": "## Article 958: The Ghost in the Machine\n\n\nThe Ghost in the Machine\n\nYes this is \u201cbad news\u201d (quoting video below), but it is critical that we face it unflinching, bathed in the light of the heart. The United States and President Obama has not gone insane. It is all part of a long-planned and on-goin"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-007",
+    "template": "psi_sensitivity",
+    "question": "How does injection affect entropy distribution and basin selection?",
+    "knob": "injection",
+    "knob_values": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 3,
+    "falsifiers": [
+      "Entropy is invariant to injection changes",
+      "RhoMaxId distribution is identical across all values"
+    ],
+    "notes": " | KB refs: Article 1032: Injection, allWordpress_compendium.md",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Do consciousness, gravity, and entropy injection targets produce different basin locations (RhoMaxNode)?",
+      "suggested_action": "Design an experiment to answer: Do consciousness, gravity, and entropy injection targets produce different basin locations (RhoMaxNode)?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-004-None.md",
+        "question": "Do consciousness, gravity, and entropy injection targets produce different basin locations (RhoMaxNode)?",
+        "param": "injection"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 20 | Memory edges: 137 | Avg confidence: 0.415 | Tags: basin(20), entropy(20), rhoMax(20)",
+      "kb_passages": [
+        {
+          "chunk_id": 1803,
+          "section": "Re-Balancing our Protective Field",
+          "line_start": 231242,
+          "line_end": 231391,
+          "score": 13.7579,
+          "matched_terms": [
+            "consciousness",
+            "injection",
+            "targets"
+          ],
+          "snippet": "## Re-Balancing our Protective Field\n\n**2025-10-12T16:42:13+00:00**\n\n**Likes:** 0\n\nThe H Marker and reverse\\-H (r\\-H) Marker are described in the sources primarily through\ntransmissions from ThothHorRa, detailing their function within quantum dynamics and genetics.\n\n\n\n\nThe H Marker is described as a"
+        },
+        {
+          "chunk_id": 173,
+          "section": "Top Keywords",
+          "line_start": 78848,
+          "line_end": 79309,
+          "score": 12.5087,
+          "matched_terms": [
+            "open",
+            "consciousness",
+            "gravity",
+            "different"
+          ],
+          "snippet": "30\nfactor that seems to be involved here as just described, is that they feel a clearer energy\ndown the path where the personal will has its needs met, and thus they follow that path\nthinking that because the energy is feeling clear it must be born of the highest directive of\nSpirit. This is a most "
+        },
+        {
+          "chunk_id": 214,
+          "section": "Top Keywords",
+          "line_start": 97781,
+          "line_end": 98193,
+          "score": 11.8265,
+          "matched_terms": [
+            "open",
+            "consciousness",
+            "gravity",
+            "different"
+          ],
+          "snippet": "Page 20 of 28\noriginals, yet still carry their charge.\n\"The Mitchell -Hedges skull as we have previously stated, is of an Atlantean priestess, Shalkuun -The e Tra,\nand was transform ed into crystal; although much laser work was done on it as well. The soul of Shalkuun -\nThee Tra w as one of the orig"
+        }
+      ]
+    },
+    "kb_passages": [
+      {
+        "chunk_id": 1350,
+        "section": "Article 1032: Injection",
+        "line_start": 194381,
+        "line_end": 194402,
+        "score": 9.1646,
+        "matched_terms": [
+          "injection"
+        ],
+        "snippet": "## Article 1032: Injection\n\n\nInjection\n\nThis video speaks for itself.\n\n<!-- END ARTICLE: 1032 -->\n\n<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->\n<!-- BEGIN ARTICLE: 1033 -->\n\n---\nindex: 1033\ntitle: 'We Are All One'\nanchor: 'article-1033-we-are-all-one'\nline_start: 29548\nline_end: 29560\nchar_count: 791\nt"
+      },
+      {
+        "chunk_id": 311,
+        "section": "allWordpress_compendium.md",
+        "line_start": 144564,
+        "line_end": 145063,
+        "score": 7.2086,
+        "matched_terms": [
+          "injection"
+        ],
+        "snippet": "\"tags\": [\n      \"Tablet Keeper\",\n      \"Fourth World\",\n      \"Time Purification\",\n      \"Great Spirit\",\n      \"Fifth World\",\n      \"World\",\n      \"Time\",\n      \"Hopi\",\n      \"become\",\n      \"Prophecy\",\n      \"Tablet\",\n      \"Great\",\n      \"Life\",\n      \"Only\",\n      \"known\"\n    ]\n  },\n  {\n    \"index"
+      }
+    ],
+    "memory_augmented": true
+  },
+  {
+    "id": "H-008",
+    "template": "threshold_scan",
+    "question": "At what value of injection does the system behavior qualitatively change?",
+    "knob": "injection",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": " | KB refs: Article 1032: Injection, allWordpress_compendium.md",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Is the node-1 basin specific to grail injection or a general topological attractor?",
+      "suggested_action": "Design an experiment to answer: Is the node-1 basin specific to grail injection or a general topological attractor?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-004-None.md",
+        "question": "Is the node-1 basin specific to grail injection or a general topological attractor?",
+        "param": "injection"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 20 | Memory edges: 137 | Avg confidence: 0.415 | Tags: basin(20), entropy(20), rhoMax(20)",
+      "kb_passages": [
+        {
+          "chunk_id": 436,
+          "section": "Article 118: Glenlyon \u2013 An Ophira Gate",
+          "line_start": 153091,
+          "line_end": 153182,
+          "score": 9.2813,
+          "matched_terms": [
+            "open",
+            "basin",
+            "specific"
+          ],
+          "snippet": "## Article 118: Glenlyon \u2013 An Ophira Gate\n\n\nGlenlyon \u2013 An Ophira Gate\n\n\n\nNotice the stone outcropping inside the black square in the photograph of Glenlyon Valley (Scotland) above. This is a point from which the Sidhe guard the gate which is atop an adjacent ridge a short distance away. The Sidhe gu"
+        },
+        {
+          "chunk_id": 1767,
+          "section": "of the New Earth Star",
+          "line_start": 226705,
+          "line_end": 226863,
+          "score": 9.1718,
+          "matched_terms": [
+            "specific",
+            "grail",
+            "injection"
+          ],
+          "snippet": "## of the New Earth Star\n\n**2025-05-30T12:48:43.520Z**\n\n**Likes:** 0\n\nWhat I am calling \u201cNew Avalon\u201d is a reality world of Numis\u2019OM (first stage New Earth Star)\nwhich has been duplicated from the \u201cOld Avalon\u201d dimension here in this world. Yet, it is not\nexact. It\u2019s primary difference (and this is an"
+        },
+        {
+          "chunk_id": 1350,
+          "section": "Article 1032: Injection",
+          "line_start": 194381,
+          "line_end": 194402,
+          "score": 9.1646,
+          "matched_terms": [
+            "injection"
+          ],
+          "snippet": "## Article 1032: Injection\n\n\nInjection\n\nThis video speaks for itself.\n\n<!-- END ARTICLE: 1032 -->\n\n<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->\n<!-- BEGIN ARTICLE: 1033 -->\n\n---\nindex: 1033\ntitle: 'We Are All One'\nanchor: 'article-1033-we-are-all-one'\nline_start: 29548\nline_end: 29560\nchar_count: 791\nt"
+        }
+      ]
+    },
+    "kb_passages": [
+      {
+        "chunk_id": 1350,
+        "section": "Article 1032: Injection",
+        "line_start": 194381,
+        "line_end": 194402,
+        "score": 9.1646,
+        "matched_terms": [
+          "injection"
+        ],
+        "snippet": "## Article 1032: Injection\n\n\nInjection\n\nThis video speaks for itself.\n\n<!-- END ARTICLE: 1032 -->\n\n<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->\n<!-- BEGIN ARTICLE: 1033 -->\n\n---\nindex: 1033\ntitle: 'We Are All One'\nanchor: 'article-1033-we-are-all-one'\nline_start: 29548\nline_end: 29560\nchar_count: 791\nt"
+      },
+      {
+        "chunk_id": 311,
+        "section": "allWordpress_compendium.md",
+        "line_start": 144564,
+        "line_end": 145063,
+        "score": 7.2086,
+        "matched_terms": [
+          "injection"
+        ],
+        "snippet": "\"tags\": [\n      \"Tablet Keeper\",\n      \"Fourth World\",\n      \"Time Purification\",\n      \"Great Spirit\",\n      \"Fifth World\",\n      \"World\",\n      \"Time\",\n      \"Hopi\",\n      \"become\",\n      \"Prophecy\",\n      \"Tablet\",\n      \"Great\",\n      \"Life\",\n      \"Only\",\n      \"known\"\n    ]\n  },\n  {\n    \"index"
+      }
+    ],
+    "memory_augmented": true
+  }
+]

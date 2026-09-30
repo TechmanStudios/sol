@@ -1,0 +1,3407 @@
+{
+  "experiment": "14_q12_symmetry_breaking",
+  "total_trials": 345,
+  "elapsed_s": 709.4,
+  "probe_a": [
+    {
+      "group": "standard",
+      "damping": 0.2,
+      "basin_id": 9,
+      "basin_label": "metatron[9]",
+      "iton": 0.201,
+      "coherence": 0.9656,
+      "mass": 81.9577,
+      "entropy": 0.9962,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": false
+    },
+    {
+      "group": "standard",
+      "damping": 2.0,
+      "basin_id": 9,
+      "basin_label": "metatron[9]",
+      "iton": 0.0,
+      "coherence": 0.9864,
+      "mass": 0.0326,
+      "entropy": 0.9969,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": false
+    },
+    {
+      "group": "standard",
+      "damping": 5.0,
+      "basin_id": 9,
+      "basin_label": "metatron[9]",
+      "iton": 0.0,
+      "coherence": 0.9945,
+      "mass": 0.0,
+      "entropy": 0.9972,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": false
+    },
+    {
+      "group": "standard",
+      "damping": 10.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.9975,
+      "mass": 0.0,
+      "entropy": 0.8734,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": false
+    },
+    {
+      "group": "standard",
+      "damping": 15.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.9984,
+      "mass": 0.0,
+      "entropy": 0.7359,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": false
+    },
+    {
+      "group": "standard",
+      "damping": 20.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.9988,
+      "mass": 0.0,
+      "entropy": 0.6398,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": false
+    },
+    {
+      "group": "standard",
+      "damping": 30.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.9991,
+      "mass": 0.0,
+      "entropy": 0.5192,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": false
+    },
+    {
+      "group": "standard",
+      "damping": 40.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.9993,
+      "mass": 0.0,
+      "entropy": 0.459,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": false
+    },
+    {
+      "group": "standard",
+      "damping": 55.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.9993,
+      "mass": 0.0,
+      "entropy": 0.3843,
+      "std_basin_id": 7,
+      "std_basin_label": "numis'om[7]",
+      "shifted": false
+    },
+    {
+      "group": "spirit_core",
+      "damping": 0.2,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.143,
+      "coherence": 0.9937,
+      "mass": 124.3822,
+      "entropy": 0.9648,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_core",
+      "damping": 2.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.4832,
+      "mass": 0.2012,
+      "entropy": 0.9896,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_core",
+      "damping": 5.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6517,
+      "mass": 0.0,
+      "entropy": 0.9922,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_core",
+      "damping": 10.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6626,
+      "mass": 0.0,
+      "entropy": 0.8932,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_core",
+      "damping": 15.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6403,
+      "mass": 0.0,
+      "entropy": 0.759,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_core",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.6163,
+      "mass": 0.0,
+      "entropy": 0.6624,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_core",
+      "damping": 30.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.5758,
+      "mass": 0.0,
+      "entropy": 0.5461,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_core",
+      "damping": 40.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.5471,
+      "mass": 0.0,
+      "entropy": 0.4525,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_core",
+      "damping": 55.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.5274,
+      "mass": 0.0,
+      "entropy": 0.3626,
+      "std_basin_id": 7,
+      "std_basin_label": "numis'om[7]",
+      "shifted": false
+    },
+    {
+      "group": "spirit_periphery",
+      "damping": 0.2,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "iton": 0.179,
+      "coherence": 0.9978,
+      "mass": 125.4345,
+      "entropy": 0.9565,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_periphery",
+      "damping": 2.0,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "iton": 0.0,
+      "coherence": 0.9664,
+      "mass": 0.2053,
+      "entropy": 0.9892,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_periphery",
+      "damping": 5.0,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "iton": 0.0,
+      "coherence": 0.9187,
+      "mass": 0.0,
+      "entropy": 0.9926,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_periphery",
+      "damping": 10.0,
+      "basin_id": 138,
+      "basin_label": "thothhorra khandr[138]",
+      "iton": 0.0,
+      "coherence": 0.8331,
+      "mass": 0.0,
+      "entropy": 0.8339,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_periphery",
+      "damping": 15.0,
+      "basin_id": 138,
+      "basin_label": "thothhorra khandr[138]",
+      "iton": 0.0,
+      "coherence": 0.7746,
+      "mass": 0.0,
+      "entropy": 0.6764,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_periphery",
+      "damping": 20.0,
+      "basin_id": 138,
+      "basin_label": "thothhorra khandr[138]",
+      "iton": 0.0,
+      "coherence": 0.739,
+      "mass": 0.0,
+      "entropy": 0.568,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_periphery",
+      "damping": 30.0,
+      "basin_id": 136,
+      "basin_label": "maia christianne[136]",
+      "iton": 0.0,
+      "coherence": 0.6988,
+      "mass": 0.0,
+      "entropy": 0.4598,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_periphery",
+      "damping": 40.0,
+      "basin_id": 136,
+      "basin_label": "maia christianne[136]",
+      "iton": 0.0,
+      "coherence": 0.6762,
+      "mass": 0.0,
+      "entropy": 0.4047,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "spirit_periphery",
+      "damping": 55.0,
+      "basin_id": 136,
+      "basin_label": "maia christianne[136]",
+      "iton": 0.0,
+      "coherence": 0.6628,
+      "mass": 0.0,
+      "entropy": 0.3356,
+      "std_basin_id": 7,
+      "std_basin_label": "numis'om[7]",
+      "shifted": true
+    },
+    {
+      "group": "temple_cluster",
+      "damping": 0.2,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "iton": 0.136,
+      "coherence": 0.9699,
+      "mass": 133.1313,
+      "entropy": 0.9241,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "temple_cluster",
+      "damping": 2.0,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "iton": 0.0,
+      "coherence": 0.945,
+      "mass": 0.097,
+      "entropy": 0.9884,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "temple_cluster",
+      "damping": 5.0,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "iton": 0.0,
+      "coherence": 0.9134,
+      "mass": 0.0,
+      "entropy": 0.9931,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "temple_cluster",
+      "damping": 10.0,
+      "basin_id": 28,
+      "basin_label": "akashic practice[28]",
+      "iton": 0.0,
+      "coherence": 0.8328,
+      "mass": 0.0,
+      "entropy": 0.7949,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "temple_cluster",
+      "damping": 15.0,
+      "basin_id": 28,
+      "basin_label": "akashic practice[28]",
+      "iton": 0.0,
+      "coherence": 0.775,
+      "mass": 0.0,
+      "entropy": 0.6283,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "temple_cluster",
+      "damping": 20.0,
+      "basin_id": 28,
+      "basin_label": "akashic practice[28]",
+      "iton": 0.0,
+      "coherence": 0.7383,
+      "mass": 0.0,
+      "entropy": 0.5118,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "temple_cluster",
+      "damping": 30.0,
+      "basin_id": 28,
+      "basin_label": "akashic practice[28]",
+      "iton": 0.0,
+      "coherence": 0.6954,
+      "mass": 0.0,
+      "entropy": 0.4079,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "temple_cluster",
+      "damping": 40.0,
+      "basin_id": 28,
+      "basin_label": "akashic practice[28]",
+      "iton": 0.0,
+      "coherence": 0.6724,
+      "mass": 0.0,
+      "entropy": 0.3565,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "temple_cluster",
+      "damping": 55.0,
+      "basin_id": 28,
+      "basin_label": "akashic practice[28]",
+      "iton": 0.0,
+      "coherence": 0.6543,
+      "mass": 0.0,
+      "entropy": 0.3024,
+      "std_basin_id": 7,
+      "std_basin_label": "numis'om[7]",
+      "shifted": true
+    },
+    {
+      "group": "christine_solo",
+      "damping": 0.2,
+      "basin_id": 122,
+      "basin_label": "lords[122]",
+      "iton": 0.3,
+      "coherence": 0.6279,
+      "mass": 99.7604,
+      "entropy": 0.9627,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "christine_solo",
+      "damping": 2.0,
+      "basin_id": 90,
+      "basin_label": "christine hayes[90]",
+      "iton": 0.0,
+      "coherence": 0.91,
+      "mass": 0.0064,
+      "entropy": 0.9926,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "christine_solo",
+      "damping": 5.0,
+      "basin_id": 78,
+      "basin_label": "knowledge[78]",
+      "iton": 0.0,
+      "coherence": 0.8881,
+      "mass": 0.0,
+      "entropy": 0.9924,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "christine_solo",
+      "damping": 10.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.8113,
+      "mass": 0.0,
+      "entropy": 0.79,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "christine_solo",
+      "damping": 15.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.7504,
+      "mass": 0.0,
+      "entropy": 0.5492,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "christine_solo",
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.7109,
+      "mass": 0.0,
+      "entropy": 0.4228,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "christine_solo",
+      "damping": 30.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6671,
+      "mass": 0.0,
+      "entropy": 0.3126,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "christine_solo",
+      "damping": 40.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6306,
+      "mass": 0.0,
+      "entropy": 0.2532,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "christine_solo",
+      "damping": 55.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6128,
+      "mass": 0.0,
+      "entropy": 0.2007,
+      "std_basin_id": 7,
+      "std_basin_label": "numis'om[7]",
+      "shifted": true
+    },
+    {
+      "group": "metatronic_cluster",
+      "damping": 0.2,
+      "basin_id": 9,
+      "basin_label": "metatron[9]",
+      "iton": 0.179,
+      "coherence": 0.9966,
+      "mass": 126.5591,
+      "entropy": 0.9669,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": false
+    },
+    {
+      "group": "metatronic_cluster",
+      "damping": 2.0,
+      "basin_id": 9,
+      "basin_label": "metatron[9]",
+      "iton": 0.0,
+      "coherence": 0.6592,
+      "mass": 0.1428,
+      "entropy": 0.9898,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": false
+    },
+    {
+      "group": "metatronic_cluster",
+      "damping": 5.0,
+      "basin_id": 9,
+      "basin_label": "metatron[9]",
+      "iton": 0.0,
+      "coherence": 0.7402,
+      "mass": 0.0,
+      "entropy": 0.993,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": false
+    },
+    {
+      "group": "metatronic_cluster",
+      "damping": 10.0,
+      "basin_id": 67,
+      "basin_label": "spirit heart[67]",
+      "iton": 0.0,
+      "coherence": 0.7046,
+      "mass": 0.0,
+      "entropy": 0.805,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "metatronic_cluster",
+      "damping": 15.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.6632,
+      "mass": 0.0,
+      "entropy": 0.63,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "metatronic_cluster",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.6316,
+      "mass": 0.0,
+      "entropy": 0.495,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "metatronic_cluster",
+      "damping": 30.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.5873,
+      "mass": 0.0,
+      "entropy": 0.4001,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "metatronic_cluster",
+      "damping": 40.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.5567,
+      "mass": 0.0,
+      "entropy": 0.3705,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "metatronic_cluster",
+      "damping": 55.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.5316,
+      "mass": 0.0,
+      "entropy": 0.3438,
+      "std_basin_id": 7,
+      "std_basin_label": "numis'om[7]",
+      "shifted": false
+    },
+    {
+      "group": "bridge_low_deg",
+      "damping": 0.2,
+      "basin_id": 123,
+      "basin_label": "journey[123]",
+      "iton": 0.181,
+      "coherence": 0.9698,
+      "mass": 56.2392,
+      "entropy": 0.9899,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_low_deg",
+      "damping": 2.0,
+      "basin_id": 123,
+      "basin_label": "journey[123]",
+      "iton": 0.0,
+      "coherence": 0.9757,
+      "mass": 0.0144,
+      "entropy": 0.992,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_low_deg",
+      "damping": 5.0,
+      "basin_id": 123,
+      "basin_label": "journey[123]",
+      "iton": 0.0,
+      "coherence": 0.9297,
+      "mass": 0.0,
+      "entropy": 0.9945,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_low_deg",
+      "damping": 10.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.8395,
+      "mass": 0.0,
+      "entropy": 0.8423,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_low_deg",
+      "damping": 15.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.7781,
+      "mass": 0.0,
+      "entropy": 0.6548,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_low_deg",
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.7407,
+      "mass": 0.0,
+      "entropy": 0.5043,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_low_deg",
+      "damping": 30.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6974,
+      "mass": 0.0,
+      "entropy": 0.4252,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_low_deg",
+      "damping": 40.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6742,
+      "mass": 0.0,
+      "entropy": 0.3774,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_low_deg",
+      "damping": 55.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6624,
+      "mass": 0.0,
+      "entropy": 0.3224,
+      "std_basin_id": 7,
+      "std_basin_label": "numis'om[7]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_high_deg",
+      "damping": 0.2,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "iton": 0.45,
+      "coherence": 0.9432,
+      "mass": 46.9287,
+      "entropy": 0.9918,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_high_deg",
+      "damping": 2.0,
+      "basin_id": 53,
+      "basin_label": "lion[53]",
+      "iton": 0.0,
+      "coherence": 0.9749,
+      "mass": 0.0012,
+      "entropy": 0.9938,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_high_deg",
+      "damping": 5.0,
+      "basin_id": 53,
+      "basin_label": "lion[53]",
+      "iton": 0.0,
+      "coherence": 0.9362,
+      "mass": 0.0,
+      "entropy": 0.9956,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_high_deg",
+      "damping": 10.0,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "iton": 0.0,
+      "coherence": 0.8689,
+      "mass": 0.0,
+      "entropy": 0.5896,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_high_deg",
+      "damping": 15.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.8269,
+      "mass": 0.0,
+      "entropy": 0.4568,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_high_deg",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.8073,
+      "mass": 0.0,
+      "entropy": 0.457,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_high_deg",
+      "damping": 30.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.7941,
+      "mass": 0.0,
+      "entropy": 0.3899,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_high_deg",
+      "damping": 40.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.7835,
+      "mass": 0.0,
+      "entropy": 0.2819,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "bridge_high_deg",
+      "damping": 55.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.7357,
+      "mass": 0.0,
+      "entropy": 0.1911,
+      "std_basin_id": 7,
+      "std_basin_label": "numis'om[7]",
+      "shifted": false
+    },
+    {
+      "group": "cold_nodes",
+      "damping": 0.2,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.562,
+      "coherence": 0.8337,
+      "mass": 53.2395,
+      "entropy": 0.9894,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "cold_nodes",
+      "damping": 2.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.9597,
+      "mass": 0.0017,
+      "entropy": 0.991,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "cold_nodes",
+      "damping": 5.0,
+      "basin_id": 87,
+      "basin_label": "crystals[87]",
+      "iton": 0.0,
+      "coherence": 0.9177,
+      "mass": 0.0,
+      "entropy": 0.9906,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "cold_nodes",
+      "damping": 10.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.8613,
+      "mass": 0.0,
+      "entropy": 0.7742,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": false
+    },
+    {
+      "group": "cold_nodes",
+      "damping": 15.0,
+      "basin_id": 94,
+      "basin_label": "christos[94]",
+      "iton": 0.0,
+      "coherence": 0.8293,
+      "mass": 0.0,
+      "entropy": 0.5978,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "cold_nodes",
+      "damping": 20.0,
+      "basin_id": 94,
+      "basin_label": "christos[94]",
+      "iton": 0.0,
+      "coherence": 0.8115,
+      "mass": 0.0,
+      "entropy": 0.4867,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "cold_nodes",
+      "damping": 30.0,
+      "basin_id": 94,
+      "basin_label": "christos[94]",
+      "iton": 0.0,
+      "coherence": 0.7948,
+      "mass": 0.0,
+      "entropy": 0.3678,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "cold_nodes",
+      "damping": 40.0,
+      "basin_id": 94,
+      "basin_label": "christos[94]",
+      "iton": 0.0,
+      "coherence": 0.7771,
+      "mass": 0.0,
+      "entropy": 0.3698,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "cold_nodes",
+      "damping": 55.0,
+      "basin_id": 94,
+      "basin_label": "christos[94]",
+      "iton": 0.0,
+      "coherence": 0.7162,
+      "mass": 0.0,
+      "entropy": 0.2644,
+      "std_basin_id": 7,
+      "std_basin_label": "numis'om[7]",
+      "shifted": true
+    },
+    {
+      "group": "tech_solo",
+      "damping": 0.2,
+      "basin_id": 23,
+      "basin_label": "light codes[23]",
+      "iton": 0.05,
+      "coherence": 0.9983,
+      "mass": 140.1956,
+      "entropy": 0.6217,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "tech_solo",
+      "damping": 2.0,
+      "basin_id": 23,
+      "basin_label": "light codes[23]",
+      "iton": 0.444,
+      "coherence": 0.6608,
+      "mass": 0.8926,
+      "entropy": 0.8447,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "tech_solo",
+      "damping": 5.0,
+      "basin_id": 23,
+      "basin_label": "light codes[23]",
+      "iton": 0.0,
+      "coherence": 0.7333,
+      "mass": 0.0,
+      "entropy": 0.8867,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "tech_solo",
+      "damping": 10.0,
+      "basin_id": 23,
+      "basin_label": "light codes[23]",
+      "iton": 0.0,
+      "coherence": 0.7459,
+      "mass": 0.0,
+      "entropy": 0.8082,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "tech_solo",
+      "damping": 15.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.7321,
+      "mass": 0.0,
+      "entropy": 0.5507,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "tech_solo",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.7183,
+      "mass": 0.0,
+      "entropy": 0.3683,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "tech_solo",
+      "damping": 30.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.695,
+      "mass": 0.0,
+      "entropy": 0.2971,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "tech_solo",
+      "damping": 40.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.6765,
+      "mass": 0.0,
+      "entropy": 0.2372,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "tech_solo",
+      "damping": 55.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.6639,
+      "mass": 0.0,
+      "entropy": 0.1745,
+      "std_basin_id": 7,
+      "std_basin_label": "numis'om[7]",
+      "shifted": false
+    },
+    {
+      "group": "christ_solo",
+      "damping": 0.2,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.107,
+      "coherence": 0.9964,
+      "mass": 125.2576,
+      "entropy": 0.6303,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "christ_solo",
+      "damping": 2.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.258,
+      "coherence": 0.7416,
+      "mass": 2.6575,
+      "entropy": 0.9723,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "christ_solo",
+      "damping": 5.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6735,
+      "mass": 0.0,
+      "entropy": 0.9929,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "christ_solo",
+      "damping": 10.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.6692,
+      "mass": 0.0,
+      "entropy": 0.8439,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": false
+    },
+    {
+      "group": "christ_solo",
+      "damping": 15.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.6379,
+      "mass": 0.0,
+      "entropy": 0.6518,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": false
+    },
+    {
+      "group": "christ_solo",
+      "damping": 20.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.6115,
+      "mass": 0.0,
+      "entropy": 0.5169,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": false
+    },
+    {
+      "group": "christ_solo",
+      "damping": 30.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.5725,
+      "mass": 0.0,
+      "entropy": 0.3878,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": false
+    },
+    {
+      "group": "christ_solo",
+      "damping": 40.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.5436,
+      "mass": 0.0,
+      "entropy": 0.2712,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": false
+    },
+    {
+      "group": "christ_solo",
+      "damping": 55.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.5143,
+      "mass": 0.0,
+      "entropy": 0.2037,
+      "std_basin_id": 7,
+      "std_basin_label": "numis'om[7]",
+      "shifted": true
+    },
+    {
+      "group": "scattered_bridge",
+      "damping": 0.2,
+      "basin_id": 112,
+      "basin_label": "rite[112]",
+      "iton": 0.079,
+      "coherence": 0.5837,
+      "mass": 53.8957,
+      "entropy": 0.9672,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "scattered_bridge",
+      "damping": 2.0,
+      "basin_id": 41,
+      "basin_label": "lineages[41]",
+      "iton": 0.0,
+      "coherence": 0.7116,
+      "mass": 0.0039,
+      "entropy": 0.965,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "scattered_bridge",
+      "damping": 5.0,
+      "basin_id": 41,
+      "basin_label": "lineages[41]",
+      "iton": 0.0,
+      "coherence": 0.7233,
+      "mass": 0.0,
+      "entropy": 0.9231,
+      "std_basin_id": 9,
+      "std_basin_label": "metatron[9]",
+      "shifted": true
+    },
+    {
+      "group": "scattered_bridge",
+      "damping": 10.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6642,
+      "mass": 0.0,
+      "entropy": 0.7807,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "scattered_bridge",
+      "damping": 15.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6156,
+      "mass": 0.0,
+      "entropy": 0.5816,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "scattered_bridge",
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.5816,
+      "mass": 0.0,
+      "entropy": 0.5442,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "scattered_bridge",
+      "damping": 30.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.5364,
+      "mass": 0.0,
+      "entropy": 0.4741,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "scattered_bridge",
+      "damping": 40.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.5142,
+      "mass": 0.0,
+      "entropy": 0.4022,
+      "std_basin_id": 22,
+      "std_basin_label": "christic[22]",
+      "shifted": true
+    },
+    {
+      "group": "scattered_bridge",
+      "damping": 55.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.5078,
+      "mass": 0.0,
+      "entropy": 0.3642,
+      "std_basin_id": 7,
+      "std_basin_label": "numis'om[7]",
+      "shifted": true
+    }
+  ],
+  "probe_b": [
+    {
+      "node_label": "christ",
+      "node_id": 2,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.107,
+      "coherence": 0.9964,
+      "mass": 125.2576,
+      "shifted": true
+    },
+    {
+      "node_label": "christ",
+      "node_id": 2,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.6735,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "christ",
+      "node_id": 2,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.6115,
+      "mass": 0.0,
+      "shifted": false
+    },
+    {
+      "node_label": "temple doors",
+      "node_id": 6,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 6,
+      "basin_label": "temple doors[6]",
+      "iton": 0.15,
+      "coherence": 0.9975,
+      "mass": 127.0408,
+      "shifted": true
+    },
+    {
+      "node_label": "temple doors",
+      "node_id": 6,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 6,
+      "basin_label": "temple doors[6]",
+      "iton": 0.0,
+      "coherence": 0.9108,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "temple doors",
+      "node_id": 6,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 48,
+      "basin_label": "merkabah[48]",
+      "iton": 0.0,
+      "coherence": 0.738,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "numis'om",
+      "node_id": 7,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.179,
+      "coherence": 0.9255,
+      "mass": 127.9872,
+      "shifted": true
+    },
+    {
+      "node_label": "numis'om",
+      "node_id": 7,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.8829,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "numis'om",
+      "node_id": 7,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 19,
+      "basin_label": "new earth star[19]",
+      "iton": 0.0,
+      "coherence": 0.7075,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "metatron",
+      "node_id": 9,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 9,
+      "basin_label": "metatron[9]",
+      "iton": 0.129,
+      "coherence": 0.9983,
+      "mass": 125.0545,
+      "shifted": false
+    },
+    {
+      "node_label": "metatron",
+      "node_id": 9,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 9,
+      "basin_label": "metatron[9]",
+      "iton": 0.0,
+      "coherence": 0.682,
+      "mass": 0.0,
+      "shifted": false
+    },
+    {
+      "node_label": "metatron",
+      "node_id": 9,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.6182,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "venus",
+      "node_id": 10,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 10,
+      "basin_label": "venus[10]",
+      "iton": 0.114,
+      "coherence": 0.998,
+      "mass": 125.0427,
+      "shifted": true
+    },
+    {
+      "node_label": "venus",
+      "node_id": 10,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 10,
+      "basin_label": "venus[10]",
+      "iton": 0.0,
+      "coherence": 0.8966,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "venus",
+      "node_id": 10,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 136,
+      "basin_label": "maia christianne[136]",
+      "iton": 0.0,
+      "coherence": 0.7354,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "new earth star",
+      "node_id": 19,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 19,
+      "basin_label": "new earth star[19]",
+      "iton": 0.129,
+      "coherence": 0.9963,
+      "mass": 123.8847,
+      "shifted": true
+    },
+    {
+      "node_label": "new earth star",
+      "node_id": 19,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 19,
+      "basin_label": "new earth star[19]",
+      "iton": 0.0,
+      "coherence": 0.8948,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "new earth star",
+      "node_id": 19,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.7299,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "christic",
+      "node_id": 22,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.121,
+      "coherence": 0.9873,
+      "mass": 125.5322,
+      "shifted": true
+    },
+    {
+      "node_label": "christic",
+      "node_id": 22,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.9013,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "christic",
+      "node_id": 22,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.7364,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "akashic practice",
+      "node_id": 28,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 28,
+      "basin_label": "akashic practice[28]",
+      "iton": 0.057,
+      "coherence": 0.9048,
+      "mass": 149.9574,
+      "shifted": true
+    },
+    {
+      "node_label": "akashic practice",
+      "node_id": 28,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 28,
+      "basin_label": "akashic practice[28]",
+      "iton": 0.0,
+      "coherence": 0.8841,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "akashic practice",
+      "node_id": 28,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 51,
+      "basin_label": "rite akashic[51]",
+      "iton": 0.0,
+      "coherence": 0.7176,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "thothhorra",
+      "node_id": 31,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "iton": 0.207,
+      "coherence": 0.9979,
+      "mass": 126.424,
+      "shifted": true
+    },
+    {
+      "node_label": "thothhorra",
+      "node_id": 31,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "iton": 0.0,
+      "coherence": 0.8944,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "thothhorra",
+      "node_id": 31,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 138,
+      "basin_label": "thothhorra khandr[138]",
+      "iton": 0.0,
+      "coherence": 0.7372,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "merkabah",
+      "node_id": 48,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 48,
+      "basin_label": "merkabah[48]",
+      "iton": 0.136,
+      "coherence": 0.9963,
+      "mass": 123.995,
+      "shifted": true
+    },
+    {
+      "node_label": "merkabah",
+      "node_id": 48,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 48,
+      "basin_label": "merkabah[48]",
+      "iton": 0.0,
+      "coherence": 0.8966,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "merkabah",
+      "node_id": 48,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 6,
+      "basin_label": "temple doors[6]",
+      "iton": 0.0,
+      "coherence": 0.7338,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "rite akashic",
+      "node_id": 51,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 51,
+      "basin_label": "rite akashic[51]",
+      "iton": 0.057,
+      "coherence": 0.9048,
+      "mass": 149.9574,
+      "shifted": true
+    },
+    {
+      "node_label": "rite akashic",
+      "node_id": 51,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 51,
+      "basin_label": "rite akashic[51]",
+      "iton": 0.0,
+      "coherence": 0.8841,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "rite akashic",
+      "node_id": 51,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 28,
+      "basin_label": "akashic practice[28]",
+      "iton": 0.0,
+      "coherence": 0.7176,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "temple of",
+      "node_id": 52,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "iton": 0.114,
+      "coherence": 0.9323,
+      "mass": 126.2568,
+      "shifted": true
+    },
+    {
+      "node_label": "temple of",
+      "node_id": 52,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "iton": 0.0,
+      "coherence": 0.8887,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "temple of",
+      "node_id": 52,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.7307,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "metatronic",
+      "node_id": 58,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 58,
+      "basin_label": "metatronic[58]",
+      "iton": 0.114,
+      "coherence": 0.9968,
+      "mass": 126.6307,
+      "shifted": true
+    },
+    {
+      "node_label": "metatronic",
+      "node_id": 58,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 58,
+      "basin_label": "metatronic[58]",
+      "iton": 0.0,
+      "coherence": 0.8969,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "metatronic",
+      "node_id": 58,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.735,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "spirit heart",
+      "node_id": 67,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 67,
+      "basin_label": "spirit heart[67]",
+      "iton": 0.129,
+      "coherence": 0.996,
+      "mass": 124.5753,
+      "shifted": true
+    },
+    {
+      "node_label": "spirit heart",
+      "node_id": 67,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 67,
+      "basin_label": "spirit heart[67]",
+      "iton": 0.0,
+      "coherence": 0.8946,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "spirit heart",
+      "node_id": 67,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.7304,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "christine hayes",
+      "node_id": 90,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 122,
+      "basin_label": "lords[122]",
+      "iton": 0.3,
+      "coherence": 0.6279,
+      "mass": 99.7604,
+      "shifted": true
+    },
+    {
+      "node_label": "christine hayes",
+      "node_id": 90,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 78,
+      "basin_label": "knowledge[78]",
+      "iton": 0.0,
+      "coherence": 0.8881,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "christine hayes",
+      "node_id": 90,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.7109,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "christos",
+      "node_id": 94,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 94,
+      "basin_label": "christos[94]",
+      "iton": 0.114,
+      "coherence": 0.9967,
+      "mass": 126.195,
+      "shifted": true
+    },
+    {
+      "node_label": "christos",
+      "node_id": 94,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 94,
+      "basin_label": "christos[94]",
+      "iton": 0.0,
+      "coherence": 0.9059,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "christos",
+      "node_id": 94,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 138,
+      "basin_label": "thothhorra khandr[138]",
+      "iton": 0.0,
+      "coherence": 0.7358,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "maia christianne",
+      "node_id": 136,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 136,
+      "basin_label": "maia christianne[136]",
+      "iton": 0.171,
+      "coherence": 0.9438,
+      "mass": 130.299,
+      "shifted": true
+    },
+    {
+      "node_label": "maia christianne",
+      "node_id": 136,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 136,
+      "basin_label": "maia christianne[136]",
+      "iton": 0.0,
+      "coherence": 0.913,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "maia christianne",
+      "node_id": 136,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 10,
+      "basin_label": "venus[10]",
+      "iton": 0.0,
+      "coherence": 0.7396,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "thothhorra khandr",
+      "node_id": 138,
+      "node_group": "spirit",
+      "damping": 0.2,
+      "basin_id": 138,
+      "basin_label": "thothhorra khandr[138]",
+      "iton": 0.2,
+      "coherence": 0.9973,
+      "mass": 126.0641,
+      "shifted": true
+    },
+    {
+      "node_label": "thothhorra khandr",
+      "node_id": 138,
+      "node_group": "spirit",
+      "damping": 5.0,
+      "basin_id": 138,
+      "basin_label": "thothhorra khandr[138]",
+      "iton": 0.0,
+      "coherence": 0.9038,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "thothhorra khandr",
+      "node_id": 138,
+      "node_group": "spirit",
+      "damping": 20.0,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "iton": 0.0,
+      "coherence": 0.7367,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "grail",
+      "node_id": 1,
+      "node_group": "bridge",
+      "damping": 0.2,
+      "basin_id": 1,
+      "basin_label": "grail[1]",
+      "iton": 0.129,
+      "coherence": 0.9961,
+      "mass": 74.1773,
+      "shifted": true
+    },
+    {
+      "node_label": "grail",
+      "node_id": 1,
+      "node_group": "bridge",
+      "damping": 5.0,
+      "basin_id": 1,
+      "basin_label": "grail[1]",
+      "iton": 0.0,
+      "coherence": 0.6924,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "grail",
+      "node_id": 1,
+      "node_group": "bridge",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.5644,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "pyramid",
+      "node_id": 29,
+      "node_group": "bridge",
+      "damping": 0.2,
+      "basin_id": 29,
+      "basin_label": "pyramid[29]",
+      "iton": 0.136,
+      "coherence": 0.9967,
+      "mass": 75.9483,
+      "shifted": true
+    },
+    {
+      "node_label": "pyramid",
+      "node_id": 29,
+      "node_group": "bridge",
+      "damping": 5.0,
+      "basin_id": 29,
+      "basin_label": "pyramid[29]",
+      "iton": 0.0,
+      "coherence": 0.6918,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "pyramid",
+      "node_id": 29,
+      "node_group": "bridge",
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.5621,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "johannine grove",
+      "node_id": 82,
+      "node_group": "bridge",
+      "damping": 0.2,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "iton": 0.444,
+      "coherence": 0.8488,
+      "mass": 45.977,
+      "shifted": true
+    },
+    {
+      "node_label": "johannine grove",
+      "node_id": 82,
+      "node_group": "bridge",
+      "damping": 5.0,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "iton": 0.0,
+      "coherence": 0.9184,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "johannine grove",
+      "node_id": 82,
+      "node_group": "bridge",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.7798,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "mystery school",
+      "node_id": 89,
+      "node_group": "bridge",
+      "damping": 0.2,
+      "basin_id": 53,
+      "basin_label": "lion[53]",
+      "iton": 0.474,
+      "coherence": 0.7491,
+      "mass": 45.9505,
+      "shifted": true
+    },
+    {
+      "node_label": "mystery school",
+      "node_id": 89,
+      "node_group": "bridge",
+      "damping": 5.0,
+      "basin_id": 34,
+      "basin_label": "crystal skull[34]",
+      "iton": 0.0,
+      "coherence": 0.8663,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "mystery school",
+      "node_id": 89,
+      "node_group": "bridge",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.7,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "par",
+      "node_id": 79,
+      "node_group": "bridge",
+      "damping": 0.2,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "iton": 0.5,
+      "coherence": 0.8573,
+      "mass": 45.8468,
+      "shifted": true
+    },
+    {
+      "node_label": "par",
+      "node_id": 79,
+      "node_group": "bridge",
+      "damping": 5.0,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "iton": 0.0,
+      "coherence": 0.9204,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "par",
+      "node_id": 79,
+      "node_group": "bridge",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.777,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "john",
+      "node_id": 64,
+      "node_group": "bridge",
+      "damping": 0.2,
+      "basin_id": 64,
+      "basin_label": "john[64]",
+      "iton": 0.215,
+      "coherence": 0.763,
+      "mass": 53.614,
+      "shifted": true
+    },
+    {
+      "node_label": "john",
+      "node_id": 64,
+      "node_group": "bridge",
+      "damping": 5.0,
+      "basin_id": 25,
+      "basin_label": "blue star[25]",
+      "iton": 0.0,
+      "coherence": 0.9115,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "john",
+      "node_id": 64,
+      "node_group": "bridge",
+      "damping": 20.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.7301,
+      "mass": 0.0,
+      "shifted": false
+    },
+    {
+      "node_label": "church",
+      "node_id": 104,
+      "node_group": "bridge",
+      "damping": 0.2,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.412,
+      "coherence": 0.598,
+      "mass": 45.9536,
+      "shifted": true
+    },
+    {
+      "node_label": "church",
+      "node_id": 104,
+      "node_group": "bridge",
+      "damping": 5.0,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "iton": 0.0,
+      "coherence": 0.8515,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "church",
+      "node_id": 104,
+      "node_group": "bridge",
+      "damping": 20.0,
+      "basin_id": 48,
+      "basin_label": "merkabah[48]",
+      "iton": 0.0,
+      "coherence": 0.6856,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "plain",
+      "node_id": 92,
+      "node_group": "bridge",
+      "damping": 0.2,
+      "basin_id": 58,
+      "basin_label": "metatronic[58]",
+      "iton": 0.234,
+      "coherence": 0.65,
+      "mass": 51.9494,
+      "shifted": true
+    },
+    {
+      "node_label": "plain",
+      "node_id": 92,
+      "node_group": "bridge",
+      "damping": 5.0,
+      "basin_id": 29,
+      "basin_label": "pyramid[29]",
+      "iton": 0.0,
+      "coherence": 0.9023,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "plain",
+      "node_id": 92,
+      "node_group": "bridge",
+      "damping": 20.0,
+      "basin_id": 138,
+      "basin_label": "thothhorra khandr[138]",
+      "iton": 0.0,
+      "coherence": 0.7273,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "journey",
+      "node_id": 123,
+      "node_group": "bridge",
+      "damping": 0.2,
+      "basin_id": 123,
+      "basin_label": "journey[123]",
+      "iton": 0.121,
+      "coherence": 0.9959,
+      "mass": 74.6855,
+      "shifted": true
+    },
+    {
+      "node_label": "journey",
+      "node_id": 123,
+      "node_group": "bridge",
+      "damping": 5.0,
+      "basin_id": 123,
+      "basin_label": "journey[123]",
+      "iton": 0.0,
+      "coherence": 0.9189,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "journey",
+      "node_id": 123,
+      "node_group": "bridge",
+      "damping": 20.0,
+      "basin_id": 48,
+      "basin_label": "merkabah[48]",
+      "iton": 0.0,
+      "coherence": 0.7385,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "dragon",
+      "node_id": 124,
+      "node_group": "bridge",
+      "damping": 0.2,
+      "basin_id": 124,
+      "basin_label": "dragon[124]",
+      "iton": 0.114,
+      "coherence": 0.9968,
+      "mass": 75.2258,
+      "shifted": true
+    },
+    {
+      "node_label": "dragon",
+      "node_id": 124,
+      "node_group": "bridge",
+      "damping": 5.0,
+      "basin_id": 124,
+      "basin_label": "dragon[124]",
+      "iton": 0.0,
+      "coherence": 0.9197,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "node_label": "dragon",
+      "node_id": 124,
+      "node_group": "bridge",
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.7389,
+      "mass": 0.0,
+      "shifted": true
+    }
+  ],
+  "probe_c": [
+    {
+      "group": "bridge_high_deg",
+      "damping": 0.2,
+      "group_basin": 52,
+      "group_basin_label": "temple of[52]",
+      "solo_basins": [
+        {
+          "node": "johannine grove",
+          "basin_id": 52,
+          "basin_label": "temple of[52]"
+        },
+        {
+          "node": "mystery school",
+          "basin_id": 53,
+          "basin_label": "lion[53]"
+        },
+        {
+          "node": "par",
+          "basin_id": 52,
+          "basin_label": "temple of[52]"
+        }
+      ],
+      "cooperative": false
+    },
+    {
+      "group": "bridge_high_deg",
+      "damping": 5.0,
+      "group_basin": 53,
+      "group_basin_label": "lion[53]",
+      "solo_basins": [
+        {
+          "node": "johannine grove",
+          "basin_id": 31,
+          "basin_label": "thothhorra[31]"
+        },
+        {
+          "node": "mystery school",
+          "basin_id": 34,
+          "basin_label": "crystal skull[34]"
+        },
+        {
+          "node": "par",
+          "basin_id": 31,
+          "basin_label": "thothhorra[31]"
+        }
+      ],
+      "cooperative": true
+    },
+    {
+      "group": "bridge_low_deg",
+      "damping": 0.2,
+      "group_basin": 123,
+      "group_basin_label": "journey[123]",
+      "solo_basins": [
+        {
+          "node": "journey",
+          "basin_id": 123,
+          "basin_label": "journey[123]"
+        },
+        {
+          "node": "dragon",
+          "basin_id": 124,
+          "basin_label": "dragon[124]"
+        },
+        {
+          "node": "moon",
+          "basin_id": 135,
+          "basin_label": "moon[135]"
+        }
+      ],
+      "cooperative": false
+    },
+    {
+      "group": "bridge_low_deg",
+      "damping": 5.0,
+      "group_basin": 123,
+      "group_basin_label": "journey[123]",
+      "solo_basins": [
+        {
+          "node": "journey",
+          "basin_id": 123,
+          "basin_label": "journey[123]"
+        },
+        {
+          "node": "dragon",
+          "basin_id": 124,
+          "basin_label": "dragon[124]"
+        },
+        {
+          "node": "moon",
+          "basin_id": 135,
+          "basin_label": "moon[135]"
+        }
+      ],
+      "cooperative": false
+    },
+    {
+      "group": "cold_nodes",
+      "damping": 0.2,
+      "group_basin": 2,
+      "group_basin_label": "christ[2]",
+      "solo_basins": [
+        {
+          "node": "john",
+          "basin_id": 64,
+          "basin_label": "john[64]"
+        },
+        {
+          "node": "par",
+          "basin_id": 52,
+          "basin_label": "temple of[52]"
+        },
+        {
+          "node": "johannine grove",
+          "basin_id": 52,
+          "basin_label": "temple of[52]"
+        },
+        {
+          "node": "mystery school",
+          "basin_id": 53,
+          "basin_label": "lion[53]"
+        },
+        {
+          "node": "christine hayes",
+          "basin_id": 122,
+          "basin_label": "lords[122]"
+        }
+      ],
+      "cooperative": true
+    },
+    {
+      "group": "cold_nodes",
+      "damping": 5.0,
+      "group_basin": 87,
+      "group_basin_label": "crystals[87]",
+      "solo_basins": [
+        {
+          "node": "john",
+          "basin_id": 25,
+          "basin_label": "blue star[25]"
+        },
+        {
+          "node": "par",
+          "basin_id": 31,
+          "basin_label": "thothhorra[31]"
+        },
+        {
+          "node": "johannine grove",
+          "basin_id": 31,
+          "basin_label": "thothhorra[31]"
+        },
+        {
+          "node": "mystery school",
+          "basin_id": 34,
+          "basin_label": "crystal skull[34]"
+        },
+        {
+          "node": "christine hayes",
+          "basin_id": 78,
+          "basin_label": "knowledge[78]"
+        }
+      ],
+      "cooperative": true
+    },
+    {
+      "group": "scattered_bridge",
+      "damping": 0.2,
+      "group_basin": 112,
+      "group_basin_label": "rite[112]",
+      "solo_basins": [
+        {
+          "node": "isis",
+          "basin_id": 3,
+          "basin_label": "isis[3]"
+        },
+        {
+          "node": "osiris",
+          "basin_id": 4,
+          "basin_label": "osiris[4]"
+        },
+        {
+          "node": "ark",
+          "basin_id": 8,
+          "basin_label": "ark[8]"
+        },
+        {
+          "node": "orion",
+          "basin_id": 11,
+          "basin_label": "orion[11]"
+        },
+        {
+          "node": "eye",
+          "basin_id": 12,
+          "basin_label": "eye[12]"
+        },
+        {
+          "node": "loch",
+          "basin_id": 13,
+          "basin_label": "loch[13]"
+        },
+        {
+          "node": "maia nartoomid",
+          "basin_id": 14,
+          "basin_label": "maia nartoomid[14]"
+        },
+        {
+          "node": "god",
+          "basin_id": 15,
+          "basin_label": "god[15]"
+        },
+        {
+          "node": "pyramid",
+          "basin_id": 29,
+          "basin_label": "pyramid[29]"
+        },
+        {
+          "node": "templar",
+          "basin_id": 30,
+          "basin_label": "templar[30]"
+        },
+        {
+          "node": "plain",
+          "basin_id": 58,
+          "basin_label": "metatronic[58]"
+        },
+        {
+          "node": "holorian",
+          "basin_id": 107,
+          "basin_label": "holorian[107]"
+        },
+        {
+          "node": "mazur",
+          "basin_id": 118,
+          "basin_label": "mazur[118]"
+        },
+        {
+          "node": "star lineages",
+          "basin_id": 17,
+          "basin_label": "star lineages[17]"
+        },
+        {
+          "node": "sun",
+          "basin_id": 55,
+          "basin_label": "sun[55]"
+        }
+      ],
+      "cooperative": true
+    },
+    {
+      "group": "scattered_bridge",
+      "damping": 5.0,
+      "group_basin": 41,
+      "group_basin_label": "lineages[41]",
+      "solo_basins": [
+        {
+          "node": "isis",
+          "basin_id": 3,
+          "basin_label": "isis[3]"
+        },
+        {
+          "node": "osiris",
+          "basin_id": 4,
+          "basin_label": "osiris[4]"
+        },
+        {
+          "node": "ark",
+          "basin_id": 8,
+          "basin_label": "ark[8]"
+        },
+        {
+          "node": "orion",
+          "basin_id": 11,
+          "basin_label": "orion[11]"
+        },
+        {
+          "node": "eye",
+          "basin_id": 12,
+          "basin_label": "eye[12]"
+        },
+        {
+          "node": "loch",
+          "basin_id": 71,
+          "basin_label": "crystal[71]"
+        },
+        {
+          "node": "maia nartoomid",
+          "basin_id": 14,
+          "basin_label": "maia nartoomid[14]"
+        },
+        {
+          "node": "god",
+          "basin_id": 15,
+          "basin_label": "god[15]"
+        },
+        {
+          "node": "pyramid",
+          "basin_id": 29,
+          "basin_label": "pyramid[29]"
+        },
+        {
+          "node": "templar",
+          "basin_id": 30,
+          "basin_label": "templar[30]"
+        },
+        {
+          "node": "plain",
+          "basin_id": 29,
+          "basin_label": "pyramid[29]"
+        },
+        {
+          "node": "holorian",
+          "basin_id": 71,
+          "basin_label": "crystal[71]"
+        },
+        {
+          "node": "mazur",
+          "basin_id": 118,
+          "basin_label": "mazur[118]"
+        },
+        {
+          "node": "star lineages",
+          "basin_id": 14,
+          "basin_label": "maia nartoomid[14]"
+        },
+        {
+          "node": "sun",
+          "basin_id": 55,
+          "basin_label": "sun[55]"
+        }
+      ],
+      "cooperative": true
+    },
+    {
+      "group": "spirit_core",
+      "damping": 0.2,
+      "group_basin": 2,
+      "group_basin_label": "christ[2]",
+      "solo_basins": [
+        {
+          "node": "christ",
+          "basin_id": 2,
+          "basin_label": "christ[2]"
+        },
+        {
+          "node": "metatron",
+          "basin_id": 9,
+          "basin_label": "metatron[9]"
+        },
+        {
+          "node": "christic",
+          "basin_id": 22,
+          "basin_label": "christic[22]"
+        }
+      ],
+      "cooperative": false
+    },
+    {
+      "group": "spirit_core",
+      "damping": 5.0,
+      "group_basin": 2,
+      "group_basin_label": "christ[2]",
+      "solo_basins": [
+        {
+          "node": "christ",
+          "basin_id": 2,
+          "basin_label": "christ[2]"
+        },
+        {
+          "node": "metatron",
+          "basin_id": 9,
+          "basin_label": "metatron[9]"
+        },
+        {
+          "node": "christic",
+          "basin_id": 22,
+          "basin_label": "christic[22]"
+        }
+      ],
+      "cooperative": false
+    },
+    {
+      "group": "spirit_periphery",
+      "damping": 0.2,
+      "group_basin": 31,
+      "group_basin_label": "thothhorra[31]",
+      "solo_basins": [
+        {
+          "node": "venus",
+          "basin_id": 10,
+          "basin_label": "venus[10]"
+        },
+        {
+          "node": "thothhorra",
+          "basin_id": 31,
+          "basin_label": "thothhorra[31]"
+        },
+        {
+          "node": "merkabah",
+          "basin_id": 48,
+          "basin_label": "merkabah[48]"
+        }
+      ],
+      "cooperative": false
+    },
+    {
+      "group": "spirit_periphery",
+      "damping": 5.0,
+      "group_basin": 31,
+      "group_basin_label": "thothhorra[31]",
+      "solo_basins": [
+        {
+          "node": "venus",
+          "basin_id": 10,
+          "basin_label": "venus[10]"
+        },
+        {
+          "node": "thothhorra",
+          "basin_id": 31,
+          "basin_label": "thothhorra[31]"
+        },
+        {
+          "node": "merkabah",
+          "basin_id": 48,
+          "basin_label": "merkabah[48]"
+        }
+      ],
+      "cooperative": false
+    },
+    {
+      "group": "temple_cluster",
+      "damping": 0.2,
+      "group_basin": 52,
+      "group_basin_label": "temple of[52]",
+      "solo_basins": [
+        {
+          "node": "temple doors",
+          "basin_id": 6,
+          "basin_label": "temple doors[6]"
+        },
+        {
+          "node": "temple of",
+          "basin_id": 52,
+          "basin_label": "temple of[52]"
+        },
+        {
+          "node": "rite akashic",
+          "basin_id": 51,
+          "basin_label": "rite akashic[51]"
+        }
+      ],
+      "cooperative": false
+    },
+    {
+      "group": "temple_cluster",
+      "damping": 5.0,
+      "group_basin": 52,
+      "group_basin_label": "temple of[52]",
+      "solo_basins": [
+        {
+          "node": "temple doors",
+          "basin_id": 6,
+          "basin_label": "temple doors[6]"
+        },
+        {
+          "node": "temple of",
+          "basin_id": 52,
+          "basin_label": "temple of[52]"
+        },
+        {
+          "node": "rite akashic",
+          "basin_id": 51,
+          "basin_label": "rite akashic[51]"
+        }
+      ],
+      "cooperative": false
+    }
+  ],
+  "probe_d": [
+    {
+      "group": "spirit_periphery",
+      "total_energy": 50.0,
+      "damping": 0.2,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "mass": 33.3913,
+      "iton": 0.458
+    },
+    {
+      "group": "spirit_periphery",
+      "total_energy": 50.0,
+      "damping": 5.0,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "spirit_periphery",
+      "total_energy": 50.0,
+      "damping": 20.0,
+      "basin_id": 138,
+      "basin_label": "thothhorra khandr[138]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "spirit_periphery",
+      "total_energy": 150.0,
+      "damping": 0.2,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "mass": 125.4345,
+      "iton": 0.179
+    },
+    {
+      "group": "spirit_periphery",
+      "total_energy": 150.0,
+      "damping": 5.0,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "spirit_periphery",
+      "total_energy": 150.0,
+      "damping": 20.0,
+      "basin_id": 138,
+      "basin_label": "thothhorra khandr[138]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "spirit_periphery",
+      "total_energy": 300.0,
+      "damping": 0.2,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "mass": 257.7528,
+      "iton": 0.179
+    },
+    {
+      "group": "spirit_periphery",
+      "total_energy": 300.0,
+      "damping": 5.0,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "spirit_periphery",
+      "total_energy": 300.0,
+      "damping": 20.0,
+      "basin_id": 138,
+      "basin_label": "thothhorra khandr[138]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "temple_cluster",
+      "total_energy": 50.0,
+      "damping": 0.2,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "mass": 30.5094,
+      "iton": 0.271
+    },
+    {
+      "group": "temple_cluster",
+      "total_energy": 50.0,
+      "damping": 5.0,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "temple_cluster",
+      "total_energy": 50.0,
+      "damping": 20.0,
+      "basin_id": 28,
+      "basin_label": "akashic practice[28]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "temple_cluster",
+      "total_energy": 150.0,
+      "damping": 0.2,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "mass": 133.1313,
+      "iton": 0.136
+    },
+    {
+      "group": "temple_cluster",
+      "total_energy": 150.0,
+      "damping": 5.0,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "temple_cluster",
+      "total_energy": 150.0,
+      "damping": 20.0,
+      "basin_id": 28,
+      "basin_label": "akashic practice[28]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "temple_cluster",
+      "total_energy": 300.0,
+      "damping": 0.2,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "mass": 275.4633,
+      "iton": 0.143
+    },
+    {
+      "group": "temple_cluster",
+      "total_energy": 300.0,
+      "damping": 5.0,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "temple_cluster",
+      "total_energy": 300.0,
+      "damping": 20.0,
+      "basin_id": 28,
+      "basin_label": "akashic practice[28]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "christine_solo",
+      "total_energy": 50.0,
+      "damping": 0.2,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "mass": 24.6795,
+      "iton": 0.471
+    },
+    {
+      "group": "christine_solo",
+      "total_energy": 50.0,
+      "damping": 5.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "christine_solo",
+      "total_energy": 50.0,
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "christine_solo",
+      "total_energy": 150.0,
+      "damping": 0.2,
+      "basin_id": 122,
+      "basin_label": "lords[122]",
+      "mass": 99.7604,
+      "iton": 0.3
+    },
+    {
+      "group": "christine_solo",
+      "total_energy": 150.0,
+      "damping": 5.0,
+      "basin_id": 78,
+      "basin_label": "knowledge[78]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "christine_solo",
+      "total_energy": 150.0,
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "christine_solo",
+      "total_energy": 300.0,
+      "damping": 0.2,
+      "basin_id": 90,
+      "basin_label": "christine hayes[90]",
+      "mass": 343.8741,
+      "iton": 0.207
+    },
+    {
+      "group": "christine_solo",
+      "total_energy": 300.0,
+      "damping": 5.0,
+      "basin_id": 90,
+      "basin_label": "christine hayes[90]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "christine_solo",
+      "total_energy": 300.0,
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "bridge_low_deg",
+      "total_energy": 50.0,
+      "damping": 0.2,
+      "basin_id": 123,
+      "basin_label": "journey[123]",
+      "mass": 16.2449,
+      "iton": 0.4
+    },
+    {
+      "group": "bridge_low_deg",
+      "total_energy": 50.0,
+      "damping": 5.0,
+      "basin_id": 88,
+      "basin_label": "prima matra[88]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "bridge_low_deg",
+      "total_energy": 50.0,
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "bridge_low_deg",
+      "total_energy": 150.0,
+      "damping": 0.2,
+      "basin_id": 123,
+      "basin_label": "journey[123]",
+      "mass": 56.2392,
+      "iton": 0.181
+    },
+    {
+      "group": "bridge_low_deg",
+      "total_energy": 150.0,
+      "damping": 5.0,
+      "basin_id": 123,
+      "basin_label": "journey[123]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "bridge_low_deg",
+      "total_energy": 150.0,
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "bridge_low_deg",
+      "total_energy": 300.0,
+      "damping": 0.2,
+      "basin_id": 123,
+      "basin_label": "journey[123]",
+      "mass": 135.7058,
+      "iton": 0.393
+    },
+    {
+      "group": "bridge_low_deg",
+      "total_energy": 300.0,
+      "damping": 5.0,
+      "basin_id": 123,
+      "basin_label": "journey[123]",
+      "mass": 0.0,
+      "iton": 0.0
+    },
+    {
+      "group": "bridge_low_deg",
+      "total_energy": 300.0,
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "mass": 0.0,
+      "iton": 0.0
+    }
+  ],
+  "probe_e": [
+    {
+      "mixture": "spirit+bridge_hi",
+      "damping": 0.2,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.179,
+      "coherence": 0.6019,
+      "mass": 84.6213,
+      "shifted": true
+    },
+    {
+      "mixture": "spirit+bridge_hi",
+      "damping": 5.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.8985,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "mixture": "spirit+bridge_hi",
+      "damping": 20.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.8747,
+      "mass": 0.0,
+      "shifted": false
+    },
+    {
+      "mixture": "spirit+cold",
+      "damping": 0.2,
+      "basin_id": 58,
+      "basin_label": "metatronic[58]",
+      "iton": 0.157,
+      "coherence": 0.9533,
+      "mass": 100.2,
+      "shifted": true
+    },
+    {
+      "mixture": "spirit+cold",
+      "damping": 5.0,
+      "basin_id": 58,
+      "basin_label": "metatronic[58]",
+      "iton": 0.0,
+      "coherence": 0.8738,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "mixture": "spirit+cold",
+      "damping": 20.0,
+      "basin_id": 2,
+      "basin_label": "christ[2]",
+      "iton": 0.0,
+      "coherence": 0.7746,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "mixture": "temple+meta",
+      "damping": 0.2,
+      "basin_id": 58,
+      "basin_label": "metatronic[58]",
+      "iton": 0.186,
+      "coherence": 0.9603,
+      "mass": 117.2093,
+      "shifted": true
+    },
+    {
+      "mixture": "temple+meta",
+      "damping": 5.0,
+      "basin_id": 52,
+      "basin_label": "temple of[52]",
+      "iton": 0.0,
+      "coherence": 0.7507,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "mixture": "temple+meta",
+      "damping": 20.0,
+      "basin_id": 7,
+      "basin_label": "numis'om[7]",
+      "iton": 0.0,
+      "coherence": 0.6397,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "mixture": "bridge_hi+lo",
+      "damping": 0.2,
+      "basin_id": 123,
+      "basin_label": "journey[123]",
+      "iton": 0.324,
+      "coherence": 0.8342,
+      "mass": 52.3972,
+      "shifted": true
+    },
+    {
+      "mixture": "bridge_hi+lo",
+      "damping": 5.0,
+      "basin_id": 88,
+      "basin_label": "prima matra[88]",
+      "iton": 0.0,
+      "coherence": 0.9304,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "mixture": "bridge_hi+lo",
+      "damping": 20.0,
+      "basin_id": 48,
+      "basin_label": "merkabah[48]",
+      "iton": 0.0,
+      "coherence": 0.8165,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "mixture": "core+periphery",
+      "damping": 0.2,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "iton": 0.214,
+      "coherence": 0.9955,
+      "mass": 120.7473,
+      "shifted": true
+    },
+    {
+      "mixture": "core+periphery",
+      "damping": 5.0,
+      "basin_id": 31,
+      "basin_label": "thothhorra[31]",
+      "iton": 0.0,
+      "coherence": 0.655,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "mixture": "core+periphery",
+      "damping": 20.0,
+      "basin_id": 22,
+      "basin_label": "christic[22]",
+      "iton": 0.0,
+      "coherence": 0.6179,
+      "mass": 0.0,
+      "shifted": false
+    },
+    {
+      "mixture": "tech+spirit",
+      "damping": 0.2,
+      "basin_id": 23,
+      "basin_label": "light codes[23]",
+      "iton": 0.114,
+      "coherence": 0.9919,
+      "mass": 135.0672,
+      "shifted": true
+    },
+    {
+      "mixture": "tech+spirit",
+      "damping": 5.0,
+      "basin_id": 23,
+      "basin_label": "light codes[23]",
+      "iton": 0.0,
+      "coherence": 0.6788,
+      "mass": 0.0,
+      "shifted": true
+    },
+    {
+      "mixture": "tech+spirit",
+      "damping": 20.0,
+      "basin_id": 90,
+      "basin_label": "christine hayes[90]",
+      "iton": 0.0,
+      "coherence": 0.6762,
+      "mass": 0.0,
+      "shifted": true
+    }
+  ]
+}

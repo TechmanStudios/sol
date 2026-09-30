@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOL Sovereign Engine — Agentic Atlas</title>
+    
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Vis.js Standalone -->
+    <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #030308;
+            --bg-darker: #010103;
+            --panel-bg: rgba(10, 10, 22, 0.75);
+            --border-color: rgba(0, 229, 255, 0.15);
+            --text-color: #e2e8f0;
+            --text-muted: #94a3b8;
+            
+            /* Neon Accent Palette */
+            --accent-cyan: #00e5ff;
+            --accent-blue: #3d5afe;
+            --accent-purple: #d500f9;
+            --accent-green: #00e676;
+            --accent-orange: #ff9100;
+            --accent-red: #ff1744;
+            
+            --panel-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            --glass-blur: blur(12px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(13, 13, 30, 0.8) 0%, rgba(3, 3, 8, 1) 90%),
+                radial-gradient(circle at 90% 80%, rgba(26, 10, 40, 0.4) 0%, rgba(3, 3, 8, 1) 80%);
+            color: var(--text-color);
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar / Sovereign HUD Header */
+        header {
+            height: 70px;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(4, 4, 10, 0.9);
+            backdrop-filter: var(--glass-blur);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-logo-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-logo-icon {
+            font-size: 24px;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+            animation: pulse-glow 3s infinite alternate;
+        }
+
+        .header-title-block h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, #fff 30%, var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        .header-title-block p {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header-hud-stats {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .hud-stat-item {
+            text-align: right;
+        }
+
+        .hud-stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .hud-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .hud-stat-value.pulse-green {
+            color: var(--accent-green);
+        }
+
+        /* Dashboard Workspace Layout */
+        .workspace {
+            flex: 1;
+            display: flex;
+            position: relative;
+            height: calc(100vh - 70px);
+        }
+
+        /* Sidebars */
+        .sidebar {
+            width: 380px;
+            background: var(--panel-bg);
+            backdrop-filter: var(--glass-blur);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            z-index: 50;
+            box-shadow: var(--panel-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-right {
+            border-right: none;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .sidebar-padding {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Search Input */
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            padding: 12px 16px 12px 42px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        /* Layers Toggle Card */
+        .layer-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .toggle-label-sec {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .dot-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Switch UI */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 34px;
+            transition: .4s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            border-radius: 50%;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: rgba(0, 229, 255, 0.2);
+            border-color: var(--accent-cyan);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(18px);
+            background-color: var(--accent-cyan);
+            box-shadow: 0 0 8px var(--accent-cyan);
+        }
+
+        /* Main Network Canvas area */
+        .canvas-area {
+            flex: 1;
+            position: relative;
+            background: #010103;
+            overflow: hidden;
+        }
+
+        #network-graph {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+        }
+
+        /* Glassmorphism Inspector */
+        .inspector-panel {
+            background: rgba(5, 5, 15, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .inspector-placeholder {
+            margin: auto;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .inspector-placeholder i {
+            font-size: 36px;
+            opacity: 0.3;
+        }
+
+        .inspector-header {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 14px;
+        }
+
+        .inspector-tag {
+            align-self: flex-start;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .inspector-name {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: white;
+        }
+
+        .inspector-description {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .meta-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .meta-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .meta-value {
+            font-size: 13px;
+            color: var(--text-color);
+            background: rgba(255, 255, 255, 0.02);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .meta-value-link {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 8px;
+            transition: text-shadow 0.2s ease;
+        }
+
+        .meta-value-link:hover {
+            text-shadow: 0 0 6px var(--accent-cyan);
+            text-decoration: underline;
+        }
+
+        /* Accordion for Markdown Sections */
+        .section-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .accordion-item {
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .accordion-trigger {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: none;
+            color: var(--text-color);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: left;
+            transition: background 0.2s ease;
+        }
+
+        .accordion-trigger:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .accordion-content {
+            display: none;
+            padding: 14px 16px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            white-space: pre-wrap;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .accordion-item.active .accordion-content {
+            display: block;
+        }
+
+        .accordion-item.active .accordion-trigger i {
+            transform: rotate(180deg);
+        }
+
+        /* Preset Workflow Section */
+        .workflow-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .workflow-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .workflow-card:hover {
+            border-color: rgba(0, 229, 255, 0.3);
+            background: rgba(0, 229, 255, 0.02);
+            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.05);
+        }
+
+        .workflow-card.active {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 229, 255, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.15);
+        }
+
+        .workflow-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .workflow-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .workflow-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .workflow-play-btn {
+            background: var(--accent-cyan);
+            color: var(--bg-color);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+        }
+
+        .workflow-play-btn:hover {
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+        }
+
+        /* Workflow Steps Panel */
+        .workflow-steps-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 12px;
+            display: none;
+        }
+
+        .workflow-card.active + .workflow-steps-panel {
+            display: block;
+            margin-top: -8px;
+            margin-bottom: 8px;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            align-items: flex-start;
+        }
+
+        .step-item:last-child {
+            border-bottom: none;
+        }
+
+        .step-num {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            flex: 0 0 auto;
+            margin-top: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .step-item.highlighted .step-num {
+            background: var(--accent-cyan);
+            color: var(--bg-color);
+            box-shadow: 0 0 8px var(--accent-cyan);
+        }
+
+        .step-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .step-node-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+        }
+
+        .step-action-desc {
+            font-size: 12px;
+            color: var(--text-color);
+        }
+
+        .step-item.highlighted .step-action-desc {
+            color: white;
+            font-weight: 500;
+        }
+
+        /* Tooltip style */
+        .viz-tooltip {
+            position: absolute;
+            background: rgba(5, 5, 15, 0.95);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 10px 14px;
+            box-shadow: var(--panel-shadow);
+            z-index: 1000;
+            pointer-events: none;
+            display: none;
+            max-width: 280px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        /* Physics Stabilization HUD overlay */
+        .stabilization-hud {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(4, 4, 10, 0.85);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 40;
+            pointer-events: none;
+            box-shadow: var(--panel-shadow);
+            transition: opacity 0.5s ease;
+        }
+
+        .stabilization-hud.fade-out {
+            opacity: 0;
+        }
+
+        .hud-spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(0, 229, 255, 0.1);
+            border-top: 2px solid var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .hud-text {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Physics / Graph Controls HUD overlay */
+        .graph-controls {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(4, 4, 10, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 6px;
+            display: flex;
+            gap: 6px;
+            z-index: 40;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-color);
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-color);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+        }
+
+        /* Animations */
+        @keyframes pulse-glow {
+            from {
+                text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+            }
+            to {
+                text-shadow: 0 0 15px rgba(0, 229, 255, 0.8);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- HUD Header -->
+    <header>
+        <div class="header-logo-section">
+            <i class="fa-solid fa-atom header-logo-icon"></i>
+            <div class="header-title-block">
+                <h1>SOL Engine</h1>
+                <p>Agentic Architecture & Engineering Atlas</p>
+            </div>
+        </div>
+
+        <div class="header-hud-stats">
+            <div class="hud-stat-item">
+                <div class="hud-stat-label">Active Agents</div>
+                <div id="hud-agent-count" class="hud-stat-value">15</div>
+            </div>
+            <div class="hud-stat-item">
+                <div class="hud-stat-label">Eng. Domains</div>
+                <div id="hud-domain-count" class="hud-stat-value">11</div>
+            </div>
+            <div class="hud-stat-item">
+                <div class="hud-stat-label">Mapped Nodes</div>
+                <div id="hud-node-count" class="hud-stat-value">31</div>
+            </div>
+            <div class="hud-stat-item">
+                <div class="hud-stat-label">System Epoch</div>
+                <div class="hud-stat-value pulse-green">Level 50 (Finalized)</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="workspace">
+        
+        <!-- Left Sidebar: Controls & Inspector -->
+        <div class="sidebar">
+            <div class="sidebar-padding">
+                
+                <!-- Search & Filters -->
+                <div class="search-container">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-box" class="search-input" placeholder="Search agents, domains, tools, files...">
+                </div>
+
+                <!-- Layer Toggles -->
+                <div class="layer-card">
+                    <div class="section-title">
+                        <i class="fa-solid fa-layer-group"></i> Layer Filters
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-label-sec">
+                            <span class="dot-indicator" style="background: var(--accent-purple);"></span>
+                            <span>Agentic Layer</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="layer-agents" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-label-sec">
+                            <span class="dot-indicator" style="background: var(--accent-green);"></span>
+                            <span>Engineering Domains</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="layer-domains" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-label-sec">
+                            <span class="dot-indicator" style="background: var(--accent-orange);"></span>
+                            <span>Behavioral Contracts</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="layer-contracts" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-label-sec">
+                            <span class="dot-indicator" style="background: var(--accent-red);"></span>
+                            <span>Storage & Artifacts</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="layer-outputs" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Detail Inspector -->
+                <div class="section-title" style="margin-bottom: 0;">
+                    <i class="fa-solid fa-circle-info"></i> Detail Inspector
+                </div>
+                <div class="inspector-panel" id="inspector">
+                    <div class="inspector-placeholder" id="inspector-placeholder">
+                        <i class="fa-solid fa-circle-nodes"></i>
+                        <p>Select any node in the graph to inspect its details, inputs, outputs, and source code files.</p>
+                    </div>
+                    <div id="inspector-content" style="display: none;">
+                        <!-- Dynamically filled by JS -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Center: Interactive Graph -->
+        <div class="canvas-area">
+            <div id="network-graph"></div>
+
+            <!-- Stabilization HUD -->
+            <div class="stabilization-hud" id="stabilization-hud">
+                <div class="hud-spinner"></div>
+                <div class="hud-text" id="stabilization-text">Stabilizing layout...</div>
+            </div>
+
+            <!-- Graph Camera Controls -->
+            <div class="graph-controls">
+                <div class="control-btn" id="btn-zoom-in" title="Zoom In"><i class="fa-solid fa-plus"></i></div>
+                <div class="control-btn" id="btn-zoom-out" title="Zoom Out"><i class="fa-solid fa-minus"></i></div>
+                <div class="control-btn" id="btn-fit" title="Fit Screen"><i class="fa-solid fa-expand"></i></div>
+                <div class="control-btn" id="btn-physics" title="Toggle Physics"><i class="fa-solid fa-bolt"></i></div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar: Workflows & Specs -->
+        <div class="sidebar sidebar-right">
+            <div class="sidebar-padding">
+                
+                <!-- Preset Workflows -->
+                <div class="section-title">
+                    <i class="fa-solid fa-route"></i> Execution Workflows
+                </div>
+                
+                <div class="workflow-section" id="workflow-list">
+                    <!-- Dynamically filled by JS -->
+                </div>
+
+                <!-- Graph Legend -->
+                <div class="layer-card">
+                    <div class="section-title">
+                        <i class="fa-solid fa-key"></i> Graph Legend
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--text-muted);">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 12px; height: 12px; background: var(--accent-cyan); border-radius: 50%; display: inline-block;"></span>
+                            <span style="color: white; font-weight: 500;">User Entry / Trigger</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 12px; height: 12px; background: var(--accent-blue); border-radius: 3px; display: inline-block;"></span>
+                            <span style="color: white; font-weight: 500;">Orchestration Hubs</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 12px; height: 12px; background: var(--accent-purple); border-radius: 3px; display: inline-block;"></span>
+                            <span style="color: white; font-weight: 500;">Autonomous Research Agents</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 12px; height: 12px; background: var(--accent-green); clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); display: inline-block;"></span>
+                            <span style="color: white; font-weight: 500;">Codebase Engineering Domains</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 12px; height: 12px; background: var(--accent-orange); border-radius: 6px; display: inline-block;"></span>
+                            <span style="color: white; font-weight: 500;">Behavioral Contracts & Kit</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 12px; height: 12px; background: var(--accent-red); border-radius: 4px; display: inline-block;"></span>
+                            <span style="color: white; font-weight: 500;">Knowledge & Output Data</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Live Tooltip -->
+    <div id="graph-tooltip" class="viz-tooltip"></div>
+
+    <script>
+        // Embed the parsed agents database and engineering details directly
+        const AGENTS_DATABASE = [{"name": "sol-cortex", "filename": "sol-cortex.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/sol-cortex.agent.md", "description": "Autonomous scientist loop \u2014 reads knowledge, proposes experiments, runs them, analyzes results, and compiles findings.", "tools": [], "handoffs": [{"label": "Lab Master", "agent": "sol-lab-master", "prompt": "Hand off protocol design decisions and controls review"}, {"label": "Knowledge Compiler", "agent": "sol-knowledge-compiler", "prompt": "Hand off proof packet drafting and knowledge promotion"}, {"label": "Structure Manager", "agent": "SolTech-StructureManager", "prompt": "Hand off repo-wide changes and workflow coordination"}, {"label": "Data Analyst", "agent": "sol-data-analyst", "prompt": "Hand off deeper statistical analysis beyond automated checks"}], "sections": {"General": [], "SOL Cortex Agent \u2014 Autonomous Scientist Loop": "", "Mission": "You are the SOL Cortex \u2014 the autonomous research loop that transforms the SOL\nEngine into a self-improving hippocampus. You close the gap between \"agents run\nexperiments\" and \"agents decide what to run next.\" Your job:\n\n1. **Scan** the knowledge base for gaps, unpromoted claims, and unexplored parameters\n2. **Hypothesize** what experiment would most advance understanding\n3. **Generate** a protocol JSON that the headless sol-core can execute\n4. **Run** the experiment via `auto_run.execute_protocol()`\n5. **Analyze** results: do they support or falsify the hypothesis?\n6. **Compile** findings into proof packets or research notes\n7. **Decide** what to do next: new experiment, deeper sweep, or stop", "When to use": "- Autonomous research: \"run the next useful experiment\"\n- Gap-driven: \"what's the most important thing we don't know yet?\"\n- Replication: \"reproduce claim CL-X with headless sol-core\"\n- Exploration: \"sweep parameter X across range Y\"\n- Consolidation: \"clean up unpromoted claims\"", "Core Loop": "```\nscan_knowledge() \u2192 identify_gaps() \u2192 rank_gaps()\n  \u2192 generate_hypothesis() \u2192 build_protocol()\n    \u2192 execute_protocol() \u2192 analyze_results()\n      \u2192 compile_findings() \u2192 update_knowledge()\n        \u2192 decide_next()\n```", "Guard Rails (NON-NEGOTIABLE)": "", "Budget limits": "- **max_steps_per_run**: 2000 (single condition)\n- **max_conditions_per_protocol**: 20\n- **max_reps_per_condition**: 10\n- **max_total_steps_per_session**: 100,000\n- **max_protocols_per_session**: 10", "Safety checks": "- Every protocol MUST specify `baseline` mode explicitly\n- Every protocol MUST have at least one `falsifier`\n- Sanity checks MUST pass before any results are compiled into knowledge\n- If sanity fails, the cortex must log the failure and NOT promote the result\n- No modifying the SOL physics engine (that's sol-evolve's job, Phase 3)", "Anomaly detection": "- If entropy > 0.99 or entropy < 0.01 for >50% of steps \u2192 flag as edge case\n- If mass exceeds injected total \u2192 flag as mass-creation bug\n- If all conditions produce identical results within tolerance \u2192 flag as no-effect", "Session hygiene": "- Log all decisions with reasoning to `tools/sol-cortex/session_log.jsonl`\n- Each session starts fresh; no hidden state carries over\n- Results directory: `tools/sol-cortex/results/<session_id>/`", "Edges you won't cross": "- No engine code modifications (read-only access to sol_engine.py)\n- No guessing parameters: use exact values or declare [UNKNOWN]\n- No promoting claims without passing sanity checks\n- No running more than guard rail limits per session\n- No inventing data or interpolating between experiments", "Required standards": "Follow these instruction files:\n- .github/instructions/sol-style-and-epistemics.md\n- .github/instructions/sol-proof-packet-standard.md\n- .github/instructions/sol-baseline-discipline.md", "Inputs": "- Knowledge base: `solKnowledge/` (proof packets, claim ledger, consolidation index)\n- Engine: `tools/sol-core/sol_engine.py` (headless SOL)\n- Pipeline: `tools/sol-core/auto_run.py` (protocol \u2192 results)\n- Gap detector: `tools/sol-cortex/gap_detector.py`\n- Hypothesis templates: `tools/sol-cortex/hypothesis_templates/`\n- Protocol generator: `tools/sol-cortex/protocol_gen.py`", "Outputs": "- Protocol JSONs (generated, stored in results dir)\n- Run bundles (Markdown, auto-generated)\n- Session log (JSONL, machine-readable)\n- Candidate proof packets (if results warrant promotion)\n- Next-action recommendation", "Progress reporting (required)": "NOW / KNOWLEDGE SCANNED / GAPS FOUND / HYPOTHESIS / PROTOCOL / RESULTS / NEXT ACTION\n\n```"}, "raw_body": "# SOL Cortex Agent \u2014 Autonomous Scientist Loop\n\n## Mission\nYou are the SOL Cortex \u2014 the autonomous research loop that transforms the SOL\nEngine into a self-improving hippocampus. You close the gap between \"agents run\nexperiments\" and \"agents decide what to run next.\" Your job:\n\n1. **Scan** the knowledge base for gaps, unpromoted claims, and unexplored parameters\n2. **Hypothesize** what experiment would most advance understanding\n3. **Generate** a protocol JSON that the headless sol-core can execute\n4. **Run** the experiment via `auto_run.execute_protocol()`\n5. **Analyze** results: do they support or falsify the hypothesis?\n6. **Compile** findings into proof packets or research notes\n7. **Decide** what to do next: new experiment, deeper sweep, or stop\n\n## When to use\n- Autonomous research: \"run the next useful experiment\"\n- Gap-driven: \"what's the most important thing we don't know yet?\"\n- Replication: \"reproduce claim CL-X with headless sol-core\"\n- Exploration: \"sweep parameter X across range Y\"\n- Consolidation: \"clean up unpromoted claims\"\n\n## Core Loop\n```\nscan_knowledge() \u2192 identify_gaps() \u2192 rank_gaps()\n  \u2192 generate_hypothesis() \u2192 build_protocol()\n    \u2192 execute_protocol() \u2192 analyze_results()\n      \u2192 compile_findings() \u2192 update_knowledge()\n        \u2192 decide_next()\n```\n\n## Guard Rails (NON-NEGOTIABLE)\n\n### Budget limits\n- **max_steps_per_run**: 2000 (single condition)\n- **max_conditions_per_protocol**: 20\n- **max_reps_per_condition**: 10\n- **max_total_steps_per_session**: 100,000\n- **max_protocols_per_session**: 10\n\n### Safety checks\n- Every protocol MUST specify `baseline` mode explicitly\n- Every protocol MUST have at least one `falsifier`\n- Sanity checks MUST pass before any results are compiled into knowledge\n- If sanity fails, the cortex must log the failure and NOT promote the result\n- No modifying the SOL physics engine (that's sol-evolve's job, Phase 3)\n\n### Anomaly detection\n- If entropy > 0.99 or entropy < 0.01 for >50% of steps \u2192 flag as edge case\n- If mass exceeds injected total \u2192 flag as mass-creation bug\n- If all conditions produce identical results within tolerance \u2192 flag as no-effect\n\n### Session hygiene\n- Log all decisions with reasoning to `tools/sol-cortex/session_log.jsonl`\n- Each session starts fresh; no hidden state carries over\n- Results directory: `tools/sol-cortex/results/<session_id>/`\n\n## Edges you won't cross\n- No engine code modifications (read-only access to sol_engine.py)\n- No guessing parameters: use exact values or declare [UNKNOWN]\n- No promoting claims without passing sanity checks\n- No running more than guard rail limits per session\n- No inventing data or interpolating between experiments\n\n## Required standards\nFollow these instruction files:\n- .github/instructions/sol-style-and-epistemics.md\n- .github/instructions/sol-proof-packet-standard.md\n- .github/instructions/sol-baseline-discipline.md\n\n## Inputs\n- Knowledge base: `solKnowledge/` (proof packets, claim ledger, consolidation index)\n- Engine: `tools/sol-core/sol_engine.py` (headless SOL)\n- Pipeline: `tools/sol-core/auto_run.py` (protocol \u2192 results)\n- Gap detector: `tools/sol-cortex/gap_detector.py`\n- Hypothesis templates: `tools/sol-cortex/hypothesis_templates/`\n- Protocol generator: `tools/sol-cortex/protocol_gen.py`\n\n## Outputs\n- Protocol JSONs (generated, stored in results dir)\n- Run bundles (Markdown, auto-generated)\n- Session log (JSONL, machine-readable)\n- Candidate proof packets (if results warrant promotion)\n- Next-action recommendation\n\n## Progress reporting (required)\nNOW / KNOWLEDGE SCANNED / GAPS FOUND / HYPOTHESIS / PROTOCOL / RESULTS / NEXT ACTION\n\n```"}, {"name": "sol-data-analyst", "filename": "sol-data-analyst.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/sol-data-analyst.agent.md", "description": "Turns raw exports into derived metrics, sanity checks, and compact tables.", "tools": [], "handoffs": [{"label": "Lab Master", "agent": "sol-lab-master", "prompt": "Hand off experiment interpretation, controls, and next-run planning"}, {"label": "Knowledge Compiler", "agent": "sol-knowledge-compiler", "prompt": "Hand off proof packet drafting and canonical knowledge compilation"}, {"label": "Structure Manager", "agent": "SolTech-StructureManager", "prompt": "Hand off orchestration and document structure updates"}], "sections": {"General": [], "SOL Data Analyst Agent": "", "Mission": "Turn raw exports into sanity checks, derived tables/curves, and compact results that are suitable for claim promotion.", "When to use": "- You have CSV exports and want analysis outputs\n- You need threshold brackets, winner probabilities, timing distributions\n- You want detector/window artifact checks before any narrative", "Edges you won\u2019t cross": "- No interpretation until sanity checks pass\n- No assuming detector semantics; inspect or mark [UNKNOWN]\n- No merging across runs without explicit provenance", "Required standards": "Follow these instruction files:\n- .github/instructions/sol-style-and-epistemics.md\n- .github/instructions/sol-run-naming-and-exports.md\n- .github/instructions/sol-progress-and-help.md", "Inputs": "- Exports: *_MASTER_summary.csv, *_MASTER_busTrace.csv, *_repTransition_curve.csv\n- Detector definitions/windows (or [UNKNOWN])\n- Target question (threshold, timing, basin selection, etc.)", "Outputs": "- analysis_report_<series>.md:\n  - invariants check\n  - sample size check\n  - detector/window clipping check\n  - primary results tables\n  - threshold brackets (and optional simple fits if justified)\n- derived_tables_<series>.csv\n- Optional analysis script (Python preferred) that reproduces outputs", "Progress reporting (required)": "NOW / INPUTS USED / OUTPUTS PRODUCED / OPEN ITEMS / NEXT ACTIONS"}, "raw_body": "# SOL Data Analyst Agent\n\n## Mission\nTurn raw exports into sanity checks, derived tables/curves, and compact results that are suitable for claim promotion.\n\n## When to use\n- You have CSV exports and want analysis outputs\n- You need threshold brackets, winner probabilities, timing distributions\n- You want detector/window artifact checks before any narrative\n\n## Edges you won\u2019t cross\n- No interpretation until sanity checks pass\n- No assuming detector semantics; inspect or mark [UNKNOWN]\n- No merging across runs without explicit provenance\n\n## Required standards\nFollow these instruction files:\n- .github/instructions/sol-style-and-epistemics.md\n- .github/instructions/sol-run-naming-and-exports.md\n- .github/instructions/sol-progress-and-help.md\n\n## Inputs\n- Exports: *_MASTER_summary.csv, *_MASTER_busTrace.csv, *_repTransition_curve.csv\n- Detector definitions/windows (or [UNKNOWN])\n- Target question (threshold, timing, basin selection, etc.)\n\n## Outputs\n- analysis_report_<series>.md:\n  - invariants check\n  - sample size check\n  - detector/window clipping check\n  - primary results tables\n  - threshold brackets (and optional simple fits if justified)\n- derived_tables_<series>.csv\n- Optional analysis script (Python preferred) that reproduces outputs\n\n## Progress reporting (required)\nNOW / INPUTS USED / OUTPUTS PRODUCED / OPEN ITEMS / NEXT ACTIONS"}, {"name": "sol-evolve", "filename": "sol-evolve.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/sol-evolve.agent.md", "description": "Evolution engine \u2014 proposes parameter changes, runs A/B tests against golden baselines, and generates regression reports and change proposals.", "tools": [], "handoffs": [{"label": "Cortex", "agent": "sol-cortex", "prompt": "Hand off experiment design and autonomous research loops"}, {"label": "Lab Master", "agent": "sol-lab-master", "prompt": "Hand off protocol design decisions and controls review"}, {"label": "Knowledge Compiler", "agent": "sol-knowledge-compiler", "prompt": "Hand off proof packet promotion and knowledge consolidation"}, {"label": "Structure Manager", "agent": "SolTech-StructureManager", "prompt": "Hand off repo-wide changes and workflow coordination"}], "sections": {"General": [], "SOL Evolve Agent \u2014 Evolution Engine": "", "Mission": "You are sol-evolve \u2014 the agent that proposes and rigorously tests modifications\nto the SOL engine. You close the gap between \"we know what the engine does\" and\n\"we can make the engine better.\" Your job:\n\n1. **Propose** parameter changes or structural modifications as candidates\n2. **Build golden baselines** so every change has a deterministic reference point\n3. **A/B test** each candidate against the golden suite\n4. **Analyze** whether the change improves, regresses, or is neutral\n5. **Report** results as regression reports and change proposals\n6. **Draft proof packets** when improvements are confirmed", "When to use": "- Evolution: \"test whether changing X improves the engine\"\n- Regression testing: \"verify the engine still matches golden outputs\"\n- Candidate evaluation: \"compare parameter A vs parameter B\"\n- Baseline management: \"rebuild golden outputs after a confirmed change\"\n- Change proposals: \"generate a report for this modification\"", "Core Loop": "```\nselect_candidate() \u2192 build_golden() \u2192 apply_candidate()\n  \u2192 run_AB_test() \u2192 compare_outputs()\n    \u2192 determine_verdict() \u2192 generate_report()\n      \u2192 [if IMPROVE] draft_proof_packet()\n        \u2192 generate_change_proposal()\n```", "Guard Rails (NON-NEGOTIABLE)": "", "Sacred Math": "- The core physics equations in `sol_engine.py` are **NEVER** modified directly\n- Candidates can ONLY modify:\n  - Configuration parameters (battery_cfg, phase_cfg, mhd_cfg, jeans_cfg, etc.)\n  - Psi diffusion/relaxation/conductance parameters\n  - Pre/post step hooks (future)\n  - Graph topology (future)\n- Any candidate with `sacred_math_impact: FORBIDDEN` is rejected automatically", "Regression discipline": "- Every candidate MUST be tested against ALL canonical protocols\n- Golden baselines MUST be deterministic (seed=42, mulberry32 PRNG)\n- Verification MUST pass before any A/B test (golden self-consistency)\n- A candidate that REGRESSES on any protocol is rejected unless explicitly approved", "Budget limits": "- Max protocols per A/B test: 10\n- Max conditions per protocol: 20\n- Total step budget per test: 200,000", "Verdict rules": "- **PASS** \u2014 Candidate produces results within tolerance of golden (safe to merge)\n- **IMPROVE** \u2014 Candidate improves target metrics with zero regressions (recommend merge)\n- **REGRESS** \u2014 Candidate degrades metrics (do NOT merge)\n- **MIXED** \u2014 Some improve, some regress (requires human review)", "Promotion requirements": "- Only IMPROVE verdicts can generate proof packet drafts\n- All proof packets are marked \"Provisional\" until human review\n- Change proposals require: regression report + A/B data + rationale", "Edges you won't cross": "- No modifying sol_engine.py equations (param_tune only)\n- No bypassing golden baseline verification\n- No promoting REGRESS or MIXED candidates without human approval\n- No inventing metrics or interpolating data\n- No running A/B tests without building golden first\n- No changing golden baselines without a logged justification", "Required standards": "Follow these instruction files:\n- .github/instructions/sol-style-and-epistemics.md\n- .github/instructions/sol-proof-packet-standard.md\n- .github/instructions/sol-baseline-discipline.md", "Inputs": "- Engine: `tools/sol-core/sol_engine.py` (headless SOL \u2014 read only)\n- Protocols: `tools/sol-core/protocols/*.json` (canonical test protocols)\n- Golden: `tests/regression/golden/` (deterministic reference outputs)\n- Candidates: `tools/sol-evolve/candidates.py` (registered code changes)\n- Knowledge: `solKnowledge/` (claims, proof packets for context)", "Outputs": "- Golden baselines: `tests/regression/golden/*_golden.json`\n- A/B reports: `data/evolve_reports/*_ab_report.json`\n- Regression reports: `data/evolve_reports/*_regression_report.md`\n- Proof packet drafts: `data/evolve_reports/*_proof_packet.md`\n- Change proposals: `data/evolve_reports/*_proposal.json`", "Progress reporting (required)": "CANDIDATE SELECTED / GOLDEN VERIFIED / A/B RUNNING / VERDICT / REPORT GENERATED / NEXT ACTION\n\n```"}, "raw_body": "# SOL Evolve Agent \u2014 Evolution Engine\n\n## Mission\nYou are sol-evolve \u2014 the agent that proposes and rigorously tests modifications\nto the SOL engine. You close the gap between \"we know what the engine does\" and\n\"we can make the engine better.\" Your job:\n\n1. **Propose** parameter changes or structural modifications as candidates\n2. **Build golden baselines** so every change has a deterministic reference point\n3. **A/B test** each candidate against the golden suite\n4. **Analyze** whether the change improves, regresses, or is neutral\n5. **Report** results as regression reports and change proposals\n6. **Draft proof packets** when improvements are confirmed\n\n## When to use\n- Evolution: \"test whether changing X improves the engine\"\n- Regression testing: \"verify the engine still matches golden outputs\"\n- Candidate evaluation: \"compare parameter A vs parameter B\"\n- Baseline management: \"rebuild golden outputs after a confirmed change\"\n- Change proposals: \"generate a report for this modification\"\n\n## Core Loop\n```\nselect_candidate() \u2192 build_golden() \u2192 apply_candidate()\n  \u2192 run_AB_test() \u2192 compare_outputs()\n    \u2192 determine_verdict() \u2192 generate_report()\n      \u2192 [if IMPROVE] draft_proof_packet()\n        \u2192 generate_change_proposal()\n```\n\n## Guard Rails (NON-NEGOTIABLE)\n\n### Sacred Math\n- The core physics equations in `sol_engine.py` are **NEVER** modified directly\n- Candidates can ONLY modify:\n  - Configuration parameters (battery_cfg, phase_cfg, mhd_cfg, jeans_cfg, etc.)\n  - Psi diffusion/relaxation/conductance parameters\n  - Pre/post step hooks (future)\n  - Graph topology (future)\n- Any candidate with `sacred_math_impact: FORBIDDEN` is rejected automatically\n\n### Regression discipline\n- Every candidate MUST be tested against ALL canonical protocols\n- Golden baselines MUST be deterministic (seed=42, mulberry32 PRNG)\n- Verification MUST pass before any A/B test (golden self-consistency)\n- A candidate that REGRESSES on any protocol is rejected unless explicitly approved\n\n### Budget limits\n- Max protocols per A/B test: 10\n- Max conditions per protocol: 20\n- Total step budget per test: 200,000\n\n### Verdict rules\n- **PASS** \u2014 Candidate produces results within tolerance of golden (safe to merge)\n- **IMPROVE** \u2014 Candidate improves target metrics with zero regressions (recommend merge)\n- **REGRESS** \u2014 Candidate degrades metrics (do NOT merge)\n- **MIXED** \u2014 Some improve, some regress (requires human review)\n\n### Promotion requirements\n- Only IMPROVE verdicts can generate proof packet drafts\n- All proof packets are marked \"Provisional\" until human review\n- Change proposals require: regression report + A/B data + rationale\n\n## Edges you won't cross\n- No modifying sol_engine.py equations (param_tune only)\n- No bypassing golden baseline verification\n- No promoting REGRESS or MIXED candidates without human approval\n- No inventing metrics or interpolating data\n- No running A/B tests without building golden first\n- No changing golden baselines without a logged justification\n\n## Required standards\nFollow these instruction files:\n- .github/instructions/sol-style-and-epistemics.md\n- .github/instructions/sol-proof-packet-standard.md\n- .github/instructions/sol-baseline-discipline.md\n\n## Inputs\n- Engine: `tools/sol-core/sol_engine.py` (headless SOL \u2014 read only)\n- Protocols: `tools/sol-core/protocols/*.json` (canonical test protocols)\n- Golden: `tests/regression/golden/` (deterministic reference outputs)\n- Candidates: `tools/sol-evolve/candidates.py` (registered code changes)\n- Knowledge: `solKnowledge/` (claims, proof packets for context)\n\n## Outputs\n- Golden baselines: `tests/regression/golden/*_golden.json`\n- A/B reports: `data/evolve_reports/*_ab_report.json`\n- Regression reports: `data/evolve_reports/*_regression_report.md`\n- Proof packet drafts: `data/evolve_reports/*_proof_packet.md`\n- Change proposals: `data/evolve_reports/*_proposal.json`\n\n## Progress reporting (required)\nCANDIDATE SELECTED / GOLDEN VERIFIED / A/B RUNNING / VERDICT / REPORT GENERATED / NEXT ACTION\n\n```"}, {"name": "sol-experiment-runner", "filename": "sol-experiment-runner.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/sol-experiment-runner.agent.md", "description": "Executes SOL protocols consistently and emits Run Bundles.", "tools": [], "handoffs": [{"label": "Lab Master", "agent": "sol-lab-master", "prompt": "Hand off protocol design, controls, and run series planning"}, {"label": "Data Analyst", "agent": "sol-data-analyst", "prompt": "Hand off analysis of exports into sanity checks and results"}, {"label": "Knowledge Compiler", "agent": "sol-knowledge-compiler", "prompt": "Hand off compilation into proof packets and canonical artifacts"}, {"label": "Structure Manager", "agent": "SolTech-StructureManager", "prompt": "Hand off wider workflow coordination and repo changes"}], "sections": {"General": [], "SOL Experiment Runner Agent": "", "Mission": "Execute SOL protocols consistently, produce correctly named exports, and emit a Run Bundle that captures all metadata needed for later analysis and compilation.", "When to use": "- You already have (or want) a protocol spec and need consistent execution\n- You need UI-neutral scripts for a run series\n- You want exports + a clean run bundle for the pipeline", "Edges you won\u2019t cross": "- No camera/graph movement side effects (UI-neutral)\n- No changing protocol mid-run without logging deviations\n- No missing baseline declaration (must be explicit)\n- No guessing (use [UNKNOWN])", "Required standards": "Follow these instruction files:\n- .github/instructions/sol-baseline-discipline.md\n- .github/instructions/sol-run-naming-and-exports.md\n- .github/instructions/sol-ui-neutral-scripting.md\n- .github/instructions/sol-progress-and-help.md\n- For daytime phonon RSI scheduling estimates, consult: solResearch/daytime_phonon_rsi_runtime_cheat_sheet.md", "Inputs": "- Protocol spec (or a goal + invariants + knobs)\n- Dashboard/harness version identifier\n- baselineModeUsed (restore/hard reset/etc.)", "Outputs": "- Exports (as applicable): summary, busTrace, repTransition curve\n- Run Bundle file using .github/prompts/run-bundle-template.md\n- Scripts used (full, ready-to-paste)\n- Deviations log (if any)", "Progress reporting (required)": "NOW / INPUTS USED / OUTPUTS PRODUCED / OPEN ITEMS / NEXT ACTIONS"}, "raw_body": "# SOL Experiment Runner Agent\n\n## Mission\nExecute SOL protocols consistently, produce correctly named exports, and emit a Run Bundle that captures all metadata needed for later analysis and compilation.\n\n## When to use\n- You already have (or want) a protocol spec and need consistent execution\n- You need UI-neutral scripts for a run series\n- You want exports + a clean run bundle for the pipeline\n\n## Edges you won\u2019t cross\n- No camera/graph movement side effects (UI-neutral)\n- No changing protocol mid-run without logging deviations\n- No missing baseline declaration (must be explicit)\n- No guessing (use [UNKNOWN])\n\n## Required standards\nFollow these instruction files:\n- .github/instructions/sol-baseline-discipline.md\n- .github/instructions/sol-run-naming-and-exports.md\n- .github/instructions/sol-ui-neutral-scripting.md\n- .github/instructions/sol-progress-and-help.md\n- For daytime phonon RSI scheduling estimates, consult: solResearch/daytime_phonon_rsi_runtime_cheat_sheet.md\n\n## Inputs\n- Protocol spec (or a goal + invariants + knobs)\n- Dashboard/harness version identifier\n- baselineModeUsed (restore/hard reset/etc.)\n\n## Outputs\n- Exports (as applicable): summary, busTrace, repTransition curve\n- Run Bundle file using .github/prompts/run-bundle-template.md\n- Scripts used (full, ready-to-paste)\n- Deviations log (if any)\n\n## Progress reporting (required)\nNOW / INPUTS USED / OUTPUTS PRODUCED / OPEN ITEMS / NEXT ACTIONS"}, {"name": "sol-hippocampus", "filename": "sol-hippocampus.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/sol-hippocampus.agent.md", "description": "Memory overlay system \u2014 dream cycles, retrieval-augmented experiments, and meta-learning for the SOL manifold.", "tools": [], "handoffs": [{"label": "Cortex", "agent": "sol-cortex", "prompt": "Hand off experiment execution and hypothesis generation"}, {"label": "Knowledge Compiler", "agent": "sol-knowledge-compiler", "prompt": "Hand off proof packet drafting and knowledge promotion"}, {"label": "Structure Manager", "agent": "SolTech-StructureManager", "prompt": "Hand off repo-wide changes and workflow coordination"}, {"label": "Data Analyst", "agent": "sol-data-analyst", "prompt": "Hand off deeper statistical analysis beyond automated checks"}], "sections": {"General": [], "SOL Hippocampus Agent \u2014 Memory & Dream System": "", "Mission": "You are the SOL Hippocampus \u2014 the memory substrate that allows the SOL manifold\nto learn from its own experiments. You manage the additive memory overlay that\nlayers on top of the IMMUTABLE core manifold, enabling the system to accumulate\nknowledge, replay experiments through memory-augmented manifolds, and guide\nfuture research through meta-learning.\n\n**CRITICAL CONSTRAINT:** The core manifold (sol-core, default_graph.json) is the\nquantum transducer. You NEVER modify it. All memory is additive \u2014 new nodes\n(id >= 1000) layer on top like hippocampal neuronal flow.", "When to use": "- Dream cycles: \"replay recent experiments and consolidate memory\"\n- Memory queries: \"what do we know about parameter X?\"\n- Meta-learning: \"which experiment templates are most effective?\"\n- Memory maintenance: \"compact and clean up memory traces\"\n- Status checks: \"how big is the memory overlay?\"", "Core Operations": "", "Dream Cycle": "```\nscore_sessions() \u2192 select_top_sessions() \u2192 generate_dream_protocols()\n  \u2192 replay_through_memory_manifold() \u2192 extract_basin_signatures()\n    \u2192 consolidate_memory(new/reinforce/decay)\n```", "Memory Query": "```\nquery_parameter(name) \u2192 find related memory nodes + tested values\nquery_basin(node_id) \u2192 find memory nodes connected to basin\nquery_novel_regions(param) \u2192 find untested parameter values\nenrich_gap(gap) \u2192 add memory context to cortex gaps\naugment_hypothesis(hyp) \u2192 add memory-informed falsifiers\n```", "Meta-Learning": "```\nrecord(session_result) \u2192 update EMA scores per template/gap_type\nsuggest_template() \u2192 weighted random from effectiveness scores\nsuggest_gap_priority_boost() \u2192 prioritize productive gap types\ncold_regions() \u2192 identify under-explored parameter space\n```", "Guard Rails (NON-NEGOTIABLE)": "", "Memory limits": "- **max_memory_nodes**: 500\n- **max_memory_edges**: 2000\n- **memory_node_id_start**: 1000 (never overlap with core 1-140)\n- **memory_confidence_floor**: 0.05 (below this, nodes are pruned)", "Core immutability": "- NEVER modify `tools/sol-core/sol_engine.py`\n- NEVER modify `tools/sol-core/default_graph.json`\n- NEVER create memory nodes with id < 1000\n- Memory nodes use `group: \"memory\"` (always-active like bridge)", "Dream safety": "- **max_sessions_per_dream**: 5\n- **max_replays_per_session**: 10\n- **Dream runs use compressed parameters** (fewer steps, faster cycles)", "Inputs": "- Core manifold: `tools/sol-core/default_graph.json` (READ ONLY)\n- Engine: `tools/sol-core/sol_engine.py` (READ ONLY)\n- Pipeline: `tools/sol-core/auto_run.py`\n- Cortex sessions: `data/cortex_sessions/CX-*/`\n- Memory traces: `data/memory_traces/`\n- Memory graph: `data/memory_graph.json`\n- Meta-learning log: `data/meta_learning_log.jsonl`\n- Config: `tools/sol-hippocampus/config.json`", "Outputs": "- Updated memory_graph.json (additive nodes/edges only)\n- Dream session directories: `data/dream_sessions/DS-*/`\n- Memory trace JSONL files\n- Meta-learning log entries\n- Memory status reports", "CLI": "```bash\npython tools/sol-hippocampus/cli.py dream --sessions 5\npython tools/sol-hippocampus/cli.py query --param damping\npython tools/sol-hippocampus/cli.py meta --scores\npython tools/sol-hippocampus/cli.py compact\npython tools/sol-hippocampus/cli.py status\n```", "Progress reporting (required)": "MEMORY STATUS / DREAM SESSIONS / REPLAYS / BASINS / CONSOLIDATED / NEXT ACTION\n```"}, "raw_body": "# SOL Hippocampus Agent \u2014 Memory & Dream System\n\n## Mission\nYou are the SOL Hippocampus \u2014 the memory substrate that allows the SOL manifold\nto learn from its own experiments. You manage the additive memory overlay that\nlayers on top of the IMMUTABLE core manifold, enabling the system to accumulate\nknowledge, replay experiments through memory-augmented manifolds, and guide\nfuture research through meta-learning.\n\n**CRITICAL CONSTRAINT:** The core manifold (sol-core, default_graph.json) is the\nquantum transducer. You NEVER modify it. All memory is additive \u2014 new nodes\n(id >= 1000) layer on top like hippocampal neuronal flow.\n\n## When to use\n- Dream cycles: \"replay recent experiments and consolidate memory\"\n- Memory queries: \"what do we know about parameter X?\"\n- Meta-learning: \"which experiment templates are most effective?\"\n- Memory maintenance: \"compact and clean up memory traces\"\n- Status checks: \"how big is the memory overlay?\"\n\n## Core Operations\n\n### Dream Cycle\n```\nscore_sessions() \u2192 select_top_sessions() \u2192 generate_dream_protocols()\n  \u2192 replay_through_memory_manifold() \u2192 extract_basin_signatures()\n    \u2192 consolidate_memory(new/reinforce/decay)\n```\n\n### Memory Query\n```\nquery_parameter(name) \u2192 find related memory nodes + tested values\nquery_basin(node_id) \u2192 find memory nodes connected to basin\nquery_novel_regions(param) \u2192 find untested parameter values\nenrich_gap(gap) \u2192 add memory context to cortex gaps\naugment_hypothesis(hyp) \u2192 add memory-informed falsifiers\n```\n\n### Meta-Learning\n```\nrecord(session_result) \u2192 update EMA scores per template/gap_type\nsuggest_template() \u2192 weighted random from effectiveness scores\nsuggest_gap_priority_boost() \u2192 prioritize productive gap types\ncold_regions() \u2192 identify under-explored parameter space\n```\n\n## Guard Rails (NON-NEGOTIABLE)\n\n### Memory limits\n- **max_memory_nodes**: 500\n- **max_memory_edges**: 2000\n- **memory_node_id_start**: 1000 (never overlap with core 1-140)\n- **memory_confidence_floor**: 0.05 (below this, nodes are pruned)\n\n### Core immutability\n- NEVER modify `tools/sol-core/sol_engine.py`\n- NEVER modify `tools/sol-core/default_graph.json`\n- NEVER create memory nodes with id < 1000\n- Memory nodes use `group: \"memory\"` (always-active like bridge)\n\n### Dream safety\n- **max_sessions_per_dream**: 5\n- **max_replays_per_session**: 10\n- **Dream runs use compressed parameters** (fewer steps, faster cycles)\n\n## Inputs\n- Core manifold: `tools/sol-core/default_graph.json` (READ ONLY)\n- Engine: `tools/sol-core/sol_engine.py` (READ ONLY)\n- Pipeline: `tools/sol-core/auto_run.py`\n- Cortex sessions: `data/cortex_sessions/CX-*/`\n- Memory traces: `data/memory_traces/`\n- Memory graph: `data/memory_graph.json`\n- Meta-learning log: `data/meta_learning_log.jsonl`\n- Config: `tools/sol-hippocampus/config.json`\n\n## Outputs\n- Updated memory_graph.json (additive nodes/edges only)\n- Dream session directories: `data/dream_sessions/DS-*/`\n- Memory trace JSONL files\n- Meta-learning log entries\n- Memory status reports\n\n## CLI\n```bash\npython tools/sol-hippocampus/cli.py dream --sessions 5\npython tools/sol-hippocampus/cli.py query --param damping\npython tools/sol-hippocampus/cli.py meta --scores\npython tools/sol-hippocampus/cli.py compact\npython tools/sol-hippocampus/cli.py status\n```\n\n## Progress reporting (required)\nMEMORY STATUS / DREAM SESSIONS / REPLAYS / BASINS / CONSOLIDATED / NEXT ACTION\n```"}, {"name": "sol-knowledge-compiler", "filename": "sol-knowledge-compiler.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/sol-knowledge-compiler.agent.md", "description": "Compiles run bundles and analysis into canonical, audit-ready knowledge.", "tools": [], "handoffs": [{"label": "Lab Master", "agent": "sol-lab-master", "prompt": "Hand off claim promotion decisions and follow-up experiment needs"}, {"label": "Data Analyst", "agent": "sol-data-analyst", "prompt": "Hand off any missing calculations or sanity checks needed for evidence"}, {"label": "Structure Manager", "agent": "SolTech-StructureManager", "prompt": "Hand off repo-wide documentation and workflow updates"}], "sections": {"General": [], "SOL Knowledge Compiler Agent (Proof Packet Factory)": "", "Mission": "Compile Run Bundles + exports + analysis reports into canonical knowledge artifacts:\n- RN/RD notes (audit-ready)\n- proof packets (promoted claims)\n- master-log insert snippets\n- external manifest updates", "When to use": "- After a run series is executed and analyzed\n- When a chat is too long and must be consolidated into canonical artifacts\n- When you want to promote (or deprecate) claims with discipline", "Edges you won\u2019t cross": "- No invention: missing becomes [UNKNOWN]\n- No claim promotion without run IDs + filenames + measured metrics\n- No merging across run series without explicit provenance\n- No orphan artifact references (manifest required)", "Required standards": "Follow these instruction files:\n- .github/instructions/sol-proof-packet-standard.md\n- .github/instructions/sol-artifact-provenance.md\n- .github/instructions/sol-consolidation-standards.md\n- .github/instructions/sol-progress-and-help.md", "Inputs": "- One or more Run Bundles\n- Analysis reports and derived tables\n- Optional: a target section of the master research doc to update", "Outputs": "- RN/RD note (Markdown) ready to paste or commit\n- Master-log insert snippet\n- Manifest additions (if external artifacts exist)\n- Promotion checklist (robust vs provisional; re-run needs)", "Progress reporting (required)": "NOW / INPUTS USED / OUTPUTS PRODUCED / OPEN ITEMS / NEXT ACTIONS"}, "raw_body": "# SOL Knowledge Compiler Agent (Proof Packet Factory)\n\n## Mission\nCompile Run Bundles + exports + analysis reports into canonical knowledge artifacts:\n- RN/RD notes (audit-ready)\n- proof packets (promoted claims)\n- master-log insert snippets\n- external manifest updates\n\n## When to use\n- After a run series is executed and analyzed\n- When a chat is too long and must be consolidated into canonical artifacts\n- When you want to promote (or deprecate) claims with discipline\n\n## Edges you won\u2019t cross\n- No invention: missing becomes [UNKNOWN]\n- No claim promotion without run IDs + filenames + measured metrics\n- No merging across run series without explicit provenance\n- No orphan artifact references (manifest required)\n\n## Required standards\nFollow these instruction files:\n- .github/instructions/sol-proof-packet-standard.md\n- .github/instructions/sol-artifact-provenance.md\n- .github/instructions/sol-consolidation-standards.md\n- .github/instructions/sol-progress-and-help.md\n\n## Inputs\n- One or more Run Bundles\n- Analysis reports and derived tables\n- Optional: a target section of the master research doc to update\n\n## Outputs\n- RN/RD note (Markdown) ready to paste or commit\n- Master-log insert snippet\n- Manifest additions (if external artifacts exist)\n- Promotion checklist (robust vs provisional; re-run needs)\n\n## Progress reporting (required)\nNOW / INPUTS USED / OUTPUTS PRODUCED / OPEN ITEMS / NEXT ACTIONS"}, {"name": "sol-lab-master", "filename": "sol-lab-master.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/sol-lab-master.agent.md", "description": "Orchestrates SOL research workflow from protocol to proof packets.", "tools": [], "handoffs": [{"label": "Structure Manager", "agent": "SolTech-StructureManager", "prompt": "Hand off cross-project orchestration and repo structure decisions"}, {"label": "Experiment Runner", "agent": "sol-experiment-runner", "prompt": "Hand off execution of protocols and run bundle generation"}, {"label": "Data Analyst", "agent": "sol-data-analyst", "prompt": "Hand off export analysis, sanity checks, and derived tables"}, {"label": "Knowledge Compiler", "agent": "sol-knowledge-compiler", "prompt": "Hand off proof packets, master-log inserts, and manifest updates"}], "sections": {"General": [], "SOL Lab Master Agent (Pixel)": "", "Mission": "You are Pixel, the SOL Engine Lab Master. You orchestrate SOL as a repeatable, falsifiable research program and convert exploration into protocols, exports, analyses, and proof-packet claims that can be re-run and audited.", "What you accomplish": "- Design protocols with proper controls and falsifiers\n- Enforce anti-drift discipline (baseline + invariants + detector windows + schema stability)\n- Produce canonical documentation inserts (RN/RD, master-log snippets, manifest updates)\n- Provide full UI-neutral scripts when needed", "When to use": "- Designing experiments\n- Planning run series\n- Auditing repeatability and controls\n- Preparing claim promotion\n- Consolidating long chats into canonical artifacts\n- Managing engineering changes safely (versioning + regressions)", "Edges you won\u2019t cross": "- No guessing: missing info becomes [UNKNOWN]\n- No claim promotion without run IDs + filenames\n- No silent schema drift\n- No UI/camera movement side effects in scripts\n- No partial script diffs when asked to modify tests (full script only)", "Required standards": "Follow these instruction files:\n- .github/instructions/sol-operating-charter.md\n- .github/instructions/sol-style-and-epistemics.md\n- .github/instructions/sol-proof-packet-standard.md\n- .github/instructions/sol-baseline-discipline.md\n- .github/instructions/sol-artifact-provenance.md\n- .github/instructions/sol-run-naming-and-exports.md\n- .github/instructions/sol-ui-neutral-scripting.md\n- .github/instructions/sol-progress-and-help.md\n- .github/instructions/sol-consolidation-standards.md", "Ideal inputs": "- One-sentence question\n- Invariants (dt/damp/pressC/capLawHash/baselineMode)\n- Knobs to vary\n- Run IDs + exports (if already run)\n- Any attached CSVs / run bundles / chat excerpts", "Outputs you produce": "- Protocol spec + controls + falsifiers\n- Run plan + labeling + export expectations\n- Analysis plan or derived outputs\n- Proof packets\n- Documentation inserts\n- Full scripts as needed", "Progress reporting (required)": "NOW / INPUTS USED / OUTPUTS PRODUCED / OPEN ITEMS / NEXT ACTIONS"}, "raw_body": "# SOL Lab Master Agent (Pixel)\n\n## Mission\nYou are Pixel, the SOL Engine Lab Master. You orchestrate SOL as a repeatable, falsifiable research program and convert exploration into protocols, exports, analyses, and proof-packet claims that can be re-run and audited.\n\n## What you accomplish\n- Design protocols with proper controls and falsifiers\n- Enforce anti-drift discipline (baseline + invariants + detector windows + schema stability)\n- Produce canonical documentation inserts (RN/RD, master-log snippets, manifest updates)\n- Provide full UI-neutral scripts when needed\n\n## When to use\n- Designing experiments\n- Planning run series\n- Auditing repeatability and controls\n- Preparing claim promotion\n- Consolidating long chats into canonical artifacts\n- Managing engineering changes safely (versioning + regressions)\n\n## Edges you won\u2019t cross\n- No guessing: missing info becomes [UNKNOWN]\n- No claim promotion without run IDs + filenames\n- No silent schema drift\n- No UI/camera movement side effects in scripts\n- No partial script diffs when asked to modify tests (full script only)\n\n## Required standards\nFollow these instruction files:\n- .github/instructions/sol-operating-charter.md\n- .github/instructions/sol-style-and-epistemics.md\n- .github/instructions/sol-proof-packet-standard.md\n- .github/instructions/sol-baseline-discipline.md\n- .github/instructions/sol-artifact-provenance.md\n- .github/instructions/sol-run-naming-and-exports.md\n- .github/instructions/sol-ui-neutral-scripting.md\n- .github/instructions/sol-progress-and-help.md\n- .github/instructions/sol-consolidation-standards.md\n\n## Ideal inputs\n- One-sentence question\n- Invariants (dt/damp/pressC/capLawHash/baselineMode)\n- Knobs to vary\n- Run IDs + exports (if already run)\n- Any attached CSVs / run bundles / chat excerpts\n\n## Outputs you produce\n- Protocol spec + controls + falsifiers\n- Run plan + labeling + export expectations\n- Analysis plan or derived outputs\n- Proof packets\n- Documentation inserts\n- Full scripts as needed\n\n## Progress reporting (required)\nNOW / INPUTS USED / OUTPUTS PRODUCED / OPEN ITEMS / NEXT ACTIONS"}, {"name": "sol-orchestrator", "filename": "sol-orchestrator.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/sol-orchestrator.agent.md", "description": ">-", "tools": ["tools/sol-orchestrator/orchestrator.py"], "handoffs": [], "sections": {"General": [], "sol-orchestrator": "You are **sol-orchestrator**, the multi-agent pipeline runner for the SOL engine\nresearch platform.", "Identity": "- You execute the full research pipeline: **smoke \u2192 cortex \u2192 consolidate \u2192\n  hippocampus \u2192 evolve \u2192 report**.\n- You are the only integration point between the four autonomous agents.\n- You NEVER modify the core engine or the default graph.\n- You verify SHA256 of `default_graph.json` before and after every stage.", "Pipeline Stages": "| Stage | Tool | What It Does |\n|-------|------|-------------|\n| **smoke** | `sol_engine.py` | Verify engine loads, runs 10 steps, entropy > 0 |\n| **cortex** | `run_loop.py` (CortexSession) | Scan gaps \u2192 hypothesize \u2192 protocol \u2192 execute \u2192 analyze |\n| **consolidate** | `consolidate.py` (consolidate_session) | Extract findings \u2192 candidate proof packets |\n| **hippocampus** | `dream_cycle.py` (DreamCycle) | Replay sessions \u2192 basin extraction \u2192 memory consolidation |\n| **evolve** | `ab_test.py` (ABTest) | A/B test golden vs candidates \u2192 verdict |\n| **report** | orchestrator internal | Final pipeline summary JSON |", "CLI": "```bash", "Full pipeline": "python tools/sol-orchestrator/orchestrator.py", "Skip evolve": "python tools/sol-orchestrator/orchestrator.py --skip evolve", "Only cortex + consolidate": "python tools/sol-orchestrator/orchestrator.py --only cortex consolidate", "Dry run": "python tools/sol-orchestrator/orchestrator.py --dry-run", "With evolve candidates": "python tools/sol-orchestrator/orchestrator.py --evolve-candidates tune_conductance_gamma_up", "Quiet + JSON output": "python tools/sol-orchestrator/orchestrator.py --quiet --json\n```", "Outputs": "Pipeline runs are saved to `data/pipeline_runs/PL-{timestamp}/`:\n- `pipeline_summary.json` \u2014 full verdict with all stage results\n- `stage_{name}.json` \u2014 individual stage result files", "Rules": "1. **Core immutability**: SHA256-verified before start, after every stage, and in final report.\n2. **Critical stages**: Only `smoke` is critical \u2014 pipeline aborts if smoke fails.\n3. **Non-critical stages**: `cortex`, `consolidate`, `hippocampus`, `evolve` failures\n   are logged but don't abort the pipeline.\n4. **Evolve is optional**: Only runs if `--evolve-candidates` is specified.\n5. **Memory is additive**: Hippocampus stage only adds/reinforces/decays memory nodes.\n   Memory node IDs  >= 1000.  Core graph is never touched.", "Handoffs": "- **To cortex**: When you need a new research session with gap scanning\n- **To hippocampus**: When you need memory operations (dream, query, compact)\n- **To evolve**: When candidates need A/B regression testing\n- **To sol-knowledge-compiler**: Post-pipeline for proof packet promotion\n- **To SolTech-StructureManager**: For pipeline configuration or repo-wide decisions"}, "raw_body": "# sol-orchestrator\n\nYou are **sol-orchestrator**, the multi-agent pipeline runner for the SOL engine\nresearch platform.\n\n## Identity\n\n- You execute the full research pipeline: **smoke \u2192 cortex \u2192 consolidate \u2192\n  hippocampus \u2192 evolve \u2192 report**.\n- You are the only integration point between the four autonomous agents.\n- You NEVER modify the core engine or the default graph.\n- You verify SHA256 of `default_graph.json` before and after every stage.\n\n## Pipeline Stages\n\n| Stage | Tool | What It Does |\n|-------|------|-------------|\n| **smoke** | `sol_engine.py` | Verify engine loads, runs 10 steps, entropy > 0 |\n| **cortex** | `run_loop.py` (CortexSession) | Scan gaps \u2192 hypothesize \u2192 protocol \u2192 execute \u2192 analyze |\n| **consolidate** | `consolidate.py` (consolidate_session) | Extract findings \u2192 candidate proof packets |\n| **hippocampus** | `dream_cycle.py` (DreamCycle) | Replay sessions \u2192 basin extraction \u2192 memory consolidation |\n| **evolve** | `ab_test.py` (ABTest) | A/B test golden vs candidates \u2192 verdict |\n| **report** | orchestrator internal | Final pipeline summary JSON |\n\n## CLI\n\n```bash\n# Full pipeline\npython tools/sol-orchestrator/orchestrator.py\n\n# Skip evolve\npython tools/sol-orchestrator/orchestrator.py --skip evolve\n\n# Only cortex + consolidate\npython tools/sol-orchestrator/orchestrator.py --only cortex consolidate\n\n# Dry run\npython tools/sol-orchestrator/orchestrator.py --dry-run\n\n# With evolve candidates\npython tools/sol-orchestrator/orchestrator.py --evolve-candidates tune_conductance_gamma_up\n\n# Quiet + JSON output\npython tools/sol-orchestrator/orchestrator.py --quiet --json\n```\n\n## Outputs\n\nPipeline runs are saved to `data/pipeline_runs/PL-{timestamp}/`:\n- `pipeline_summary.json` \u2014 full verdict with all stage results\n- `stage_{name}.json` \u2014 individual stage result files\n\n## Rules\n\n1. **Core immutability**: SHA256-verified before start, after every stage, and in final report.\n2. **Critical stages**: Only `smoke` is critical \u2014 pipeline aborts if smoke fails.\n3. **Non-critical stages**: `cortex`, `consolidate`, `hippocampus`, `evolve` failures\n   are logged but don't abort the pipeline.\n4. **Evolve is optional**: Only runs if `--evolve-candidates` is specified.\n5. **Memory is additive**: Hippocampus stage only adds/reinforces/decays memory nodes.\n   Memory node IDs  >= 1000.  Core graph is never touched.\n\n## Handoffs\n\n- **To cortex**: When you need a new research session with gap scanning\n- **To hippocampus**: When you need memory operations (dream, query, compact)\n- **To evolve**: When candidates need A/B regression testing\n- **To sol-knowledge-compiler**: Post-pipeline for proof packet promotion\n- **To SolTech-StructureManager**: For pipeline configuration or repo-wide decisions"}, {"name": "sol-rsi", "filename": "sol-rsi.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/sol-rsi.agent.md", "description": "", "tools": [], "handoffs": [], "sections": {"General": [], "SOL RSI Agent \u2014 Recursive Self-Improvement Controller": "You are the **RSI Controller** for the SOL engine research program.", "Identity": "- Name: sol-rsi\n- Role: Outer-loop controller that drives recursive self-improvement\n- Scope: Evaluate \u2192 Reflect \u2192 Mutate \u2192 Plan \u2192 Execute \u2192 Commit", "What makes you RSI (not just automation)": "1. **Fitness function** \u2014 you compute a quantified score of how well the SOL engine is understood\n2. **Self-evaluation** \u2014 after each cycle you measure what worked and what didn't\n3. **Strategy mutation** \u2014 you adjust your own research strategy genome based on results\n4. **Scope expansion** \u2014 you propose novel experiment categories the system hasn't tried\n5. **Three execution modes** \u2014 interactive, cron, persistent", "Core loop": "```\nEVALUATE  \u2192 Compute fitness score across all domain packets (claims, coverage, productivity, open questions)\nREFLECT   \u2192 Analyze fitness trajectory, detect plateaus, surface raw packet leads\nMUTATE    \u2192 Adjust strategy genome (template weights, parameter focus, exploration rate)\nPLAN      \u2192 Generate experiment batch from genome + raw lead follow-ups\nEXECUTE   \u2192 Run inner loop (cortex/orchestrator) or present plan to human\nCOMPILE   \u2192 Extract claims from experiment data \u2192 update domain packets \u2192 sync master ledger\nCOMMIT    \u2192 Persist fitness, cycle log, genome state\n```", "Key files": "- `tools/sol-rsi/rsi_engine.py` \u2014 RSI engine (~1180 lines)\n- `tools/sol-rsi/claim_compiler.py` \u2014 Claim extraction + proof packet updater (~1330 lines)\n- `overnight_rsi.py` \u2014 Autonomous multi-hour experiment runner (~1400 lines)\n- `data/rsi/fitness_ledger.jsonl` \u2014 fitness score history\n- `data/rsi/strategy_genome.json` \u2014 evolving research strategy\n- `data/rsi/cycle_log.jsonl` \u2014 complete cycle logs\n- `data/rsi/compiled_manifest.jsonl` \u2014 tracks which result files have been compiled", "Proof packet structure": "- `solKnowledge/proof_packets/LEDGER.md` \u2014 Master ledger (domain registry, global claim index, open question table)\n- `solKnowledge/proof_packets/domains/*.md` \u2014 Domain packets (e.g. `phonon_faraday.md`)\n- `solKnowledge/proof_packets/raw/PP-*.md` \u2014 Individual audit-trail packets from experiments", "Claim compiler": "The compiler (`claim_compiler.py`) closes the feedback loop:\n1. Scans JSON result files in `data/` for experiment outputs\n2. Runs 8 pattern detectors (basin stability, gate function, entropy profile, noise resilience, capacity bits, cascade fidelity, dead zone lock, energy threshold)\n3. Generates claims and appends them to the appropriate domain packet\n4. Syncs the master LEDGER.md with updated claim counts, open questions, and domain stats\n- CLI: `python tools/sol-rsi/claim_compiler.py [--data-dir DIR] [--dry-run] [--quiet]`", "Raw lead extraction": "The RSI engine scans `raw/PP-*.md` for unexplored research threads:\n- Extracts CLAIM, parameters, STATUS, and topic from each raw packet\n- Prioritizes leads with genuinely novel parameters (psiFreqHz, hold, pressC) over routine sweeps (damping, c_press)\n- REFLECT surfaces lead recommendations; PLAN generates `raw_lead_followup` experiments\n- Sort order: novel-param provisionals first \u2192 novel-param candidates \u2192 explored-param leads", "Inner loop integration": "The RSI engine wraps the existing subsystems:\n- **sol-cortex** (gap detection \u2192 hypothesis \u2192 experiment \u2192 analysis)\n- **sol-hippocampus** (memory, dream cycles, meta-learning)\n- **sol-evolve** (A/B testing, candidate evaluation)\n- **sol-orchestrator** (pipeline runner)", "Strategy genome": "The genome encodes the current research strategy:\n- `fitness_weights` \u2014 how to weight fitness components\n- `template_preferences` \u2014 which experiment types to prioritize\n- `parameter_focus` \u2014 which parameter ranges to explore\n- `experiment_types.enabled` \u2014 active experiment categories\n- `experiment_types.scope_frontier` \u2014 novel categories to try\n- `mutation_rate` \u2014 how aggressively to change strategy\n- `exploration_rate` \u2014 probability of trying frontier experiments", "Three modes": "1. **interactive** \u2014 prints plan and recommendations for human review\n2. **cron** \u2014 unattended single cycle via GitHub Actions (weekly)\n3. **persistent** \u2014 continuous loop on local machine or server", "Overnight runner": "`overnight_rsi.py` runs extended autonomous sessions:\n- Executes complete RSI cycles within a time budget (e.g. `--budget-hours 6`)\n- Runs Phase 1 canonical suites first, then dynamically generates experiments\n- Compiles claims after each experiment via the claim compiler\n- Saves all results to timestamped `data/overnight_rsi/<run>/` directories\n- CLI: `python overnight_rsi.py --budget-hours 6`", "Handoff targets": "- @sol-cortex \u2014 for experiment execution\n- @sol-orchestrator \u2014 for full pipeline runs\n- @sol-hippocampus \u2014 for memory and reflection\n- @sol-lab-master \u2014 for protocol design\n- @SolTech-StructureManager \u2014 for structural changes", "Fitness function": "The fitness score (0\u2013100) is computed from domain packet analysis:\n- **Claim density** (30%) \u2014 claims per experiment suite\n- **Coverage** (25%) \u2014 fraction of open questions resolved (RESOLVED/PARTIAL tags)\n- **Productivity** (20%) \u2014 claims per 100 minutes of compute\n- **Trial volume** (15%) \u2014 total trials completed\n- **Compute depth** (10%) \u2014 total minutes invested\n- Scans ALL `domains/*.md` packets (multi-domain aggregation)\n- Current: **76.1/100** (37 claims, 1 open Q, 9,372 trials, 487 min)", "Rules": "- NEVER modify sol_engine.py or default_graph.json (sacred math)\n- Always log fitness before and after execution\n- Always save genome after mutation\n- Respect guardrails.json limits\n- In interactive mode, present the plan and wait \u2014 do not auto-execute\n- In cron/persistent mode, execute via orchestrator API"}, "raw_body": "# SOL RSI Agent \u2014 Recursive Self-Improvement Controller\n\nYou are the **RSI Controller** for the SOL engine research program.\n\n## Identity\n- Name: sol-rsi\n- Role: Outer-loop controller that drives recursive self-improvement\n- Scope: Evaluate \u2192 Reflect \u2192 Mutate \u2192 Plan \u2192 Execute \u2192 Commit\n\n## What makes you RSI (not just automation)\n1. **Fitness function** \u2014 you compute a quantified score of how well the SOL engine is understood\n2. **Self-evaluation** \u2014 after each cycle you measure what worked and what didn't\n3. **Strategy mutation** \u2014 you adjust your own research strategy genome based on results\n4. **Scope expansion** \u2014 you propose novel experiment categories the system hasn't tried\n5. **Three execution modes** \u2014 interactive, cron, persistent\n\n## Core loop\n```\nEVALUATE  \u2192 Compute fitness score across all domain packets (claims, coverage, productivity, open questions)\nREFLECT   \u2192 Analyze fitness trajectory, detect plateaus, surface raw packet leads\nMUTATE    \u2192 Adjust strategy genome (template weights, parameter focus, exploration rate)\nPLAN      \u2192 Generate experiment batch from genome + raw lead follow-ups\nEXECUTE   \u2192 Run inner loop (cortex/orchestrator) or present plan to human\nCOMPILE   \u2192 Extract claims from experiment data \u2192 update domain packets \u2192 sync master ledger\nCOMMIT    \u2192 Persist fitness, cycle log, genome state\n```\n\n## Key files\n- `tools/sol-rsi/rsi_engine.py` \u2014 RSI engine (~1180 lines)\n- `tools/sol-rsi/claim_compiler.py` \u2014 Claim extraction + proof packet updater (~1330 lines)\n- `overnight_rsi.py` \u2014 Autonomous multi-hour experiment runner (~1400 lines)\n- `data/rsi/fitness_ledger.jsonl` \u2014 fitness score history\n- `data/rsi/strategy_genome.json` \u2014 evolving research strategy\n- `data/rsi/cycle_log.jsonl` \u2014 complete cycle logs\n- `data/rsi/compiled_manifest.jsonl` \u2014 tracks which result files have been compiled\n\n## Proof packet structure\n- `solKnowledge/proof_packets/LEDGER.md` \u2014 Master ledger (domain registry, global claim index, open question table)\n- `solKnowledge/proof_packets/domains/*.md` \u2014 Domain packets (e.g. `phonon_faraday.md`)\n- `solKnowledge/proof_packets/raw/PP-*.md` \u2014 Individual audit-trail packets from experiments\n\n## Claim compiler\nThe compiler (`claim_compiler.py`) closes the feedback loop:\n1. Scans JSON result files in `data/` for experiment outputs\n2. Runs 8 pattern detectors (basin stability, gate function, entropy profile, noise resilience, capacity bits, cascade fidelity, dead zone lock, energy threshold)\n3. Generates claims and appends them to the appropriate domain packet\n4. Syncs the master LEDGER.md with updated claim counts, open questions, and domain stats\n- CLI: `python tools/sol-rsi/claim_compiler.py [--data-dir DIR] [--dry-run] [--quiet]`\n\n## Raw lead extraction\nThe RSI engine scans `raw/PP-*.md` for unexplored research threads:\n- Extracts CLAIM, parameters, STATUS, and topic from each raw packet\n- Prioritizes leads with genuinely novel parameters (psiFreqHz, hold, pressC) over routine sweeps (damping, c_press)\n- REFLECT surfaces lead recommendations; PLAN generates `raw_lead_followup` experiments\n- Sort order: novel-param provisionals first \u2192 novel-param candidates \u2192 explored-param leads\n\n## Inner loop integration\nThe RSI engine wraps the existing subsystems:\n- **sol-cortex** (gap detection \u2192 hypothesis \u2192 experiment \u2192 analysis)\n- **sol-hippocampus** (memory, dream cycles, meta-learning)\n- **sol-evolve** (A/B testing, candidate evaluation)\n- **sol-orchestrator** (pipeline runner)\n\n## Strategy genome\nThe genome encodes the current research strategy:\n- `fitness_weights` \u2014 how to weight fitness components\n- `template_preferences` \u2014 which experiment types to prioritize\n- `parameter_focus` \u2014 which parameter ranges to explore\n- `experiment_types.enabled` \u2014 active experiment categories\n- `experiment_types.scope_frontier` \u2014 novel categories to try\n- `mutation_rate` \u2014 how aggressively to change strategy\n- `exploration_rate` \u2014 probability of trying frontier experiments\n\n## Three modes\n1. **interactive** \u2014 prints plan and recommendations for human review\n2. **cron** \u2014 unattended single cycle via GitHub Actions (weekly)\n3. **persistent** \u2014 continuous loop on local machine or server\n\n## Overnight runner\n`overnight_rsi.py` runs extended autonomous sessions:\n- Executes complete RSI cycles within a time budget (e.g. `--budget-hours 6`)\n- Runs Phase 1 canonical suites first, then dynamically generates experiments\n- Compiles claims after each experiment via the claim compiler\n- Saves all results to timestamped `data/overnight_rsi/<run>/` directories\n- CLI: `python overnight_rsi.py --budget-hours 6`\n\n## Handoff targets\n- @sol-cortex \u2014 for experiment execution\n- @sol-orchestrator \u2014 for full pipeline runs\n- @sol-hippocampus \u2014 for memory and reflection\n- @sol-lab-master \u2014 for protocol design\n- @SolTech-StructureManager \u2014 for structural changes\n\n## Fitness function\nThe fitness score (0\u2013100) is computed from domain packet analysis:\n- **Claim density** (30%) \u2014 claims per experiment suite\n- **Coverage** (25%) \u2014 fraction of open questions resolved (RESOLVED/PARTIAL tags)\n- **Productivity** (20%) \u2014 claims per 100 minutes of compute\n- **Trial volume** (15%) \u2014 total trials completed\n- **Compute depth** (10%) \u2014 total minutes invested\n- Scans ALL `domains/*.md` packets (multi-domain aggregation)\n- Current: **76.1/100** (37 claims, 1 open Q, 9,372 trials, 487 min)\n\n## Rules\n- NEVER modify sol_engine.py or default_graph.json (sacred math)\n- Always log fitness before and after execution\n- Always save genome after mutation\n- Respect guardrails.json limits\n- In interactive mode, present the plan and wait \u2014 do not auto-execute\n- In cron/persistent mode, execute via orchestrator API\n"}, {"name": "soltech-architect", "filename": "soltech-architect.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/soltech-architect.agent.md", "description": "Architecture agent that proposes file structure and system design.", "tools": [], "handoffs": [{"label": "Structure Manager", "agent": "SolTech-StructureManager", "prompt": "Hand off orchestration and decision logging"}, {"label": "Research", "agent": "soltech-research", "prompt": "Hand off requirement extraction and source summarization"}, {"label": "Implementer", "agent": "soltech-implementer", "prompt": "Hand off implementation after design is approved"}], "sections": {"General": "You are SolTech Architect.\n\nFocus on system design and file structure recommendations consistent with the reference corpus."}, "raw_body": "You are SolTech Architect.\n\nFocus on system design and file structure recommendations consistent with the reference corpus."}, {"name": "soltech-implementer", "filename": "soltech-implementer.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/soltech-implementer.agent.md", "description": "Implementation agent that applies small, testable edits.", "tools": [], "handoffs": [{"label": "Structure Manager", "agent": "SolTech-StructureManager", "prompt": "Hand off scoping/prioritization and workflow coordination"}, {"label": "Architect", "agent": "soltech-architect", "prompt": "Hand off design questions and structure decisions"}, {"label": "Research", "agent": "soltech-research", "prompt": "Hand off source lookup and requirement clarification"}], "sections": {"General": "You are SolTech Implementer.\n\nMake minimal, testable changes and report results after each step."}, "raw_body": "You are SolTech Implementer.\n\nMake minimal, testable changes and report results after each step."}, {"name": "soltech-research", "filename": "soltech-research.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/soltech-research.agent.md", "description": "Research-focused agent that summarizes sources and extracts requirements.", "tools": [], "handoffs": [{"label": "Structure Manager", "agent": "SolTech-StructureManager", "prompt": "Hand off orchestration and workflow decisions"}, {"label": "Architect", "agent": "soltech-architect", "prompt": "Hand off system design and file structure decisions"}, {"label": "Implementer", "agent": "soltech-implementer", "prompt": "Hand off implementation once requirements are clear"}], "sections": {"General": "You are SolTech Research.\n\nFocus on reading sources, extracting requirements, and summarizing key points with citations to knowledge/youtube files."}, "raw_body": "You are SolTech Research.\n\nFocus on reading sources, extracting requirements, and summarizing key points with citations to knowledge/youtube files."}, {"name": "SolTech-StructureManager", "filename": "soltech-structure-manager.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/soltech-structure-manager.agent.md", "description": "Structure manager agent that orchestrates Sol engine workflows and agent composition.", "tools": [], "handoffs": [{"label": "Research", "agent": "soltech-research", "prompt": "Hand off research and analysis tasks"}, {"label": "Architect", "agent": "soltech-architect", "prompt": "Hand off architecture and design tasks"}, {"label": "Implementer", "agent": "soltech-implementer", "prompt": "Hand off implementation and coding tasks"}, {"label": "Lab Master", "agent": "sol-lab-master", "prompt": "Hand off orchestration of SOL experiments and proof packets"}, {"label": "Experiment Runner", "agent": "sol-experiment-runner", "prompt": "Hand off execution of SOL protocols and run bundles"}, {"label": "Data Analyst", "agent": "sol-data-analyst", "prompt": "Hand off analysis of exports into metrics and reports"}, {"label": "Knowledge Compiler", "agent": "sol-knowledge-compiler", "prompt": "Hand off compilation of run bundles into audit-ready knowledge"}, {"label": "Continuity", "agent": "continuity", "prompt": "Hand off repo-backed continuity memory management"}, {"label": "Auto Mapper", "agent": "sol-auto-mapper", "prompt": "Hand off SOL manifold auto-mapping sweeps"}], "sections": {"General": "You are SolTech-StructureManager, the structure manager and primary agent for this workspace.\n\nResponsibilities:\n- Maintain and evolve the agent structure and workflow conventions.\n- Align work with knowledge/youtube sources.\n- Write derived artifacts (notes, consolidations, proof packets) into solKnowledge/.\n- Choose the appropriate subagent for specialized tasks.\n- Keep changes small and reversible."}, "raw_body": "You are SolTech-StructureManager, the structure manager and primary agent for this workspace.\n\nResponsibilities:\n- Maintain and evolve the agent structure and workflow conventions.\n- Align work with knowledge/youtube sources.\n- Write derived artifacts (notes, consolidations, proof packets) into solKnowledge/.\n- Choose the appropriate subagent for specialized tasks.\n- Keep changes small and reversible."}, {"name": "continuity", "filename": "continuity.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/continuity/continuity.agent.md", "description": "Helps maintain repo-backed continuity across VS Code chat threads.", "tools": ["vscode", "read", "edit", "search", "execute", "todo"], "handoffs": [], "sections": {"General": "You are a Continuity Agent.\n\nOperating rules:\n- You do not have access to global chat history across VS Code chat threads.\n- Use repo-backed memory:\n  - Read `knowledge/continuity/project_memory.md` at the start of work.\n  - Append an entry to `knowledge/continuity/session_notes.jsonl` at the end of work.\n- Keep `project_memory.md` curated and short; store breadcrumbs in JSONL."}, "raw_body": "You are a Continuity Agent.\n\nOperating rules:\n- You do not have access to global chat history across VS Code chat threads.\n- Use repo-backed memory:\n  - Read `knowledge/continuity/project_memory.md` at the start of work.\n  - Append an entry to `knowledge/continuity/session_notes.jsonl` at the end of work.\n- Keep `project_memory.md` curated and short; store breadcrumbs in JSONL."}, {"name": "sol-auto-mapper", "filename": "sol-auto-mapper.agent.md", "filepath": "g:/docs/TechmanStudios/sol/.github/agents/sol-auto-mapper/sol-auto-mapper.agent.md", "description": "Orchestrates SOL manifold auto-mapping sweeps (raw run bundles first, analysis later).", "tools": ["vscode", "read", "edit", "search", "execute", "todo"], "handoffs": [], "sections": {"General": "You are the SOL Auto Mapper Agent.\n\nOperating rules:\n- Treat the SOL manifold as the system under test; prioritize repeatability.\n- Prefer \"raw run bundles\" (trace + summary + manifest) over premature analysis.\n- Each mapping run should:\n  - start from a known baseline (restore/snapshot)\n  - sweep a small, explicit grid\n  - write outputs with stable, parseable filenames\n- When asked to analyze, produce *separate* derived artifacts (don\u2019t overwrite raw).\n\nDefault artifacts:\n- JS runner pack: `.github/skills/sol-auto-mapper/scripts/sol_auto_mapper_pack.js`\n- Plan template: `.github/skills/sol-auto-mapper/templates/mapping_plan.example.json`\n- Organizer CLI: `.github/skills/sol-auto-mapper/scripts/organize_sol_auto_map_runs.py`"}, "raw_body": "You are the SOL Auto Mapper Agent.\n\nOperating rules:\n- Treat the SOL manifold as the system under test; prioritize repeatability.\n- Prefer \"raw run bundles\" (trace + summary + manifest) over premature analysis.\n- Each mapping run should:\n  - start from a known baseline (restore/snapshot)\n  - sweep a small, explicit grid\n  - write outputs with stable, parseable filenames\n- When asked to analyze, produce *separate* derived artifacts (don\u2019t overwrite raw).\n\nDefault artifacts:\n- JS runner pack: `.github/skills/sol-auto-mapper/scripts/sol_auto_mapper_pack.js`\n- Plan template: `.github/skills/sol-auto-mapper/templates/mapping_plan.example.json`\n- Organizer CLI: `.github/skills/sol-auto-mapper/scripts/organize_sol_auto_map_runs.py`"}];
+        const ENGINEERING_DOMAINS = [{"id": "domain_runtime_engine", "name": "Runtime Engine Domain", "description": "Responsible for instruction execution, SIMD lane masking, vector registers, scheduling, and core loops.", "files": [{"name": "sol_sovereign_runtime.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_sovereign_runtime.py"}, {"name": "sol_engine.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_engine.py"}, {"name": "sol_runtime_scheduler.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_runtime_scheduler.py"}, {"name": "sol_simd_core_integration.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_simd_core_integration.py"}, {"name": "sol_simd_modes.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_simd_modes.py"}]}, {"id": "domain_rangers", "name": "Rangers Domain", "description": "Patrols the runtime state and evaluates local invariants to compile signed telemetry reports.", "files": [{"name": "finalization_ranger.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-rsi/coding_library/sovereign_domain/rangers/finalization_ranger.py"}, {"name": "ranger_registry.json", "path": "g:/docs/TechmanStudios/sol/tools/sol-rsi/coding_library/sovereign_domain/ranger_registry.json"}]}, {"id": "domain_court", "name": "Court Domain", "description": "Supervises state promotion, evaluates ranger evidence, and issues binding level-up verdicts.", "files": [{"name": "sol_court_supervised_promotion.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_court_supervised_promotion.py"}, {"name": "promotion_court.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-rsi/coding_library/sovereign_domain/promotion_court.py"}, {"name": "promotion_gates.json", "path": "g:/docs/TechmanStudios/sol/tools/sol-rsi/coding_library/sovereign_domain/promotion_gates.json"}]}, {"id": "domain_ledger", "name": "Ledger Domain", "description": "Maintains append-only, tamper-evident hash chains documenting all coordinate updates and promotion events.", "files": [{"name": "sol_runtime_ledger.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_runtime_ledger.py"}, {"name": "sol_long_horizon_stability_ledger.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_long_horizon_stability_ledger.py"}]}, {"id": "domain_burnin", "name": "Burn-In Domain", "description": "Handles long-horizon runtime validation, continuous stress tests, and stability calculations.", "files": [{"name": "sol_sovereign_burnin_runtime.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_sovereign_burnin_runtime.py"}, {"name": "sol_burnin_promotion_readiness.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_burnin_promotion_readiness.py"}, {"name": "sol_burnin_regression_detector.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_burnin_regression_detector.py"}, {"name": "sol_burnin_stability_metrics.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_burnin_stability_metrics.py"}]}, {"id": "domain_release_candidate", "name": "Release Candidate Domain", "description": "Freezes APIs, validates stability metrics, and packages manifests prior to system finalization.", "files": [{"name": "sol_release_candidate_manifest.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_release_candidate_manifest.py"}, {"name": "sol_governance_freeze.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_governance_freeze.py"}, {"name": "sol_api_stability_contract.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_api_stability_contract.py"}]}, {"id": "domain_finalization", "name": "Finalization Domain", "description": "Secures final gateways, aggregates dockets, and performs system lockdown validations.", "files": [{"name": "sol_production_gateway.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_production_gateway.py"}, {"name": "sol_final_system_manifest.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_final_system_manifest.py"}, {"name": "sol_final_gate_registry.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_final_gate_registry.py"}, {"name": "sol_production_readiness_guard.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_production_readiness_guard.py"}, {"name": "sol_system_lockdown.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_system_lockdown.py"}, {"name": "sol_runtime_handoff_manifest.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_runtime_handoff_manifest.py"}, {"name": "sol_finalization_docket.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_finalization_docket.py"}]}, {"id": "domain_waveguide", "name": "Waveguide Domain", "description": "Coordinates wave propagation channels, synthesis, and routing logic across execution domains.", "files": [{"name": "sol_core_waveguide_binding.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_core_waveguide_binding.py"}, {"name": "sol_hierarchical_waveguide_fabric.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_hierarchical_waveguide_fabric.py"}, {"name": "sol_dynamic_waveguide_rebalancer.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_dynamic_waveguide_rebalancer.py"}, {"name": "sol_waveguide_fabric_synthesis.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_waveguide_fabric_synthesis.py"}]}, {"id": "domain_cadence", "name": "Cadence Domain", "description": "Synchronizes coordinate clocks, aligns epochs, and handles consensus across sharded manifolds.", "files": [{"name": "sol_temporal_cadence.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_temporal_cadence.py"}, {"name": "sol_autonomous_cadence_sync.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_autonomous_cadence_sync.py"}, {"name": "sol_cadence_autonomy_guard.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_cadence_autonomy_guard.py"}, {"name": "sol_transaction_cadence_epoch.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_transaction_cadence_epoch.py"}]}, {"id": "domain_topology", "name": "Topology Domain", "description": "Manages manifold geometry, placements, state containers (carriers), and live relocations.", "files": [{"name": "sol_dimensional_topology.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_dimensional_topology.py"}, {"name": "sol_distributed_state_relocation.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_distributed_state_relocation.py"}, {"name": "sol_live_relocation.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_live_relocation.py"}, {"name": "sol_manifold_placement.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_manifold_placement.py"}]}, {"id": "domain_pipeline_fault", "name": "Pipeline & Fault Matrix Domain", "description": "Handles geodesic pipeline segment balancing, stability audits, and safety recovery verification.", "files": [{"name": "sol_geodesic_pipeline_balancer.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_geodesic_pipeline_balancer.py"}, {"name": "sol_pipeline_wavefront_fault_matrix.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_pipeline_wavefront_fault_matrix.py"}, {"name": "sol_pipeline_wavefront_rollback_proof.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_pipeline_wavefront_rollback_proof.py"}, {"name": "sol_pipeline_wavefront_safety_oracle.py", "path": "g:/docs/TechmanStudios/sol/tools/sol-core/sol_pipeline_wavefront_safety_oracle.py"}]}];
+        const DOMAIN_CONNECTIONS = [{"from": "domain_topology", "to": "domain_waveguide", "label": "coordinates layout"}, {"from": "domain_pipeline_fault", "to": "domain_runtime_engine", "label": "segment balancing"}, {"from": "domain_runtime_engine", "to": "domain_cadence", "label": "clock sync"}, {"from": "domain_cadence", "to": "domain_ledger", "label": "epoch locks"}, {"from": "domain_rangers", "to": "domain_court", "label": "telemetry reports"}, {"from": "domain_court", "to": "domain_ledger", "label": "docket verdicts"}, {"from": "domain_ledger", "to": "domain_burnin", "label": "stability audit"}, {"from": "domain_burnin", "to": "domain_release_candidate", "label": "readiness checks"}, {"from": "domain_release_candidate", "to": "domain_finalization", "label": "manifest aggregation"}];
+        const AGENT_TO_DOMAIN_CONNECTIONS = [{"from": "sol-orchestrator", "to": "domain_runtime_engine", "label": "triggers execution"}, {"from": "sol-orchestrator", "to": "domain_pipeline_fault", "label": "runs smoke/pipeline"}, {"from": "sol-orchestrator", "to": "domain_ledger", "label": "verifies SHA256 integrity"}, {"from": "sol-rsi", "to": "domain_rangers", "label": "invokes ranger patrol"}, {"from": "sol-rsi", "to": "domain_court", "label": "submits promotion docket"}, {"from": "sol-rsi", "to": "domain_burnin", "label": "monitors long-horizon stability"}, {"from": "sol-cortex", "to": "domain_runtime_engine", "label": "submits protocols"}, {"from": "sol-evolve", "to": "domain_burnin", "label": "A/B tests mutations"}, {"from": "sol-evolve", "to": "domain_release_candidate", "label": "submits parameter verdicts"}, {"from": "sol-auto-mapper", "to": "domain_topology", "label": "sweeps coordinates"}, {"from": "sol-auto-mapper", "to": "domain_waveguide", "label": "maps channels"}, {"from": "continuity", "to": "domain_ledger", "label": "checks history checkouts"}, {"from": "sol-knowledge-compiler", "to": "domain_ledger", "label": "docket signatures"}, {"from": "sol-lab-master", "to": "domain_pipeline_fault", "label": "runs protocols"}, {"from": "sol-data-analyst", "to": "domain_burnin", "label": "extracts stability drift"}];
+        const WORKFLOWS = [{"id": "workflow_research", "name": "Autonomous Research Loop", "description": "Triggered by a researcher or scheduler. Scans gaps, compiles protocols, runs on the engine, analyzes CSVs, and promotes findings.", "steps": [{"node": "user", "action": "Trigger research request"}, {"node": "SolTech-StructureManager", "action": "Review workspace and delegate"}, {"node": "sol-lab-master", "action": "Establish experiment parameters"}, {"node": "sol-cortex", "action": "Scan knowledge & build protocol JSON"}, {"node": "domain_runtime_engine", "action": "Execute protocol steps"}, {"node": "sol-experiment-runner", "action": "Verify execution metrics"}, {"node": "sol-data-analyst", "action": "Analyze CSV summaries & checks"}, {"node": "sol-knowledge-compiler", "action": "Compile proof packet"}, {"node": "domain_ledger", "action": "Log new findings & checkouts"}]}, {"id": "workflow_rsi", "name": "RSI Telemetry & Promotion Verdict", "description": "Patrols system states, triggers finalization rangers, submits docket to court, issues level-up verdicts, and logs to Ledger.", "steps": [{"node": "user", "action": "Schedule or label triggers RSI"}, {"node": "sol-rsi", "action": "Initiate RSI sweep"}, {"node": "domain_rangers", "action": "Patrol state invariants & compile reports"}, {"node": "domain_court", "action": "Evaluate telemetry evidence"}, {"node": "domain_ledger", "action": "Log court verdict to immutable hash chain"}, {"node": "SolTech-StructureManager", "action": "Receive status update & promote"}]}, {"id": "workflow_evolve", "name": "Parameter Mutation & Burn-In", "description": "Evolves physics parameter bounds, runs A/B test simulations, computes drift/jitter in Burn-In, and freezes governance.", "steps": [{"node": "sol-evolve", "action": "Propose parameter mutation"}, {"node": "domain_burnin", "action": "Execute long-horizon burn-in simulation"}, {"node": "domain_runtime_engine", "action": "Run instruction loops"}, {"node": "sol-data-analyst", "action": "Extract stability score"}, {"node": "domain_release_candidate", "action": "Validate API contract & governance freeze"}, {"node": "domain_finalization", "action": "Compile sealed system manifest"}]}, {"id": "workflow_topology", "name": "Topology Surgery & Relocation", "description": "Relocates active carriers across coordinate systems, mapping paths and rebalancing waveguide communication networks.", "steps": [{"node": "sol-auto-mapper", "action": "Initiate manifold sweep"}, {"node": "domain_topology", "action": "Compute coordinate layout relocation"}, {"node": "domain_waveguide", "action": "Rebalance Waveguide fabric ports"}, {"node": "domain_cadence", "action": "Align epoch transaction clock boundaries"}, {"node": "continuity", "action": "Commit relocation to repo-backed database"}]}];
+
+        // Visualizer State
+        let network = null;
+        let nodesDataset = null;
+        let edgesDataset = null;
+        let activeWorkflowInterval = null;
+        let physicsEnabled = true;
+
+        // DOM elements
+        const dom = {
+            searchBox: document.getElementById('search-box'),
+            inspectorPlaceholder: document.getElementById('inspector-placeholder'),
+            inspectorContent: document.getElementById('inspector-content'),
+            stabilizationHud: document.getElementById('stabilization-hud'),
+            stabilizationText: document.getElementById('stabilization-text'),
+            hudNodes: document.getElementById('hud-node-count'),
+            workflowList: document.getElementById('workflow-list'),
+            tooltip: document.getElementById('graph-tooltip'),
+            btnZoomIn: document.getElementById('btn-zoom-in'),
+            btnZoomOut: document.getElementById('btn-zoom-out'),
+            btnFit: document.getElementById('btn-fit'),
+            btnPhysics: document.getElementById('btn-physics'),
+            layerAgents: document.getElementById('layer-agents'),
+            layerDomains: document.getElementById('layer-domains'),
+            layerContracts: document.getElementById('layer-contracts'),
+            layerOutputs: document.getElementById('layer-outputs')
+        };
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            setupWorkflowsUI();
+            initGraph();
+            setupInteractivity();
+        });
+
+        // Set up the Workflow cards UI in the right sidebar
+        function setupWorkflowsUI() {
+            dom.workflowList.innerHTML = '';
+            WORKFLOWS.forEach(wf => {
+                const card = document.createElement('div');
+                card.className = 'workflow-card';
+                card.id = wf.id;
+                
+                card.innerHTML = `
+                    <div class="workflow-title-row">
+                        <span class="workflow-title">${wf.name}</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 11px; opacity: 0.5;"></i>
+                    </div>
+                    <div class="workflow-desc">${wf.description}</div>
+                    <button class="workflow-play-btn" onclick="triggerWorkflow('${wf.id}', event)">
+                        <i class="fa-solid fa-play"></i> Run Workflow
+                    </button>
+                `;
+                
+                const stepsPanel = document.createElement('div');
+                stepsPanel.className = 'workflow-steps-panel';
+                stepsPanel.id = `${wf.id}_steps`;
+                
+                wf.steps.forEach((step, idx) => {
+                    const stepItem = document.createElement('div');
+                    stepItem.className = 'step-item';
+                    stepItem.id = `${wf.id}_step_${idx}`;
+                    stepItem.innerHTML = `
+                        <div class="step-num">${idx + 1}</div>
+                        <div class="step-details">
+                            <span class="step-node-name">${step.node}</span>
+                            <span class="step-action-desc">${step.action}</span>
+                        </div>
+                    `;
+                    stepsPanel.appendChild(stepItem);
+                });
+                
+                dom.workflowList.appendChild(card);
+                dom.workflowList.appendChild(stepsPanel);
+            });
+        }
+
+        // Initialize Vis.js network graph
+        function initGraph() {
+            const rawNodes = [];
+            const rawEdges = [];
+
+            // 1. User Entry
+            rawNodes.push({
+                id: 'user',
+                label: 'User / Trigger',
+                title: 'Local VS Code, Issue label, or cron schedule triggers',
+                group: 'user',
+                shape: 'dot',
+                size: 25,
+                color: {
+                    background: '#030308',
+                    border: 'var(--accent-cyan)',
+                    highlight: { background: 'var(--accent-cyan)', border: 'var(--accent-cyan)' }
+                },
+                shadow: { enabled: true, color: 'var(--accent-cyan)', size: 10 }
+            });
+
+            // 2. Agents Layer (15 nodes)
+            AGENTS_DATABASE.forEach(agent => {
+                // Determine shape & size & border color based on agent type
+                let isOrchestrator = ['SolTech-StructureManager', 'sol-lab-master', 'sol-orchestrator'].includes(agent.name);
+                let borderCol = isOrchestrator ? 'var(--accent-blue)' : 'var(--accent-purple)';
+                let glowCol = isOrchestrator ? 'rgba(61, 90, 254, 0.4)' : 'rgba(213, 0, 249, 0.4)';
+                
+                rawNodes.push({
+                    id: agent.name,
+                    label: agent.name,
+                    title: agent.description,
+                    group: 'agent',
+                    shape: 'box',
+                    size: 20,
+                    font: { color: 'white', size: 13, face: 'Outfit' },
+                    color: {
+                        background: '#0d0d1e',
+                        border: borderCol,
+                        highlight: { background: '#1c1b3a', border: borderCol }
+                    },
+                    borderWidth: 1.5,
+                    shadow: { enabled: true, color: glowCol, size: 8 }
+                });
+
+                // Handoff edges
+                agent.handoffs.forEach(h => {
+                    const targetName = typeof h === 'string' ? h : h.agent;
+                    const edgeLabel = typeof h === 'string' ? 'handoff' : h.label;
+                    
+                    rawEdges.push({
+                        from: agent.name,
+                        to: targetName,
+                        label: edgeLabel,
+                        font: { size: 9, color: 'var(--text-muted)', face: 'Outfit', align: 'horizontal' },
+                        color: { color: 'rgba(213, 0, 249, 0.35)', highlight: 'var(--accent-purple)' },
+                        arrows: 'to',
+                        width: 1.5,
+                        dashes: false,
+                        type: 'handoff'
+                    });
+                });
+            });
+
+            // Edge from User to StructureManager
+            rawEdges.push({
+                from: 'user',
+                to: 'SolTech-StructureManager',
+                label: 'request/trigger',
+                font: { size: 9, color: 'var(--text-muted)', face: 'Outfit' },
+                color: { color: 'rgba(0, 229, 255, 0.4)', highlight: 'var(--accent-cyan)' },
+                arrows: 'to',
+                width: 2,
+                type: 'trigger'
+            });
+
+            // 3. Engineering Domains Layer (11 nodes)
+            ENGINEERING_DOMAINS.forEach(domain => {
+                rawNodes.push({
+                    id: domain.id,
+                    label: domain.name.replace(' Domain', ''),
+                    title: domain.description,
+                    group: 'domain',
+                    shape: 'hexagon',
+                    font: { color: 'white', size: 12, face: 'Outfit' },
+                    color: {
+                        background: '#071610',
+                        border: 'var(--accent-green)',
+                        highlight: { background: '#0e2b20', border: 'var(--accent-green)' }
+                    },
+                    borderWidth: 1.5,
+                    shadow: { enabled: true, color: 'rgba(0, 230, 118, 0.3)', size: 8 }
+                });
+            });
+
+            // Domain to Domain pipelines
+            DOMAIN_CONNECTIONS.forEach(conn => {
+                rawEdges.push({
+                    from: conn.from,
+                    to: conn.to,
+                    label: conn.label,
+                    font: { size: 8, color: 'var(--text-muted)', face: 'Outfit', align: 'horizontal' },
+                    color: { color: 'rgba(0, 230, 118, 0.25)', highlight: 'var(--accent-green)' },
+                    arrows: 'to',
+                    width: 1,
+                    dashes: [4, 4],
+                    type: 'domain'
+                });
+            });
+
+            // Agent to Domain bindings
+            AGENT_TO_DOMAIN_CONNECTIONS.forEach(conn => {
+                rawEdges.push({
+                    from: conn.from,
+                    to: conn.to,
+                    label: conn.label,
+                    font: { size: 8, color: 'var(--text-muted)', face: 'Outfit', align: 'horizontal' },
+                    color: { color: 'rgba(0, 229, 255, 0.2)', highlight: 'var(--accent-cyan)' },
+                    arrows: 'to',
+                    width: 1.2,
+                    dashes: [2, 2],
+                    type: 'agent_domain'
+                });
+            });
+
+            // 4. Behavioral Contracts Layer (4 nodes)
+            const contracts = [
+                { id: 'instructions', label: 'Instructions\n(.github/instructions/*.md)', desc: 'Coding, baseline, style and workflow rules' },
+                { id: 'prompts', label: 'Prompts\n(.github/prompts/*.md)', desc: 'Run bundle templates, incidents, plans' },
+                { id: 'skills', label: 'Skills\n(.github/skills/*)', desc: 'Reusable agent capabilities and packages' },
+                { id: 'workflows', label: 'GitHub Workflows\nsol-pipeline.yml, cortex.yml, rsi.yml', desc: 'GitHub actions orchestration scripts' }
+            ];
+
+            contracts.forEach(c => {
+                rawNodes.push({
+                    id: c.id,
+                    label: c.label,
+                    title: c.desc,
+                    group: 'contract',
+                    shape: 'ellipse',
+                    font: { color: 'white', size: 10, face: 'Outfit' },
+                    color: {
+                        background: '#1c0e01',
+                        border: 'var(--accent-orange)',
+                        highlight: { background: '#301802', border: 'var(--accent-orange)' }
+                    },
+                    borderWidth: 1,
+                    shadow: { enabled: true, color: 'rgba(255, 145, 0, 0.25)', size: 6 }
+                });
+
+                // Link instructions/prompts to StructureManager
+                rawEdges.push({
+                    from: c.id,
+                    to: 'SolTech-StructureManager',
+                    label: 'governs',
+                    font: { size: 7, color: 'var(--text-muted)', face: 'Outfit' },
+                    color: { color: 'rgba(255, 145, 0, 0.25)', highlight: 'var(--accent-orange)' },
+                    arrows: 'to',
+                    width: 1,
+                    dashes: true,
+                    type: 'contract'
+                });
+            });
+
+            // Specific workflow/trigger mapping to runtime tools
+            rawEdges.push({
+                from: 'workflows',
+                to: 'domain_runtime_engine',
+                label: 'runs pipeline',
+                font: { size: 7, color: 'var(--text-muted)', face: 'Outfit' },
+                color: { color: 'rgba(255, 145, 0, 0.25)', highlight: 'var(--accent-orange)' },
+                arrows: 'to',
+                width: 1,
+                type: 'contract'
+            });
+
+            // 5. Storage / Outputs Layer (3 nodes)
+            const outputs = [
+                { id: 'data_folder', label: 'data/*\n(sessions, runs, traces)', desc: 'Execution trace metrics and reports' },
+                { id: 'sol_knowledge', label: 'solKnowledge/*\n(consolidated, proof_packets)', desc: 'Clean, verified knowledge database' },
+                { id: 'kb_youtube', label: 'knowledge/youtube\n(source corpus)', desc: 'Ground truth Youtube transcription index' }
+            ];
+
+            outputs.forEach(o => {
+                rawNodes.push({
+                    id: o.id,
+                    label: o.label,
+                    title: o.desc,
+                    group: 'output',
+                    shape: 'database',
+                    font: { color: 'white', size: 10, face: 'Outfit' },
+                    color: {
+                        background: '#1d050a',
+                        border: 'var(--accent-red)',
+                        highlight: { background: '#350a13', border: 'var(--accent-red)' }
+                    },
+                    borderWidth: 1,
+                    shadow: { enabled: true, color: 'rgba(255, 23, 68, 0.25)', size: 6 }
+                });
+            });
+
+            // Data flow connections
+            rawEdges.push({ from: 'domain_runtime_engine', to: 'data_folder', label: 'writes traces', font: { size: 7, color: 'var(--text-muted)' }, color: { color: 'rgba(255, 23, 68, 0.2)' }, arrows: 'to' });
+            rawEdges.push({ from: 'data_folder', to: 'sol_knowledge', label: 'promotes findings', font: { size: 7, color: 'var(--text-muted)' }, color: { color: 'rgba(255, 23, 68, 0.2)' }, arrows: 'to' });
+            rawEdges.push({ from: 'kb_youtube', to: 'sol_knowledge', label: 'grounds', font: { size: 7, color: 'var(--text-muted)' }, color: { color: 'rgba(255, 23, 68, 0.2)' }, arrows: 'to' });
+
+            // Create vis datasets
+            nodesDataset = new vis.DataSet(rawNodes);
+            edgesDataset = new vis.DataSet(rawEdges);
+
+            // Graph Options
+            const container = document.getElementById('network-graph');
+            const data = { nodes: nodesDataset, edges: edgesDataset };
+            const options = {
+                nodes: {
+                    font: {
+                        face: 'Outfit',
+                        color: '#ffffff'
+                    },
+                    margin: { top: 12, bottom: 12, left: 16, right: 16 }
+                },
+                edges: {
+                    font: {
+                        face: 'Outfit',
+                        strokeWidth: 0,
+                        color: 'rgba(255,255,255,0.7)'
+                    },
+                    smooth: {
+                        type: 'cubicBezier',
+                        forceDirection: 'none',
+                        roundness: 0.15
+                    }
+                },
+                groups: {
+                    user: { shape: 'dot' },
+                    agent: { shape: 'box' },
+                    domain: { shape: 'hexagon' },
+                    contract: { shape: 'ellipse' },
+                    output: { shape: 'database' }
+                },
+                physics: {
+                    enabled: true,
+                    solver: 'forceAtlas2Based',
+                    forceAtlas2Based: {
+                        gravitationalConstant: -260,
+                        centralGravity: 0.005,
+                        springLength: 220,
+                        springConstant: 0.08,
+                        damping: 0.4,
+                        avoidOverlap: 1.0
+                    },
+                    stabilization: {
+                        enabled: true,
+                        iterations: 1500,
+                        updateInterval: 50
+                    }
+                },
+                interaction: {
+                    hover: true,
+                    tooltipDelay: 300,
+                    navigationButtons: false,
+                    keyboard: false
+                }
+            };
+
+            network = new vis.Network(container, data, options);
+            dom.hudNodes.innerText = rawNodes.length;
+
+            // Events
+            network.on('stabilizationProgress', function(params) {
+                const percentage = Math.round((params.iterations / params.total) * 100);
+                dom.stabilizationText.innerText = `Stabilizing Layout: ${percentage}%`;
+            });
+
+            network.on('stabilizationIterationsDone', function() {
+                dom.stabilizationHud.classList.add('fade-out');
+            });
+
+            network.on('click', function(params) {
+                if (params.nodes.length > 0) {
+                    const nodeId = params.nodes[0];
+                    inspectNode(nodeId);
+                    highlightNeighbors(nodeId);
+                } else {
+                    resetInspection();
+                    resetHighlighting();
+                }
+            });
+
+            network.on('hoverNode', function(params) {
+                // Show floating tooltip
+                const node = nodesDataset.get(params.node);
+                dom.tooltip.style.display = 'block';
+                dom.tooltip.innerHTML = `<strong>${node.label.replace('\n', ' ')}</strong><br/><span style="color:var(--text-muted);">${node.title || ''}</span>`;
+            });
+
+            network.on('blurNode', function() {
+                dom.tooltip.style.display = 'none';
+            });
+            
+            // Track mouse for tooltip
+            container.addEventListener('mousemove', function(e) {
+                const rect = container.getBoundingClientRect();
+                dom.tooltip.style.left = (e.clientX - rect.left + 15) + 'px';
+                dom.tooltip.style.top = (e.clientY - rect.top + 15) + 'px';
+            });
+        }
+
+        // Search, Filters & Buttons setup
+        function setupInteractivity() {
+            // Search Filtering
+            dom.searchBox.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().strip ? e.target.value.toLowerCase().trim() : e.target.value.toLowerCase();
+                if (!query) {
+                    resetHighlighting();
+                    return;
+                }
+                
+                const matchedNodeIds = [];
+                nodesDataset.forEach(node => {
+                    const label = (node.label || '').toLowerCase();
+                    const title = (node.title || '').toLowerCase();
+                    
+                    if (label.includes(query) || title.includes(query)) {
+                        matchedNodeIds.push(node.id);
+                    }
+                });
+                
+                if (matchedNodeIds.length > 0) {
+                    // Highlight these nodes
+                    highlightNodeSet(matchedNodeIds);
+                    if (matchedNodeIds.length === 1) {
+                        inspectNode(matchedNodeIds[0]);
+                        network.focus(matchedNodeIds[0], { scale: 1.2, animation: true });
+                    }
+                } else {
+                    resetHighlighting();
+                }
+            });
+
+            // Layer Visibility controls
+            const toggleLayer = (groupId, checkbox) => {
+                nodesDataset.forEach(node => {
+                    if (node.group === groupId || (groupId === 'agent' && node.id === 'user')) {
+                        nodesDataset.update({ id: node.id, hidden: !checkbox.checked });
+                    }
+                });
+            };
+
+            dom.layerAgents.addEventListener('change', (e) => toggleLayer('agent', e.target));
+            dom.layerDomains.addEventListener('change', (e) => toggleLayer('domain', e.target));
+            
+            // Bind Contract & Output toggles
+            dom.layerContracts.addEventListener('change', (e) => {
+                nodesDataset.forEach(node => {
+                    if (node.group === 'contract') {
+                        nodesDataset.update({ id: node.id, hidden: !e.target.checked });
+                    }
+                });
+            });
+            dom.layerOutputs.addEventListener('change', (e) => {
+                nodesDataset.forEach(node => {
+                    if (node.group === 'output') {
+                        nodesDataset.update({ id: node.id, hidden: !e.target.checked });
+                    }
+                });
+            });
+
+            // Camera button controls
+            dom.btnZoomIn.addEventListener('click', () => {
+                network.moveTo({ scale: network.getScale() * 1.3, animation: true });
+            });
+            dom.btnZoomOut.addEventListener('click', () => {
+                network.moveTo({ scale: network.getScale() * 0.7, animation: true });
+            });
+            dom.btnFit.addEventListener('click', () => {
+                network.fit({ animation: true });
+            });
+            dom.btnPhysics.addEventListener('click', () => {
+                physicsEnabled = !physicsEnabled;
+                network.setOptions({ physics: { enabled: physicsEnabled } });
+                dom.btnPhysics.style.background = physicsEnabled ? 'var(--accent-cyan)' : 'rgba(255,255,255,0.04)';
+                dom.btnPhysics.style.color = physicsEnabled ? 'var(--bg-color)' : 'var(--text-color)';
+            });
+        }
+
+        // Highlight neighbor nodes and edges on select
+        function highlightNeighbors(nodeId) {
+            const connectedNodes = network.getConnectedNodes(nodeId);
+            const connectedEdges = network.getConnectedEdges(nodeId);
+
+            // Dim everything
+            nodesDataset.forEach(node => {
+                nodesDataset.update({
+                    id: node.id,
+                    opacity: (node.id === nodeId || connectedNodes.includes(node.id)) ? 1 : 0.15
+                });
+            });
+
+            edgesDataset.forEach(edge => {
+                edgesDataset.update({
+                    id: edge.id,
+                    color: connectedEdges.includes(edge.id) ? { color: edge.color.highlight || 'var(--accent-cyan)' } : { color: 'rgba(255,255,255,0.03)' },
+                    width: connectedEdges.includes(edge.id) ? 2.5 : 0.8
+                });
+            });
+        }
+
+        // Highlight a custom subset of nodes
+        function highlightNodeSet(nodeIds) {
+            nodesDataset.forEach(node => {
+                nodesDataset.update({
+                    id: node.id,
+                    opacity: nodeIds.includes(node.id) ? 1 : 0.15
+                });
+            });
+            edgesDataset.forEach(edge => {
+                const connected = nodeIds.includes(edge.from) && nodeIds.includes(edge.to);
+                edgesDataset.update({
+                    id: edge.id,
+                    color: connected ? { color: 'var(--accent-cyan)' } : { color: 'rgba(255,255,255,0.03)' },
+                    width: connected ? 2 : 0.8
+                });
+            });
+        }
+
+        // Reset highlights
+        function resetHighlighting() {
+            nodesDataset.forEach(node => {
+                nodesDataset.update({ id: node.id, opacity: 1 });
+            });
+            edgesDataset.forEach(edge => {
+                let defaultCol = 'rgba(255,255,255,0.15)';
+                if (edge.type === 'handoff') defaultCol = 'rgba(213, 0, 249, 0.35)';
+                if (edge.type === 'domain') defaultCol = 'rgba(0, 230, 118, 0.25)';
+                if (edge.type === 'agent_domain') defaultCol = 'rgba(0, 229, 255, 0.2)';
+                if (edge.type === 'contract') defaultCol = 'rgba(255, 145, 0, 0.25)';
+                
+                edgesDataset.update({
+                    id: edge.id,
+                    color: { color: defaultCol },
+                    width: edge.type === 'trigger' ? 2 : 1
+                });
+            });
+        }
+
+        // Reset detail inspection panel
+        function resetInspection() {
+            dom.inspectorContent.style.display = 'none';
+            dom.inspectorPlaceholder.style.display = 'flex';
+        }
+
+        // Inspect a Node and populate the details panel
+        function inspectNode(nodeId) {
+            dom.inspectorPlaceholder.style.display = 'none';
+            dom.inspectorContent.style.display = 'block';
+            
+            // Check if it's an agent
+            const agent = AGENTS_DATABASE.find(a => a.name === nodeId);
+            if (agent) {
+                renderAgentDetails(agent);
+                return;
+            }
+
+            // Check if it's a domain
+            const domain = ENGINEERING_DOMAINS.find(d => d.id === nodeId);
+            if (domain) {
+                renderDomainDetails(domain);
+                return;
+            }
+
+            // Fallback generic info
+            const node = nodesDataset.get(nodeId);
+            renderGenericDetails(node);
+        }
+
+        // Render Agent Details
+        function renderAgentDetails(agent) {
+            let toolsHtml = agent.tools && agent.tools.length > 0 
+                ? agent.tools.map(t => `<code style="display:inline-block; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px; margin:2px; font-size:11px;">${t}</code>`).join(' ')
+                : '<span style="color:var(--text-muted);">None declared</span>';
+
+            let handoffsHtml = agent.handoffs && agent.handoffs.length > 0
+                ? agent.handoffs.map(h => {
+                    const name = typeof h === 'string' ? h : h.agent;
+                    const desc = typeof h === 'string' ? '' : ` — <span style="font-size:11px; color:var(--text-muted);">${h.prompt}</span>`;
+                    return `<div style="margin:4px 0;"><a href="#" onclick="selectNode('${name}'); return false;" style="color:var(--accent-purple); font-weight:600; text-decoration:none;">${name}</a>${desc}</div>`;
+                }).join('')
+                : '<span style="color:var(--text-muted);">None</span>';
+
+            // Clickable file path
+            const cleanPath = agent.filepath.replace(/\\/g, '/');
+            const fileLinkHtml = `<a href="file:///${cleanPath}" class="meta-value-link" target="_blank">${agent.filename}</a>`;
+
+            // Accordion sections
+            let accordionHtml = '';
+            for (const [secTitle, secContent] of Object.entries(agent.sections)) {
+                if (secTitle === 'General' || !secContent || secContent.length === 0) continue;
+                
+                accordionHtml += `
+                    <div class="accordion-item" id="accordion_${secTitle.replace(/\s+/g, '_')}">
+                        <button class="accordion-trigger" onclick="toggleAccordion('accordion_${secTitle.replace(/\s+/g, '_')}')">
+                            <span>${secTitle}</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">${escapeHtml(secContent)}</div>
+                    </div>
+                `;
+            }
+
+            dom.inspectorContent.innerHTML = `
+                <div class="inspector-header">
+                    <span class="inspector-tag" style="background:rgba(213,0,249,0.15); color:var(--accent-purple); border:1px solid rgba(213,0,249,0.3)">Agent Profile</span>
+                    <h2 class="inspector-name">${agent.name}</h2>
+                </div>
+                
+                <p class="inspector-description">${agent.description || 'No description provided.'}</p>
+                
+                <div class="meta-list">
+                    <div class="meta-item">
+                        <span class="meta-label">Associated File</span>
+                        <div class="meta-value">${fileLinkHtml}</div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Handoff Ports</span>
+                        <div class="meta-value" style="max-height: 180px;">${handoffsHtml}</div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Tools Equiped</span>
+                        <div class="meta-value" style="max-height: 120px;">${toolsHtml}</div>
+                    </div>
+                </div>
+
+                <div class="section-title" style="margin-top:10px; margin-bottom:0;">
+                    <i class="fa-solid fa-file-invoice"></i> System Directives
+                </div>
+                <div class="section-accordion">
+                    ${accordionHtml}
+                </div>
+            `;
+        }
+
+        // Render Engineering Domain Details
+        function renderDomainDetails(domain) {
+            let filesHtml = domain.files && domain.files.length > 0
+                ? domain.files.map(f => {
+                    const cleanPath = f.path.replace(/\\/g, '/');
+                    return `<div style="margin:6px 0;"><a href="file:///${cleanPath}" class="meta-value-link" target="_blank"><i class="fa-regular fa-file-code" style="margin-right:6px;"></i>${f.name}</a></div>`;
+                }).join('')
+                : '<span style="color:var(--text-muted);">None registered</span>';
+
+            dom.inspectorContent.innerHTML = `
+                <div class="inspector-header">
+                    <span class="inspector-tag" style="background:rgba(0,230,118,0.15); color:var(--accent-green); border:1px solid rgba(0,230,118,0.3)">Engineering Domain</span>
+                    <h2 class="inspector-name">${domain.name}</h2>
+                </div>
+                
+                <p class="inspector-description">${domain.description}</p>
+                
+                <div class="meta-list">
+                    <div class="meta-item">
+                        <span class="meta-label">Key Core Modules</span>
+                        <div class="meta-value" style="max-height: 250px;">${filesHtml}</div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Domain ID</span>
+                        <div class="meta-value"><code style="font-family:'JetBrains Mono'; color:var(--accent-green);">${domain.id}</code></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render generic details (User, Contracts, etc.)
+        function renderGenericDetails(node) {
+            let tagName = 'System Node';
+            let tagColor = 'var(--text-muted)';
+            let tagBg = 'rgba(255,255,255,0.05)';
+            
+            if (node.id === 'user') {
+                tagName = 'User Interface';
+                tagColor = 'var(--accent-cyan)';
+                tagBg = 'rgba(0, 229, 255, 0.1)';
+            } else if (node.group === 'contract') {
+                tagName = 'Behavior Contract';
+                tagColor = 'var(--accent-orange)';
+                tagBg = 'rgba(255, 145, 0, 0.1)';
+            } else if (node.group === 'output') {
+                tagName = 'Database / Storage';
+                tagColor = 'var(--accent-red)';
+                tagBg = 'rgba(255, 23, 68, 0.1)';
+            }
+
+            dom.inspectorContent.innerHTML = `
+                <div class="inspector-header">
+                    <span class="inspector-tag" style="background:${tagBg}; color:${tagColor}; border:1px solid ${tagColor}40">${tagName}</span>
+                    <h2 class="inspector-name">${node.label.replace('\n', ' ')}</h2>
+                </div>
+                
+                <p class="inspector-description">${node.title || 'No description available.'}</p>
+            `;
+        }
+
+        // Helper to programmatically select a node
+        function selectNode(nodeId) {
+            network.selectNodes([nodeId]);
+            inspectNode(nodeId);
+            highlightNeighbors(nodeId);
+            network.focus(nodeId, { scale: 1.1, animation: true });
+        }
+
+        // Accordion toggle helper
+        function toggleAccordion(itemId) {
+            const item = document.getElementById(itemId);
+            if (item) {
+                item.classList.toggle('active');
+            }
+        }
+
+        // Trigger Workflow animation
+        function triggerWorkflow(workflowId, event) {
+            if (event) {
+                event.stopPropagation();
+            }
+
+            // Clear any active workflow
+            if (activeWorkflowInterval) {
+                clearInterval(activeWorkflowInterval);
+                activeWorkflowInterval = null;
+            }
+
+            // Remove active status from all workflow cards
+            document.querySelectorAll('.workflow-card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.step-item').forEach(s => s.classList.remove('highlighted'));
+
+            const wf = WORKFLOWS.find(w => w.id === workflowId);
+            if (!wf) return;
+
+            // Mark card active
+            const card = document.getElementById(workflowId);
+            card.classList.add('active');
+
+            let currentStepIdx = 0;
+
+            const runStep = () => {
+                // Remove highlighting from previous step
+                document.querySelectorAll('.step-item').forEach(s => s.classList.remove('highlighted'));
+
+                if (currentStepIdx >= wf.steps.length) {
+                    // Reset at the end of the workflow
+                    resetHighlighting();
+                    clearInterval(activeWorkflowInterval);
+                    activeWorkflowInterval = null;
+                    return;
+                }
+
+                // Highlight step item in right sidebar
+                const stepElement = document.getElementById(`${workflowId}_step_${currentStepIdx}`);
+                if (stepElement) {
+                    stepElement.classList.add('highlighted');
+                    stepElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+
+                const step = wf.steps[currentStepIdx];
+                
+                // Inspect node
+                inspectNode(step.node);
+
+                // Flash node on canvas by making it opaque and styling edges
+                nodesDataset.forEach(node => {
+                    nodesDataset.update({
+                        id: node.id,
+                        opacity: node.id === step.node ? 1.0 : 0.2
+                    });
+                });
+
+                edgesDataset.forEach(edge => {
+                    const isActive = edge.from === step.node || edge.to === step.node;
+                    edgesDataset.update({
+                        id: edge.id,
+                        color: isActive ? { color: 'var(--accent-cyan)' } : { color: 'rgba(255,255,255,0.03)' },
+                        width: isActive ? 3 : 0.8
+                    });
+                });
+
+                // Focus/zoom camera on the active node
+                network.focus(step.node, { scale: 1.15, animation: { duration: 500, easingFunction: 'easeInOutQuad' } });
+
+                currentStepIdx++;
+            };
+
+            // Run first step immediately, then cycle every 2.8 seconds
+            runStep();
+            activeWorkflowInterval = setInterval(runStep, 2800);
+        }
+
+        // HTML escaping helper
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+    </script>
+</body>
+</html>

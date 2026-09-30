@@ -1,0 +1,111 @@
+{
+    "approved_attestations": [
+        "ManifestBoundaryRanger",
+        "ReleaseGateRanger",
+        "PromotionLedgerRanger",
+        "ProofLedgerRanger",
+        "RegressionAuditRanger"
+    ],
+    "attestations": [
+        {
+            "attestation_id": "SOL-WAVEGUIDE-RC-ATTESTATION-MANIFESTBOUNDARYRANGER-RC2",
+            "input_digest": "33fcfb98ada8fa816c0f7ec69c1c94d8a1bf57c52d928c703d201f0518ff906e",
+            "notes": [
+                "Manifest boundary check passed. Manifest digest matches filesystem artifact."
+            ],
+            "ranger_id": "ManifestBoundaryRanger",
+            "reason_codes": [
+                "RC_COURT_RANGER_APPROVED"
+            ],
+            "scope": "manifest_boundary_verification",
+            "status": "approved"
+        },
+        {
+            "attestation_id": "SOL-WAVEGUIDE-RC-ATTESTATION-RELEASEGATERANGER-RC2",
+            "input_digest": "33fcfb98ada8fa816c0f7ec69c1c94d8a1bf57c52d928c703d201f0518ff906e",
+            "notes": [
+                "Release gate verification passed. Verdict is release_ready."
+            ],
+            "ranger_id": "ReleaseGateRanger",
+            "reason_codes": [
+                "RC_COURT_RANGER_APPROVED"
+            ],
+            "scope": "release_gate_verification",
+            "status": "approved"
+        },
+        {
+            "attestation_id": "SOL-WAVEGUIDE-RC-ATTESTATION-PROMOTIONLEDGERRANGER-RC2",
+            "input_digest": "33fcfb98ada8fa816c0f7ec69c1c94d8a1bf57c52d928c703d201f0518ff906e",
+            "notes": [
+                "Promotion ledger verification passed. Record is canonical and digest matches."
+            ],
+            "ranger_id": "PromotionLedgerRanger",
+            "reason_codes": [
+                "RC_COURT_RANGER_APPROVED"
+            ],
+            "scope": "promotion_ledger_verification",
+            "status": "approved"
+        },
+        {
+            "attestation_id": "SOL-WAVEGUIDE-RC-ATTESTATION-PROOFLEDGERRANGER-RC2",
+            "input_digest": "33fcfb98ada8fa816c0f7ec69c1c94d8a1bf57c52d928c703d201f0518ff906e",
+            "notes": [
+                "Proof ledger verification passed. Software-only caveats and proof claims are correct."
+            ],
+            "ranger_id": "ProofLedgerRanger",
+            "reason_codes": [
+                "RC_COURT_RANGER_APPROVED"
+            ],
+            "scope": "proof_ledger_verification",
+            "status": "approved"
+        },
+        {
+            "attestation_id": "SOL-WAVEGUIDE-RC-ATTESTATION-REGRESSIONAUDITRANGER-RC2",
+            "input_digest": "33fcfb98ada8fa816c0f7ec69c1c94d8a1bf57c52d928c703d201f0518ff906e",
+            "notes": [
+                "Regression audit passed. Sequential validation campaigns verified successfully."
+            ],
+            "ranger_id": "RegressionAuditRanger",
+            "reason_codes": [
+                "RC_COURT_RANGER_APPROVED"
+            ],
+            "scope": "regression_audit_verification",
+            "status": "approved"
+        }
+    ],
+    "candidate_level": "RC2",
+    "case_digest": "5ddfa33d9d42a94d8af2bd4bc48c8b9ebef6b1f92c4112cc8f3c4d3df882f8a9",
+    "case_id": "SOL-WAVEGUIDE-RC-PROMOTION-CASE-RC2",
+    "court_id": "SOL-WAVEGUIDE-RC-PROMOTION-COURT",
+    "court_verdict": "promotion_approved",
+    "promotion_record_digest": "33fcfb98ada8fa816c0f7ec69c1c94d8a1bf57c52d928c703d201f0518ff906e",
+    "quorum_status": "quorum_satisfied",
+    "rc_id": "SOL-WAVEGUIDE-RC2",
+    "reason_codes": [
+        "RC_COURT_CASE_CANONICAL",
+        "RC_COURT_PROMOTION_APPROVED",
+        "RC_COURT_QUORUM_SATISFIED",
+        "RC_COURT_REQUIRED_RANGERS_PRESENT",
+        "RC_COURT_SOFTWARE_CAVEAT_INCLUDED",
+        "RC_COURT_VERDICT_DIGEST_VALID"
+    ],
+    "received_attestations": [
+        "ManifestBoundaryRanger",
+        "ReleaseGateRanger",
+        "PromotionLedgerRanger",
+        "ProofLedgerRanger",
+        "RegressionAuditRanger"
+    ],
+    "rejected_attestations": [],
+    "required_attestations": [
+        "ManifestBoundaryRanger",
+        "ReleaseGateRanger",
+        "PromotionLedgerRanger",
+        "ProofLedgerRanger",
+        "RegressionAuditRanger"
+    ],
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+    "verdict_digest": "63087c91453585b5117453bfbe36a907d9cd5d75afa5d61dc48604e776247eba",
+    "verdict_id": "SOL-WAVEGUIDE-RC-COURT-VERDICT-RC2",
+    "warning_attestations": []
+}

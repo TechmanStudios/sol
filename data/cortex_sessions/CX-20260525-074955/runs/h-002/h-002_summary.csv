@@ -1,0 +1,2 @@
+condition,entropy,totalFlux,maxFluxAbs,mass,avgRho,maxRho,rhoMaxId,activeCount,vortNorm_global,vortNorm_global_ema,step,t,param_dt,param_c_press,param_damping,param_rng_seed
+baseline,0.9920416002420315,0.08823713618283484,0.008862960570248806,18.350936574533073,0.13107811838952194,0.14242538416326656,58,127,0.0,0.0,500,59.99999999999949,0.12,0.1,0.2,42

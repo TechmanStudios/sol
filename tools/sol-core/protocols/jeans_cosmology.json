@@ -1,0 +1,38 @@
+{
+  "seriesName": "jeans_cosmology",
+  "question": "How do collapse threshold (Jcrit) and injection strategy shape the topology of emergent structure in the SOL graph?",
+  "invariants": {
+    "dt": 0.12,
+    "c_press": 0.1,
+    "damping": 0.2,
+    "rng_seed": 42,
+    "tractor_rate": 0.05
+  },
+  "knobs": {
+    "Jcrit": [8.0, 15.0, 18.0, 30.0, 50.0],
+    "strategy": ["blast", "drizzle", "cluster_spray"]
+  },
+  "steps": 600,
+  "reps": 1,
+  "baseline": "fresh",
+  "metrics_every": 5,
+  "outputs": {
+    "summary_csv": true,
+    "trace_csv": true,
+    "run_bundle_md": true,
+    "synth_log_csv": true
+  },
+  "hypotheses": [
+    "Low Jcrit (5–10) produces many stars quickly, creating a 'rich' cosmology with many synth nodes",
+    "High Jcrit (30–50) produces few or no collapses, creating a 'barren' cosmology where energy dissipates",
+    "Blast injection creates a single hot spot that collapses first and radiates structure outward",
+    "Drizzle injection delays collapse but distributes stellar formation across the graph",
+    "Cluster spray with spirit nodes produces multiple simultaneous collapses, weaving a synth-web"
+  ],
+  "falsifiers": [
+    "Stars form at all Jcrit values regardless of threshold (would indicate Jcrit has no discriminating power)",
+    "No synth nodes are ever spawned (would indicate the spawning mechanism is broken)",
+    "Drizzle and blast produce identical star counts (would indicate injection rate is irrelevant)"
+  ],
+  "notes": "Based on rd1.md 'Telekinetic Build' v3.5 → v3.5.1: Jeans Instability (metabolism), Tractor Beam (telekinesis), Active Inference (synth spawning). The two knobs are the density trigger and the energy delivery method."
+}

@@ -1,0 +1,27 @@
+Conjecture 16: Gravitational Memory Hardening / Jeans ROM (Conjecture 16)
+========================================================================
+
+Conjecture:
+An autonomous analog memory register cell combining Gated Recurrent Manifold Network (GRMN) node-level equations with Jeans Gravitational Collapse physics can undergo a reversible phase transition to trigger a stable stellar state (Star node) when written to a high-density threshold (J_val >= J_crit). Once collapsed, the register physically locks its state by autonomously drawing mass from a dedicated buffer reservoir via a tax edge to offset damping decay, while remaining fully erasable under a negative belief pulse that increases pressure, drops J_val below J_crit, and collapses the Star back to a gaseous state.
+
+Specifically:
+1. Topology: 6-node test graph:
+   - SOURCE <-> GATE <-> HOST <-> BATTERY
+   - GATE <-> READOUT (for measurement)
+   - HOST <-> BUFFER (with edge parameter kind = "tax")
+2. Reversible Jeans Collapse:
+   - A critical Jeans value J_val = rho / (|p| + epsilon) determines the phase change. If J_val >= J_crit (18.0), the node undergoes collapse (isStellar = True), reducing local damping decay and initiating accretion.
+   - If J_val falls below J_crit (due to mass drainage under a negative belief erase pulse), the stellar state is cleared (isStellar = False, isConstellation = False), permitting a clean reset.
+3. Gated Accretion:
+   - During write, positive belief and high mass at SOURCE drive host density up, triggering collapse.
+   - During settle/hold, host z-gate closes (z -> 0.0) under battery feedback. The host node actively pulls mass from the BUFFER node to offset damping decay.
+   - During noise, host belief is held positive (psi_bias = 0.60) to block belief tunneling, maintaining the z-gate closed and rejecting noise leakage.
+   - During reset, register biases are pulled to -1.0. Host belief falls, opening the z-gate (z >= 1.0) and allowing mass to evacuate, reversing collapse and resetting the battery back to state -1.
+
+Success Criteria:
+- Max Write J_val >= 18.0 (collapsing into a star state).
+- Max Write z_gate >= 0.9 (unlocked during write).
+- Min Hold z_gate <= 0.01 (locked during hold).
+- Buffer accretion is active during hold (mass transfer > 0.1).
+- Mass leakage during high-mass Noise phase is < 1e-3 mass units.
+- Reset pulse collapses the star state (isStellar = False) and unfreezes the host (z_gate >= 0.9).

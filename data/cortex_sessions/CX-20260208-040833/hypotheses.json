@@ -1,0 +1,43 @@
+[
+  {
+    "id": "H-001",
+    "template": "parameter_sweep",
+    "question": "How does c_press affect entropy, flux, and mass over 200 steps?",
+    "knob": "c_press",
+    "knob_values": [
+      0.01,
+      0.05,
+      0.1,
+      0.2,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 200,
+    "reps": 3,
+    "falsifiers": [
+      "All c_press values produce identical results (no sensitivity)",
+      "Higher c_press produces non-monotonic response without explanation"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unexplored_param",
+      "priority": 4,
+      "claim_id": null,
+      "description": "c_press: Pressure coefficient \u2014 not swept in headless",
+      "suggested_action": "Sweep c_press across [0.01, 0.05, 0.1, 0.2, 0.5]",
+      "metadata": {
+        "param": "c_press",
+        "range": [
+          0.01,
+          0.05,
+          0.1,
+          0.2,
+          0.5
+        ]
+      }
+    }
+  }
+]

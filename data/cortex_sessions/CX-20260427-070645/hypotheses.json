@@ -1,0 +1,129 @@
+[
+  {
+    "id": "H-001",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Does basin migration (RhoMaxNode 132\u219243) at damping=0.5 signal the beginning of a topological reorganization?",
+      "suggested_action": "Design an experiment to answer: Does basin migration (RhoMaxNode 132\u219243) at damping=0.5 signal the beginning of a topological reorganization?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-001-damping.md",
+        "question": "Does basin migration (RhoMaxNode 132\u219243) at damping=0.5 signal the beginning of a topological reorganization?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 28 | Memory edges: 127 | Avg confidence: 0.351 | Tags: basin(28), entropy(28), rhoMax(28)",
+      "kb_passages": []
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-002",
+    "template": "parameter_sweep",
+    "question": "How does damping affect entropy, flux, and mass over 200 steps?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.2,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 200,
+    "reps": 3,
+    "falsifiers": [
+      "All damping values produce identical results (no sensitivity)",
+      "Higher damping produces non-monotonic response without explanation"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: What happens in the unexplored gap between damping=0.5 and the known critical threshold?",
+      "suggested_action": "Design an experiment to answer: What happens in the unexplored gap between damping=0.5 and the known critical threshold?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-001-damping.md",
+        "question": "What happens in the unexplored gap between damping=0.5 and the known critical threshold?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 28 | Memory edges: 127 | Avg confidence: 0.351 | Tags: basin(28), entropy(28), rhoMax(28)",
+      "kb_passages": []
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-003",
+    "template": "replication",
+    "question": "Can headless sol-core reproduce: ?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "Headless results qualitatively differ from dashboard results",
+      "Metrics trend in opposite direction from original claim"
+    ],
+    "notes": "Replicating unknown",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?",
+      "suggested_action": "Design an experiment to answer: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-002-damping.md",
+        "question": "At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [
+        0.35,
+        0.7,
+        0.9,
+        0.025,
+        1.5
+      ],
+      "memory_context": "Memory nodes: 28 | Memory edges: 127 | Avg confidence: 0.351 | Tags: basin(28), entropy(28), rhoMax(28)",
+      "kb_passages": []
+    }
+  }
+]

@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOL Sovereign Engine — Micro-Substrate Atlas</title>
+    
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Vis.js Standalone -->
+    <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #020108;
+            --bg-darker: #010003;
+            --panel-bg: rgba(15, 8, 28, 0.7);
+            --border-color: rgba(213, 0, 249, 0.15);
+            --text-color: #e2e8f0;
+            --text-muted: #94a3b8;
+            
+            /* Quantum Neon Palette */
+            --accent-purple: #d500f9;
+            --accent-cyan: #00e5ff;
+            --accent-green: #00e676;
+            --accent-orange: #ff9100;
+            --accent-indigo: #651fff;
+            
+            --panel-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            --glass-blur: blur(12px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(26, 10, 45, 0.8) 0%, rgba(2, 1, 8, 1) 90%),
+                radial-gradient(circle at 90% 80%, rgba(10, 30, 40, 0.4) 0%, rgba(2, 1, 8, 1) 80%);
+            color: var(--text-color);
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar Header */
+        header {
+            height: 70px;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(10, 5, 20, 0.9);
+            backdrop-filter: var(--glass-blur);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .header-logo-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-logo-icon {
+            font-size: 24px;
+            color: var(--accent-purple);
+            text-shadow: 0 0 10px rgba(213, 0, 249, 0.5);
+            animation: pulse-glow 3s infinite alternate;
+        }
+
+        .header-title-block h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, #fff 30%, var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        .header-title-block p {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header-hud-stats {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .hud-stat-item {
+            text-align: right;
+        }
+
+        .hud-stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .hud-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .hud-stat-value.pulse-purple {
+            color: var(--accent-purple);
+            text-shadow: 0 0 4px rgba(213,0,249,0.3);
+        }
+
+        /* Workspace Layout */
+        .workspace {
+            flex: 1;
+            display: flex;
+            position: relative;
+            height: calc(100vh - 70px);
+        }
+
+        /* Sidebars */
+        .sidebar {
+            width: 380px;
+            background: var(--panel-bg);
+            backdrop-filter: var(--glass-blur);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            z-index: 50;
+            box-shadow: var(--panel-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-right {
+            border-right: none;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .sidebar-padding {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Search Input */
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(213, 0, 249, 0.2);
+            padding: 12px 16px 12px 42px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px rgba(213, 0, 249, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        /* Layers Toggle Card */
+        .layer-card {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .toggle-label-sec {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .dot-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Switch UI */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 34px;
+            transition: .4s;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            border-radius: 50%;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: rgba(213, 0, 249, 0.2);
+            border-color: var(--accent-purple);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(18px);
+            background-color: var(--accent-purple);
+            box-shadow: 0 0 8px var(--accent-purple);
+        }
+
+        /* Main Network Canvas area */
+        .canvas-area {
+            flex: 1;
+            position: relative;
+            background: #010005;
+            overflow: hidden;
+        }
+
+        #network-graph {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+        }
+
+        /* Glassmorphism Inspector */
+        .inspector-panel {
+            background: rgba(8, 4, 20, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .inspector-placeholder {
+            margin: auto;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .inspector-placeholder i {
+            font-size: 36px;
+            opacity: 0.3;
+        }
+
+        .inspector-header {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 14px;
+        }
+
+        .inspector-tag {
+            align-self: flex-start;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .inspector-name {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: white;
+        }
+
+        .inspector-description {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .meta-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .meta-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .meta-value {
+            font-size: 13px;
+            color: var(--text-color);
+            background: rgba(255, 255, 255, 0.015);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .meta-value-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--accent-cyan);
+        }
+
+        /* Preset Workflow Section */
+        .workflow-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .workflow-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .workflow-card:hover {
+            border-color: rgba(213, 0, 249, 0.3);
+            background: rgba(213, 0, 249, 0.01);
+            box-shadow: 0 4px 15px rgba(213, 0, 249, 0.05);
+        }
+
+        .workflow-card.active {
+            border-color: var(--accent-purple);
+            background: rgba(213, 0, 249, 0.05);
+            box-shadow: 0 4px 20px rgba(213, 0, 249, 0.15);
+        }
+
+        .workflow-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .workflow-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .workflow-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .workflow-play-btn {
+            background: var(--accent-purple);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+        }
+
+        .workflow-play-btn:hover {
+            background: white;
+            color: black;
+            box-shadow: 0 0 10px rgba(213, 0, 249, 0.5);
+        }
+
+        /* Workflow Steps Panel */
+        .workflow-steps-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 12px;
+            display: none;
+        }
+
+        .workflow-card.active + .workflow-steps-panel {
+            display: block;
+            margin-top: -8px;
+            margin-bottom: 8px;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            align-items: flex-start;
+        }
+
+        .step-item:last-child {
+            border-bottom: none;
+        }
+
+        .step-num {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            flex: 0 0 auto;
+            margin-top: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .step-item.highlighted .step-num {
+            background: var(--accent-purple);
+            color: white;
+            box-shadow: 0 0 8px var(--accent-purple);
+        }
+
+        .step-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .step-node-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+        }
+
+        .step-action-desc {
+            font-size: 12px;
+            color: var(--text-color);
+        }
+
+        .step-item.highlighted .step-action-desc {
+            color: white;
+            font-weight: 500;
+        }
+
+        /* Tooltip style */
+        .viz-tooltip {
+            position: absolute;
+            background: rgba(10, 5, 25, 0.95);
+            border: 1px solid var(--accent-purple);
+            border-radius: 8px;
+            padding: 10px 14px;
+            box-shadow: var(--panel-shadow);
+            z-index: 1000;
+            pointer-events: none;
+            display: none;
+            max-width: 280px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        /* Stabilization HUD */
+        .stabilization-hud {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 5, 20, 0.85);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 40;
+            pointer-events: none;
+            box-shadow: var(--panel-shadow);
+            transition: opacity 0.5s ease;
+        }
+
+        .stabilization-hud.fade-out {
+            opacity: 0;
+        }
+
+        .hud-spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(213, 0, 249, 0.1);
+            border-top: 2px solid var(--accent-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .hud-text {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Camera Controls */
+        .graph-controls {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(10, 5, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 6px;
+            display: flex;
+            gap: 6px;
+            z-index: 40;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-color);
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--accent-purple);
+            color: white;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px rgba(213, 0, 249, 0.3);
+        }
+
+        @keyframes pulse-glow {
+            from {
+                text-shadow: 0 0 5px rgba(213, 0, 249, 0.3);
+            }
+            to {
+                text-shadow: 0 0 15px rgba(213, 0, 249, 0.8);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HUD Header -->
+    <header>
+        <div class="header-logo-section">
+            <i class="fa-solid fa-circle-nodes header-logo-icon"></i>
+            <div class="header-title-block">
+                <h1>SOL Sovereign Control</h1>
+                <p>Micro-Substrate, Exciton-MoA & Frontier OS Atlas</p>
+            </div>
+        </div>
+
+        <div class="header-hud-stats">
+            <div class="hud-stat-item">
+                <div class="hud-stat-label">Attractor Basins</div>
+                <div class="hud-stat-value">9</div>
+            </div>
+            <div class="hud-stat-item">
+                <div class="hud-stat-label">Exciton Giants</div>
+                <div class="hud-stat-value">7</div>
+            </div>
+            <div class="hud-stat-item">
+                <div class="hud-stat-label">Roaming Rangers</div>
+                <div class="hud-stat-value">6</div>
+            </div>
+            <div class="hud-stat-item">
+                <div class="hud-stat-label">Active Registers</div>
+                <div class="hud-stat-value pulse-purple">4 (Verified mass)</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="workspace">
+        
+        <!-- Left Sidebar: Controls & Inspector -->
+        <div class="sidebar">
+            <div class="sidebar-padding">
+                
+                <!-- Search & Filters -->
+                <div class="search-container">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-box" class="search-input" placeholder="Search basins, Excitons, control keys...">
+                </div>
+
+                <!-- Layer Toggles -->
+                <div class="layer-card">
+                    <div class="section-title">
+                        <i class="fa-solid fa-layer-group"></i> Layer Filters
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-label-sec">
+                            <span class="dot-indicator" style="background: var(--accent-orange);"></span>
+                            <span>Substrates & Registers</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="layer-substrates" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-label-sec">
+                            <span class="dot-indicator" style="background: var(--accent-cyan);"></span>
+                            <span>Exciton-MoA Physics</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="layer-excitons" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-label-sec">
+                            <span class="dot-indicator" style="background: var(--accent-green);"></span>
+                            <span>Frontier_OS Control</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="layer-control" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-label-sec">
+                            <span class="dot-indicator" style="background: var(--accent-purple);"></span>
+                            <span>Lumina Sovereign Layer</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="layer-lumina" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Detail Inspector -->
+                <div class="section-title" style="margin-bottom: 0;">
+                    <i class="fa-solid fa-microchip"></i> Node Specifications
+                </div>
+                <div class="inspector-panel" id="inspector">
+                    <div class="inspector-placeholder" id="inspector-placeholder">
+                        <i class="fa-solid fa-satellite-dish"></i>
+                        <p>Select any micro-component, Exciton Operator, or Ranger in the substrate graph to inspect physical specifications, formulas, and allowed runtime actions.</p>
+                    </div>
+                    <div id="inspector-content" style="display: none;">
+                        <!-- Dynamically filled by JS -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Center: Interactive Graph -->
+        <div class="canvas-area">
+            <div id="network-graph"></div>
+
+            <!-- Stabilization HUD -->
+            <div class="stabilization-hud" id="stabilization-hud">
+                <div class="hud-spinner"></div>
+                <div class="hud-text" id="stabilization-text">Stabilizing Substrate...</div>
+            </div>
+
+            <!-- Graph Camera Controls -->
+            <div class="graph-controls">
+                <div class="control-btn" id="btn-zoom-in" title="Zoom In"><i class="fa-solid fa-plus"></i></div>
+                <div class="control-btn" id="btn-zoom-out" title="Zoom Out"><i class="fa-solid fa-minus"></i></div>
+                <div class="control-btn" id="btn-fit" title="Fit Screen"><i class="fa-solid fa-expand"></i></div>
+                <div class="control-btn" id="btn-physics" title="Toggle Physics"><i class="fa-solid fa-bolt"></i></div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar: Workflows & Specs -->
+        <div class="sidebar sidebar-right">
+            <div class="sidebar-padding">
+                
+                <!-- Preset Workflows -->
+                <div class="section-title">
+                    <i class="fa-solid fa-compass"></i> Substrate Workflows
+                </div>
+                
+                <div class="workflow-section" id="workflow-list">
+                    <!-- Dynamically filled by JS -->
+                </div>
+
+                <!-- Graph Legend -->
+                <div class="layer-card">
+                    <div class="section-title">
+                        <i class="fa-solid fa-fingerprint"></i> Substrate Key
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--text-muted);">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 12px; height: 12px; background: var(--accent-orange); border-radius: 4px; display: inline-block;"></span>
+                            <span style="color: white; font-weight: 500;">Physical Registers & Basins</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 12px; height: 12px; background: var(--accent-cyan); clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); display: inline-block;"></span>
+                            <span style="color: white; font-weight: 500;">Exciton-MoA Operators</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 12px; height: 12px; background: var(--accent-green); border-radius: 6px; display: inline-block;"></span>
+                            <span style="color: white; font-weight: 500;">Frontier_OS Controllers</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 12px; height: 12px; background: var(--accent-purple); border-radius: 3px; display: inline-block;"></span>
+                            <span style="color: white; font-weight: 500;">Lumina Sovereign Layer</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Live Tooltip -->
+    <div id="graph-tooltip" class="viz-tooltip"></div>
+
+    <script>
+        // Embed the database
+        const SUBSTRATES = [{"id": "reg_a_state", "name": "Register A (reg_a_state)", "type": "Register", "description": "Standard accumulator register 1. Represents localized field coordinates on the semantic manifold.", "spec": "Mass constraint: rho >= 14.0. Improper ALU operation causing rho drain raises Mass Preservation Failure."}, {"id": "reg_b_state", "name": "Register B (reg_b_state)", "type": "Register", "description": "Standard accumulator register 2. Represents localized field coordinates on the semantic manifold.", "spec": "Mass constraint: rho >= 14.0. Improper ALU operation causing rho drain raises Mass Preservation Failure."}, {"id": "reg_c_state", "name": "Register C (reg_c_state)", "type": "Register", "description": "Standard ALU destination register. Stores intermediate calculation results.", "spec": "Mass constraint: rho >= 14.0. Critical for wide-word sum/carry propagation."}, {"id": "reg_d_state", "name": "Register D (reg_d_state)", "type": "Register", "description": "ALU destination register prioritized for AND/AND_MS gates and COND_ASSIGN operations.", "spec": "Mass constraint: rho >= 14.0. Specifically utilized for vector mask alignment."}, {"id": "basin_a", "name": "Basin_A", "type": "Attractor Basin", "description": "Localized attractor basin on the semantic manifold. Primed as Input Channel 1.", "spec": "Dynamical Equation: d_rho_a/dt = Phi_in - Phi_out - gamma * rho_a. Damping gamma = 0.01."}, {"id": "basin_b", "name": "Basin_B", "type": "Attractor Basin", "description": "Localized attractor basin on the semantic manifold. Primed as Input Channel 2.", "spec": "Dynamical Equation: d_rho_b/dt = Phi_in - Phi_out - gamma * rho_b. Damping gamma = 0.01."}, {"id": "basin_cin", "name": "Basin_Cin", "type": "Attractor Basin", "description": "Localized attractor basin on the semantic manifold. Primed as Input Channel 3 (Carry-in / Auxiliary).", "spec": "Dynamical Equation: d_rho_cin/dt = Phi_in - Phi_out - gamma * rho_cin."}, {"id": "basin_sum", "name": "Basin_SUM", "type": "Attractor Basin", "description": "Localized attractor basin on the semantic manifold. Primed as Output Channel 1 (Result Accumulator).", "spec": "Dynamical Equation: d_rho_sum/dt = Phi_in - Phi_out - gamma * rho_sum."}, {"id": "basin_cout", "name": "Basin_Cout", "type": "Attractor Basin", "description": "Localized attractor basin on the semantic manifold. Primed as Output Channel 2 (Carry-out / Auxiliary).", "spec": "Dynamical Equation: d_rho_cout/dt = Phi_in - Phi_out - gamma * rho_cout."}, {"id": "basin_sel", "name": "Basin_Sel", "type": "Attractor Basin", "description": "Localized attractor basin on the semantic manifold. Primed as Multiplexer Selection Selector.", "spec": "Steers semantic fluid routing depending on select signal amplitude."}, {"id": "basin_out", "name": "Basin_Out", "type": "Attractor Basin", "description": "Localized attractor basin on the semantic manifold. Primed as Multiplexer Output Channel.", "spec": "Accumulates routed semantic density from selected input channel."}, {"id": "basin_sr", "name": "Basin_S / Basin_R", "type": "Attractor Basin", "description": "Set and Reset input basins for analog flip-flop latch memory.", "spec": "Requires counterbalanced threshold sweeps to force state transitions across energy barriers."}, {"id": "basin_q", "name": "Basin_Q / Basin_Qbar", "type": "Attractor Basin", "description": "State output and inverted output basins for analog flip-flop latch memory.", "spec": "Holds stable attractor state indefinitely in low-damping regimes."}, {"id": "micro_sequencer", "name": "MicroInstructionSequencer", "type": "Execution Fabric", "description": "WideWord instruction execution engine. Executes compiled micro-instructions (LOAD, STORE, NUDGE, SETTLE, ASSERT_MASS).", "spec": "Drives parallel SIMD byte-lanes and matches phase tables across sharded crossbars."}];
+        const EXCITONS = [{"id": "manifold_core", "name": "BlankManifoldCore", "type": "Physics Substrate", "description": "Pristine unweighted 1,024-node lattice representing a non-Euclidean state-space vacuum.", "spec": "Topology: hyperbolic_uniform. Provides infinite capacity for recursive loops without pre-existing semantic pressure."}, {"id": "stat_prism", "name": "StatisticalPrism", "type": "Dimensional Transducer", "description": "Extracts fundamental statistical moments of incoming high-dimensional vectors to bypass linear search.", "spec": "Moments extracted: Mean, Variance, Skewness. Broadcasts 3D fingerprint as a probability density shower."}, {"id": "ont_orch", "name": "OntologicalOrchestrator", "type": "Telemetry / Observer", "description": "Metacognitive observer monitoring manifold functional state-spaces.", "spec": "Computes Hotspot Functional H(x,t). Triggers Threshold Burst routing upon local Jeans Mass collapse."}, {"id": "giant_statistician", "name": "The Statistician", "type": "Exciton Giant", "description": "Governs the semantic equation of state to manage crowding and semantic pressure.", "spec": "Performs active node capacitance tuning (statistician_tune_capacitance) to prevent pressure saturation."}, {"id": "giant_optimizer", "name": "The Optimizer", "type": "Exciton Giant", "description": "Carves the potential gradient field to accelerate flow toward low-error attractor states.", "spec": "Differential shaper: updates potential phi(x,t) based on Bayesian variance."}, {"id": "giant_nbody", "name": "The N-Body Solver", "type": "Exciton Giant", "description": "Simulates gravitational forces on the manifold to cluster semantic nodes.", "spec": "Triggers Jeans Mass collapses to synthesize dense attractor basins dynamically."}, {"id": "giant_navigator", "name": "The Graph Navigator", "type": "Exciton Giant", "description": "Operates within divergence-free state fields to inject curl and navigate loops.", "spec": "Performs active waveguide isolation (graph_navigator_isolate_waveguides) to eliminate signal reflection."}, {"id": "giant_linalg", "name": "The Linear Algebraist", "type": "Exciton Giant", "description": "Executes anisotropic metric tensor scaling to compress redundant dimensions.", "spec": "Natively implements Principal Component Analysis (PCA) via gravitational projection."}, {"id": "giant_integrator", "name": "The Integrator", "type": "Exciton Giant", "description": "Manipulates the local Jacobian volume to resolve prior probability weights.", "spec": "Resolves prior distributions before ontological collapse."}, {"id": "giant_aligner", "name": "The Aligner", "type": "Exciton Giant", "description": "Dilates and constricts topological channels based on semantic phase synchronization.", "spec": "Calculates shortest-path delay corrections for In-Conduit Analog Computing (ICAC) phase coherence."}];
+        const FRONTIER = [{"id": "giant_entangler", "name": "EntanglerGiant", "type": "Adaptive Controller", "description": "Computes feedback adjustments for live manifold control variables.", "spec": "Nudges parameters: Aperture, Damping, Phase Offset. Keeps system within stable operating regimes."}, {"id": "msf_guard", "name": "MSF Guard Agent", "type": "Safety Monitor", "description": "Enforces stability constraints for synchronized phase states.", "spec": "Prevents sync overrun and clock drift between sharded manifolds."}, {"id": "snowball_loop", "name": "Snowball Experiment Loop", "type": "Feedback Scheduler", "description": "Closed-loop scheduler executing explore/exploit regimes via shared state.", "spec": "Pulse tier: 4h quick checks. Daily tier: multi-variant sweeps, policy-promoted to exploits."}, {"id": "inf_node", "name": "Infinity Node Aggregate", "type": "System Diagnostics", "description": "CI health aggregate running JUnit suites across Linux/Windows & Python 3.11/3.12 matrices.", "spec": "Feeds read-only CI status into state.json to isolate test metrics from snowball control policies."}];
+        const LUMINA = [{"id": "lumina_library", "name": "Lumina Coding Library", "type": "Constitution", "description": "Persistent repository for verified agent classes, substrate specs, code, and documentation templates.", "spec": "Constitutional registry. Component curfew enforced: no changes to core math allowed."}, {"id": "lumina_lib_agent", "name": "LuminaLibraryAgent", "type": "Library Curator", "description": "Manages imports/exports from the library, Curates verified components and routes queries to experts.", "spec": "Syncs successful designs from inventor_ledger.jsonl into components/."}, {"id": "lumina_level_agent", "name": "LuminaLevelAgent", "type": "Level Cartographer", "description": "Orchestrates level definitions and ensures Level 1-11 invariants are maintained.", "spec": "Maps physical operations (PDM_MODULATE, PLL_SYNC) to respective levels (e.g. Level 11)."}, {"id": "court_verification", "name": "Verification Court", "type": "Judicial Branch", "description": "Requires multi-expert consensus to promote components to new levels in the Library.", "spec": "Inspects: Substrate verdict, Compiler verdict, Calibration verdict, Ranger field report, Replay hash."}, {"id": "ranger_substrate", "name": "LuminaSubstrateRanger", "type": "Field Ranger", "description": "Inspects active manifolds for density, semantic pressure, phase lock, and mass preservation.", "spec": "Allowed Actions: READ_STATE, RUN_DIAGNOSTICS, COLLECT_TELEMETRY. Forbidden: WRITE_SOURCE."}, {"id": "ranger_hotfix", "name": "LuminaHotfixDispatcher", "type": "Field Ranger", "description": "Dynamic sequencer patching agent. Deploys to VM sequencers to inject corrective instructions.", "spec": "Missions: MASS_RESCUE (injects NUDGE / SETTLE under tight TTL steps when rho < 14.0)."}, {"id": "ranger_courier", "name": "LuminaPayloadCourier", "type": "Field Ranger", "description": "Compiler deployment agent. Pulls verified components from the library and deploys them to namespaces.", "spec": "Verifies SHA256 integrity checkouts before compiling instructions."}, {"id": "ranger_telemetry", "name": "LuminaTelemetryCollector", "type": "Field Ranger", "description": "Step-level density trace accumulator. Attaches to sequencers to record attractor basin behaviors.", "spec": "Produces trace outputs: summary.csv, busTrace.csv, repTransition_curve.csv."}, {"id": "ranger_archivist", "name": "LuminaLedgerArchivist", "type": "Field Ranger", "description": "Log compiler and chronicler. Extracts failures and merges durable lessons.", "spec": "Writes lessons directly into level_lessons.json. Feeds the Sovereign Ledger."}, {"id": "ranger_scout", "name": "LuminaSubstrateScout", "type": "Field Ranger", "description": "Workspace scout. Scans repository for custom level signatures and registers them with orchestrators.", "spec": "Allowed Actions: READ_FILESYSTEM, REGISTER_LEVEL."}, {"id": "expert_calibration", "name": "CalibrationExpertTeam", "type": "Expert Parliament", "description": "Handles phase table mapping and acoustic impedance calculations.", "spec": "Routes parameters: phase_calibration, acoustic_impedance."}, {"id": "expert_network", "name": "NetworkExpertTeam", "type": "Expert Parliament", "description": "Handles wave packet formatting, routing lanes, and collision arbitration.", "spec": "Routes parameters: collision_arbitrator, soliton_waveform."}, {"id": "expert_verification", "name": "VerificationExpertTeam", "type": "Expert Parliament", "description": "Runs E2E proof checks and asserts mass constraints.", "spec": "Routes parameters: mass_sentinel, circuit_proofer."}, {"id": "expert_cognitive", "name": "CognitiveExpertTeam", "type": "Expert Parliament", "description": "Handles attractor basin recall, memory replay, and consolidation queries.", "spec": "Routes parameters: resonant_attention, hcam_recall."}];
+        const MICRO_CONNECTIONS = [{"from": "micro_sequencer", "to": "reg_a_state", "label": "executes micro-op", "type": "data"}, {"from": "micro_sequencer", "to": "reg_b_state", "label": "executes micro-op", "type": "data"}, {"from": "reg_a_state", "to": "basin_a", "label": "primes channel", "type": "data"}, {"from": "reg_b_state", "to": "basin_b", "label": "primes channel", "type": "data"}, {"from": "basin_sum", "to": "reg_c_state", "label": "accumulates", "type": "data"}, {"from": "basin_cout", "to": "reg_d_state", "label": "carries-out", "type": "data"}, {"from": "stat_prism", "to": "manifold_core", "label": "broadcasts moments", "type": "physics"}, {"from": "manifold_core", "to": "giant_statistician", "label": "senses semantic pressure", "type": "physics"}, {"from": "manifold_core", "to": "giant_nbody", "label": "local density shift", "type": "physics"}, {"from": "giant_nbody", "to": "basin_a", "label": "collapses attractor", "type": "physics"}, {"from": "giant_nbody", "to": "basin_b", "label": "collapses attractor", "type": "physics"}, {"from": "giant_aligner", "to": "manifold_core", "label": "phase sync", "type": "physics"}, {"from": "manifold_core", "to": "ont_orch", "label": "monitors state H(x,t)", "type": "physics"}, {"from": "ont_orch", "to": "micro_sequencer", "label": "Threshold Burst", "type": "physics"}, {"from": "ont_orch", "to": "giant_entangler", "label": "telemetry feedback", "type": "control"}, {"from": "giant_entangler", "to": "msf_guard", "label": "updates aperture/damping", "type": "control"}, {"from": "msf_guard", "to": "micro_sequencer", "label": "asserts sync lock", "type": "control"}, {"from": "snowball_loop", "to": "giant_entangler", "label": "explore/exploit regimes", "type": "control"}, {"from": "inf_node", "to": "snowball_loop", "label": "diagnostics report", "type": "control"}, {"from": "lumina_lib_agent", "to": "lumina_library", "label": "curates files", "type": "sovereign"}, {"from": "lumina_lib_agent", "to": "expert_calibration", "label": "routes question", "type": "sovereign"}, {"from": "lumina_lib_agent", "to": "expert_network", "label": "routes question", "type": "sovereign"}, {"from": "lumina_lib_agent", "to": "expert_verification", "label": "routes question", "type": "sovereign"}, {"from": "lumina_lib_agent", "to": "expert_cognitive", "label": "routes question", "type": "sovereign"}, {"from": "lumina_level_agent", "to": "micro_sequencer", "label": "defines opcodes", "type": "sovereign"}, {"from": "court_verification", "to": "lumina_library", "label": "votes promotion", "type": "sovereign"}, {"from": "ranger_substrate", "to": "manifold_core", "label": "inspects lattice", "type": "field"}, {"from": "ranger_substrate", "to": "reg_a_state", "label": "checks rho >= 14.0", "type": "field"}, {"from": "ranger_hotfix", "to": "micro_sequencer", "label": "injects NUDGE/SETTLE", "type": "field"}, {"from": "ranger_courier", "to": "micro_sequencer", "label": "deploys binary code", "type": "field"}, {"from": "ranger_telemetry", "to": "micro_sequencer", "label": "traces step density", "type": "field"}, {"from": "ranger_archivist", "to": "court_verification", "label": "submits lessons", "type": "field"}, {"from": "ranger_scout", "to": "lumina_level_agent", "label": "reports new signatures", "type": "field"}];
+        const WORKFLOWS = [{"id": "workflow_collapse", "name": "Exciton Bayesian Collapse", "description": "Dimensional moments trigger spontaneous gravitational collapse, resolving prior uncertainties.", "steps": [{"node": "stat_prism", "action": "Extract Mean, Variance, Skewness, and broadcast probability shower"}, {"node": "manifold_core", "action": "Node lattices phase-align with statistical moments shower"}, {"node": "giant_statistician", "action": "Tune node capacitance to manage semantic pressure"}, {"node": "giant_nbody", "action": "Trigger Jeans Mass local collapse into basins"}, {"node": "basin_a", "action": "Semantic fluid accumulates at basin core"}, {"node": "giant_integrator", "action": "Resolve Jacobian volume Bayesian prior"}, {"node": "ont_orch", "action": "H(x,t) limit crossed -> Fire Threshold Burst"}, {"node": "micro_sequencer", "action": "Project output sequence"}]}, {"id": "workflow_icac", "name": "ICAC Phase Calibration", "description": "In-Conduit Analog Computing calibration adjusts delay pathways to maintain phase coherence.", "steps": [{"node": "giant_aligner", "action": "Calculate shortest-path delay corrections between sources"}, {"node": "giant_entangler", "action": "Adjust phase offsets dynamically"}, {"node": "msf_guard", "action": "Verify phase coherence & prevent clock drift"}, {"node": "micro_sequencer", "action": "Assert PLL phase lock across crossbars"}]}, {"id": "workflow_rescue", "name": "Ranger Hotfix (Mass Rescue)", "description": "Field ranger detects register mass drain and dispatches hotfix instructions to prevent execution failure.", "steps": [{"node": "ranger_substrate", "action": "Scan registers & detect density breach (rho < 14.0)"}, {"node": "reg_a_state", "action": "Trigger Mass Preservation Failure alert"}, {"node": "ranger_hotfix", "action": "Travel to VM sequencer and acquire mission token"}, {"node": "micro_sequencer", "action": "Inject corrective NUDGE / SETTLE micro-instructions"}, {"node": "reg_a_state", "action": "Restore register mass (rho >= 14.0)"}, {"node": "ranger_telemetry", "action": "Extract step-level density trace to trace_node_diffs.py"}, {"node": "court_verification", "action": "Audit before-after evidence & file telemetry report"}]}, {"id": "workflow_snowball", "name": "Adaptive Snowball explore/exploit", "description": "Closed-loop feedback parameter sweep exploring new ranges and committing consolidated lessons.", "steps": [{"node": "snowball_loop", "action": "Query next config from state.json"}, {"node": "lumina_lib_agent", "action": "Retrieve current verified calibration tables"}, {"node": "giant_entangler", "action": "Establish bounded sweep range limits"}, {"node": "manifold_core", "action": "Run 4-8 condition exploration sweeps"}, {"node": "inf_node", "action": "Evaluate daily CI aggregate test health snapshot"}, {"node": "ranger_archivist", "action": "Write consolidations & write to level_lessons.json"}]}];
+
+        // State variables
+        let network = null;
+        let nodesDataset = null;
+        let edgesDataset = null;
+        let activeWorkflowInterval = null;
+        let physicsEnabled = true;
+
+        const dom = {
+            searchBox: document.getElementById('search-box'),
+            inspectorPlaceholder: document.getElementById('inspector-placeholder'),
+            inspectorContent: document.getElementById('inspector-content'),
+            stabilizationHud: document.getElementById('stabilization-hud'),
+            stabilizationText: document.getElementById('stabilization-text'),
+            workflowList: document.getElementById('workflow-list'),
+            tooltip: document.getElementById('graph-tooltip'),
+            btnZoomIn: document.getElementById('btn-zoom-in'),
+            btnZoomOut: document.getElementById('btn-zoom-out'),
+            btnFit: document.getElementById('btn-fit'),
+            btnPhysics: document.getElementById('btn-physics'),
+            layerSubstrates: document.getElementById('layer-substrates'),
+            layerExcitons: document.getElementById('layer-excitons'),
+            layerControl: document.getElementById('layer-control'),
+            layerLumina: document.getElementById('layer-lumina')
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setupWorkflowsUI();
+            initGraph();
+            setupInteractivity();
+        });
+
+        function setupWorkflowsUI() {
+            dom.workflowList.innerHTML = '';
+            WORKFLOWS.forEach(wf => {
+                const card = document.createElement('div');
+                card.className = 'workflow-card';
+                card.id = wf.id;
+                
+                card.innerHTML = `
+                    <div class="workflow-title-row">
+                        <span class="workflow-title">${wf.name}</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 11px; opacity: 0.5;"></i>
+                    </div>
+                    <div class="workflow-desc">${wf.description}</div>
+                    <button class="workflow-play-btn" onclick="triggerWorkflow('${wf.id}', event)">
+                        <i class="fa-solid fa-play"></i> Initiate Cycle
+                    </button>
+                `;
+                
+                const stepsPanel = document.createElement('div');
+                stepsPanel.className = 'workflow-steps-panel';
+                stepsPanel.id = `${wf.id}_steps`;
+                
+                wf.steps.forEach((step, idx) => {
+                    const stepItem = document.createElement('div');
+                    stepItem.className = 'step-item';
+                    stepItem.id = `${wf.id}_step_${idx}`;
+                    stepItem.innerHTML = `
+                        <div class="step-num">${idx + 1}</div>
+                        <div class="step-details">
+                            <span class="step-node-name">${step.node}</span>
+                            <span class="step-action-desc">${step.action}</span>
+                        </div>
+                    `;
+                    stepsPanel.appendChild(stepItem);
+                });
+                
+                dom.workflowList.appendChild(card);
+                dom.workflowList.appendChild(stepsPanel);
+            });
+        }
+
+        function initGraph() {
+            const rawNodes = [];
+            const rawEdges = [];
+
+            // 1. Add Substrates (Amber)
+            SUBSTRATES.forEach(node => {
+                rawNodes.push({
+                    id: node.id,
+                    label: node.name.replace(' (reg_a_state)', '').replace(' (reg_b_state)', '').replace(' (reg_c_state)', '').replace(' (reg_d_state)', ''),
+                    title: node.description,
+                    group: 'substrate',
+                    shape: node.type === 'Register' ? 'box' : 'database',
+                    color: {
+                        background: '#1c1002',
+                        border: 'var(--accent-orange)',
+                        highlight: { background: '#301b04', border: 'var(--accent-orange)' }
+                    },
+                    borderWidth: 1.5,
+                    shadow: { enabled: true, color: 'rgba(255, 145, 0, 0.35)', size: 8 }
+                });
+            });
+
+            // 2. Add Excitons (Cyan)
+            EXCITONS.forEach(node => {
+                rawNodes.push({
+                    id: node.id,
+                    label: node.name,
+                    title: node.description,
+                    group: 'exciton',
+                    shape: 'hexagon',
+                    color: {
+                        background: '#03171a',
+                        border: 'var(--accent-cyan)',
+                        highlight: { background: '#072e35', border: 'var(--accent-cyan)' }
+                    },
+                    borderWidth: 1.5,
+                    shadow: { enabled: true, color: 'rgba(0, 229, 255, 0.35)', size: 8 }
+                });
+            });
+
+            // 3. Add Frontier (Green)
+            FRONTIER.forEach(node => {
+                rawNodes.push({
+                    id: node.id,
+                    label: node.name,
+                    title: node.description,
+                    group: 'control',
+                    shape: 'ellipse',
+                    color: {
+                        background: '#041c0e',
+                        border: 'var(--accent-green)',
+                        highlight: { background: '#0a351b', border: 'var(--accent-green)' }
+                    },
+                    borderWidth: 1.5,
+                    shadow: { enabled: true, color: 'rgba(0, 230, 118, 0.35)', size: 8 }
+                });
+            });
+
+            // 4. Add Lumina (Purple)
+            LUMINA.forEach(node => {
+                rawNodes.push({
+                    id: node.id,
+                    label: node.name,
+                    title: node.description,
+                    group: 'lumina',
+                    shape: node.type === 'Constitution' ? 'ellipse' : 'box',
+                    color: {
+                        background: '#160421',
+                        border: 'var(--accent-purple)',
+                        highlight: { background: '#2e0844', border: 'var(--accent-purple)' }
+                    },
+                    borderWidth: 1.5,
+                    shadow: { enabled: true, color: 'rgba(213, 0, 249, 0.35)', size: 8 }
+                });
+            });
+
+            // 5. Connect Edges
+            MICRO_CONNECTIONS.forEach(edge => {
+                let edgeColor = 'rgba(255,255,255,0.1)';
+                let activeColor = 'var(--accent-cyan)';
+                let dashes = false;
+                
+                if (edge.type === 'data') {
+                    edgeColor = 'rgba(255, 145, 0, 0.25)';
+                    activeColor = 'var(--accent-orange)';
+                } else if (edge.type === 'physics') {
+                    edgeColor = 'rgba(0, 229, 255, 0.25)';
+                    activeColor = 'var(--accent-cyan)';
+                } else if (edge.type === 'control') {
+                    edgeColor = 'rgba(0, 230, 118, 0.25)';
+                    activeColor = 'var(--accent-green)';
+                } else if (edge.type === 'sovereign') {
+                    edgeColor = 'rgba(213, 0, 249, 0.25)';
+                    activeColor = 'var(--accent-purple)';
+                    dashes = [4, 4];
+                } else if (edge.type === 'field') {
+                    edgeColor = 'rgba(213, 0, 249, 0.35)';
+                    activeColor = 'var(--accent-purple)';
+                }
+
+                rawEdges.push({
+                    from: edge.from,
+                    to: edge.to,
+                    label: edge.label,
+                    font: { size: 8, color: 'var(--text-muted)', face: 'Outfit', align: 'horizontal' },
+                    color: { color: edgeColor, highlight: activeColor },
+                    arrows: 'to',
+                    width: 1.2,
+                    dashes: dashes,
+                    type: edge.type
+                });
+            });
+
+            // Dataset bindings
+            nodesDataset = new vis.DataSet(rawNodes);
+            edgesDataset = new vis.DataSet(rawEdges);
+
+            const container = document.getElementById('network-graph');
+            const data = { nodes: nodesDataset, edges: edgesDataset };
+            const options = {
+                nodes: {
+                    font: { face: 'Outfit', color: '#ffffff' },
+                    margin: { top: 12, bottom: 12, left: 16, right: 16 }
+                },
+                edges: {
+                    font: { face: 'Outfit', strokeWidth: 0, color: 'rgba(255,255,255,0.7)' },
+                    smooth: { type: 'cubicBezier', forceDirection: 'none', roundness: 0.15 }
+                },
+                physics: {
+                    enabled: true,
+                    solver: 'forceAtlas2Based',
+                    forceAtlas2Based: {
+                        gravitationalConstant: -260,
+                        centralGravity: 0.005,
+                        springLength: 220,
+                        springConstant: 0.08,
+                        damping: 0.4,
+                        avoidOverlap: 1.0
+                    },
+                    stabilization: { enabled: true, iterations: 1500, updateInterval: 50 }
+                },
+                interaction: { hover: true, tooltipDelay: 300 }
+            };
+
+            network = new vis.Network(container, data, options);
+
+            network.on('stabilizationProgress', function(params) {
+                const percentage = Math.round((params.iterations / params.total) * 100);
+                dom.stabilizationText.innerText = `Calibrating Substrates: ${percentage}%`;
+            });
+
+            network.on('stabilizationIterationsDone', function() {
+                dom.stabilizationHud.classList.add('fade-out');
+            });
+
+            network.on('click', function(params) {
+                if (params.nodes.length > 0) {
+                    const nodeId = params.nodes[0];
+                    inspectNode(nodeId);
+                    highlightNeighbors(nodeId);
+                } else {
+                    resetInspection();
+                    resetHighlighting();
+                }
+            });
+
+            network.on('hoverNode', function(params) {
+                const node = nodesDataset.get(params.node);
+                dom.tooltip.style.display = 'block';
+                dom.tooltip.innerHTML = `<strong>${node.label}</strong><br/><span style="color:var(--text-muted);">${node.title || ''}</span>`;
+            });
+
+            network.on('blurNode', function() {
+                dom.tooltip.style.display = 'none';
+            });
+            
+            container.addEventListener('mousemove', function(e) {
+                const rect = container.getBoundingClientRect();
+                dom.tooltip.style.left = (e.clientX - rect.left + 15) + 'px';
+                dom.tooltip.style.top = (e.clientY - rect.top + 15) + 'px';
+            });
+        }
+
+        function setupInteractivity() {
+            dom.searchBox.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().strip ? e.target.value.toLowerCase().trim() : e.target.value.toLowerCase();
+                if (!query) {
+                    resetHighlighting();
+                    return;
+                }
+                
+                const matchedNodeIds = [];
+                nodesDataset.forEach(node => {
+                    const label = (node.label || '').toLowerCase();
+                    const title = (node.title || '').toLowerCase();
+                    if (label.includes(query) || title.includes(query)) {
+                        matchedNodeIds.push(node.id);
+                    }
+                });
+                
+                if (matchedNodeIds.length > 0) {
+                    highlightNodeSet(matchedNodeIds);
+                    if (matchedNodeIds.length === 1) {
+                        inspectNode(matchedNodeIds[0]);
+                        network.focus(matchedNodeIds[0], { scale: 1.25, animation: true });
+                    }
+                } else {
+                    resetHighlighting();
+                }
+            });
+
+            const toggleLayer = (groupId, checked) => {
+                nodesDataset.forEach(node => {
+                    if (node.group === groupId) {
+                        nodesDataset.update({ id: node.id, hidden: !checked });
+                    }
+                });
+            };
+
+            dom.layerSubstrates.addEventListener('change', (e) => toggleLayer('substrate', e.target.checked));
+            dom.layerExcitons.addEventListener('change', (e) => toggleLayer('exciton', e.target.checked));
+            dom.layerControl.addEventListener('change', (e) => toggleLayer('control', e.target.checked));
+            dom.layerLumina.addEventListener('change', (e) => toggleLayer('lumina', e.target.checked));
+
+            dom.btnZoomIn.addEventListener('click', () => {
+                network.moveTo({ scale: network.getScale() * 1.3, animation: true });
+            });
+            dom.btnZoomOut.addEventListener('click', () => {
+                network.moveTo({ scale: network.getScale() * 0.7, animation: true });
+            });
+            dom.btnFit.addEventListener('click', () => {
+                network.fit({ animation: true });
+            });
+            dom.btnPhysics.addEventListener('click', () => {
+                physicsEnabled = !physicsEnabled;
+                network.setOptions({ physics: { enabled: physicsEnabled } });
+                dom.btnPhysics.style.background = physicsEnabled ? 'var(--accent-purple)' : 'rgba(255,255,255,0.04)';
+                dom.btnPhysics.style.color = physicsEnabled ? 'white' : 'var(--text-color)';
+            });
+        }
+
+        function highlightNeighbors(nodeId) {
+            const connectedNodes = network.getConnectedNodes(nodeId);
+            const connectedEdges = network.getConnectedEdges(nodeId);
+
+            nodesDataset.forEach(node => {
+                nodesDataset.update({
+                    id: node.id,
+                    opacity: (node.id === nodeId || connectedNodes.includes(node.id)) ? 1 : 0.15
+                });
+            });
+
+            edgesDataset.forEach(edge => {
+                edgesDataset.update({
+                    id: edge.id,
+                    color: connectedEdges.includes(edge.id) ? { color: edge.color.highlight || 'var(--accent-purple)' } : { color: 'rgba(255,255,255,0.03)' },
+                    width: connectedEdges.includes(edge.id) ? 2.5 : 0.8
+                });
+            });
+        }
+
+        function highlightNodeSet(nodeIds) {
+            nodesDataset.forEach(node => {
+                nodesDataset.update({
+                    id: node.id,
+                    opacity: nodeIds.includes(node.id) ? 1 : 0.15
+                });
+            });
+            edgesDataset.forEach(edge => {
+                const connected = nodeIds.includes(edge.from) && nodeIds.includes(edge.to);
+                edgesDataset.update({
+                    id: edge.id,
+                    color: connected ? { color: 'var(--accent-purple)' } : { color: 'rgba(255,255,255,0.03)' },
+                    width: connected ? 2 : 0.8
+                });
+            });
+        }
+
+        function resetHighlighting() {
+            nodesDataset.forEach(node => {
+                nodesDataset.update({ id: node.id, opacity: 1 });
+            });
+            edgesDataset.forEach(edge => {
+                let defaultCol = 'rgba(255,255,255,0.1)';
+                if (edge.type === 'data') defaultCol = 'rgba(255, 145, 0, 0.25)';
+                if (edge.type === 'physics') defaultCol = 'rgba(0, 229, 255, 0.25)';
+                if (edge.type === 'control') defaultCol = 'rgba(0, 230, 118, 0.25)';
+                if (edge.type === 'sovereign') defaultCol = 'rgba(213, 0, 249, 0.25)';
+                if (edge.type === 'field') defaultCol = 'rgba(213, 0, 249, 0.35)';
+                
+                edgesDataset.update({
+                    id: edge.id,
+                    color: { color: defaultCol },
+                    width: 1.2
+                });
+            });
+        }
+
+        function resetInspection() {
+            dom.inspectorContent.style.display = 'none';
+            dom.inspectorPlaceholder.style.display = 'flex';
+        }
+
+        function inspectNode(nodeId) {
+            dom.inspectorPlaceholder.style.display = 'none';
+            dom.inspectorContent.style.display = 'block';
+
+            // Find in database
+            const substrate = SUBSTRATES.find(s => s.id === nodeId);
+            if (substrate) {
+                renderDetailsCard(substrate, 'Register & Attractor', 'var(--accent-orange)', 'rgba(255,145,0,0.1)');
+                return;
+            }
+
+            const exciton = EXCITONS.find(e => e.id === nodeId);
+            if (exciton) {
+                renderDetailsCard(exciton, 'Exciton-MoA Physics', 'var(--accent-cyan)', 'rgba(0,229,255,0.1)');
+                return;
+            }
+
+            const ftr = FRONTIER.find(f => f.id === nodeId);
+            if (ftr) {
+                renderDetailsCard(ftr, 'Frontier_OS Control', 'var(--accent-green)', 'rgba(0,230,118,0.1)');
+                return;
+            }
+
+            const lum = LUMINA.find(l => l.id === nodeId);
+            if (lum) {
+                renderDetailsCard(lum, 'Lumina Sovereign Agent', 'var(--accent-purple)', 'rgba(213,0,249,0.1)');
+                return;
+            }
+        }
+
+        function renderDetailsCard(data, typeStr, accentCol, bgCol) {
+            dom.inspectorContent.innerHTML = `
+                <div class="inspector-header">
+                    <span class="inspector-tag" style="background:${bgCol}; color:${accentCol}; border:1px solid ${accentCol}40">${typeStr}</span>
+                    <h2 class="inspector-name">${data.name}</h2>
+                </div>
+                
+                <p class="inspector-description">${data.description}</p>
+                
+                <div class="meta-list">
+                    <div class="meta-item">
+                        <span class="meta-label">Specification / Formula</span>
+                        <div class="meta-value meta-value-equation">${data.spec}</div>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Substrate ID</span>
+                        <div class="meta-value"><code style="font-family:'JetBrains Mono'; color:${accentCol};">${data.id}</code></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function triggerWorkflow(workflowId, event) {
+            if (event) event.stopPropagation();
+
+            if (activeWorkflowInterval) {
+                clearInterval(activeWorkflowInterval);
+                activeWorkflowInterval = null;
+            }
+
+            document.querySelectorAll('.workflow-card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.step-item').forEach(s => s.classList.remove('highlighted'));
+
+            const wf = WORKFLOWS.find(w => w.id === workflowId);
+            if (!wf) return;
+
+            const card = document.getElementById(workflowId);
+            card.classList.add('active');
+
+            let currentStepIdx = 0;
+
+            const runStep = () => {
+                document.querySelectorAll('.step-item').forEach(s => s.classList.remove('highlighted'));
+
+                if (currentStepIdx >= wf.steps.length) {
+                    resetHighlighting();
+                    clearInterval(activeWorkflowInterval);
+                    activeWorkflowInterval = null;
+                    return;
+                }
+
+                const stepElement = document.getElementById(`${workflowId}_step_${currentStepIdx}`);
+                if (stepElement) {
+                    stepElement.classList.add('highlighted');
+                    stepElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+
+                const step = wf.steps[currentStepIdx];
+                inspectNode(step.node);
+
+                nodesDataset.forEach(node => {
+                    nodesDataset.update({
+                        id: node.id,
+                        opacity: node.id === step.node ? 1.0 : 0.2
+                    });
+                });
+
+                edgesDataset.forEach(edge => {
+                    const isActive = edge.from === step.node || edge.to === step.node;
+                    edgesDataset.update({
+                        id: edge.id,
+                        color: isActive ? { color: 'var(--accent-purple)' } : { color: 'rgba(255,255,255,0.03)' },
+                        width: isActive ? 3 : 0.8
+                    });
+                });
+
+                network.focus(step.node, { scale: 1.25, animation: { duration: 500, easingFunction: 'easeInOutQuad' } });
+                currentStepIdx++;
+            };
+
+            runStep();
+            activeWorkflowInterval = setInterval(runStep, 2800);
+        }
+
+    </script>
+</body>
+</html>

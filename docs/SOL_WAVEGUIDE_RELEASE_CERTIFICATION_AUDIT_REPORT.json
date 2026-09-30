@@ -1,0 +1,76 @@
+{
+    "artifact_digest_mismatch_count": 0,
+    "artifact_validation_failure_count": 0,
+    "audit_report_digest": "ad2732dd0892c98b1a402385210eedc44477274b039b8405534223de7c221d6a",
+    "audit_report_id": "SOL-WAVEGUIDE-RELEASE-CERTIFICATION-AUDIT-REPORT",
+    "audit_report_status": "audit_report_verified",
+    "audit_report_version": 1,
+    "audited_bundles": [
+        "SOL-WAVEGUIDE-RELEASE-CERTIFICATION-BUNDLE-RC1",
+        "SOL-WAVEGUIDE-RELEASE-CERTIFICATION-BUNDLE-RC2"
+    ],
+    "blocked_audit_count": 0,
+    "blocked_audits": [],
+    "certification_bundle_digests": [
+        "1902c9e2034e2f77f979a32eef5fbf4de68e0eed00c84d375ffa7c54715a21f6",
+        "a4a0cb70a080ee51f01dd4aacc905e6cdc880b5420382e8e471a33c1012424f4"
+    ],
+    "compiler_session_registry_digests": [
+        "35fc3391140902428f8abbc4890e759d888facaca449dc96c9d21a55983329e9"
+    ],
+    "failed_audit_count": 0,
+    "failed_audits": [],
+    "manifest_digests": [
+        "a9ea3db022835bc79c551083a216f0890ee82db27ee6428b3e275414bd1abcea",
+        "bd804a0036f112a8d3d1bdc3b252703fc5c32b9b9b04f5bd30424f39f056a6e9"
+    ],
+    "promotion_court_verdict_digests": [
+        "746477fb1c71da3f736323c6c94cf2a3b93b5aeab378002ad2158eb8e4686d60",
+        "d8588ddb96e7601143a44f8f2410e80fba67c8c4f80b9a9a7cb03e77e137769d"
+    ],
+    "promotion_record_digests": [
+        "243eeb599e6fba94d72b0a0448a96a8bff84d8eecf924791d59b09fc73aab227",
+        "cef85cbf6e93d6c0056684ae89b72515a360d227370fe31ea38489b8b83d5126"
+    ],
+    "rc1_audit_count": 1,
+    "rc2_audit_count": 1,
+    "reason_codes": [
+        "RELEASE_AUDIT_ARTIFACT_CHAIN_LOADED",
+        "RELEASE_AUDIT_ARTIFACT_DIGESTS_MATCH",
+        "RELEASE_AUDIT_ARTIFACT_VALIDATION_PASSED",
+        "RELEASE_AUDIT_BUNDLE_CERTIFICATION_READY",
+        "RELEASE_AUDIT_BUNDLE_DIGEST_MATCH",
+        "RELEASE_AUDIT_BUNDLE_LOADED",
+        "RELEASE_AUDIT_BUNDLE_VALID",
+        "RELEASE_AUDIT_CASE_CANONICAL",
+        "RELEASE_AUDIT_COURT_VERDICT_APPROVED",
+        "RELEASE_AUDIT_INDEXES_MATCH",
+        "RELEASE_AUDIT_MANIFEST_VALID",
+        "RELEASE_AUDIT_PROMOTION_RECORD_VALID",
+        "RELEASE_AUDIT_RC_APPROVED_IN_REGISTRY",
+        "RELEASE_AUDIT_RELEASE_GATE_VALID",
+        "RELEASE_AUDIT_RELEASE_REGISTRY_VALID",
+        "RELEASE_AUDIT_REPORT_VERIFIED",
+        "RELEASE_AUDIT_RUNTIME_CAPABILITY_VALID",
+        "RELEASE_AUDIT_SESSION_COUNTS_MATCH",
+        "RELEASE_AUDIT_SESSION_REGISTRY_VALID",
+        "RELEASE_AUDIT_SOFTWARE_CAVEAT_INCLUDED",
+        "RELEASE_AUDIT_VERIFIED"
+    ],
+    "release_gate_digests": [
+        "eb3e3a9654f2d17535c79c2ea66164f5434caaca5eb4bcb92c9a4ecdce5d612c"
+    ],
+    "release_registry_digests": [
+        "04407f4bc4b0aa747d95336fbb7ef40b281b5816b5bf06878f0d669583641805"
+    ],
+    "runtime_capability_resolution_digests": [
+        "537f20b51c0d103fe5734c9b05a5ed170e9d30622ec68c193d764f3ec12bb18b",
+        "be6b12c75cdc34752b147ac4b274b717740a5f58f7199d7a305d967466504d4d"
+    ],
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+    "verified_audit_count": 2,
+    "verified_audits": [
+        "SOL-WAVEGUIDE-RELEASE-CERTIFICATION-BUNDLE-RC1",
+        "SOL-WAVEGUIDE-RELEASE-CERTIFICATION-BUNDLE-RC2"
+    ]
+}

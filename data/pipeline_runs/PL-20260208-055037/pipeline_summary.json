@@ -1,0 +1,93 @@
+{
+  "run_id": "PL-20260208-055037",
+  "completed_at": "2026-02-08T05:52:09.610257+00:00",
+  "stages_passed": 4,
+  "stages_failed": 0,
+  "stages_skipped": 0,
+  "total_elapsed_sec": 92.02,
+  "core_immutability": "PASS",
+  "pipeline_verdict": "PASS",
+  "stages": {
+    "smoke": {
+      "stage": "smoke",
+      "status": "passed",
+      "started_at": "2026-02-08T05:50:37.578710+00:00",
+      "completed_at": "2026-02-08T05:50:37.620748+00:00",
+      "elapsed_sec": 0.04,
+      "output": {
+        "engine_ok": true,
+        "nodes": 140,
+        "mass": 49.67,
+        "entropy": 0.0279,
+        "maxRho": 48.86,
+        "core_sha256": "b9800d5313886818c7c1980829e1ca5da7d63d9e2218e36c020df80db19b06fb"
+      },
+      "error": null
+    },
+    "cortex": {
+      "stage": "cortex",
+      "status": "passed",
+      "started_at": "2026-02-08T05:50:37.620748+00:00",
+      "completed_at": "2026-02-08T05:51:25.593890+00:00",
+      "elapsed_sec": 47.97,
+      "output": {
+        "session_id": "CX-20260208-055037",
+        "session_dir": "G:\\docs\\TechmanStudios\\sol\\data\\cortex_sessions\\CX-20260208-055037",
+        "protocols_run": 1,
+        "total_steps": 12000,
+        "hypotheses": 1,
+        "gaps_addressed": [
+          "unpromoted:CL-3"
+        ],
+        "sanity_results": [
+          {
+            "hypothesis": "H-001",
+            "series": "h-001",
+            "sanity_passed": true,
+            "anomalies": []
+          }
+        ],
+        "dry_run": false
+      },
+      "error": null
+    },
+    "consolidate": {
+      "stage": "consolidate",
+      "status": "passed",
+      "started_at": "2026-02-08T05:51:25.594892+00:00",
+      "completed_at": "2026-02-08T05:51:25.665463+00:00",
+      "elapsed_sec": 0.07,
+      "output": {
+        "session_id": "CX-20260208-055037",
+        "consolidated_at": "2026-02-08T05:51:25.642441+00:00",
+        "protocols_run": 1,
+        "total_steps": 12000,
+        "hypotheses_processed": 1,
+        "proof_packets_generated": [
+          "PP-2026-02-08-cortex-CX-20260208-055037-h-001-damping"
+        ],
+        "status": "consolidated"
+      },
+      "error": null
+    },
+    "hippocampus": {
+      "stage": "hippocampus",
+      "status": "passed",
+      "started_at": "2026-02-08T05:51:25.665463+00:00",
+      "completed_at": "2026-02-08T05:52:09.609256+00:00",
+      "elapsed_sec": 43.94,
+      "output": {
+        "dream_session_id": "DS-20260208-055125",
+        "sessions_replayed": 2,
+        "replays_run": 3,
+        "basins_discovered": 2,
+        "basins_reinforced": 0,
+        "basins_decayed": 1,
+        "memory_nodes": 2,
+        "memory_edges": 22,
+        "dry_run": false
+      },
+      "error": null
+    }
+  }
+}

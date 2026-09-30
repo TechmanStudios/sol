@@ -1,0 +1,146 @@
+{
+    "cases": [
+        {
+            "candidate_level": "foundation",
+            "execution_record_digest": "616e8ae52bcd13593478f823169dd7c7d10fc0aa1c2247286343a323bc54d70b",
+            "execution_record_path": "docs/SOL_WAVEGUIDE_GOVERNED_PASS_EXECUTION_REJECTION_EXAMPLE.json",
+            "execution_status": "trace_rejected",
+            "handler_id": "SOL-PASS-HANDLER-COST-MODEL-EVALUATION-V1",
+            "handler_version": "1.0.0",
+            "input_payload_digest": "8c8149029cf90bc1051a181e0d4dbbdaee866ee2ba983bf833fd2b590d69a969",
+            "ledger_digest": "065cb977073078f08d438c697e97ba41cffd31acb537ce84b676fb31bb174b49",
+            "ledger_path": "docs/SOL_WAVEGUIDE_EXECUTION_TRACE_LEDGER.json",
+            "ledger_status": "ledger_valid",
+            "rc_id": "SOL-WAVEGUIDE-RC1",
+            "reason_codes": [
+                "PASS_REPLAY_CASE_DIGEST_VALID",
+                "PASS_REPLAY_CASE_INITIALIZED",
+                "PASS_REPLAY_EXECUTION_RECORD_VALID",
+                "PASS_REPLAY_RECORD_DIGEST_MATCH",
+                "PASS_REPLAY_REJECTED_RECORD_NOT_REPLAYED",
+                "PASS_REPLAY_REJECTED_RECORD_VERIFIED",
+                "PASS_REPLAY_SOFTWARE_CAVEAT_INCLUDED",
+                "PASS_REPLAY_TRACE_ENTRY_VALID"
+            ],
+            "recorded_output_payload_digest": "",
+            "replay_case_digest": "053f48684250e2cf44adb9c2d738e6af88d4b7648280b140831ee46db17bb6ad",
+            "replay_case_id": "SOL-WAVEGUIDE-REPLAY-CASE-SOL-WAVEGUIDE-TRACE-ENTRY-RC1-cost_model_evaluation-COST_MODEL_DEBUG",
+            "replay_case_status": "replay_case_rejected_record",
+            "replay_status": "replay_rejected_record_verified",
+            "requested_pass": "cost_model_evaluation",
+            "requested_profile": "COST_MODEL_DEBUG",
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "source_trace_entry_digest": "e9fa34679b0ccd38957763542001e9e2eda89f36518ab595b51622cd62c06e2e"
+        },
+        {
+            "candidate_level": "foundation",
+            "execution_record_digest": "9ef92b4a3c2a769fde99836b526366c119f24f7db1b0142f90b8323dbbfbb466",
+            "execution_record_path": "docs/SOL_WAVEGUIDE_GOVERNED_PASS_EXECUTION_RC1.json",
+            "execution_status": "trace_executed",
+            "handler_id": "SOL-PASS-HANDLER-PIPELINE-COMPACTION-V1",
+            "handler_version": "1.0.0",
+            "input_payload_digest": "705d0f3e3d54c1f368ad5a38fd2d156dcba3575d82783251fc8e2c2b496bdf42",
+            "ledger_digest": "065cb977073078f08d438c697e97ba41cffd31acb537ce84b676fb31bb174b49",
+            "ledger_path": "docs/SOL_WAVEGUIDE_EXECUTION_TRACE_LEDGER.json",
+            "ledger_status": "ledger_valid",
+            "rc_id": "SOL-WAVEGUIDE-RC1",
+            "reason_codes": [
+                "PASS_REPLAY_CASE_DIGEST_VALID",
+                "PASS_REPLAY_CASE_INITIALIZED",
+                "PASS_REPLAY_EXECUTED_RECORD_VERIFIED",
+                "PASS_REPLAY_EXECUTION_RECORD_VALID",
+                "PASS_REPLAY_HANDLER_REGISTERED",
+                "PASS_REPLAY_HANDLER_VERSION_MATCH",
+                "PASS_REPLAY_INPUT_DIGEST_VALID",
+                "PASS_REPLAY_OUTPUT_DIGEST_MATCH",
+                "PASS_REPLAY_RECORD_DIGEST_MATCH",
+                "PASS_REPLAY_SOFTWARE_CAVEAT_INCLUDED",
+                "PASS_REPLAY_TRACE_ENTRY_VALID"
+            ],
+            "recorded_output_payload_digest": "b6861ab56834f488ee723edbdc03c9ef7e583cea2babc4ff250388cb8173e6cf",
+            "replay_case_digest": "dc50599bce37b56f946f296d6b15283c5140d28f50f3f1f2c8a3a4b0e1c8f709",
+            "replay_case_id": "SOL-WAVEGUIDE-REPLAY-CASE-SOL-WAVEGUIDE-TRACE-ENTRY-RC1-pipeline_compaction-FULL_SAFE_OPTIMIZED",
+            "replay_case_status": "replay_case_ready",
+            "replay_status": "replay_verified",
+            "requested_pass": "pipeline_compaction",
+            "requested_profile": "FULL_SAFE_OPTIMIZED",
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "source_trace_entry_digest": "f3e3c122d2c120afd5c692c793aff9849ff8fc791cdf9ca2438e60d9c3cce532"
+        },
+        {
+            "candidate_level": "governed_execution_stack",
+            "execution_record_digest": "ee66541fc768799362991bcbe1cc5a442a1c0f845e111cc38d7c3434db042c47",
+            "execution_record_path": "docs/SOL_WAVEGUIDE_GOVERNED_PASS_EXECUTION_RC2.json",
+            "execution_status": "trace_executed",
+            "handler_id": "SOL-PASS-HANDLER-COST-MODEL-EVALUATION-V1",
+            "handler_version": "1.0.0",
+            "input_payload_digest": "8c8149029cf90bc1051a181e0d4dbbdaee866ee2ba983bf833fd2b590d69a969",
+            "ledger_digest": "065cb977073078f08d438c697e97ba41cffd31acb537ce84b676fb31bb174b49",
+            "ledger_path": "docs/SOL_WAVEGUIDE_EXECUTION_TRACE_LEDGER.json",
+            "ledger_status": "ledger_valid",
+            "rc_id": "SOL-WAVEGUIDE-RC2",
+            "reason_codes": [
+                "PASS_REPLAY_CASE_DIGEST_VALID",
+                "PASS_REPLAY_CASE_INITIALIZED",
+                "PASS_REPLAY_EXECUTED_RECORD_VERIFIED",
+                "PASS_REPLAY_EXECUTION_RECORD_VALID",
+                "PASS_REPLAY_HANDLER_REGISTERED",
+                "PASS_REPLAY_HANDLER_VERSION_MATCH",
+                "PASS_REPLAY_INPUT_DIGEST_VALID",
+                "PASS_REPLAY_OUTPUT_DIGEST_MATCH",
+                "PASS_REPLAY_RECORD_DIGEST_MATCH",
+                "PASS_REPLAY_SOFTWARE_CAVEAT_INCLUDED",
+                "PASS_REPLAY_TRACE_ENTRY_VALID"
+            ],
+            "recorded_output_payload_digest": "531f0faa2704f6d79c23216cb292b97afc91534421680b7fb75808e930caed04",
+            "replay_case_digest": "ef85dceff200d504bd9a87b91bcb19d5f4362322f1457d357e198330035504f9",
+            "replay_case_id": "SOL-WAVEGUIDE-REPLAY-CASE-SOL-WAVEGUIDE-TRACE-ENTRY-RC2-cost_model_evaluation-COST_MODEL_DEBUG",
+            "replay_case_status": "replay_case_ready",
+            "replay_status": "replay_verified",
+            "requested_pass": "cost_model_evaluation",
+            "requested_profile": "COST_MODEL_DEBUG",
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "source_trace_entry_digest": "c814d9b5aaa6b72484eea9a8e14a05b99aa6cd2f14cdad5969f3568e577f3730"
+        }
+    ],
+    "failed_replay_count": 0,
+    "failed_replays": [],
+    "handler_ids_replayed": [
+        "SOL-PASS-HANDLER-COST-MODEL-EVALUATION-V1",
+        "SOL-PASS-HANDLER-PIPELINE-COMPACTION-V1"
+    ],
+    "ledger_digest": "065cb977073078f08d438c697e97ba41cffd31acb537ce84b676fb31bb174b49",
+    "ledger_id": "SOL-WAVEGUIDE-EXECUTION-TRACE-LEDGER",
+    "ledger_valid": true,
+    "reason_codes": [
+        "PASS_REPLAY_LEDGER_VALID",
+        "PASS_REPLAY_REPORT_INITIALIZED",
+        "PASS_REPLAY_REPORT_VERIFIED"
+    ],
+    "replay_report_digest": "c0685eff6d13cbbba46ce0b3e86bc8a1b76aabf584d1dde502c0a94be42bb388",
+    "replay_report_id": "SOL-WAVEGUIDE-GOVERNED-PASS-REPLAY-REPORT",
+    "replay_report_status": "replay_report_verified",
+    "replay_report_version": "1",
+    "skipped_replay_count": 0,
+    "skipped_replays": [],
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+    "source_execution_record_digests": [
+        "616e8ae52bcd13593478f823169dd7c7d10fc0aa1c2247286343a323bc54d70b",
+        "9ef92b4a3c2a769fde99836b526366c119f24f7db1b0142f90b8323dbbfbb466",
+        "ee66541fc768799362991bcbe1cc5a442a1c0f845e111cc38d7c3434db042c47"
+    ],
+    "source_trace_entry_digests": [
+        "c814d9b5aaa6b72484eea9a8e14a05b99aa6cd2f14cdad5969f3568e577f3730",
+        "e9fa34679b0ccd38957763542001e9e2eda89f36518ab595b51622cd62c06e2e",
+        "f3e3c122d2c120afd5c692c793aff9849ff8fc791cdf9ca2438e60d9c3cce532"
+    ],
+    "verified_execution_count": 2,
+    "verified_executions": [
+        "SOL-WAVEGUIDE-REPLAY-CASE-SOL-WAVEGUIDE-TRACE-ENTRY-RC1-pipeline_compaction-FULL_SAFE_OPTIMIZED",
+        "SOL-WAVEGUIDE-REPLAY-CASE-SOL-WAVEGUIDE-TRACE-ENTRY-RC2-cost_model_evaluation-COST_MODEL_DEBUG"
+    ],
+    "verified_rejection_count": 1,
+    "verified_rejections": [
+        "SOL-WAVEGUIDE-REPLAY-CASE-SOL-WAVEGUIDE-TRACE-ENTRY-RC1-cost_model_evaluation-COST_MODEL_DEBUG"
+    ]
+}

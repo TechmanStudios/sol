@@ -1,0 +1,1413 @@
+{
+  "probe_a": {
+    "final_basin": 22,
+    "christic_first_lead_step": 185,
+    "n_lead_changes": 15,
+    "lead_changes": [
+      [
+        5,
+        1,
+        25.261411
+      ],
+      [
+        35,
+        9,
+        5.036734
+      ],
+      [
+        95,
+        7,
+        0.00413
+      ],
+      [
+        100,
+        5,
+        0.001667
+      ],
+      [
+        115,
+        7,
+        0.000872
+      ],
+      [
+        145,
+        5,
+        6e-06
+      ],
+      [
+        150,
+        7,
+        5.5e-05
+      ],
+      [
+        180,
+        69,
+        0.0
+      ],
+      [
+        185,
+        22,
+        5e-06
+      ],
+      [
+        215,
+        69,
+        0.0
+      ],
+      [
+        220,
+        22,
+        0.0
+      ],
+      [
+        285,
+        69,
+        0.0
+      ],
+      [
+        290,
+        22,
+        0.0
+      ],
+      [
+        495,
+        82,
+        0.0
+      ],
+      [
+        500,
+        22,
+        0.0
+      ]
+    ],
+    "christic_max_frac": 0.239816,
+    "christic_max_frac_step": 165
+  },
+  "probe_b": {
+    "baselines": {
+      "baseline_d12": 90,
+      "baseline_d15": 90,
+      "baseline_d20": 22,
+      "baseline_d25": 22,
+      "baseline_d30": 22,
+      "baseline_d40": 22
+    },
+    "ablation": {
+      "grail": {
+        "12": {
+          "basin": 90,
+          "is_christic": false
+        },
+        "15": {
+          "basin": 90,
+          "is_christic": false
+        },
+        "20": {
+          "basin": 22,
+          "is_christic": true
+        },
+        "25": {
+          "basin": 22,
+          "is_christic": true
+        },
+        "30": {
+          "basin": 22,
+          "is_christic": true
+        },
+        "40": {
+          "basin": 22,
+          "is_christic": true
+        }
+      },
+      "metatron": {
+        "12": {
+          "basin": 90,
+          "is_christic": false
+        },
+        "15": {
+          "basin": 90,
+          "is_christic": false
+        },
+        "20": {
+          "basin": 22,
+          "is_christic": true
+        },
+        "25": {
+          "basin": 22,
+          "is_christic": true
+        },
+        "30": {
+          "basin": 22,
+          "is_christic": true
+        },
+        "40": {
+          "basin": 22,
+          "is_christic": true
+        }
+      },
+      "pyramid": {
+        "12": {
+          "basin": 90,
+          "is_christic": false
+        },
+        "15": {
+          "basin": 90,
+          "is_christic": false
+        },
+        "20": {
+          "basin": 22,
+          "is_christic": true
+        },
+        "25": {
+          "basin": 22,
+          "is_christic": true
+        },
+        "30": {
+          "basin": 22,
+          "is_christic": true
+        },
+        "40": {
+          "basin": 22,
+          "is_christic": true
+        }
+      },
+      "christ": {
+        "12": {
+          "basin": 19,
+          "is_christic": false
+        },
+        "15": {
+          "basin": 67,
+          "is_christic": false
+        },
+        "20": {
+          "basin": 19,
+          "is_christic": false
+        },
+        "25": {
+          "basin": 7,
+          "is_christic": false
+        },
+        "30": {
+          "basin": 7,
+          "is_christic": false
+        },
+        "40": {
+          "basin": 7,
+          "is_christic": false
+        }
+      },
+      "light_codes": {
+        "12": {
+          "basin": 90,
+          "is_christic": false
+        },
+        "15": {
+          "basin": 90,
+          "is_christic": false
+        },
+        "20": {
+          "basin": 22,
+          "is_christic": true
+        },
+        "25": {
+          "basin": 22,
+          "is_christic": true
+        },
+        "30": {
+          "basin": 22,
+          "is_christic": true
+        },
+        "40": {
+          "basin": 22,
+          "is_christic": true
+        }
+      }
+    },
+    "redistribution": {
+      "grail": {
+        "15": 90,
+        "20": 22,
+        "30": 22
+      },
+      "metatron": {
+        "15": 90,
+        "20": 22,
+        "30": 22
+      },
+      "pyramid": {
+        "15": 90,
+        "20": 22,
+        "30": 22
+      },
+      "christ": {
+        "15": 67,
+        "20": 19,
+        "30": 7
+      },
+      "light_codes": {
+        "15": 90,
+        "20": 22,
+        "30": 22
+      }
+    }
+  },
+  "probe_c": {
+    "baselines": {
+      "12": 90,
+      "15": 90,
+      "20": 22,
+      "25": 22,
+      "30": 22,
+      "40": 22
+    },
+    "sever_individual": {
+      "2": {
+        "christ": {
+          "12": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "15": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "20": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "25": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "30": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "40": {
+            "basin": 90,
+            "is_christic": false
+          }
+        }
+      },
+      "39": {
+        "yeshua": {
+          "12": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "15": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "20": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "25": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "30": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "40": {
+            "basin": 22,
+            "is_christic": true
+          }
+        }
+      },
+      "66": {
+        "jesus": {
+          "12": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "15": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "20": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "25": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "30": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "40": {
+            "basin": 22,
+            "is_christic": true
+          }
+        }
+      },
+      "79": {
+        "par": {
+          "12": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "15": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "20": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "25": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "30": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "40": {
+            "basin": 22,
+            "is_christic": true
+          }
+        }
+      },
+      "82": {
+        "johannine grove": {
+          "12": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "15": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "20": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "25": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "30": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "40": {
+            "basin": 22,
+            "is_christic": true
+          }
+        }
+      },
+      "89": {
+        "mystery school": {
+          "12": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "15": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "20": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "25": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "30": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "40": {
+            "basin": 22,
+            "is_christic": true
+          }
+        }
+      },
+      "104": {
+        "church": {
+          "12": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "15": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "20": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "25": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "30": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "40": {
+            "basin": 22,
+            "is_christic": true
+          }
+        }
+      },
+      "126": {
+        "melchizedek": {
+          "12": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "15": {
+            "basin": 90,
+            "is_christic": false
+          },
+          "20": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "25": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "30": {
+            "basin": 22,
+            "is_christic": true
+          },
+          "40": {
+            "basin": 22,
+            "is_christic": true
+          }
+        }
+      }
+    },
+    "sever_all_mega_hubs": {
+      "12": 90,
+      "15": 90,
+      "20": 22,
+      "25": 22,
+      "30": 22,
+      "40": 22
+    },
+    "sever_christ": {
+      "12": 90,
+      "15": 90,
+      "20": 90,
+      "25": 90,
+      "30": 90,
+      "40": 90
+    }
+  },
+  "probe_d": {
+    "sweep": [
+      {
+        "damping": 8.0,
+        "basin": 19,
+        "basin_label": "new earth star",
+        "entropy": 0.930791,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 8.25,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.923127,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 8.5,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.91551,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 8.75,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.907946,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 9.0,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.90047,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 9.25,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.893045,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 9.5,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.885647,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 9.75,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.878331,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 10.0,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.871017,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 10.25,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.863796,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 10.5,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.856564,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 10.75,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.849343,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 11.0,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.842247,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 11.25,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.834911,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 11.5,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.827777,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 11.75,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.820472,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 12.0,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.813495,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 12.25,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.806527,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 12.5,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.799499,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 12.75,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.792481,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 13.0,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.785497,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 13.25,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.778334,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 13.5,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.77144,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 13.75,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.764654,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 14.0,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.757918,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 14.25,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.752309,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 14.5,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.74578,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 14.75,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.740538,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 15.0,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.734311,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 15.25,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.728403,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 15.5,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.723658,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 15.75,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.718526,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      },
+      {
+        "damping": 16.0,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "entropy": 0.714168,
+        "mass": 0.0,
+        "active": 0,
+        "maxRho": 0.0
+      }
+    ],
+    "transitions": [
+      [
+        8.0,
+        8.25
+      ]
+    ]
+  },
+  "probe_e": {
+    "5.0": [
+      {
+        "id": 2,
+        "label": "christ",
+        "peak_rho": 47.0,
+        "half_life": 55,
+        "final_rho": 0.0,
+        "basin": 64,
+        "basin_label": "john",
+        "self_attractor": false
+      },
+      {
+        "id": 6,
+        "label": "temple doors",
+        "peak_rho": 47.0,
+        "half_life": 50,
+        "final_rho": 0.0,
+        "basin": 48,
+        "basin_label": "merkabah",
+        "self_attractor": false
+      },
+      {
+        "id": 7,
+        "label": "numis'om",
+        "peak_rho": 47.0,
+        "half_life": 52,
+        "final_rho": 0.0,
+        "basin": 98,
+        "basin_label": "simeon",
+        "self_attractor": false
+      },
+      {
+        "id": 9,
+        "label": "metatron",
+        "peak_rho": 47.0,
+        "half_life": 54,
+        "final_rho": 0.0,
+        "basin": 7,
+        "basin_label": "numis'om",
+        "self_attractor": false
+      },
+      {
+        "id": 10,
+        "label": "venus",
+        "peak_rho": 47.0,
+        "half_life": 54,
+        "final_rho": 0.0,
+        "basin": 136,
+        "basin_label": "maia christianne",
+        "self_attractor": false
+      },
+      {
+        "id": 19,
+        "label": "new earth star",
+        "peak_rho": 47.0,
+        "half_life": 55,
+        "final_rho": 0.0,
+        "basin": 72,
+        "basin_label": "isis eye",
+        "self_attractor": false
+      },
+      {
+        "id": 22,
+        "label": "christic",
+        "peak_rho": 47.0,
+        "half_life": 53,
+        "final_rho": 0.0,
+        "basin": 66,
+        "basin_label": "jesus",
+        "self_attractor": false
+      },
+      {
+        "id": 28,
+        "label": "akashic practice",
+        "peak_rho": 47.0,
+        "half_life": 51,
+        "final_rho": 0.0,
+        "basin": 51,
+        "basin_label": "rite akashic",
+        "self_attractor": false
+      },
+      {
+        "id": 31,
+        "label": "thothhorra",
+        "peak_rho": 47.0,
+        "half_life": 55,
+        "final_rho": 0.0,
+        "basin": 34,
+        "basin_label": "crystal skull",
+        "self_attractor": false
+      },
+      {
+        "id": 48,
+        "label": "merkabah",
+        "peak_rho": 47.0,
+        "half_life": 55,
+        "final_rho": 0.0,
+        "basin": 98,
+        "basin_label": "simeon",
+        "self_attractor": false
+      },
+      {
+        "id": 51,
+        "label": "rite akashic",
+        "peak_rho": 47.0,
+        "half_life": 51,
+        "final_rho": 0.0,
+        "basin": 28,
+        "basin_label": "akashic practice",
+        "self_attractor": false
+      },
+      {
+        "id": 52,
+        "label": "temple of",
+        "peak_rho": 47.0,
+        "half_life": 54,
+        "final_rho": 0.0,
+        "basin": 74,
+        "basin_label": "egypt",
+        "self_attractor": false
+      },
+      {
+        "id": 58,
+        "label": "metatronic",
+        "peak_rho": 47.0,
+        "half_life": 54,
+        "final_rho": 0.0,
+        "basin": 26,
+        "basin_label": "dna",
+        "self_attractor": false
+      },
+      {
+        "id": 67,
+        "label": "spirit heart",
+        "peak_rho": 47.0,
+        "half_life": 55,
+        "final_rho": 0.0,
+        "basin": 98,
+        "basin_label": "simeon",
+        "self_attractor": false
+      },
+      {
+        "id": 90,
+        "label": "christine hayes",
+        "peak_rho": 47.0,
+        "half_life": 22,
+        "final_rho": 0.0,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "self_attractor": true
+      },
+      {
+        "id": 94,
+        "label": "christos",
+        "peak_rho": 47.0,
+        "half_life": 53,
+        "final_rho": 0.0,
+        "basin": 138,
+        "basin_label": "thothhorra khandr",
+        "self_attractor": false
+      },
+      {
+        "id": 136,
+        "label": "maia christianne",
+        "peak_rho": 47.0,
+        "half_life": 50,
+        "final_rho": 0.0,
+        "basin": 67,
+        "basin_label": "spirit heart",
+        "self_attractor": false
+      },
+      {
+        "id": 138,
+        "label": "thothhorra khandr",
+        "peak_rho": 47.0,
+        "half_life": 53,
+        "final_rho": 0.0,
+        "basin": 116,
+        "basin_label": "lady",
+        "self_attractor": false
+      }
+    ],
+    "20.0": [
+      {
+        "id": 2,
+        "label": "christ",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 22,
+        "basin_label": "christic",
+        "self_attractor": false
+      },
+      {
+        "id": 6,
+        "label": "temple doors",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 48,
+        "basin_label": "merkabah",
+        "self_attractor": false
+      },
+      {
+        "id": 7,
+        "label": "numis'om",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 9,
+        "basin_label": "metatron",
+        "self_attractor": false
+      },
+      {
+        "id": 9,
+        "label": "metatron",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 67,
+        "basin_label": "spirit heart",
+        "self_attractor": false
+      },
+      {
+        "id": 10,
+        "label": "venus",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 136,
+        "basin_label": "maia christianne",
+        "self_attractor": false
+      },
+      {
+        "id": 19,
+        "label": "new earth star",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 67,
+        "basin_label": "spirit heart",
+        "self_attractor": false
+      },
+      {
+        "id": 22,
+        "label": "christic",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 2,
+        "basin_label": "christ",
+        "self_attractor": false
+      },
+      {
+        "id": 28,
+        "label": "akashic practice",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 51,
+        "basin_label": "rite akashic",
+        "self_attractor": false
+      },
+      {
+        "id": 31,
+        "label": "thothhorra",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 138,
+        "basin_label": "thothhorra khandr",
+        "self_attractor": false
+      },
+      {
+        "id": 48,
+        "label": "merkabah",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 6,
+        "basin_label": "temple doors",
+        "self_attractor": false
+      },
+      {
+        "id": 51,
+        "label": "rite akashic",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 28,
+        "basin_label": "akashic practice",
+        "self_attractor": false
+      },
+      {
+        "id": 52,
+        "label": "temple of",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 2,
+        "basin_label": "christ",
+        "self_attractor": false
+      },
+      {
+        "id": 58,
+        "label": "metatronic",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 138,
+        "basin_label": "thothhorra khandr",
+        "self_attractor": false
+      },
+      {
+        "id": 67,
+        "label": "spirit heart",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 19,
+        "basin_label": "new earth star",
+        "self_attractor": false
+      },
+      {
+        "id": 90,
+        "label": "christine hayes",
+        "peak_rho": 38.0,
+        "half_life": 13,
+        "final_rho": 0.0,
+        "basin": 94,
+        "basin_label": "christos",
+        "self_attractor": false
+      },
+      {
+        "id": 94,
+        "label": "christos",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "self_attractor": false
+      },
+      {
+        "id": 136,
+        "label": "maia christianne",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 10,
+        "basin_label": "venus",
+        "self_attractor": false
+      },
+      {
+        "id": 138,
+        "label": "thothhorra khandr",
+        "peak_rho": 38.0,
+        "half_life": 16,
+        "final_rho": 0.0,
+        "basin": 31,
+        "basin_label": "thothhorra",
+        "self_attractor": false
+      }
+    ],
+    "40.0": [
+      {
+        "id": 2,
+        "label": "christ",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 22,
+        "basin_label": "christic",
+        "self_attractor": false
+      },
+      {
+        "id": 6,
+        "label": "temple doors",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 48,
+        "basin_label": "merkabah",
+        "self_attractor": false
+      },
+      {
+        "id": 7,
+        "label": "numis'om",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 67,
+        "basin_label": "spirit heart",
+        "self_attractor": false
+      },
+      {
+        "id": 9,
+        "label": "metatron",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 7,
+        "basin_label": "numis'om",
+        "self_attractor": false
+      },
+      {
+        "id": 10,
+        "label": "venus",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 136,
+        "basin_label": "maia christianne",
+        "self_attractor": false
+      },
+      {
+        "id": 19,
+        "label": "new earth star",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 7,
+        "basin_label": "numis'om",
+        "self_attractor": false
+      },
+      {
+        "id": 22,
+        "label": "christic",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 2,
+        "basin_label": "christ",
+        "self_attractor": false
+      },
+      {
+        "id": 28,
+        "label": "akashic practice",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 51,
+        "basin_label": "rite akashic",
+        "self_attractor": false
+      },
+      {
+        "id": 31,
+        "label": "thothhorra",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 138,
+        "basin_label": "thothhorra khandr",
+        "self_attractor": false
+      },
+      {
+        "id": 48,
+        "label": "merkabah",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 6,
+        "basin_label": "temple doors",
+        "self_attractor": false
+      },
+      {
+        "id": 51,
+        "label": "rite akashic",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 28,
+        "basin_label": "akashic practice",
+        "self_attractor": false
+      },
+      {
+        "id": 52,
+        "label": "temple of",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 7,
+        "basin_label": "numis'om",
+        "self_attractor": false
+      },
+      {
+        "id": 58,
+        "label": "metatronic",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 7,
+        "basin_label": "numis'om",
+        "self_attractor": false
+      },
+      {
+        "id": 67,
+        "label": "spirit heart",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 7,
+        "basin_label": "numis'om",
+        "self_attractor": false
+      },
+      {
+        "id": 90,
+        "label": "christine hayes",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 94,
+        "basin_label": "christos",
+        "self_attractor": false
+      },
+      {
+        "id": 94,
+        "label": "christos",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 90,
+        "basin_label": "christine hayes",
+        "self_attractor": false
+      },
+      {
+        "id": 136,
+        "label": "maia christianne",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 10,
+        "basin_label": "venus",
+        "self_attractor": false
+      },
+      {
+        "id": 138,
+        "label": "thothhorra khandr",
+        "peak_rho": 26.0,
+        "half_life": 9,
+        "final_rho": 0.0,
+        "basin": 31,
+        "basin_label": "thothhorra",
+        "self_attractor": false
+      }
+    ]
+  },
+  "probe_f": {
+    "baselines": {
+      "5.0": 98,
+      "10.0": 90,
+      "12.0": 90,
+      "15.0": 90,
+      "20.0": 22,
+      "40.0": 22
+    },
+    "always_active": {
+      "5.0": 52,
+      "10.0": 1,
+      "12.0": 29,
+      "15.0": 90,
+      "20.0": 89,
+      "40.0": 5
+    },
+    "swapped_groups": {
+      "5.0": 22,
+      "10.0": 67,
+      "12.0": 67,
+      "15.0": 22,
+      "20.0": 22,
+      "40.0": 22
+    },
+    "deep_viscosity_15": {
+      "5.0": 90,
+      "10.0": 90,
+      "12.0": 90,
+      "15.0": 90,
+      "20.0": 90,
+      "40.0": 90
+    },
+    "no_asymmetry": {
+      "5.0": 90,
+      "10.0": 90,
+      "12.0": 90,
+      "15.0": 90,
+      "20.0": 90,
+      "40.0": 22
+    },
+    "omega_zero": {
+      "5.0": 9,
+      "10.0": 9,
+      "12.0": 9,
+      "15.0": 9,
+      "20.0": 9,
+      "40.0": 9
+    }
+  },
+  "elapsed_sec": 500.2
+}

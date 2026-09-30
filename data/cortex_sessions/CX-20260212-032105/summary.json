@@ -1,0 +1,47 @@
+{
+  "session_id": "CX-20260212-032105",
+  "completed_at": "2026-02-12T03:22:11.740012Z",
+  "protocols_run": 5,
+  "total_steps": 17000,
+  "hypotheses_generated": 5,
+  "gaps_addressed": [
+    "unpromoted:CL-4",
+    "unpromoted:CL-6",
+    "unpromoted:CL-3",
+    "unpromoted:CL-2",
+    "unpromoted:CL-1"
+  ],
+  "sanity_results": [
+    {
+      "hypothesis": "H-001",
+      "series": "h-001",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-002",
+      "series": "h-002",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-003",
+      "series": "h-003",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-004",
+      "series": "h-004",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-005",
+      "series": "h-005",
+      "sanity_passed": true,
+      "anomalies": []
+    }
+  ],
+  "dry_run": false
+}

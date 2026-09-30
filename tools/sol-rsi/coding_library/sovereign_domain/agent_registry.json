@@ -1,0 +1,52 @@
+{
+  "architecture_council": {
+    "description": "Owns the shape of the SOL stack",
+    "members": [
+      "Chief SOL Architect",
+      "Level Cartographer",
+      "Dependency Graph Agent",
+      "Promotion Gate Author",
+      "Interface Contract Agent"
+    ]
+  },
+  "substrate_physics_council": {
+    "description": "Protects active mass invariants and tunes damping parameters",
+    "members": [
+      "Mass Sentinel Agent",
+      "Damping Agent",
+      "Boundary/PML Agent",
+      "Phase-Lag Analyst",
+      "Jeans Collapse Agent"
+    ]
+  },
+  "wave_fabric_guild": {
+    "description": "Owns PDM, waveguide lanes, phase tables, soliton packets, and byte slices",
+    "members": [
+      "PDM ByteSlice Agent",
+      "Phase Calibration Agent",
+      "Acoustic Impedance Agent",
+      "Soliton Waveform Agent",
+      "Lane Isolation Agent"
+    ]
+  },
+  "compiler_council": {
+    "description": "Owns instruction lowering, new opcodes, and compilation optimization",
+    "members": [
+      "Compiler Agent",
+      "Instruction Set Agent",
+      "Register Allocator Agent",
+      "ByteLane Lowering Agent",
+      "Circuit Synthesis Agent"
+    ]
+  },
+  "wideword_compute_guild": {
+    "description": "Owns wide arithmetic operations and reduction trees",
+    "members": [
+      "Byte ALU Agent",
+      "Carry-Select Agent",
+      "Prefix Carry Agent",
+      "Multiplier Agent",
+      "SIMD Mode Agent"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "stage": "smoke",
+  "status": "passed",
+  "started_at": "2026-02-14T02:33:56.269701+00:00",
+  "completed_at": "2026-02-14T02:33:56.312740+00:00",
+  "elapsed_sec": 0.04,
+  "output": {
+    "engine_ok": true,
+    "nodes": 140,
+    "mass": 49.67,
+    "entropy": 0.0279,
+    "maxRho": 48.86,
+    "core_sha256": "b9800d5313886818c7c1980829e1ca5da7d63d9e2218e36c020df80db19b06fb"
+  },
+  "error": null
+}

@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sol-protocol-v1",
+  "title": "SOL Experiment Protocol (Headless)",
+  "description": "Machine-readable protocol for sol-core auto_run. Maps 1:1 to the experiment-protocol-template.md fields.",
+  "type": "object",
+  "required": ["seriesName", "question", "invariants", "steps"],
+  "properties": {
+    "seriesName": {
+      "type": "string",
+      "description": "Unique series identifier (used in filenames and run bundles)."
+    },
+    "question": {
+      "type": "string",
+      "description": "One-sentence experiment question."
+    },
+    "invariants": {
+      "type": "object",
+      "description": "Parameters held constant across all conditions.",
+      "properties": {
+        "dt": { "type": "number", "default": 0.12 },
+        "c_press": { "type": "number", "default": 0.1 },
+        "damping": { "type": "number", "default": 0.2 },
+        "rng_seed": { "type": "integer", "default": 42 },
+        "graph": {
+          "type": "string",
+          "default": "default",
+          "description": "Path to graph JSON, or 'default' for the canonical 140-node graph."
+        },
+        "cap_law": {
+          "type": ["object", "null"],
+          "default": null,
+          "description": "CapLaw configuration. null = disabled."
+        }
+      }
+    },
+    "knobs": {
+      "type": "object",
+      "description": "Independent variables. Each key maps to a list of values to sweep. If empty or omitted, a single condition is run using invariant values.",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "number" }
+      },
+      "default": {}
+    },
+    "injections": {
+      "type": "array",
+      "description": "Ordered list of injections. Each fires at a specific step (default: step 0).",
+      "items": {
+        "type": "object",
+        "required": ["label", "amount"],
+        "properties": {
+          "label": { "type": "string" },
+          "amount": { "type": "number" },
+          "at_step": { "type": "integer", "default": 0 }
+        }
+      },
+      "default": [{ "label": "grail", "amount": 50 }]
+    },
+    "steps": {
+      "type": "integer",
+      "description": "Total simulation steps per condition per rep."
+    },
+    "reps": {
+      "type": "integer",
+      "default": 1,
+      "description": "Repetitions per condition."
+    },
+    "baseline": {
+      "type": "string",
+      "enum": ["restore", "fresh"],
+      "default": "fresh",
+      "description": "'restore' = snapshot before injections, restore between reps. 'fresh' = full engine reset between reps."
+    },
+    "metrics_every": {
+      "type": "integer",
+      "default": 1,
+      "description": "Record per-step metrics every N steps. Set higher for long runs to reduce output."
+    },
+    "outputs": {
+      "type": "object",
+      "properties": {
+        "summary_csv": { "type": "boolean", "default": true },
+        "trace_csv": { "type": "boolean", "default": true },
+        "run_bundle_md": { "type": "boolean", "default": true },
+        "node_states": { "type": "boolean", "default": false }
+      }
+    },
+    "falsifiers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What results would disprove the intended interpretation.",
+      "default": []
+    },
+    "notes": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}

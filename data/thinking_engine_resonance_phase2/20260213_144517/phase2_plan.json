@@ -1,0 +1,64 @@
+{
+  "phase1_run_dir": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance\\20260213_063226",
+  "top_profiles": [
+    "explorer_flux"
+  ],
+  "top_damping_centers": [
+    3.0,
+    6.5
+  ],
+  "focused_damping": [
+    2.75,
+    3.0,
+    3.25,
+    6.25,
+    6.5,
+    6.75
+  ],
+  "phase2_profiles": {
+    "explorer_flux__baseline": {
+      "grail": 1.2,
+      "metatron": 1.0,
+      "pyramid": 1.15,
+      "christ": 0.95,
+      "light codes": 1.1
+    },
+    "explorer_flux__coherence_boost": {
+      "grail": 1.2,
+      "metatron": 1.08,
+      "pyramid": 1.15,
+      "christ": 1.045,
+      "light codes": 1.056
+    },
+    "explorer_flux__bridge_lift": {
+      "grail": 1.32,
+      "metatron": 1.0,
+      "pyramid": 1.265,
+      "christ": 0.95,
+      "light codes": 1.1
+    },
+    "explorer_flux__tech_harmonic": {
+      "grail": 1.2,
+      "metatron": 1.0,
+      "pyramid": 1.15,
+      "christ": 0.95,
+      "light codes": 1.254
+    }
+  },
+  "args": {
+    "phase1_root": "data/thinking_engine_resonance",
+    "phase1_run_dir": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance\\20260213_063226",
+    "top_damping_count": 2,
+    "top_profile_count": 1,
+    "focus_window": 0.25,
+    "focus_step": 0.25,
+    "damping_min": 0.25,
+    "damping_max": 22.0,
+    "seeds": 1,
+    "steps": 200,
+    "sample_every": 4,
+    "budget_hours": 0.03,
+    "output_root": "data/thinking_engine_resonance_phase2",
+    "dry_run": false
+  }
+}

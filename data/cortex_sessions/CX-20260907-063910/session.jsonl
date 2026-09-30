@@ -1,0 +1,31 @@
+{"ts": "2026-09-07T06:39:10.628954Z", "event": "session_start", "session_id": "CX-20260907-063910", "config": {"max_protocols": "3", "max_total_steps": "100000", "gap_type_filter": "None", "dry_run": "False", "out_dir": "/home/runner/work/sol/sol/data/cortex_sessions", "strict_guardrails": "True", "verbose": "True"}}
+{"ts": "2026-09-07T06:39:11.666912Z", "event": "meta_gap_prioritized", "top_gap": "unpromoted:CL-1", "boosted_priority": 4.7138}
+{"ts": "2026-09-07T06:39:11.679065Z", "event": "knowledge_scan", "total_gaps": 655, "by_type": {"unpromoted": 6, "unfalsified": 4, "replication": 349, "unexplored_param": 4, "open_question": 225, "weak_evidence": 66, "headless_baseline": 1}}
+{"ts": "2026-09-07T06:39:11.726393Z", "event": "gap_selected", "gap_id": "unpromoted:CL-1", "gap_type": "unpromoted", "priority": 2, "description": "CL-1 (Robust): Baseline restore is non-negotiable for comparability \u2014 no proof packet found"}
+{"ts": "2026-09-07T06:39:11.727448Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-1", "memory_context": "Memory nodes: 34 | Memory edges: 103 | Avg confidence: 0.361 | Tags: basin(34), entropy(34), rhoMax(34)"}
+{"ts": "2026-09-07T06:39:11.727605Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-1", "template": "injection_comparison"}
+{"ts": "2026-09-07T06:39:11.727642Z", "event": "hypothesis_generated", "hypothesis_id": "H-001", "template": "injection_comparison", "question": "Do different injection targets produce distinct basin formations?"}
+{"ts": "2026-09-07T06:39:11.727720Z", "event": "hypothesis_augmented", "hypothesis_id": "H-001", "memory_falsifiers": 2}
+{"ts": "2026-09-07T06:39:11.728046Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260907-063910/protocols/h-001_protocol.json"}
+{"ts": "2026-09-07T06:39:11.784345Z", "event": "execution_start", "hypothesis_id": "H-001", "series": "h-001"}
+{"ts": "2026-09-07T06:39:14.632858Z", "event": "execution_complete", "hypothesis_id": "H-001", "elapsed_sec": 2.85, "sanity_passed": true, "anomalies": [], "total_session_steps": 600}
+{"ts": "2026-09-07T06:39:14.633057Z", "event": "meta_recorded", "hypothesis_id": "H-001", "template": "injection_comparison", "gap_type": "unpromoted"}
+{"ts": "2026-09-07T06:39:14.658777Z", "event": "gap_selected", "gap_id": "unpromoted:CL-2", "gap_type": "unpromoted", "priority": 2, "description": "CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale \u2014 no proof "}
+{"ts": "2026-09-07T06:39:14.659707Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-2", "memory_context": "Memory nodes: 34 | Memory edges: 103 | Avg confidence: 0.361 | Tags: basin(34), entropy(34), rhoMax(34)"}
+{"ts": "2026-09-07T06:39:14.659967Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-2", "template": "baseline_golden"}
+{"ts": "2026-09-07T06:39:14.660019Z", "event": "hypothesis_generated", "hypothesis_id": "H-002", "template": "baseline_golden", "question": "What are the canonical metric outputs for standard injection protocols?"}
+{"ts": "2026-09-07T06:39:14.660119Z", "event": "hypothesis_augmented", "hypothesis_id": "H-002", "memory_falsifiers": 1}
+{"ts": "2026-09-07T06:39:14.660379Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260907-063910/protocols/h-002_protocol.json"}
+{"ts": "2026-09-07T06:39:14.660422Z", "event": "execution_start", "hypothesis_id": "H-002", "series": "h-002"}
+{"ts": "2026-09-07T06:39:17.055990Z", "event": "execution_complete", "hypothesis_id": "H-002", "elapsed_sec": 2.4, "sanity_passed": true, "anomalies": [], "total_session_steps": 1100}
+{"ts": "2026-09-07T06:39:17.056190Z", "event": "meta_recorded", "hypothesis_id": "H-002", "template": "baseline_golden", "gap_type": "unpromoted"}
+{"ts": "2026-09-07T06:39:17.082057Z", "event": "gap_selected", "gap_id": "unpromoted:CL-3", "gap_type": "unpromoted", "priority": 2, "description": "CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins \u2014 no p"}
+{"ts": "2026-09-07T06:39:17.083092Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-3", "memory_context": "Memory nodes: 34 | Memory edges: 103 | Avg confidence: 0.361 | Tags: basin(34), entropy(34), rhoMax(34)"}
+{"ts": "2026-09-07T06:39:17.083267Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-3", "template": "psi_sensitivity"}
+{"ts": "2026-09-07T06:39:17.083302Z", "event": "hypothesis_generated", "hypothesis_id": "H-003", "template": "psi_sensitivity", "question": "How does psi_diffusion affect entropy distribution and basin selection?"}
+{"ts": "2026-09-07T06:39:17.083431Z", "event": "hypothesis_augmented", "hypothesis_id": "H-003", "memory_falsifiers": 2}
+{"ts": "2026-09-07T06:39:17.083628Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260907-063910/protocols/h-003_protocol.json"}
+{"ts": "2026-09-07T06:39:17.083660Z", "event": "execution_start", "hypothesis_id": "H-003", "series": "h-003"}
+{"ts": "2026-09-07T06:39:38.694541Z", "event": "execution_complete", "hypothesis_id": "H-003", "elapsed_sec": 21.61, "sanity_passed": true, "anomalies": [], "total_session_steps": 5600}
+{"ts": "2026-09-07T06:39:38.694763Z", "event": "meta_recorded", "hypothesis_id": "H-003", "template": "psi_sensitivity", "gap_type": "unpromoted"}
+{"ts": "2026-09-07T06:39:38.694790Z", "event": "budget_stop", "reason": "max_protocols reached (3/3)"}

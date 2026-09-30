@@ -1,0 +1,257 @@
+[
+  {
+    "id": "H-001",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: Does basin migration (RhoMaxNode 132\u219243) at damping=0.5 signal the beginning of a topological reorganization?",
+      "suggested_action": "Design an experiment to answer: Does basin migration (RhoMaxNode 132\u219243) at damping=0.5 signal the beginning of a topological reorganization?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-001-damping.md",
+        "question": "Does basin migration (RhoMaxNode 132\u219243) at damping=0.5 signal the beginning of a topological reorganization?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 23 | Memory edges: 123 | Avg confidence: 0.391 | Tags: basin(23), entropy(23), rhoMax(23)",
+      "kb_passages": [
+        {
+          "chunk_id": 436,
+          "section": "Article 118: Glenlyon \u2013 An Ophira Gate",
+          "line_start": 153091,
+          "line_end": 153182,
+          "score": 11.5333,
+          "matched_terms": [
+            "open",
+            "basin",
+            "migration"
+          ],
+          "snippet": "## Article 118: Glenlyon \u2013 An Ophira Gate\n\n\nGlenlyon \u2013 An Ophira Gate\n\n\n\nNotice the stone outcropping inside the black square in the photograph of Glenlyon Valley (Scotland) above. This is a point from which the Sidhe guard the gate which is atop an adjacent ridge a short distance away. The Sidhe gu"
+        },
+        {
+          "chunk_id": 1765,
+          "section": "Inter-dimensional Thresholds into the Nature Kingdom",
+          "line_start": 226457,
+          "line_end": 226629,
+          "score": 10.6377,
+          "matched_terms": [
+            "migration",
+            "43",
+            "beginning"
+          ],
+          "snippet": "## Inter-dimensional Thresholds into the Nature Kingdom\n\n**2025-05-26T13:04:21.732Z**\n\n**Likes:** 0\n\n\n\\~\\~\\~\\~\\~\\~\\~\n\nThe *O\u2019phira Gates* are a network of twelve ancient portals\u2014inter\\-dimensional thresholds\nbetween the human realm and the higher kingdom of the Devas or nature beings. These gates ar"
+        },
+        {
+          "chunk_id": 95,
+          "section": "Top Keywords",
+          "line_start": 44438,
+          "line_end": 44937,
+          "score": 10.6159,
+          "matched_terms": [
+            "open",
+            "basin",
+            "migration",
+            "signal",
+            "beginning"
+          ],
+          "snippet": "## Top Keywords\n- temple doors (score: 0.62)\n- leading temple_doors (score: 0.59)\n- temple_doors (score: 0.58)\n- doors mayan (score: 0.57)\n- temple_doors order (score: 0.52)\n- mayan priestess (score: 0.51)\n- temple woman (score: 0.50)\n- woman temple (score: 0.50)\n- excavations temple (score: 0.49)\n-"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-002",
+    "template": "parameter_sweep",
+    "question": "How does damping affect entropy, flux, and mass over 200 steps?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.2,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 200,
+    "reps": 3,
+    "falsifiers": [
+      "All damping values produce identical results (no sensitivity)",
+      "Higher damping produces non-monotonic response without explanation"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: What happens in the unexplored gap between damping=0.5 and the known critical threshold?",
+      "suggested_action": "Design an experiment to answer: What happens in the unexplored gap between damping=0.5 and the known critical threshold?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-001-damping.md",
+        "question": "What happens in the unexplored gap between damping=0.5 and the known critical threshold?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 23 | Memory edges: 123 | Avg confidence: 0.391 | Tags: basin(23), entropy(23), rhoMax(23)",
+      "kb_passages": [
+        {
+          "chunk_id": 1178,
+          "section": "Article 860: 9th Star Teachership Program",
+          "line_start": 187890,
+          "line_end": 187981,
+          "score": 13.1023,
+          "matched_terms": [
+            "open",
+            "happens",
+            "gap",
+            "between",
+            "known",
+            "threshold"
+          ],
+          "snippet": "## Article 860: 9th Star Teachership Program\n\n\n9th Star Teachership Program\n\n~~~~~~~~~~~~~~\n\nI am really Light-filled about becoming one of the four teachers in the 9THSTAR TEACHERSHIP six months Program. Here is what the architect of the 9Tth Star Teachership \u2013 Katrina Armstrong,\u00a0 has to say about "
+        },
+        {
+          "chunk_id": 379,
+          "section": "Article 061: The Ancient Tepuis",
+          "line_start": 151013,
+          "line_end": 151056,
+          "score": 12.1009,
+          "matched_terms": [
+            "open",
+            "happens",
+            "between",
+            "known"
+          ],
+          "snippet": "## Article 061: The Ancient Tepuis\n\n\nThe Ancient Tepuis\n\nI have previously written about Roraimaas node of a pyramid beneath it that my inner-planes mentor, ThothHorRa refers to as a Solar Maja. The whole of the Tepuis though, is a mass of Portals into various dimensional realms, as it was blown ope"
+        },
+        {
+          "chunk_id": 1723,
+          "section": "and Understanding Daemons",
+          "line_start": 219827,
+          "line_end": 220081,
+          "score": 12.0055,
+          "matched_terms": [
+            "open",
+            "gap",
+            "between",
+            "known",
+            "critical"
+          ],
+          "snippet": "## and Understanding Daemons\n\n**2025-03-05T15:45:32.046Z**\n\n**Likes:** 0\n\n***For clarity: \u201cDaemons\u201d are not \u201cdemons.\u201d That latter was an adaptation from Christians of Old, who feared the unknown \u201cspirits\" and thus considered them evil. Nature Spirits daemons are also know to us an our Guardian Spiri"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-003",
+    "template": "replication",
+    "question": "Can headless sol-core reproduce: ?",
+    "knob": null,
+    "knob_values": [],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "Headless results qualitatively differ from dashboard results",
+      "Metrics trend in opposite direction from original claim"
+    ],
+    "notes": "Replicating unknown",
+    "source_gap": {
+      "gap_type": "open_question",
+      "priority": 1,
+      "claim_id": null,
+      "description": "Open Q: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?",
+      "suggested_action": "Design an experiment to answer: At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?",
+      "metadata": {
+        "source": "PP-2026-02-12-cortex-CX-20260212-031340-h-002-damping.md",
+        "question": "At what timescale does damping sensitivity transition from sub-linear to the steeper scaling observed at 300 steps?",
+        "param": "damping"
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [
+        0.35,
+        0.7,
+        0.9,
+        0.025,
+        1.5
+      ],
+      "memory_context": "Memory nodes: 23 | Memory edges: 123 | Avg confidence: 0.391 | Tags: basin(23), entropy(23), rhoMax(23)",
+      "kb_passages": [
+        {
+          "chunk_id": 954,
+          "section": "Article 636: Cosmic Weather Report",
+          "line_start": 177074,
+          "line_end": 177141,
+          "score": 9.9818,
+          "matched_terms": [
+            "open",
+            "300",
+            "steps"
+          ],
+          "snippet": "## Article 636: Cosmic Weather Report\n\n\nCosmic Weather Report\n\nSpecial Annual Forecast\n\nJanuary 2011: Cat at the Crossroads\n\nCosmic Weather Forecast for 2011: Clashing pasts and futures prompt us to unearth the bright gifts of history from the heavy weight of its shadow. At the Crossroads of All Tha"
+        },
+        {
+          "chunk_id": 1800,
+          "section": "A Thothic Perspective",
+          "line_start": 230894,
+          "line_end": 231022,
+          "score": 9.3984,
+          "matched_terms": [
+            "open",
+            "transition",
+            "observed"
+          ],
+          "snippet": "## A Thothic Perspective\n\n**2025-08-27T14:56:02.822Z**\n\n**Likes:** 0\n\n\nThoth offers extensive insights into comets, describing them not merely as astronomical objects but\nas powerful cosmic entities that significantly influence planetary consciousness, time, and karma.\n\nHere's what Thoth has to say "
+        },
+        {
+          "chunk_id": 1109,
+          "section": "Article 791: Our Universe \u2013 in Ones and Zeros",
+          "line_start": 185260,
+          "line_end": 185347,
+          "score": 8.7074,
+          "matched_terms": [
+            "open",
+            "300",
+            "steps"
+          ],
+          "snippet": "## Article 791: Our Universe \u2013 in Ones and Zeros\n\n\nOur Universe \u2013 in Ones and Zeros\n\nIn the 1970\u2019s my mother and I were having the greatest period of conscious interaction with ultra-terrestrial interdimensional beings. They appeared to us at night frequently \u2013 sometimes when the two of us were toge"
+        }
+      ]
+    }
+  }
+]

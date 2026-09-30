@@ -1,0 +1,18 @@
+// run once after dashboard settles
+globalThis.__SOL_BASE = globalThis.__SOL_BASE || (function(){
+  const dash = globalThis.SOLDashboard || window.SOLDashboard;
+  const physics = window.solver || dash?.state?.physics;
+  if (!physics?.nodes?.length) throw new Error("physics not ready");
+
+  const snap = {
+    nodeSnap: new Map((physics.nodes||[]).filter(n=>n&&n.id!=null).map(n=>[
+      String(n.id),
+      { rho:n.rho, p:n.p, psi:n.psi, psi_bias:n.psi_bias,
+        semanticMass:n.semanticMass, semanticMass0:n.semanticMass0,
+        b_q:n.b_q, b_charge:n.b_charge, b_state:n.b_state }
+    ])),
+    edgeFlux: (physics.edges||[]).map(e => (e && Number.isFinite(e.flux)) ? e.flux : 0)
+  };
+  console.log("[baseline] captured");
+  return snap;
+})();

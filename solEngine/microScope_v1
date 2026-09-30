@@ -1,0 +1,516 @@
+/* ============================================================
+   SOL Retention Microscope — Reload Kit (Paste after refresh)
+   Installs: globalThis.solRetentionMechanismMicroscopeV3
+   - UI-neutral (no camera/selection)
+   - Patches solver.step to support per-node rhoLeakMult
+   - Provides: run(cfg), help(), and a couple helper harnesses
+   ============================================================ */
+
+(() => {
+  "use strict";
+  const G = globalThis;
+
+  // ---------------- Utilities ----------------
+  const U = {
+    nowIso() { return new Date().toISOString(); },
+    stamp(d = new Date()) {
+      const pad = (n) => String(n).padStart(2, "0");
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}-${String(d.getMilliseconds()).padStart(3,"0")}Z`;
+    },
+    csvCell(v) {
+      if (v === null || v === undefined) return "";
+      const s = String(v);
+      return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    },
+    toCSV(rows) {
+      if (!rows || !rows.length) return "";
+      const keys = Object.keys(rows[0]);
+      const lines = [keys.map(U.csvCell).join(",")];
+      for (const r of rows) lines.push(keys.map(k => U.csvCell(r[k])).join(","));
+      return lines.join("\n") + "\n";
+    },
+    downloadText(filename, text) {
+      const blob = new Blob([text], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+    },
+    mean(xs) { return xs.reduce((a,b)=>a+b,0) / Math.max(1, xs.length); },
+    median(xs) { return xs.length ? xs[Math.floor(xs.length/2)] : 0; },
+    degBin(deg) {
+      if (deg <= 7) return "<=7";
+      if (deg <= 9) return "8-9";
+      if (deg <= 12) return "10-12";
+      return ">=13";
+    }
+  };
+
+  // ------------- Solver/App discovery -------------
+  function getSolver() {
+    if (G.solver?.nodes?.length && G.solver?.edges?.length) return G.solver;
+
+    const App = G.App;
+    if (App?.state?.physics?.nodes?.length && App?.state?.physics?.edges?.length) return App.state.physics;
+    if (App?.state?.physics?.solver?.nodes?.length && App?.state?.physics?.solver?.edges?.length) return App.state.physics.solver;
+
+    return null;
+  }
+
+  function waitForSolverReady(timeoutMs = 12000) {
+    const t0 = Date.now();
+    return new Promise((resolve, reject) => {
+      (function tick() {
+        const s = getSolver();
+        if (s && s.nodes?.length && s.edges?.length) return resolve(s);
+        if (Date.now() - t0 > timeoutMs) return reject(new Error("Solver not ready (no nodes/edges yet)."));
+        setTimeout(tick, 50);
+      })();
+    });
+  }
+
+  function getPressureCOrFallback() {
+    const App = G.App;
+    try {
+      const v = parseFloat(App?.dom?.pressureSlider?.value);
+      const scale = App?.config?.pressureSliderScale;
+      if (Number.isFinite(v) && Number.isFinite(scale)) return v * scale;
+    } catch {}
+    return 1.0;
+  }
+
+  // ------------- Graph stats helpers -------------
+  function buildDegreeMap(solver) {
+    const deg = new Map();
+    for (const n of solver.nodes) deg.set(n.id, 0);
+    for (const e of solver.edges) {
+      if (!e || e.background) continue;
+      deg.set(e.from, (deg.get(e.from) || 0) + 1);
+      deg.set(e.to,   (deg.get(e.to)   || 0) + 1);
+    }
+    return deg;
+  }
+
+  function incidentFluxStats(solver, nodeId) {
+    let abs = 0, inF = 0, outF = 0, net = 0, k = 0;
+    for (const e of solver.edges) {
+      if (!e || e.background) continue;
+      if (e.from !== nodeId && e.to !== nodeId) continue;
+
+      const f = Number.isFinite(e.flux) ? e.flux : 0;
+      abs += Math.abs(f);
+      k++;
+
+      // Convention: +flux drains "from" and fills "to"
+      if (f >= 0) {
+        if (e.from === nodeId) { outF += f; net -= f; }
+        else                  { inF  += f; net += f; }
+      } else {
+        const fp = -f;
+        if (e.from === nodeId) { inF  += fp; net += fp; }
+        else                   { outF += fp; net -= fp; }
+      }
+    }
+    return { incidentFluxAbs: abs, inFlux: inF, outFlux: outF, netFlux: net, incidentEdgeCount: k };
+  }
+
+  // ------------- Snapshot/restore (trial isolation) -------------
+  function snapshotState(solver) {
+    const nodes = solver.nodes.map(n => ({
+      id: n.id,
+      rho: n.rho,
+      psi: n.psi,
+      psi_bias: n.psi_bias,
+      semanticMass: ("semanticMass" in n) ? n.semanticMass : undefined,
+      isStellar: !!n.isStellar,
+      isSingularity: !!n.isSingularity,
+      isBattery: !!n.isBattery,
+      b_state: ("b_state" in n) ? n.b_state : undefined,
+      b_charge: ("b_charge" in n) ? n.b_charge : undefined
+    }));
+    const edges = solver.edges.map(e => ({
+      flux: e && Number.isFinite(e.flux) ? e.flux : 0,
+      bMag: e && Number.isFinite(e.bMag) ? e.bMag : 0
+    }));
+    return { nodes, edges };
+  }
+
+  function restoreState(solver, snap) {
+    const byId = new Map(solver.nodes.map(n => [n.id, n]));
+    for (const s of snap.nodes) {
+      const n = byId.get(s.id);
+      if (!n) continue;
+
+      n.rho = s.rho;
+      n.psi = s.psi;
+      n.psi_bias = s.psi_bias;
+
+      if (s.semanticMass === undefined) {
+        if ("semanticMass" in n) delete n.semanticMass;
+      } else {
+        n.semanticMass = s.semanticMass;
+      }
+
+      n.isStellar = s.isStellar;
+      n.isSingularity = s.isSingularity;
+
+      if (s.isBattery) {
+        if ("b_state" in n) n.b_state = s.b_state;
+        if ("b_charge" in n) n.b_charge = s.b_charge;
+      }
+
+      if ("rhoLeakMult" in n) delete n.rhoLeakMult;
+    }
+
+    for (let i = 0; i < solver.edges.length; i++) {
+      const e = solver.edges[i];
+      const se = snap.edges[i];
+      if (!e || !se) continue;
+      e.flux = se.flux;
+      e.bMag = se.bMag;
+    }
+  }
+
+  // ------------- Patch: per-node rhoLeakMult scales damping leakage only -------------
+  function ensureLocalLeakPatch(solver) {
+    if (solver._retMechPatched_rhoLeakMult) return;
+
+    const orig = solver.step?.bind(solver);
+    if (typeof orig !== "function") throw new Error("solver.step is not a function");
+
+    solver._retMechPatched_rhoLeakMult = true;
+    solver._retMechOrigStep = orig;
+
+    solver.step = function patchedStep(dt, c_press, damping) {
+      const metrics = solver._retMechOrigStep(dt, c_press, damping);
+
+      const jeans = this.jeansCfg || {};
+      const starDamp =
+        (typeof jeans.starDampingFactor === "number" && Number.isFinite(jeans.starDampingFactor))
+          ? jeans.starDampingFactor
+          : 0.18;
+
+      for (const n of this.nodes) {
+        const leakMult = (typeof n.rhoLeakMult === "number" && Number.isFinite(n.rhoLeakMult)) ? n.rhoLeakMult : 1.0;
+        if (leakMult === 1.0) continue;
+
+        const starFactor = (n?.isStellar && this.jeansCfg) ? starDamp : 1.0;
+        const base = (damping * dt * 0.1 * starFactor);
+
+        if (!(base > 0)) continue;
+        const denom = (1 - base);
+        if (Math.abs(denom) < 1e-9) continue;
+
+        const numer = (1 - base * leakMult);
+        const ratio = numer / denom;
+
+        if (Number.isFinite(ratio)) {
+          n.rho *= ratio;
+          if (n.rho < 0) n.rho = 0;
+        }
+      }
+
+      // Keep activeCount coherent (optional)
+      let activeCount = 0;
+      for (const n of this.nodes) if (n.rho > 0.1) activeCount++;
+
+      return {
+        totalFlux: metrics?.totalFlux ?? 0,
+        activeCount
+      };
+    };
+
+    console.log("✅ Patch installed: per-node rhoLeakMult (damping leakage scaling).");
+  }
+
+  // ------------- Core microscope run() -------------
+  async function run(cfg = {}) {
+    const solver = await waitForSolverReady();
+    ensureLocalLeakPatch(solver);
+
+    const App = G.App;
+
+    // UI-neutral freeze: stop live loop if dtCap exists
+    const prevDtCap = App?.config?.dtCap;
+    if (App?.config && typeof App.config.dtCap === "number") App.config.dtCap = 0;
+
+    const tIso = U.nowIso();
+    const stamp = U.stamp(new Date());
+
+    const pressC = Number.isFinite(cfg.pressureC) ? cfg.pressureC : getPressureCOrFallback();
+
+    const injected = Number.isFinite(cfg.injected) ? cfg.injected : 120;
+    const steps = Number.isFinite(cfg.steps) ? cfg.steps : 5;
+
+    const dt = Number.isFinite(cfg.dt) ? cfg.dt : 0.016;
+    const ticksPerStep = Number.isFinite(cfg.ticksPerStep) ? cfg.ticksPerStep : 60;
+
+    const dampingLevels = Array.isArray(cfg.dampingLevels) ? cfg.dampingLevels : [4, 5, 6];
+    const semanticMassMults = Array.isArray(cfg.semanticMassMults) ? cfg.semanticMassMults : [1, 2, 4];
+    const rhoLeakMults = Array.isArray(cfg.rhoLeakMults) ? cfg.rhoLeakMults : [1.0, 0.25];
+
+    const nodeIds = Array.isArray(cfg.nodeIds) ? cfg.nodeIds : [];
+    if (!nodeIds.length) throw new Error("cfg.nodeIds is empty");
+
+    const cohortById = cfg.cohortById || {};
+    const filenamePrefix = cfg.filenamePrefix || "sol_retention_mech";
+
+    const degMap = buildDegreeMap(solver);
+    const snap = snapshotState(solver);
+
+    const samplesLong = [];
+    const samplesWide = [];
+
+    let trial = 0;
+    const totalTrials = nodeIds.length * dampingLevels.length * semanticMassMults.length * rhoLeakMults.length;
+
+    try {
+      for (const damping of dampingLevels) {
+        for (const mMult of semanticMassMults) {
+          for (const leakMult of rhoLeakMults) {
+            for (const nodeId of nodeIds) {
+              trial++;
+              restoreState(solver, snap);
+
+              const n = solver.nodeById?.get(nodeId) || solver.nodes.find(x => x.id === nodeId);
+              if (!n) continue;
+
+              const label = n.label ?? "";
+              const deg0 = degMap.get(nodeId) || 0;
+              const db = U.degBin(deg0);
+              const cohort = cohortById[nodeId] || "batch";
+
+              const pre_rho = n.rho;
+
+              const baseSM = (typeof n.semanticMass === "number" && Number.isFinite(n.semanticMass) && n.semanticMass > 0) ? n.semanticMass : 1.0;
+              const appliedSM = baseSM * mMult;
+
+              // Apply knobs
+              n.semanticMass = appliedSM;
+              n.rhoLeakMult = leakMult;
+
+              // Direct inject (UI-neutral; avoids concept barycenter redirect)
+              n.rho += injected;
+
+              // Refresh derived state
+              if (typeof solver.computePressure === "function") solver.computePressure(pressC);
+              if (typeof solver.updateConductance === "function") solver.updateConductance();
+
+              let delta1 = null;
+              let deltaEnd = null;
+              let halfLifeSteps = null;
+
+              for (let s = 1; s <= steps; s++) {
+                for (let k = 0; k < ticksPerStep; k++) solver.step(dt, pressC, damping);
+
+                const rho = n.rho;
+                const p = n.p;
+                const delta = rho - pre_rho;
+                const retention = delta / injected;
+                const netLoss = injected - delta;
+
+                if (s === 1) delta1 = delta;
+                if (s === steps) deltaEnd = delta;
+
+                if (halfLifeSteps === null && delta1 != null && delta1 > 0 && delta <= (0.5 * delta1)) {
+                  halfLifeSteps = s - 1;
+                }
+
+                const flux = incidentFluxStats(solver, nodeId);
+
+                samplesLong.push({
+                  tIso,
+                  trial, trialOf: totalTrials,
+                  cohort,
+                  nodeId,
+                  nodeLabel: label,
+                  deg0,
+                  degBin: db,
+                  pressureC: pressC,
+                  damping,
+                  semanticMass0: baseSM,
+                  semanticMassApplied: appliedSM,
+                  semanticMassMult: mMult,
+                  rhoLeakMult: leakMult,
+                  pre_rho,
+                  injected,
+                  step: s,
+                  rho, p,
+                  delta, retention, netLoss,
+                  incidentEdgeCount: flux.incidentEdgeCount,
+                  incidentFluxAbs: flux.incidentFluxAbs,
+                  inFlux: flux.inFlux,
+                  outFlux: flux.outFlux,
+                  netFlux: flux.netFlux
+                });
+              }
+
+              const rho1 = (delta1 == null) ? 0 : delta1;
+              const rhoEnd = (deltaEnd == null) ? 0 : deltaEnd;
+              const retentionEnd = rhoEnd / injected;
+              const decayRatio = (rho1 > 0) ? (rhoEnd / rho1) : 0;
+              if (halfLifeSteps === null) halfLifeSteps = (rho1 > 0) ? steps : 0;
+
+              samplesWide.push({
+                tIso,
+                cohort,
+                nodeId,
+                nodeLabel: label,
+                deg0,
+                degBin: db,
+                pressureC: pressC,
+                damping,
+                semanticMass0: baseSM,
+                semanticMassMult: mMult,
+                rhoLeakMult: leakMult,
+                pre_rho,
+                injected,
+                rho1,
+                rhoEnd,
+                retentionEnd,
+                decayRatio,
+                halfLifeSteps
+              });
+
+              if (trial % 50 === 0) console.log(`…progress: ${trial}/${totalTrials}`);
+            }
+          }
+        }
+      }
+    } finally {
+      restoreState(solver, snap);
+      if (App?.config && typeof prevDtCap === "number") App.config.dtCap = prevDtCap;
+    }
+
+    // Summary grouped by (damping, semanticMassMult, rhoLeakMult, degBin)
+    const groups = new Map();
+    for (const r of samplesWide) {
+      const key = [r.damping, r.semanticMassMult, r.rhoLeakMult, r.degBin].join("|");
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(r);
+    }
+
+    const summary = [];
+    for (const [key, arr] of groups.entries()) {
+      const [damping, semanticMassMult, rhoLeakMult, degBin] = key.split("|");
+      const vals = arr.map(x => x.retentionEnd).sort((a,b)=>a-b);
+      const halves = arr.map(x => x.halfLifeSteps).sort((a,b)=>a-b);
+      summary.push({
+        damping: Number(damping),
+        semanticMassMult: Number(semanticMassMult),
+        rhoLeakMult: Number(rhoLeakMult),
+        degBin,
+        n: arr.length,
+        meanRetentionEnd: U.mean(vals),
+        medianRetentionEnd: U.median(vals),
+        meanHalfLifeSteps: U.mean(halves),
+        medianHalfLifeSteps: U.median(halves)
+      });
+    }
+
+    // Output files (default = all three)
+    const mode = (cfg.outputMode || "all").toLowerCase();
+    const wantLong = (mode === "all");
+    const wantWide = (mode === "all" || mode === "wide" || mode === "wide+summary");
+    const wantSummary = (mode === "all" || mode === "wide+summary");
+
+    if (wantLong)    U.downloadText(`${filenamePrefix}_samples_long_${stamp}.csv`, U.toCSV(samplesLong));
+    if (wantWide)    U.downloadText(`${filenamePrefix}_samples_wide_${stamp}.csv`, U.toCSV(samplesWide));
+    if (wantSummary) U.downloadText(`${filenamePrefix}_summary_${stamp}.csv`, U.toCSV(summary));
+
+    console.log(`✅ Retention Microscope complete. outputMode="${mode}"`);
+    return { samplesLong, samplesWide, summary };
+  }
+
+  // ------------- Convenience Harnesses (optional) -------------
+  async function runAB_superhubs_sm32_leak005() {
+    const M = G.solRetentionMechanismMicroscopeV3;
+    const common = {
+      nodeIds: [92, 118, 79, 89],
+      dampingLevels: [4],
+      semanticMassMults: [32],
+      rhoLeakMults: [0.05],
+      steps: 5,
+      ticksPerStep: 60,
+      injected: 120,
+      outputMode: "all"
+    };
+    console.log("A: basinHops=0");
+    await M.run({ ...common, basinHops: 0, filenamePrefix: "sol_retention_AB_superhubs_sm32_leak005_basin0" });
+    console.log("B: basinHops=1 (NOTE: if you later add basin logic, be careful about center double-hit)");
+    await M.run({ ...common, basinHops: 1, filenamePrefix: "sol_retention_AB_superhubs_sm32_leak005_basin1" });
+  }
+
+  async function runDegreeLinearPerNode({ nodes = [92,118,79,89], slope = 37.2, rhoLeakMult = 0.05 } = {}) {
+    const M = G.solRetentionMechanismMicroscopeV3;
+    const solver = await waitForSolverReady();
+
+    // Degree map
+    const deg = new Map();
+    for (const n of solver.nodes) deg.set(n.id, 0);
+    for (const e of solver.edges) {
+      if (!e || e.background) continue;
+      deg.set(e.from, (deg.get(e.from) || 0) + 1);
+      deg.set(e.to,   (deg.get(e.to)   || 0) + 1);
+    }
+
+    console.table(nodes.map(id => ({ id, deg: deg.get(id) || 0, smMult: (deg.get(id) || 0) * slope })) );
+
+    for (const id of nodes) {
+      const smMult = (deg.get(id) || 0) * slope;
+      await M.run({
+        nodeIds: [id],
+        dampingLevels: [4],
+        semanticMassMults: [smMult],
+        rhoLeakMults: [rhoLeakMult],
+        steps: 5,
+        ticksPerStep: 60,
+        injected: 120,
+        outputMode: "all",
+        filenamePrefix: `sol_retention_degLinear_s${slope}_node${id}_sm${Math.round(smMult)}`
+      });
+    }
+  }
+
+  // ------------- Install / expose -------------
+  G.solRetentionMechanismMicroscopeV3 = G.solRetentionMechanismMicroscopeV3 || {};
+  G.solRetentionMechanismMicroscopeV3.version = "reload-kit-1.0";
+  G.solRetentionMechanismMicroscopeV3.run = run;
+  G.solRetentionMechanismMicroscopeV3.runAB_superhubs_sm32_leak005 = runAB_superhubs_sm32_leak005;
+  G.solRetentionMechanismMicroscopeV3.runDegreeLinearPerNode = runDegreeLinearPerNode;
+
+  G.solRetentionMechanismMicroscopeV3.help = () => {
+    console.log(`
+SOL Retention Microscope (Reload Kit)
+Installed at: globalThis.solRetentionMechanismMicroscopeV3
+
+Core:
+  await solRetentionMechanismMicroscopeV3.run({
+    nodeIds: [ ... ],                 // required
+    dampingLevels: [4,5,6],           // default [4,5,6]
+    semanticMassMults: [1,2,4],       // default [1,2,4]
+    rhoLeakMults: [1,0.25],           // default [1,0.25]
+    steps: 5, ticksPerStep: 60, dt: 0.016,
+    injected: 120,
+    pressureC: <number>,             // default reads slider
+    outputMode: "all" | "wide" | "wide+summary",
+    filenamePrefix: "my_prefix"
+  });
+
+Convenience:
+  await solRetentionMechanismMicroscopeV3.runDegreeLinearPerNode({ slope: 37.2 });
+  await solRetentionMechanismMicroscopeV3.runAB_superhubs_sm32_leak005();
+
+Notes:
+  - UI-neutral: no camera/selection calls.
+  - Uses globalThis (NOT window) for reliability after refresh.
+  - Patches solver.step to support per-node rhoLeakMult.
+`);
+  };
+
+  console.log("✅ Reload kit installed:", G.solRetentionMechanismMicroscopeV3);
+})();

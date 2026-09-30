@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json.schemastore.org/codex.json",
+  "version": 1,
+  "name": "sol-hippocampus",
+  "description": "SOL Hippocampus — autonomous research and evolution platform",
+
+  "agents": {
+    "sol-cortex": {
+      "description": "Autonomous scientist loop — scans knowledge gaps, generates hypotheses, runs experiments",
+      "entry": "tools/sol-cortex/run_loop.py",
+      "workflow": ".github/workflows/sol-cortex.yml",
+      "issue_labels": ["sol-cortex", "experiment-request"],
+      "cli": {
+        "command": "python tools/sol-cortex/run_loop.py",
+        "args": {
+          "--max-protocols": { "type": "int", "default": 3, "min": 1, "max": 10 },
+          "--gap-type": { "type": "choice", "options": ["unpromoted", "weak_evidence", "unfalsified", "replication", "headless_baseline", "unexplored_param"] },
+          "--dry-run": { "type": "flag" },
+          "--quiet": { "type": "flag" }
+        }
+      },
+      "outputs": {
+        "session_dir": "data/cortex_sessions/CX-{timestamp}/",
+        "artifacts": ["session.jsonl", "summary.json", "hypotheses.json", "protocols/", "runs/"]
+      },
+      "guardrails": "tools/sol-cortex/guardrails.json"
+    },
+
+    "sol-evolve": {
+      "description": "Evolution engine — A/B tests parameter changes against golden baselines",
+      "entry": "tools/sol-evolve/ab_test.py",
+      "workflow": ".github/workflows/sol-evolve.yml",
+      "issue_labels": ["sol-evolve", "evolution-request"],
+      "cli": {
+        "command": "python tools/sol-evolve/ab_test.py",
+        "args": {
+          "--candidate": { "type": "choice", "required": true, "options": [
+            "tune_conductance_gamma_up", "tune_conductance_gamma_down",
+            "tune_battery_flip_threshold", "tune_battery_resonance_boost",
+            "tune_psi_diffusion_up", "tune_psi_relax_base",
+            "tune_phase_omega", "tune_mhd_build_rate", "tune_jeans_critical"
+          ]},
+          "--protocol": { "type": "choice", "options": ["single_inject_baseline", "damping_sweep_smoke", "dual_inject_timing"] },
+          "--json": { "type": "flag" },
+          "--out": { "type": "path" }
+        }
+      },
+      "supporting_tools": {
+        "regression_builder": "python tools/sol-evolve/regression_builder.py",
+        "pr_gen": "python tools/sol-evolve/pr_gen.py --candidate {candidate} --out-dir {out_dir}"
+      },
+      "outputs": {
+        "report_dir": "data/evolve_reports/{candidate}_{timestamp}/",
+        "artifacts": ["regression_report.md", "proof_packet_draft.md", "change_proposal.json"]
+      },
+      "sacred_math_guard": true
+    },
+
+    "sol-hippocampus": {
+      "description": "Memory overlay system — dream cycles, retrieval-augmented experiments, and meta-learning",
+      "entry": "tools/sol-hippocampus/cli.py",
+      "workflow": ".github/workflows/sol-hippocampus.yml",
+      "issue_labels": ["sol-hippocampus", "dream-cycle"],
+      "cli": {
+        "command": "python tools/sol-hippocampus/cli.py",
+        "args": {
+          "dream": {
+            "--sessions": { "type": "int", "default": 5, "min": 1, "max": 10 },
+            "--dry-run": { "type": "flag" },
+            "--json": { "type": "flag" }
+          },
+          "query": {
+            "--param": { "type": "string" },
+            "--basin": { "type": "int" },
+            "--novel": { "type": "string" },
+            "--history": { "type": "string" }
+          },
+          "meta": {
+            "--scores": { "type": "flag" },
+            "--cold": { "type": "flag" },
+            "--gap-type": { "type": "flag" }
+          },
+          "compact": {
+            "--force": { "type": "flag" },
+            "--json": { "type": "flag" }
+          },
+          "status": {
+            "--json": { "type": "flag" }
+          },
+          "kb": {
+            "build": { "type": "subcommand" },
+            "query": { "type": "subcommand", "args": { "<text>": { "type": "string" }, "--top-k": { "type": "int", "default": 5 } } },
+            "status": { "type": "subcommand" }
+          }
+        }
+      },
+      "outputs": {
+        "memory_graph": "data/memory_graph.json",
+        "memory_traces": "data/memory_traces/",
+        "dream_sessions": "data/dream_sessions/",
+        "meta_learning_log": "data/meta_learning_log.jsonl",
+        "kb_index": "data/kb_index.json"
+      },
+      "guardrails": "tools/sol-cortex/guardrails.json",
+      "core_immutability": {
+        "protected_files": [
+          "tools/sol-core/sol_engine.py",
+          "tools/sol-core/default_graph.json"
+        ],
+        "memory_node_id_start": 1000,
+        "memory_group": "memory",
+        "notes": "Core manifold is the quantum transducer — NEVER modify. Memory layers additively on top."
+      }
+    },
+
+    "sol-orchestrator": {
+      "description": "Multi-agent pipeline runner — chains cortex, consolidate, hippocampus, and evolve into a single automated research cycle",
+      "entry": "tools/sol-orchestrator/orchestrator.py",
+      "workflow": ".github/workflows/sol-pipeline.yml",
+      "issue_labels": ["sol-pipeline"],
+      "cli": {
+        "command": "python tools/sol-orchestrator/orchestrator.py",
+        "args": {
+          "--skip": { "type": "list", "options": ["smoke", "cortex", "consolidate", "hippocampus", "evolve", "report"] },
+          "--only": { "type": "list", "options": ["smoke", "cortex", "consolidate", "hippocampus", "evolve", "report"] },
+          "--cortex-protocols": { "type": "int", "default": 3, "min": 1, "max": 10 },
+          "--cortex-gap-type": { "type": "choice", "options": ["unpromoted", "weak_evidence", "unfalsified", "replication", "headless_baseline", "unexplored_param"] },
+          "--cortex-max-steps": { "type": "int" },
+          "--dream-sessions": { "type": "int", "min": 1, "max": 10 },
+          "--dream-dry-run": { "type": "flag" },
+          "--evolve-candidates": { "type": "list" },
+          "--dry-run": { "type": "flag" },
+          "--quiet": { "type": "flag" },
+          "--json": { "type": "flag" }
+        }
+      },
+      "outputs": {
+        "pipeline_dir": "data/pipeline_runs/PL-{timestamp}/",
+        "artifacts": ["pipeline_summary.json", "stage_smoke.json", "stage_cortex.json", "stage_consolidate.json", "stage_hippocampus.json", "stage_evolve.json", "stage_report.json"]
+      },
+      "stages": ["smoke", "cortex", "consolidate", "hippocampus", "evolve", "report"],
+      "critical_stages": ["smoke"],
+      "core_immutability_check": "before_start_and_after_every_stage"
+    }
+  },
+
+  "engine": {
+    "entry": "tools/sol-core/sol_engine.py",
+    "cli": "tools/sol-core/cli.py",
+    "smoke_test": "python tools/sol-core/cli.py smoke",
+    "default_graph": "tools/sol-core/default_graph.json",
+    "protocols_dir": "tools/sol-core/protocols/",
+    "sacred_math": [
+      "P = c * log(1 + rho / m)",
+      "cos(omega * t * 10)",
+      "psi diffusion kernel",
+      "conductance g = w0 * base * exp(gamma * psi)",
+      "MHD dynamo",
+      "Jeans collapse threshold"
+    ]
+  },
+
+  "knowledge": {
+    "thothstream_kb": "KB/ThothStream_Knowledgebase.md",
+    "kb_index": "data/kb_index.json",
+    "consolidation_index": "solKnowledge/consolidated/",
+    "proof_packets": "solKnowledge/proof_packets/",
+    "claims_ledger": "solKnowledge/working/sol_fullResearch_MASTER_PROOF_CLEAN.md",
+    "cortex_sessions": "data/cortex_sessions/",
+    "evolve_reports": "data/evolve_reports/"
+  },
+
+  "guardrails": {
+    "max_steps_per_run": 2000,
+    "max_conditions_per_protocol": 20,
+    "max_reps": 10,
+    "max_total_steps": 100000,
+    "max_protocols_per_session": 10,
+    "require_baseline": true,
+    "require_falsifier": true,
+    "require_sanity_pass": true,
+    "no_engine_modification": true,
+    "sacred_math_impact": "FORBIDDEN"
+  },
+
+  "ci": {
+    "python_version": "3.11",
+    "runner": "ubuntu-latest",
+    "timeout_minutes": 30,
+    "artifact_retention_days": 90
+  }
+}

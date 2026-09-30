@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+title: "SOL — Self-Organizing Logos"
+message: >-
+  If you use SOL in academic, research, or grant work, please cite it using
+  the metadata below.
+type: software
+authors:
+  - name: "Techman Studios"
+    website: "https://techmanstudios.com"
+repository-code: "https://github.com/TechmanStudios/sol"
+url: "https://github.com/TechmanStudios/sol"
+abstract: >-
+  SOL (Self-Organizing Logos) is a research engine for meaning-centric,
+  self-organizing AI. It treats a concept graph as a coupled dynamical system
+  with measurable memory, control, and readout behaviors, and is developed
+  as part of the Techman Studios research stack and the broader ThothStream
+  reflective-AI ecosystem.
+keywords:
+  - artificial-intelligence
+  - reflective-ai
+  - self-organizing-systems
+  - semantic-graph
+  - dynamical-systems
+  - research
+license: Apache-2.0
+version: "0.1.0"
+date-released: "2026-04-20"

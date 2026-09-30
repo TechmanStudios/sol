@@ -1,0 +1,19 @@
+{
+  "session_id": "DS-20260902-041937",
+  "completed_at": "2026-09-02T04:20:33.796624+00:00",
+  "sessions_replayed": 5,
+  "replays_run": 15,
+  "basins_discovered": 5,
+  "basins_reinforced": 0,
+  "basins_decayed": 33,
+  "memory_stats": {
+    "node_count": 33,
+    "edge_count": 78,
+    "avg_confidence": 0.38242424242424217,
+    "min_confidence": 0.05999999999999972,
+    "max_confidence": 0.6599999999999997,
+    "id_counter": 1254,
+    "last_compacted": "2026-09-02T04:20:33.790211+00:00",
+    "trace_files": 289
+  }
+}

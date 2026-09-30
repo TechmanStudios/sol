@@ -1,0 +1,610 @@
+{
+  "node_id": 90,
+  "label": "christine hayes",
+  "group": "spirit",
+  "degree": 70,
+  "degree_rank": "4/140",
+  "betweenness": 0.05216,
+  "betweenness_rank": "5/140",
+  "clustering": 0.1429,
+  "eigenvector": 0.246787,
+  "eigenvector_rank": "5/140",
+  "d5_transitions": 50,
+  "d5_unique_basins": 19,
+  "d5_is_self": true,
+  "n_neighbor_basins": 48,
+  "neighbor_basins": [
+    2,
+    4,
+    8,
+    11,
+    13,
+    16,
+    24,
+    25,
+    29,
+    31,
+    36,
+    40,
+    43,
+    47,
+    49,
+    50,
+    52,
+    53,
+    55,
+    57,
+    61,
+    62,
+    65,
+    66,
+    71,
+    75,
+    76,
+    83,
+    84,
+    87,
+    88,
+    91,
+    94,
+    101,
+    105,
+    106,
+    107,
+    110,
+    111,
+    114,
+    116,
+    117,
+    120,
+    122,
+    123,
+    127,
+    137,
+    138
+  ],
+  "neighbors": [
+    {
+      "id": 128,
+      "label": "stone",
+      "group": "bridge",
+      "degree": 10,
+      "basin": 106
+    },
+    {
+      "id": 2,
+      "label": "christ",
+      "group": "spirit",
+      "degree": 7,
+      "basin": 2
+    },
+    {
+      "id": 130,
+      "label": "level",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 13
+    },
+    {
+      "id": 133,
+      "label": "stars",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 120
+    },
+    {
+      "id": 135,
+      "label": "moon",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 13
+    },
+    {
+      "id": 8,
+      "label": "ark",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 50
+    },
+    {
+      "id": 137,
+      "label": "state",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 137
+    },
+    {
+      "id": 11,
+      "label": "orion",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 120
+    },
+    {
+      "id": 13,
+      "label": "loch",
+      "group": "bridge",
+      "degree": 22,
+      "basin": 71
+    },
+    {
+      "id": 15,
+      "label": "god",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 114
+    },
+    {
+      "id": 16,
+      "label": "doors",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 16
+    },
+    {
+      "id": 24,
+      "label": "inner earth",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 75
+    },
+    {
+      "id": 29,
+      "label": "pyramid",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 52
+    },
+    {
+      "id": 32,
+      "label": "great pyramid",
+      "group": "bridge",
+      "degree": 9,
+      "basin": 29
+    },
+    {
+      "id": 35,
+      "label": "mother",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 91
+    },
+    {
+      "id": 37,
+      "label": "master",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 66
+    },
+    {
+      "id": 38,
+      "label": "mystery",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 107
+    },
+    {
+      "id": 40,
+      "label": "pure gem",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 117
+    },
+    {
+      "id": 42,
+      "label": "gate",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 120
+    },
+    {
+      "id": 43,
+      "label": "flame",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 83
+    },
+    {
+      "id": 46,
+      "label": "atlantis",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 65
+    },
+    {
+      "id": 47,
+      "label": "of light",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 47
+    },
+    {
+      "id": 49,
+      "label": "love",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 49
+    },
+    {
+      "id": 50,
+      "label": "grace",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 8
+    },
+    {
+      "id": 53,
+      "label": "lion",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 122
+    },
+    {
+      "id": 54,
+      "label": "matter",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 88
+    },
+    {
+      "id": 55,
+      "label": "sun",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 101
+    },
+    {
+      "id": 57,
+      "label": "blood",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 62
+    },
+    {
+      "id": 59,
+      "label": "tree",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 111
+    },
+    {
+      "id": 60,
+      "label": "self",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 66
+    },
+    {
+      "id": 61,
+      "label": "old",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 127
+    },
+    {
+      "id": 62,
+      "label": "king",
+      "group": "bridge",
+      "degree": 11,
+      "basin": 57
+    },
+    {
+      "id": 63,
+      "label": "set",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 13
+    },
+    {
+      "id": 64,
+      "label": "john",
+      "group": "bridge",
+      "degree": 21,
+      "basin": 25
+    },
+    {
+      "id": 66,
+      "label": "jesus",
+      "group": "bridge",
+      "degree": 12,
+      "basin": 49
+    },
+    {
+      "id": 68,
+      "label": "nature",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 138
+    },
+    {
+      "id": 74,
+      "label": "egypt",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 105
+    },
+    {
+      "id": 75,
+      "label": "central",
+      "group": "bridge",
+      "degree": 8,
+      "basin": 24
+    },
+    {
+      "id": 76,
+      "label": "logos",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 76
+    },
+    {
+      "id": 78,
+      "label": "knowledge",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 13
+    },
+    {
+      "id": 79,
+      "label": "par",
+      "group": "bridge",
+      "degree": 108,
+      "basin": 31
+    },
+    {
+      "id": 80,
+      "label": "city",
+      "group": "bridge",
+      "degree": 8,
+      "basin": 101
+    },
+    {
+      "id": 82,
+      "label": "johannine grove",
+      "group": "bridge",
+      "degree": 118,
+      "basin": 31
+    },
+    {
+      "id": 83,
+      "label": "rose",
+      "group": "bridge",
+      "degree": 8,
+      "basin": 43
+    },
+    {
+      "id": 84,
+      "label": "mysteries",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 84
+    },
+    {
+      "id": 86,
+      "label": "black",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 116
+    },
+    {
+      "id": 87,
+      "label": "crystals",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 87
+    },
+    {
+      "id": 89,
+      "label": "mystery school",
+      "group": "bridge",
+      "degree": 111,
+      "basin": 31
+    },
+    {
+      "id": 92,
+      "label": "plain",
+      "group": "bridge",
+      "degree": 28,
+      "basin": 29
+    },
+    {
+      "id": 94,
+      "label": "christos",
+      "group": "spirit",
+      "degree": 9,
+      "basin": 94
+    },
+    {
+      "id": 95,
+      "label": "book",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 114
+    },
+    {
+      "id": 99,
+      "label": "grid",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 36
+    },
+    {
+      "id": 100,
+      "label": "name",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 62
+    },
+    {
+      "id": 101,
+      "label": "the sun",
+      "group": "bridge",
+      "degree": 8,
+      "basin": 55
+    },
+    {
+      "id": 102,
+      "label": "presence",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 13
+    },
+    {
+      "id": 103,
+      "label": "sea",
+      "group": "bridge",
+      "degree": 8,
+      "basin": 36
+    },
+    {
+      "id": 104,
+      "label": "church",
+      "group": "bridge",
+      "degree": 69,
+      "basin": 31
+    },
+    {
+      "id": 105,
+      "label": "egyptian",
+      "group": "bridge",
+      "degree": 8,
+      "basin": 4
+    },
+    {
+      "id": 107,
+      "label": "holorian",
+      "group": "bridge",
+      "degree": 27,
+      "basin": 71
+    },
+    {
+      "id": 108,
+      "label": "space",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 13
+    },
+    {
+      "id": 109,
+      "label": "high",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 13
+    },
+    {
+      "id": 110,
+      "label": "forms",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 110
+    },
+    {
+      "id": 114,
+      "label": "lord",
+      "group": "bridge",
+      "degree": 13,
+      "basin": 53
+    },
+    {
+      "id": 117,
+      "label": "gem",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 40
+    },
+    {
+      "id": 121,
+      "label": "valley",
+      "group": "bridge",
+      "degree": 8,
+      "basin": 25
+    },
+    {
+      "id": 123,
+      "label": "journey",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 123
+    },
+    {
+      "id": 124,
+      "label": "dragon",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 88
+    },
+    {
+      "id": 125,
+      "label": "individual",
+      "group": "bridge",
+      "degree": 7,
+      "basin": 13
+    },
+    {
+      "id": 126,
+      "label": "melchizedek",
+      "group": "bridge",
+      "degree": 35,
+      "basin": 11
+    },
+    {
+      "id": 127,
+      "label": "age",
+      "group": "bridge",
+      "degree": 8,
+      "basin": 61
+    }
+  ],
+  "multi_damping_profile": [
+    {
+      "damping": 1.0,
+      "n_transitions": 19,
+      "unique_basins": 11,
+      "final_basin": 138,
+      "is_self": false
+    },
+    {
+      "damping": 3.0,
+      "n_transitions": 45,
+      "unique_basins": 20,
+      "final_basin": 92,
+      "is_self": false
+    },
+    {
+      "damping": 5.0,
+      "n_transitions": 50,
+      "unique_basins": 19,
+      "final_basin": 90,
+      "is_self": true
+    },
+    {
+      "damping": 7.0,
+      "n_transitions": 4,
+      "unique_basins": 5,
+      "final_basin": 22,
+      "is_self": false
+    },
+    {
+      "damping": 10.0,
+      "n_transitions": 7,
+      "unique_basins": 6,
+      "final_basin": 22,
+      "is_self": false
+    },
+    {
+      "damping": 15.0,
+      "n_transitions": 5,
+      "unique_basins": 6,
+      "final_basin": 22,
+      "is_self": false
+    },
+    {
+      "damping": 20.0,
+      "n_transitions": 8,
+      "unique_basins": 5,
+      "final_basin": 94,
+      "is_self": false
+    }
+  ],
+  "is_boundary_node": true
+}

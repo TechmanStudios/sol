@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOL: Self-Organizing Logos | Techman Studios</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0a0a12;
+            --panel-bg: #161621;
+            --text-color: #e0e0e0;
+            --accent-color: #00bcd4;
+            --accent-glow: #00bcd480;
+            --mode-spirit: #9c27b0;
+            --mode-logic: #4caf50;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar Controls */
+        #controls {
+            width: 320px;
+            background-color: var(--panel-bg);
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        h1 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; color: var(--accent-color); }
+        h2 { font-size: 0.9rem; text-transform: uppercase; color: #888; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        
+        .metric-box {
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        /* Inputs */
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus { outline: none; border-color: var(--accent-color); }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: var(--accent-color);
+            border: none;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+        button:hover { background: white; box-shadow: 0 0 10px var(--accent-glow); }
+
+        /* Sliders */
+        .slider-container { margin-top: 10px; }
+        label { font-size: 0.8rem; display: flex; justify-content: space-between; }
+        input[type="range"] { width: 100%; cursor: pointer; }
+
+        /* Visualization Area */
+        #network-container {
+            flex-grow: 1;
+            position: relative;
+            background: radial-gradient(circle at center, #1a1a24 0%, #000 100%);
+        }
+
+        #overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            pointer-events: none;
+            text-align: right;
+        }
+        .mode-indicator {
+            font-size: 2rem;
+            font-weight: bold;
+            opacity: 0.2;
+            transition: 0.5s;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="controls">
+        <div>
+            <h1>SOL Engine v1.0</h1>
+            <div style="font-size: 0.8rem; opacity: 0.7;">New Earth Ark Foundation</div>
+        </div>
+
+        <div class="metric-box">
+            <div>Global Entropy: <span id="val-entropy">0.00</span></div>
+            <div>Total System Flux: <span id="val-flux">0.00</span></div>
+            <div>Active Nodes: <span id="val-active">0</span></div>
+        </div>
+
+        <div>
+            <h2>1. Inject Density (Query)</h2>
+            <p style="font-size:0.8rem; color:#aaa;">Type a concept to inject Mass ($\rho$) into the manifold.</p>
+            <input type="text" id="queryInput" placeholder="e.g., 'Soul', 'Code', 'Energy'..." autocomplete="off">
+            <div style="margin-top:5px; font-size: 0.75rem; color: #666;">Try: Soul, Logic, Matrix, God, Python</div>
+            <button onclick="injectQuery()" style="margin-top:10px;">INJECT</button>
+        </div>
+
+        <div>
+            <h2>2. Belief Field ($\psi$)</h2>
+            <p style="font-size:0.8rem; color:#aaa;">Modulate the conductivity of the semantic graph.</p>
+            
+            <div class="slider-container">
+                <label>
+                    <span>Materialism</span>
+                    <span>Mysticism</span>
+                </label>
+                <input type="range" id="beliefSlider" min="0" max="100" value="50">
+            </div>
+            <div style="font-size: 0.75rem; color: #aaa; margin-top: 5px; text-align: center;" id="mode-text">Balanced View</div>
+        </div>
+
+        <div>
+            <h2>3. Physics Constants</h2>
+            <div class="slider-container">
+                <label>Pressure Sensitivity ($\Pi$)</label>
+                <input type="range" id="pressureSlider" min="1" max="50" value="20">
+            </div>
+            <div class="slider-container">
+                <label>Viscosity / Damping</label>
+                <input type="range" id="dampSlider" min="1" max="20" value="5">
+            </div>
+        </div>
+    </div>
+
+    <div id="network-container">
+        <div id="network"></div>
+        <div id="overlay">
+            <div class="mode-indicator" id="ind-logic" style="color:var(--mode-logic)">LOGOS</div>
+            <div class="mode-indicator" id="ind-spirit" style="color:var(--mode-spirit)">MYTHOS</div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. DATA: The Semantic Graph ---
+        // We define a small "Gem" subset with mixed categories.
+        // categories: 'spirit', 'tech', 'bridge'
+        const rawNodes = [
+            { id: 1, label: "Source", group: "spirit" },
+            { id: 2, label: "Soul", group: "spirit" },
+            { id: 3, label: "Consciousness", group: "spirit" },
+            { id: 4, label: "Vibration", group: "spirit" },
+            { id: 5, label: "God", group: "spirit" },
+            
+            { id: 6, label: "Matrix", group: "bridge" },
+            { id: 7, label: "Energy", group: "bridge" },
+            { id: 8, label: "Information", group: "bridge" },
+            { id: 9, label: "Recursion", group: "bridge" },
+            
+            { id: 10, label: "Python", group: "tech" },
+            { id: 11, label: "Logic", group: "tech" },
+            { id: 12, label: "Algorithm", group: "tech" },
+            { id: 13, label: "Hardware", group: "tech" },
+            { id: 14, label: "Code", group: "tech" }
+        ];
+
+        const rawEdges = [
+            { from: 1, to: 5 }, { from: 1, to: 2 }, { from: 2, to: 3 }, { from: 3, to: 4 }, // Spirit cluster
+            { from: 10, to: 11 }, { from: 11, to: 12 }, { from: 12, to: 13 }, { from: 10, to: 14 }, // Tech cluster
+            
+            // Bridges
+            { from: 4, to: 7 }, // Vibration <-> Energy
+            { from: 7, to: 13 }, // Energy <-> Hardware
+            { from: 3, to: 8 }, // Consciousness <-> Information
+            { from: 8, to: 10 }, // Information <-> Python
+            { from: 6, to: 12 }, // Matrix <-> Algorithm
+            { from: 6, to: 5 }, // Matrix <-> God (The Gnostic bridge)
+            { from: 9, to: 14 }, // Recursion <-> Code
+            { from: 9, to: 2 }   // Recursion <-> Soul (Reincarnation?)
+        ];
+
+        // --- 2. SOL PHYSICS ENGINE (JS Port) ---
+        
+        class SOLPhysics {
+            constructor(nodes, edges) {
+                this.nodes = nodes.map(n => ({ 
+                    ...n, 
+                    rho: 0,   // Density
+                    p: 0,     // Pressure
+                    psi_bias: n.group === 'spirit' ? 1 : (n.group === 'tech' ? -1 : 0) // +1 Mystic, -1 Logic
+                }));
+                
+                this.edges = edges.map(e => ({ 
+                    ...e, 
+                    flux: 0, 
+                    conductance: 1.0 
+                }));
+                
+                this.globalBias = 0; // -1 (Logic) to +1 (Spirit)
+            }
+
+            // Equation of State: P = c * log(1 + rho)
+            computePressure(c_press) {
+                this.nodes.forEach(n => {
+                    n.p = c_press * Math.log(1 + n.rho);
+                });
+            }
+
+            // Update Edge Conductance based on Belief Field
+            updateConductance() {
+                this.edges.forEach(e => {
+                    const src = this.nodes.find(n => n.id === e.from);
+                    const dst = this.nodes.find(n => n.id === e.to);
+                    
+                    // Simple logic: if edge connects two nodes that agree with global bias, open up.
+                    // If they disagree, constrict.
+                    const edgeBias = (src.psi_bias + dst.psi_bias) / 2;
+                    
+                    // Alignment: 1.0 = Perfect match, -1.0 = Perfect mismatch
+                    // If globalBias is 0 (Center), everything is open.
+                    // If globalBias is 1 (Spirit), Tech nodes (-1) get constricted.
+                    
+                    let alignment = 1.0 - Math.abs(this.globalBias - edgeBias);
+                    
+                    // Map alignment to conductance (0.1 to 3.0)
+                    e.conductance = 0.1 + (2.9 * alignment);
+                });
+            }
+
+            // Main Time Step
+            step(dt, c_press, damping) {
+                this.computePressure(c_press);
+                this.updateConductance();
+
+                let totalFlux = 0;
+
+                // 1. Calculate Flux on Edges (Pressure Gradient)
+                this.edges.forEach(e => {
+                    const src = this.nodes.find(n => n.id === e.from);
+                    const dst = this.nodes.find(n => n.id === e.to);
+
+                    // Gradient: High P -> Low P
+                    const deltaP = src.p - dst.p;
+                    
+                    // Flux j = Conductance * DeltaP
+                    // We assume simple Darcy flow for visualization
+                    const targetFlux = e.conductance * deltaP;
+                    
+                    // Apply slight inertia/smoothing
+                    e.flux = e.flux * (1 - dt) + targetFlux * dt;
+                    totalFlux += Math.abs(e.flux);
+
+                    // 2. Transport Mass (Continuity Equation)
+                    // src loses mass, dst gains mass
+                    const flowAmt = e.flux * dt * 0.5; // Scale factor
+                    
+                    src.rho -= flowAmt;
+                    dst.rho += flowAmt;
+                });
+
+                // 3. Natural Decay / Entropy (prevents infinite explosion)
+                // Also ensures negative density doesn't happen (vacuum)
+                let activeCount = 0;
+                this.nodes.forEach(n => {
+                    n.rho *= (1.0 - (damping * dt * 0.1)); 
+                    if(n.rho < 0) n.rho = 0;
+                    if(n.rho > 0.1) activeCount++;
+                });
+
+                return { totalFlux, activeCount };
+            }
+
+            inject(label, amount) {
+                // Fuzzy match
+                const target = this.nodes.find(n => n.label.toLowerCase() === label.toLowerCase());
+                if (target) {
+                    target.rho += amount;
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        // --- 3. VISUALIZATION & INTERACTION ---
+
+        const physics = new SOLPhysics(rawNodes, rawEdges);
+        const container = document.getElementById('network');
+        
+        // Vis.js DataSets
+        const visNodes = new vis.DataSet(physics.nodes.map(n => ({ 
+            id: n.id, 
+            label: n.label, 
+            value: 1, // Size
+            color: n.group === 'spirit' ? '#9c27b0' : (n.group === 'tech' ? '#4caf50' : '#00bcd4')
+        })));
+        
+        const visEdges = new vis.DataSet(physics.edges.map(e => ({ 
+            id: `${e.from}-${e.to}`, 
+            from: e.from, 
+            to: e.to,
+            width: 1,
+            color: { color: '#333', opacity: 0.3 },
+            arrows: 'to' // Visualization only, flow is bidirectional
+        })));
+
+        const options = {
+            nodes: {
+                shape: 'dot',
+                font: { color: '#fff', face: 'monospace' },
+                borderWidth: 2
+            },
+            physics: {
+                forceAtlas2Based: {
+                    gravitationalConstant: -50,
+                    centralGravity: 0.01,
+                    springLength: 100,
+                    springConstant: 0.08
+                },
+                solver: 'forceAtlas2Based',
+                stabilization: false
+            },
+            interaction: { hover: true }
+        };
+
+        const network = new vis.Network(container, { nodes: visNodes, edges: visEdges }, options);
+
+        // --- 4. THE LOOP ---
+        
+        let lastTime = Date.now();
+        
+        function animate() {
+            const now = Date.now();
+            const dt = Math.min((now - lastTime) / 1000, 0.1); // Cap dt
+            lastTime = now;
+
+            // Get UI params
+            const pressC = parseFloat(document.getElementById('pressureSlider').value) * 0.1;
+            const damp = parseFloat(document.getElementById('dampSlider').value);
+            
+            // Step Physics
+            const metrics = physics.step(dt, pressC, damp);
+
+            // Update UI Metrics
+            document.getElementById('val-flux').innerText = metrics.totalFlux.toFixed(2);
+            document.getElementById('val-active').innerText = metrics.activeCount;
+            // Entropy approx = 1 / average density (simplified)
+            
+            // Update Visualization
+            const updatesNodes = [];
+            const updatesEdges = [];
+
+            physics.nodes.forEach(n => {
+                // Size based on Density
+                const size = 5 + Math.sqrt(n.rho) * 10;
+                updatesNodes.push({ id: n.id, value: size });
+            });
+
+            physics.edges.forEach((e, i) => {
+                // Width based on Flux magnitude
+                const width = 1 + Math.abs(e.flux) * 5;
+                
+                // Color based on Direction/Pressure
+                // If flux is positive (from->to), color A. If negative, color B.
+                let color = '#444';
+                let opacity = 0.2;
+                
+                if (Math.abs(e.flux) > 0.1) {
+                    opacity = Math.min(1, Math.abs(e.flux));
+                    // Check if aligned with current belief
+                    if (e.conductance > 1.0) color = '#fff'; // Super-conductive
+                    else if (e.conductance < 0.5) color = '#550000'; // Resisting
+                    else color = '#00bcd4';
+                }
+
+                updatesEdges.push({ 
+                    id: `${e.from}-${e.to}`, 
+                    width: width,
+                    color: { color: color, opacity: opacity }
+                });
+            });
+
+            visNodes.update(updatesNodes);
+            visEdges.update(updatesEdges);
+
+            requestAnimationFrame(animate);
+        }
+
+        // --- 5. INTERACTION HANDLERS ---
+
+        function injectQuery() {
+            const val = document.getElementById('queryInput').value;
+            if(!val) return;
+            
+            // Burst injection
+            const success = physics.inject(val, 50.0);
+            
+            if (success) {
+                // Visual feedback
+                const input = document.getElementById('queryInput');
+                input.style.borderColor = '#00bcd4';
+                setTimeout(() => input.style.borderColor = '#444', 300);
+            } else {
+                alert("Concept not found in current Gem. Try: Soul, Logic, Matrix...");
+            }
+        }
+
+        // Input Enter Key
+        document.getElementById('queryInput').addEventListener("keypress", function(event) {
+            if (event.key === "Enter") injectQuery();
+        });
+
+        // Belief Slider
+        document.getElementById('beliefSlider').addEventListener('input', function(e) {
+            const val = parseInt(e.target.value);
+            // Map 0-100 to -1.0 (Materialism) to +1.0 (Mysticism)
+            const bias = (val - 50) / 50; 
+            physics.globalBias = bias;
+
+            // UI Feedback
+            const txt = document.getElementById('mode-text');
+            const indSpirit = document.getElementById('ind-spirit');
+            const indLogic = document.getElementById('ind-logic');
+
+            indSpirit.style.opacity = 0.2;
+            indLogic.style.opacity = 0.2;
+
+            if (bias < -0.3) {
+                txt.innerText = "Scientific Materialism Active";
+                txt.style.color = "var(--mode-logic)";
+                indLogic.style.opacity = 1.0;
+            } else if (bias > 0.3) {
+                txt.innerText = "Esoteric/Spiritual Active";
+                txt.style.color = "var(--mode-spirit)";
+                indSpirit.style.opacity = 1.0;
+            } else {
+                txt.innerText = "Balanced View";
+                txt.style.color = "#aaa";
+            }
+        });
+
+        // Start
+        animate();
+
+    </script>
+</body>
+</html>

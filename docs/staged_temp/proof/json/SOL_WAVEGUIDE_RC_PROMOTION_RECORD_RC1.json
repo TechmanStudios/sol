@@ -1,0 +1,45 @@
+{
+    "artifact_paths": [
+        "docs/SOL_WAVEGUIDE_RC1_MANIFEST.json",
+        "docs/SOL_WAVEGUIDE_RC_RELEASE_GATE.md",
+        "docs/SOL_WAVEGUIDE_RC_DELTA_AUDIT.json",
+        "docs/SOL_WAVEGUIDE_RC_PROMOTION_RECORD_RC1.json"
+    ],
+    "candidate_level": "RC1",
+    "delta_audit_digest": "eb3e3a9654f2d17535c79c2ea66164f5434caaca5eb4bcb92c9a4ecdce5d612c",
+    "delta_audit_path": "docs/SOL_WAVEGUIDE_RC_DELTA_AUDIT.json",
+    "manifest_digest": "a9ea3db022835bc79c551083a216f0890ee82db27ee6428b3e275414bd1abcea",
+    "manifest_path": "docs/SOL_WAVEGUIDE_RC1_MANIFEST.json",
+    "promotion_authority": {
+        "authority_id": "SOL-WAVEGUIDE-RC-PROMOTION-LEDGER",
+        "authority_status": "pending_future_court_flow",
+        "authority_type": "court_supervised_placeholder"
+    },
+    "promotion_reason_codes": [
+        "RC_PROMOTION_RECORD_CANONICAL",
+        "RC_PROMOTION_MANIFEST_HASH_VALID",
+        "RC_PROMOTION_AUDIT_HASH_VALID",
+        "RC_PROMOTION_RELEASE_GATE_READY",
+        "RC_PROMOTION_PROOF_LEDGER_REFERENCED",
+        "RC_PROMOTION_REGRESSION_SUMMARY_RECORDED",
+        "RC_PROMOTION_SOFTWARE_CAVEAT_INCLUDED",
+        "RC_PROMOTION_RECORD_DIGEST_VALID"
+    ],
+    "promotion_scope": "software_sandbox_verification_only",
+    "promotion_status": "promotion_ready",
+    "proof_claims": {
+        "proof_claims_status": "foundation_claims_inherited_from_manifest_and_release_gate"
+    },
+    "proof_ledger_paths": [],
+    "rc_id": "SOL-WAVEGUIDE-RC1",
+    "record_digest": "9cd7b44a48a44a65b89d5b4584a6d09d55d667845c4c8164b534dc75844b6d73",
+    "record_id": "SOL-WAVEGUIDE-RC-PROMOTION-RECORD-RC1",
+    "regression_summary": "Focused Gate Suite: pytest tests/test_waveguide_rc_release_gate.py \u2192 12/12 PASSED\nRC Manifest Suite: pytest tests/test_waveguide_rc_manifest.py \u2192 11/11 PASSED\nFull Regression Campaign: pytest \u2192 926/926 PASSED\nExecution mode: sequential, no parallelism",
+    "release_gate_reason_codes": [
+        "RC_MANIFEST_SCHEMA_VALID",
+        "RC_RELEASE_READY"
+    ],
+    "release_gate_summary": "============================================================\n SOL WAVEGUIDE RELEASE CANDIDATE RELEASE GATE AUDIT SUMMARY\n============================================================\nCandidate ID:     SOL-WAVEGUIDE-RC1\nRelease Verdict:  RELEASE_READY\nReason Codes:\n  - RC_MANIFEST_SCHEMA_VALID\n  - RC_RELEASE_READY\nAudit Notes:\n  * All boundary and manifest consistency checks passed successfully.\n------------------------------------------------------------\nCaveat:\n  Validation is shadow/sandbox software validation, not quantum hardware validation.\n============================================================",
+    "release_gate_verdict": "release_ready",
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation."
+}

@@ -1,0 +1,79 @@
+{
+  "or_trials": {
+    "input_0_0": {
+      "input_A": 0,
+      "input_B": 0,
+      "latched_C": false,
+      "a_preserved": true,
+      "b_preserved": true,
+      "a_mass": 4.871735771219853,
+      "b_mass": 4.871735771219853
+    },
+    "input_1_0": {
+      "input_A": 1,
+      "input_B": 0,
+      "latched_C": true,
+      "a_preserved": true,
+      "b_preserved": true,
+      "a_mass": 49.69417527220436,
+      "b_mass": 5.455531195207185
+    },
+    "input_0_1": {
+      "input_A": 0,
+      "input_B": 1,
+      "latched_C": true,
+      "a_preserved": true,
+      "b_preserved": true,
+      "a_mass": 5.455531195207185,
+      "b_mass": 49.69417527220436
+    },
+    "input_1_1": {
+      "input_A": 1,
+      "input_B": 1,
+      "latched_C": true,
+      "a_preserved": true,
+      "b_preserved": true,
+      "a_mass": 53.58262005254618,
+      "b_mass": 53.58262005254618
+    }
+  },
+  "and_trials": {
+    "input_0_0": {
+      "input_A": 0,
+      "input_B": 0,
+      "latched_C": false,
+      "a_preserved": true,
+      "b_preserved": true,
+      "a_mass": 4.8706437674594,
+      "b_mass": 4.8706437674594
+    },
+    "input_1_0": {
+      "input_A": 1,
+      "input_B": 0,
+      "latched_C": false,
+      "a_preserved": true,
+      "b_preserved": true,
+      "a_mass": 49.731067493003195,
+      "b_mass": 5.457227042036128
+    },
+    "input_0_1": {
+      "input_A": 0,
+      "input_B": 1,
+      "latched_C": false,
+      "a_preserved": true,
+      "b_preserved": true,
+      "a_mass": 5.457227042036128,
+      "b_mass": 49.731067493003195
+    },
+    "input_1_1": {
+      "input_A": 1,
+      "input_B": 1,
+      "latched_C": true,
+      "a_preserved": true,
+      "b_preserved": true,
+      "a_mass": 53.631765349627265,
+      "b_mass": 53.631765349627265
+    }
+  },
+  "passed": true
+}

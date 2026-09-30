@@ -1,0 +1,120 @@
+{
+  "status": "ok",
+  "phase1_run_dir": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance\\20260213_063226",
+  "elapsed_seconds": 20.20453405380249,
+  "trial_count": 24,
+  "metric_means": {
+    "resonance_index": 0.5602005047902511,
+    "phonon_memory": 0.7645666506039163,
+    "thought_vibration": 0.5058774369592413,
+    "semantic_entanglement": 0.8299005525821382,
+    "manifold_potential": 0.3253030413549602
+  },
+  "best_trial": {
+    "seed": 0,
+    "damping": 3.25,
+    "profile": "explorer_flux__bridge_lift",
+    "steps": 200,
+    "sample_every": 4,
+    "samples": 50,
+    "final_basin_id": 9,
+    "final_basin_label": "metatron",
+    "final_entropy": 0.9082018721305305,
+    "final_max_rho": 1.1825316589050117,
+    "phonon_memory": 0.9999871559727556,
+    "thought_vibration": 0.5033551818797576,
+    "semantic_entanglement": 0.7727634179213009,
+    "manifold_potential": 0.31791408790227077,
+    "resonance_index": 0.593002225823442,
+    "unique_basins": 2,
+    "trial_index": 9,
+    "duration_sec": 0.8348088264465332,
+    "timestamp_utc": "2026-02-13T14:45:25.007082+00:00"
+  },
+  "phase1_reference": {
+    "mean_resonance": 0.6144517804353012,
+    "best_resonance": 0.0,
+    "delta_mean_resonance": -0.05425127564505017,
+    "delta_best_resonance": 0.593002225823442
+  },
+  "profile_ranking": [
+    {
+      "profile": "explorer_flux__bridge_lift",
+      "mean_resonance": 0.5616783713688106,
+      "best_resonance": 0.593002225823442,
+      "n": 6
+    },
+    {
+      "profile": "explorer_flux__tech_harmonic",
+      "mean_resonance": 0.5610352225285216,
+      "best_resonance": 0.5918529756989721,
+      "n": 6
+    },
+    {
+      "profile": "explorer_flux__baseline",
+      "mean_resonance": 0.5610032178045646,
+      "best_resonance": 0.5921717026337209,
+      "n": 6
+    },
+    {
+      "profile": "explorer_flux__coherence_boost",
+      "mean_resonance": 0.5570852074591074,
+      "best_resonance": 0.5904034146802954,
+      "n": 6
+    }
+  ],
+  "damping_ranking": [
+    {
+      "damping": 3.25,
+      "mean_resonance": 0.5918575797091076,
+      "best_resonance": 0.593002225823442,
+      "n": 4
+    },
+    {
+      "damping": 3.0,
+      "mean_resonance": 0.5824116933783553,
+      "best_resonance": 0.5840253196836642,
+      "n": 4
+    },
+    {
+      "damping": 2.75,
+      "mean_resonance": 0.5689488899393679,
+      "best_resonance": 0.5711163979758487,
+      "n": 4
+    },
+    {
+      "damping": 6.75,
+      "mean_resonance": 0.5459094530067837,
+      "best_resonance": 0.5468308651512144,
+      "n": 4
+    },
+    {
+      "damping": 6.5,
+      "mean_resonance": 0.5414823092495831,
+      "best_resonance": 0.5456219553206985,
+      "n": 4
+    },
+    {
+      "damping": 6.25,
+      "mean_resonance": 0.5305931034583087,
+      "best_resonance": 0.5315586690095329,
+      "n": 4
+    }
+  ],
+  "args": {
+    "phase1_root": "data/thinking_engine_resonance",
+    "phase1_run_dir": "G:\\docs\\TechmanStudios\\sol\\data\\thinking_engine_resonance\\20260213_063226",
+    "top_damping_count": 2,
+    "top_profile_count": 1,
+    "focus_window": 0.25,
+    "focus_step": 0.25,
+    "damping_min": 0.25,
+    "damping_max": 22.0,
+    "seeds": 1,
+    "steps": 200,
+    "sample_every": 4,
+    "budget_hours": 0.03,
+    "output_root": "data/thinking_engine_resonance_phase2",
+    "dry_run": false
+  }
+}

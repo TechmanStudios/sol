@@ -1,0 +1,61 @@
+[
+  {
+    "task_id": "anchor_damping_baseline",
+    "family": "damping",
+    "payload": {
+      "protocol": "damping_sweep_smoke",
+      "target": "stable_flux",
+      "runtime_overrides": {
+        "steps": 120,
+        "reps": 2,
+        "metrics_every": 10
+      }
+    },
+    "anchor": true
+  },
+  {
+    "task_id": "anchor_dual_inject_timing",
+    "family": "timing",
+    "payload": {
+      "protocol": "dual_inject_timing",
+      "target": "repeatable_convergence",
+      "runtime_overrides": {
+        "steps": 180,
+        "reps": 2,
+        "metrics_every": 5
+      }
+    },
+    "anchor": true
+  },
+  {
+    "task_id": "explore_phase_response",
+    "family": "phase",
+    "payload": {
+      "protocol": "single_inject_baseline",
+      "target": "novel_routing",
+      "runtime_overrides": {
+        "steps": 100,
+        "reps": 1,
+        "metrics_every": 5
+      },
+      "protocol_overrides": {
+        "invariants.rng_seed": 77
+      }
+    },
+    "anchor": false
+  },
+  {
+    "task_id": "explore_energy_cost",
+    "family": "efficiency",
+    "payload": {
+      "protocol": "single_inject_baseline",
+      "target": "lower_cost",
+      "runtime_overrides": {
+        "steps": 80,
+        "reps": 1,
+        "metrics_every": 10
+      }
+    },
+    "anchor": false
+  }
+]

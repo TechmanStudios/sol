@@ -1,0 +1,106 @@
+{
+  "status": "ok",
+  "args": {
+    "seeds": 8,
+    "steps": 1800,
+    "sample_every": 4,
+    "damping_min": 0.5,
+    "damping_max": 22.0,
+    "damping_step": 0.5,
+    "budget_hours": 8.0,
+    "profiles": [
+      "coherence_prayer",
+      "explorer_flux",
+      "skeptic_grounding",
+      "unitive_bridge"
+    ],
+    "output_root": "data/thinking_engine_resonance",
+    "dry_run": false
+  },
+  "elapsed_seconds": 10529.363022089005,
+  "trial_count": 1408,
+  "metric_means": {
+    "phonon_memory": 0.9813838077009476,
+    "thought_vibration": 0.5353204828767678,
+    "semantic_entanglement": 0.9544313507497039,
+    "manifold_potential": 0.2969561561557168,
+    "resonance_index": 0.6144517804353012
+  },
+  "best_trial": {
+    "seed": 0,
+    "damping": 5.5,
+    "profile": "coherence_prayer",
+    "steps": 1800,
+    "sample_every": 4,
+    "samples": 450,
+    "final_basin_id": 22,
+    "final_basin_label": "christic",
+    "final_entropy": 0.9851846313807853,
+    "final_max_rho": 1.7864853067788952e-49,
+    "phonon_memory": 0.9999845854221356,
+    "thought_vibration": 0.49549515065709027,
+    "semantic_entanglement": 0.9560041104023098,
+    "manifold_potential": 0.5028705924613851,
+    "resonance_index": 0.6986138289111846,
+    "unique_basins": 20,
+    "trial_index": 81,
+    "duration_sec": 7.524796962738037,
+    "timestamp_utc": "2026-02-13T06:42:34.531877+00:00"
+  },
+  "top_damping_pairs": [
+    [
+      5.5,
+      0.6986138289111846
+    ],
+    [
+      5.5,
+      0.6986138289111846
+    ],
+    [
+      5.5,
+      0.6986138289111846
+    ],
+    [
+      5.5,
+      0.6986138289111846
+    ],
+    [
+      5.5,
+      0.6986138289111846
+    ],
+    [
+      5.5,
+      0.6986138289111846
+    ],
+    [
+      5.5,
+      0.6986138289111846
+    ],
+    [
+      5.5,
+      0.6986138289111846
+    ],
+    [
+      4.5,
+      0.6910597187765172
+    ],
+    [
+      4.5,
+      0.6910597187765172
+    ],
+    [
+      4.5,
+      0.6910597187765172
+    ],
+    [
+      4.5,
+      0.6910597187765172
+    ]
+  ],
+  "profile_scores": {
+    "coherence_prayer": 0.6147582428367536,
+    "explorer_flux": 0.6170022101164997,
+    "skeptic_grounding": 0.6130023820746798,
+    "unitive_bridge": 0.6130442867132719
+  }
+}

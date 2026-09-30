@@ -1,0 +1,29 @@
+{
+  "seriesName": "h-005",
+  "question": "What are the canonical metric outputs for standard injection protocols?",
+  "invariants": {
+    "dt": 0.12,
+    "c_press": 0.1,
+    "damping": 0.2,
+    "rng_seed": 42
+  },
+  "injections": [
+    {
+      "label": "grail",
+      "amount": 50
+    }
+  ],
+  "steps": 500,
+  "reps": 1,
+  "baseline": "fresh",
+  "metrics_every": 10,
+  "outputs": {
+    "summary_csv": true,
+    "trace_csv": true,
+    "run_bundle_md": true
+  },
+  "falsifiers": [
+    "Output changes between identical runs with same seed (non-determinism)"
+  ],
+  "notes": "Golden baseline for Phase 3 regression suite. Single rep, high step count, full trace."
+}

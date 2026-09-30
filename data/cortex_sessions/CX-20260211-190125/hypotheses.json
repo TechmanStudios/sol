@@ -1,0 +1,426 @@
+[
+  {
+    "id": "H-001",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unpromoted",
+      "priority": 2,
+      "claim_id": "CL-1",
+      "description": "CL-1 (Robust): Baseline restore is non-negotiable for comparability \u2014 no proof packet found",
+      "suggested_action": "Design and run a protocol to test: Baseline restore is non-negotiable for comparability",
+      "metadata": {
+        "claim_status": "Robust",
+        "falsifier": "show long sweeps with identical metrics without restore across hard refreshes."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 4 | Memory edges: 40 | Avg confidence: 0.570 | Tags: basin(4), entropy(4), rhoMax(4)",
+      "kb_passages": [
+        {
+          "chunk_id": 350,
+          "section": "Article 032: Proof That Recorded History Was Wrong",
+          "line_start": 149977,
+          "line_end": 149998,
+          "score": 8.8687,
+          "matched_terms": [
+            "proof"
+          ],
+          "snippet": "## Article 032: Proof That Recorded History Was Wrong\n\n\nProof That Recorded History Was Wrong\n\n\n\n<!-- END ARTICLE: 032 -->\n\n<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->\n<!-- BEGIN ARTICLE: 033 -->\n\n---\nindex: 33\ntitle: 'Comet Ison & the PRM'\nanchor: 'article-0033-comet-ison-the-prm'\nline_start: 1142\nli"
+        },
+        {
+          "chunk_id": 311,
+          "section": "allWordpress_compendium.md",
+          "line_start": 144564,
+          "line_end": 145063,
+          "score": 8.831,
+          "matched_terms": [
+            "restore",
+            "proof"
+          ],
+          "snippet": "\"tags\": [\n      \"Tablet Keeper\",\n      \"Fourth World\",\n      \"Time Purification\",\n      \"Great Spirit\",\n      \"Fifth World\",\n      \"World\",\n      \"Time\",\n      \"Hopi\",\n      \"become\",\n      \"Prophecy\",\n      \"Tablet\",\n      \"Great\",\n      \"Life\",\n      \"Only\",\n      \"known\"\n    ]\n  },\n  {\n    \"index"
+        },
+        {
+          "chunk_id": 1527,
+          "section": "and New Earth Astrology",
+          "line_start": 201986,
+          "line_end": 202063,
+          "score": 8.2152,
+          "matched_terms": [
+            "baseline"
+          ],
+          "snippet": "## and New Earth Astrology\n\n**2023-07-07T19:30:36.416Z**\n\n**Likes:** 0\n\nThose of humanity who are moving into the [New Earth\nHologram](https://nesialibraryproject.wordpress.com/akashic-definitions/new-earth-star-new-earth-star-hologram-numisom/)\nand creating it within their own DNA crystals, are doi"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-002",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unpromoted",
+      "priority": 2,
+      "claim_id": "CL-2",
+      "description": "CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale \u2014 no proof packet found",
+      "suggested_action": "Design and run a protocol to test: Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale",
+      "metadata": {
+        "claim_status": "Supported",
+        "falsifier": "wide-target failures at matched baseline when applying the same law."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 4 | Memory edges: 40 | Avg confidence: 0.570 | Tags: basin(4), entropy(4), rhoMax(4)",
+      "kb_passages": [
+        {
+          "chunk_id": 1820,
+          "section": "**Stargates vs. Portals: Key Differences**",
+          "line_start": 233851,
+          "line_end": 233970,
+          "score": 9.6055,
+          "matched_terms": [
+            "anchored",
+            "scale"
+          ],
+          "snippet": "## **Stargates vs. Portals: Key Differences**\n\n### **1\\. Definition and Function**\n\n* **Stargates**\n\n    +\n\n            **Primary function:** Major cosmic gateways, connecting not just places in space, but different dimensions, timelines, star systems, and sometimes whole universes.\n\n    +\n\n        "
+        },
+        {
+          "chunk_id": 127,
+          "section": "Top Keywords",
+          "line_start": 57707,
+          "line_end": 58191,
+          "score": 9.1331,
+          "matched_terms": [
+            "supported",
+            "scale",
+            "proof",
+            "found"
+          ],
+          "snippet": "SUN: The Cornerstone at Nineveh was not accidentally found by Ashurbanipal. He had been\nsearching for it since his father hold him about it as a child. It was known to all the Priest-Kings of\nAssyria, but Ashurbanipal had been \u2018chosen' to find it. As a boy he was told by a Shining Being that\nhe woul"
+        },
+        {
+          "chunk_id": 163,
+          "section": "Top Keywords",
+          "line_start": 74062,
+          "line_end": 74536,
+          "score": 8.9393,
+          "matched_terms": [
+            "supported",
+            "beyond",
+            "scale",
+            "found"
+          ],
+          "snippet": "all disempowered in various ways currently. But this commonly held belief is saying more\nthan that, it is saying that we are disempowered relative to those who have generated\nample financial resources in our society. If we embrace this perspective, the probability of\nempowering our lower self rather"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-003",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unpromoted",
+      "priority": 2,
+      "claim_id": "CL-3",
+      "description": "CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins \u2014 no proof packet found",
+      "suggested_action": "Design and run a protocol to test: The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins",
+      "metadata": {
+        "claim_status": "Robust",
+        "falsifier": "stable indefinitely at dt\u22650.12 under identical signature + detector."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 4 | Memory edges: 40 | Avg confidence: 0.570 | Tags: basin(4), entropy(4), rhoMax(4)",
+      "kb_passages": [
+        {
+          "chunk_id": 170,
+          "section": "Top Keywords",
+          "line_start": 77412,
+          "line_end": 77901,
+          "score": 12.1143,
+          "matched_terms": [
+            "system",
+            "into",
+            "runaway"
+          ],
+          "snippet": "computations most often evade the human mind. It was with this insight that the first\ncomputers were built on this planet.\nI must put this information in its correct perspective to gain correct insight, for it was as\na result of the decreasing natural abilities of humans to stay 'locked on' to more "
+        },
+        {
+          "chunk_id": 211,
+          "section": "Top Keywords",
+          "line_start": 96372,
+          "line_end": 96857,
+          "score": 12.0982,
+          "matched_terms": [
+            "system",
+            "into",
+            "runaway",
+            "found"
+          ],
+          "snippet": "Page 26 of 40\nTemple Doors Volume 2-97 ~ The Isis Eye/Aeriopax\nThoth: \"The central \u2018diamond* is the flashing 'double diamond* now in place in Crestone, CO. What had not yet been\ninstalled was the full Aeriopax / Isis Eye field. This needs to be brought down through the double diamond and set into th"
+        },
+        {
+          "chunk_id": 961,
+          "section": "Article 643: ThothHorRa on Auras & Energy Bodies",
+          "line_start": 177588,
+          "line_end": 177707,
+          "score": 10.1268,
+          "matched_terms": [
+            "system",
+            "compresses",
+            "into"
+          ],
+          "snippet": "## Article 643: ThothHorRa on Auras & Energy Bodies\n\n\nThothHorRa on Auras & Energy Bodies\n\n4/10/11 in Second Life Gathering\u00a0 \u2013 NESI\n\nThothHorRa Khandr: \u00a0\u00a0\u00a0\u00a0ANU KA ~|~ \u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0I welcome you all and send you rays of friendship and PEACE.\n\nWhen human think and talk about auras of the body\u2026they are only"
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-004",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unpromoted",
+      "priority": 2,
+      "claim_id": "CL-4",
+      "description": "CL-4 (Supported): Node 82 acts like a dominant \u03c1 reservoir near failure/afterstates (rhoMaxId) \u2014 no proof packet found",
+      "suggested_action": "Design and run a protocol to test: Node 82 acts like a dominant \u03c1 reservoir near failure/afterstates (rhoMaxId)",
+      "metadata": {
+        "claim_status": "Supported",
+        "falsifier": "rhoMaxId consistently elsewhere under same regimes."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 4 | Memory edges: 40 | Avg confidence: 0.570 | Tags: basin(4), entropy(4), rhoMax(4)",
+      "kb_passages": [
+        {
+          "chunk_id": 127,
+          "section": "Top Keywords",
+          "line_start": 57707,
+          "line_end": 58191,
+          "score": 12.8898,
+          "matched_terms": [
+            "supported",
+            "node",
+            "like",
+            "near",
+            "proof",
+            "found"
+          ],
+          "snippet": "SUN: The Cornerstone at Nineveh was not accidentally found by Ashurbanipal. He had been\nsearching for it since his father hold him about it as a child. It was known to all the Priest-Kings of\nAssyria, but Ashurbanipal had been \u2018chosen' to find it. As a boy he was told by a Shining Being that\nhe woul"
+        },
+        {
+          "chunk_id": 230,
+          "section": "Top Keywords",
+          "line_start": 105080,
+          "line_end": 105555,
+          "score": 11.1371,
+          "matched_terms": [
+            "supported",
+            "82",
+            "like",
+            "reservoir",
+            "near",
+            "found"
+          ],
+          "snippet": "Page 82 of 115\nThese origins of the anti-Grail family took place in what is now known as Germany, but there also were, and still\nare, branches in Italy, Portugal and Turkey. The central family name - there are many branch names - is Anhiel,\nalthough this is not used by family members in the world at"
+        },
+        {
+          "chunk_id": 533,
+          "section": "Article 215: Opening the Golden Doors",
+          "line_start": 157770,
+          "line_end": 157843,
+          "score": 11.0497,
+          "matched_terms": [
+            "node",
+            "acts",
+            "like",
+            "found"
+          ],
+          "snippet": "## Article 215: Opening the Golden Doors\n\n\nOpening the Golden Doors\n\nAs I sit here to begin this article, which is really a compilation from the past as well as additions from the present, I saw in my mind\u2019s eye, golden double doors open and beyond a nature scene of incredible beauty\u2026green, rolling "
+        }
+      ]
+    },
+    "memory_augmented": true
+  },
+  {
+    "id": "H-005",
+    "template": "threshold_scan",
+    "question": "At what value of damping does the system behavior qualitatively change?",
+    "knob": "damping",
+    "knob_values": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "injection": {
+      "label": "grail",
+      "amount": 50
+    },
+    "steps": 300,
+    "reps": 5,
+    "falsifiers": [
+      "No transition detected across entire range",
+      "Transition is not reproducible across reps"
+    ],
+    "notes": "",
+    "source_gap": {
+      "gap_type": "unpromoted",
+      "priority": 2,
+      "claim_id": "CL-6",
+      "description": "CL-6 (Robust): End-phase latch primitive = lastInjected at dream stop selects start basin \u2014 no proof packet found",
+      "suggested_action": "Design and run a protocol to test: End-phase latch primitive = lastInjected at dream stop selects start basin",
+      "metadata": {
+        "claim_status": "Robust",
+        "falsifier": "controlled end-on-X fails to select X at t0 when postSteps=0."
+      },
+      "memory_findings": [],
+      "tested_values": [],
+      "novel_values": [],
+      "memory_context": "Memory nodes: 4 | Memory edges: 40 | Avg confidence: 0.570 | Tags: basin(4), entropy(4), rhoMax(4)",
+      "kb_passages": [
+        {
+          "chunk_id": 333,
+          "section": "Article 015: More on the Hoar Stone Journey",
+          "line_start": 149163,
+          "line_end": 149216,
+          "score": 10.6102,
+          "matched_terms": [
+            "stop",
+            "start",
+            "found"
+          ],
+          "snippet": "## Article 015: More on the Hoar Stone Journey\n\n\nMore on the Hoar Stone Journey\n\nTo understand this post, please read firstHoar Stone Sacred Journey & Activation.\n\nThe following information is for those of making the sacred journey to the Hoar Stone on July 23rd, 2013, however, individuals who wish "
+        },
+        {
+          "chunk_id": 140,
+          "section": "Top Keywords",
+          "line_start": 63315,
+          "line_end": 63814,
+          "score": 10.377,
+          "matched_terms": [
+            "primitive",
+            "stop",
+            "basin",
+            "found"
+          ],
+          "snippet": "that sustains the seed of your divinity.\u201d And in turn, \u201cI\u201d as Hada, am that\nthat listens carefully, and this \u201cI\u201d that I am, asks you to give full attention\nto this Hada.\nAt a later date, Thoth was asked to comment about \u201cHeaven's Stepping\nStones\" role in the new planet regarding the placement of the"
+        },
+        {
+          "chunk_id": 1611,
+          "section": "2024",
+          "line_start": 208266,
+          "line_end": 208375,
+          "score": 9.8799,
+          "matched_terms": [
+            "stop",
+            "start"
+          ],
+          "snippet": "## 2024\n\n**2024-03-30T16:10:04.034Z**\n\n**Likes:** 0\n\n\n\nLet us now take a moment to CENTER in the HEART and place ourselves into a state of GRATITUDE. FEEL\nthe LOVE of GRATITUDE wash over and through you\u2026cleansing and restoring and re\\-charging every\ncell in your body.\n\nThe Vibrant Keynote of Easter "
+        }
+      ]
+    },
+    "memory_augmented": true
+  }
+]

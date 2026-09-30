@@ -1,0 +1,14 @@
+{
+  "session_id": "CX-20260208-162359",
+  "completed_at": "2026-02-08T16:23:59.551946Z",
+  "protocols_run": 3,
+  "total_steps": 0,
+  "hypotheses_generated": 3,
+  "gaps_addressed": [
+    "unpromoted:CL-7",
+    "unpromoted:CL-3",
+    "unpromoted:CL-4"
+  ],
+  "sanity_results": [],
+  "dry_run": true
+}

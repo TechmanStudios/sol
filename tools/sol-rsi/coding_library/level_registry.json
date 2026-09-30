@@ -1,0 +1,125 @@
+[
+  {
+    "level_number": 1,
+    "name": "Nano-folds",
+    "description": "Physical Cell Layer representing the base memristive battery latch. Handles raw electrical state and local charge holding.",
+    "key_operations": [
+      "CHARGE",
+      "DISCHARGE",
+      "HOLD",
+      "READ_CELL"
+    ]
+  },
+  {
+    "level_number": 2,
+    "name": "Micro-folds",
+    "description": "Local Computational Layer containing physical junction logic (AND/OR gates) and astable oscillators to generate timing clock cycles.",
+    "key_operations": [
+      "OSCILLATE",
+      "GATE_AND",
+      "GATE_OR",
+      "SYNC_CLOCK"
+    ]
+  },
+  {
+    "level_number": 3,
+    "name": "Sub-manifolds",
+    "description": "Memory and Routing Layer utilizing semantic attractor basins to store logic state variables, employing zero-bleed routing pathways.",
+    "key_operations": [
+      "SETTLE_BASIN",
+      "MEASURE_RHO",
+      "ZERO_BLEED_ROUTE"
+    ]
+  },
+  {
+    "level_number": 4,
+    "name": "Manifolds",
+    "description": "Coordinated Routing and Bus Layer managing dual-bus broadcast and self-timed handshakes to coordinate parallel asynchronous compute units.",
+    "key_operations": [
+      "BROADCAST_BUS",
+      "HANDSHAKE_INIT",
+      "HANDSHAKE_ACK"
+    ]
+  },
+  {
+    "level_number": 5,
+    "name": "Manifold-Systems",
+    "description": "Orchestrated Architecture Layer utilizing gated registers (Registers A, B, C, D) and conditional moves (CMOVE) to implement arithmetic structures.",
+    "key_operations": [
+      "LOAD_REGISTER",
+      "STORE_REGISTER",
+      "CMOVE_COND"
+    ]
+  },
+  {
+    "level_number": 6,
+    "name": "Basic Software",
+    "description": "Programmable Runtime Layer running the LogosVM virtual machine and parsingcompiled AST instructions using compiler liveness safety constraints.",
+    "key_operations": [
+      "RUN_VM",
+      "EXECUTE_BYTECODE",
+      "COMPILE_AST"
+    ]
+  },
+  {
+    "level_number": 7,
+    "name": "Parallel Wave-Multiplexed Substrate Processing",
+    "description": "Multi-Core Layer implementing SIMD broadcasts and Carry-Select parallel arithmetic processors.",
+    "key_operations": [
+      "SIMD_BROADCAST",
+      "CARRY_SELECT_ADD",
+      "PARALLEL_STEP"
+    ]
+  },
+  {
+    "level_number": 8,
+    "name": "Spectral Parallelism",
+    "description": "Frequency-Division Multiplexed Substrate employing multi-carrier wave modulation and resonant gating to route multiple data channels over a single bus.",
+    "key_operations": [
+      "MODULATE_CARRIER",
+      "DEMODULATE_CARRIER",
+      "RESONANT_GATE"
+    ]
+  },
+  {
+    "level_number": 9,
+    "name": "Holographic Content-Addressable Memory (H-CAM) & Resonant Attention",
+    "description": "Holographic Recall Layer employing phase-coherent superposition search keys to retrieve associative data slots in parallel.",
+    "key_operations": [
+      "HCAM_RECALL",
+      "PHASE_SUPERPOSITION",
+      "RESONANT_ATTEND"
+    ]
+  },
+  {
+    "level_number": 10,
+    "name": "Multi-Head Resonant Attention (MHRA) & Holographic Crossbar Routing",
+    "description": "Concurrent Crossbar Layer implementing concurrent routing paths and multi-port query superposition via parallel matching head alignments.",
+    "key_operations": [
+      "MHRA_ATTEND",
+      "CONCURRENT_CROSSBAR",
+      "SUPERIMPOSE_MULTI_QUERY"
+    ]
+  },
+  {
+    "level_number": 11,
+    "name": "Phase-Division Multiplexing (PDM) & Dual-Bus Crossbar",
+    "description": "Phase-Division Multiplexing Layer scaling communication channels using orthogonal phase state distributions over multi-lane crossbar waveguides.",
+    "key_operations": [
+      "PDM_MODULATE",
+      "PDM_DEMODULATE",
+      "MULTILANE_ROUTE",
+      "PLL_SYNC"
+    ]
+  },
+  {
+    "level_number": 12,
+    "name": "Hyper-manifolds",
+    "description": "Hyper-dimensional topological manifold spaces that enable non-Euclidean semantic routing.",
+    "key_operations": [
+      "HYPER_RECALL",
+      "TENSOR_PRODUCE"
+    ],
+    "created_at": "2026-06-07T15:20:08.796257+00:00"
+  }
+]

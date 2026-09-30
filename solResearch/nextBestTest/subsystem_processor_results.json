@@ -1,0 +1,53 @@
+{
+  "trials": {
+    "trial_0_0": {
+      "initial_basin_A": 0,
+      "initial_basin_B": 0,
+      "expected_C": 0,
+      "reg_a_loaded": true,
+      "reg_b_loaded": true,
+      "reg_c_computed": false,
+      "basin_c_stored": false,
+      "mass_ok": true,
+      "insulation_ok": true,
+      "passed": true
+    },
+    "trial_1_0": {
+      "initial_basin_A": 1,
+      "initial_basin_B": 0,
+      "expected_C": 1,
+      "reg_a_loaded": true,
+      "reg_b_loaded": true,
+      "reg_c_computed": true,
+      "basin_c_stored": true,
+      "mass_ok": true,
+      "insulation_ok": true,
+      "passed": true
+    },
+    "trial_0_1": {
+      "initial_basin_A": 0,
+      "initial_basin_B": 1,
+      "expected_C": 1,
+      "reg_a_loaded": true,
+      "reg_b_loaded": true,
+      "reg_c_computed": true,
+      "basin_c_stored": true,
+      "mass_ok": true,
+      "insulation_ok": true,
+      "passed": true
+    },
+    "trial_1_1": {
+      "initial_basin_A": 1,
+      "initial_basin_B": 1,
+      "expected_C": 1,
+      "reg_a_loaded": true,
+      "reg_b_loaded": true,
+      "reg_c_computed": true,
+      "basin_c_stored": true,
+      "mass_ok": true,
+      "insulation_ok": true,
+      "passed": true
+    }
+  },
+  "passed": true
+}

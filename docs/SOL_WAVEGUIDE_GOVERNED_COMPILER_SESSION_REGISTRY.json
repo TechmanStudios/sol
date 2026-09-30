@@ -1,0 +1,192 @@
+{
+    "blocked_session_count": 0,
+    "blocked_sessions": [],
+    "compiler_profiles_indexed": [
+        "COST_MODEL_DEBUG",
+        "FULL_SAFE_OPTIMIZED"
+    ],
+    "entries": [
+        {
+            "candidate_level": "foundation",
+            "compiler_profile": "COST_MODEL_DEBUG",
+            "executed_pass_count": 0,
+            "failed_replay_count": 0,
+            "final_output_payload_digest": "197fd115a8162ddbf2c9aa84f68b84bd34ea07e92e0d26354bd6ba35bea92e80",
+            "handler_ids_used": [],
+            "invocation_record_digest": "7af64b2af5d6e8e17531d87563eac01ab9edc2697fe16b364760d0b9172c9a3a",
+            "invocation_record_path": "docs/SOL_WAVEGUIDE_GOVERNED_COMPILER_INVOCATION_REJECTION_EXAMPLE.json",
+            "invocation_status": "invocation_rejected_verified",
+            "rc_id": "SOL-WAVEGUIDE-RC1",
+            "reason_codes": [
+                "SESSION_REGISTRY_ENTRY_CANONICAL",
+                "SESSION_REGISTRY_FINAL_OUTPUT_DIGEST_REFERENCED",
+                "SESSION_REGISTRY_INVOCATION_DIGEST_REFERENCED",
+                "SESSION_REGISTRY_REJECTION_SESSION_REGISTERED",
+                "SESSION_REGISTRY_REPLAY_REPORT_DIGEST_REFERENCED",
+                "SESSION_REGISTRY_SESSION_CASE_DIGEST_REFERENCED",
+                "SESSION_REGISTRY_TRACE_LEDGER_DIGEST_REFERENCED"
+            ],
+            "registry_entry_digest": "53815a122873d4fd8cdf664b97f336459e1e98a0fbde09457bcd8911bafb6ba9",
+            "rejected_pass_count": 1,
+            "replay_report_digest": "964a3b765014cfc33f6b70434fd5aecd70069e1b51e0cc2d5c1cfcaff67dce42",
+            "requested_pass_sequence": [
+                "cost_model_evaluation"
+            ],
+            "session_case_digest": "801f4b49d83c3ae20de25571fb0ff0b703daba65ab8607ce060706c90668069c",
+            "session_registry_entry_id": "SOL-WAVEGUIDE-SESSION-REGISTRY-ENTRY-SOL-WAVEGUIDE-RC1-COST_MODEL_DEBUG",
+            "session_verification_status": "session_rejection_registered",
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "trace_ledger_digest": "0730d84464f980504555c6b199071a7dfb0c13e7ce499101db6d186ecbf610b9",
+            "verified_execution_count": 0,
+            "verified_rejection_count": 1
+        },
+        {
+            "candidate_level": "foundation",
+            "compiler_profile": "FULL_SAFE_OPTIMIZED",
+            "executed_pass_count": 1,
+            "failed_replay_count": 0,
+            "final_output_payload_digest": "e118f75e0e7c0d4b21dffdd84fdeb322bdab07ca09285e73f3445c8cb8de2e65",
+            "handler_ids_used": [
+                "SOL-PASS-HANDLER-PIPELINE-COMPACTION-V1"
+            ],
+            "invocation_record_digest": "dd6ea5cd0894544385d2756e8414998dc528ef1442aeb22ede263a66df5b73e3",
+            "invocation_record_path": "docs/SOL_WAVEGUIDE_GOVERNED_COMPILER_INVOCATION_RC1.json",
+            "invocation_status": "invocation_verified",
+            "rc_id": "SOL-WAVEGUIDE-RC1",
+            "reason_codes": [
+                "SESSION_REGISTRY_ENTRY_CANONICAL",
+                "SESSION_REGISTRY_FINAL_OUTPUT_DIGEST_REFERENCED",
+                "SESSION_REGISTRY_INVOCATION_DIGEST_REFERENCED",
+                "SESSION_REGISTRY_REPLAY_REPORT_DIGEST_REFERENCED",
+                "SESSION_REGISTRY_SESSION_CASE_DIGEST_REFERENCED",
+                "SESSION_REGISTRY_SESSION_REGISTERED",
+                "SESSION_REGISTRY_TRACE_LEDGER_DIGEST_REFERENCED"
+            ],
+            "registry_entry_digest": "a2baff8fd5d5a3d7036d75593c415b8a2372c4901a441d70bc05515e3d3cbf6d",
+            "rejected_pass_count": 0,
+            "replay_report_digest": "fb41ff4f01021b9d9790f76c03898b1e2e4127e9508868ccec4c91e2e14c4965",
+            "requested_pass_sequence": [
+                "pipeline_compaction"
+            ],
+            "session_case_digest": "0232ff8987485cfd3d5233a4af11bcabdb3eadb189dfc3ec37d96d2b749575b7",
+            "session_registry_entry_id": "SOL-WAVEGUIDE-SESSION-REGISTRY-ENTRY-SOL-WAVEGUIDE-RC1-FULL_SAFE_OPTIMIZED",
+            "session_verification_status": "session_registered",
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "trace_ledger_digest": "46e7c5b9c5af4622e5b5a95b61a61c36360e7ad3df2f8602c74c3de05f92e43f",
+            "verified_execution_count": 1,
+            "verified_rejection_count": 0
+        },
+        {
+            "candidate_level": "governed_execution_stack",
+            "compiler_profile": "COST_MODEL_DEBUG",
+            "executed_pass_count": 3,
+            "failed_replay_count": 0,
+            "final_output_payload_digest": "0f09785f332627b50781c45055105e81a7b691aed354d0fdf9a593b2222ab03b",
+            "handler_ids_used": [
+                "SOL-PASS-HANDLER-COST-MODEL-EVALUATION-V1",
+                "SOL-PASS-HANDLER-DETERMINISTIC-POLICY-SELECTION-V1",
+                "SOL-PASS-HANDLER-PIPELINE-COMPACTION-V1"
+            ],
+            "invocation_record_digest": "3d7e6b383576d6edac8026343c90bdb00e33e25e2f21c24897e9068ddb1010d2",
+            "invocation_record_path": "docs/SOL_WAVEGUIDE_GOVERNED_COMPILER_INVOCATION_RC2.json",
+            "invocation_status": "invocation_verified",
+            "rc_id": "SOL-WAVEGUIDE-RC2",
+            "reason_codes": [
+                "SESSION_REGISTRY_ENTRY_CANONICAL",
+                "SESSION_REGISTRY_FINAL_OUTPUT_DIGEST_REFERENCED",
+                "SESSION_REGISTRY_INVOCATION_DIGEST_REFERENCED",
+                "SESSION_REGISTRY_REPLAY_REPORT_DIGEST_REFERENCED",
+                "SESSION_REGISTRY_SESSION_CASE_DIGEST_REFERENCED",
+                "SESSION_REGISTRY_SESSION_REGISTERED",
+                "SESSION_REGISTRY_TRACE_LEDGER_DIGEST_REFERENCED"
+            ],
+            "registry_entry_digest": "7ecdf24735e674ea6095bd26ef5a308e04c5e1a4a9c9a5af2862a91bbf4f9025",
+            "rejected_pass_count": 0,
+            "replay_report_digest": "ff7224d152fddfa88b6b9d2d2c0a8a3925cbbc7e4a5546aa5638b7511e56171f",
+            "requested_pass_sequence": [
+                "pipeline_compaction",
+                "cost_model_evaluation",
+                "deterministic_policy_selection"
+            ],
+            "session_case_digest": "534e2d303b0ac4254f75493d7d66e337db58ca3219e76e491644a3f007948c00",
+            "session_registry_entry_id": "SOL-WAVEGUIDE-SESSION-REGISTRY-ENTRY-SOL-WAVEGUIDE-RC2-COST_MODEL_DEBUG",
+            "session_verification_status": "session_registered",
+            "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+            "trace_ledger_digest": "162cc36e203c2bbeef39ac4f1176bdc0b13022b8108e22802b1406fa5bf2aa25",
+            "verified_execution_count": 3,
+            "verified_rejection_count": 0
+        }
+    ],
+    "final_output_payload_digests": [
+        "0f09785f332627b50781c45055105e81a7b691aed354d0fdf9a593b2222ab03b",
+        "197fd115a8162ddbf2c9aa84f68b84bd34ea07e92e0d26354bd6ba35bea92e80",
+        "e118f75e0e7c0d4b21dffdd84fdeb322bdab07ca09285e73f3445c8cb8de2e65"
+    ],
+    "handler_ids_indexed": [
+        "SOL-PASS-HANDLER-COST-MODEL-EVALUATION-V1",
+        "SOL-PASS-HANDLER-DETERMINISTIC-POLICY-SELECTION-V1",
+        "SOL-PASS-HANDLER-PIPELINE-COMPACTION-V1"
+    ],
+    "invalid_session_count": 0,
+    "invalid_sessions": [],
+    "invocation_record_digests": [
+        "3d7e6b383576d6edac8026343c90bdb00e33e25e2f21c24897e9068ddb1010d2",
+        "7af64b2af5d6e8e17531d87563eac01ab9edc2697fe16b364760d0b9172c9a3a",
+        "dd6ea5cd0894544385d2756e8414998dc528ef1442aeb22ede263a66df5b73e3"
+    ],
+    "pass_sequences_indexed": [
+        [
+            "cost_model_evaluation"
+        ],
+        [
+            "pipeline_compaction"
+        ],
+        [
+            "pipeline_compaction",
+            "cost_model_evaluation",
+            "deterministic_policy_selection"
+        ]
+    ],
+    "rc1_session_count": 2,
+    "rc2_session_count": 1,
+    "reason_codes": [
+        "SESSION_REGISTRY_COUNTS_VALID",
+        "SESSION_REGISTRY_ENTRY_CANONICAL",
+        "SESSION_REGISTRY_HANDLER_IDS_INDEXED",
+        "SESSION_REGISTRY_PASS_SEQUENCE_INDEXED",
+        "SESSION_REGISTRY_PROFILE_INDEXED",
+        "SESSION_REGISTRY_SOFTWARE_CAVEAT_INCLUDED",
+        "SESSION_REGISTRY_SOURCE_REPORT_VALID",
+        "SESSION_REGISTRY_VALID"
+    ],
+    "registered_rejection_session_count": 1,
+    "registered_rejection_sessions": [
+        "SOL-WAVEGUIDE-SESSION-REGISTRY-ENTRY-SOL-WAVEGUIDE-RC1-COST_MODEL_DEBUG"
+    ],
+    "registered_session_count": 2,
+    "registered_sessions": [
+        "SOL-WAVEGUIDE-SESSION-REGISTRY-ENTRY-SOL-WAVEGUIDE-RC1-FULL_SAFE_OPTIMIZED",
+        "SOL-WAVEGUIDE-SESSION-REGISTRY-ENTRY-SOL-WAVEGUIDE-RC2-COST_MODEL_DEBUG"
+    ],
+    "registry_digest": "d067142ffbd2355b24a38cb7c85ab3861daac5b5883b5107bf061d8ca013f7e4",
+    "registry_id": "SOL-WAVEGUIDE-GOVERNED-COMPILER-SESSION-REGISTRY",
+    "registry_status": "session_registry_valid",
+    "registry_version": "1",
+    "replay_report_digests": [
+        "964a3b765014cfc33f6b70434fd5aecd70069e1b51e0cc2d5c1cfcaff67dce42",
+        "fb41ff4f01021b9d9790f76c03898b1e2e4127e9508868ccec4c91e2e14c4965",
+        "ff7224d152fddfa88b6b9d2d2c0a8a3925cbbc7e4a5546aa5638b7511e56171f"
+    ],
+    "session_case_digests": [
+        "0232ff8987485cfd3d5233a4af11bcabdb3eadb189dfc3ec37d96d2b749575b7",
+        "534e2d303b0ac4254f75493d7d66e337db58ca3219e76e491644a3f007948c00",
+        "801f4b49d83c3ae20de25571fb0ff0b703daba65ab8607ce060706c90668069c"
+    ],
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+    "source_session_verifier_report_digest": "5668039147916143d5eb2d564dea793bf770023d9d9b09b70b825e1e3684991f",
+    "trace_ledger_digests": [
+        "0730d84464f980504555c6b199071a7dfb0c13e7ce499101db6d186ecbf610b9",
+        "162cc36e203c2bbeef39ac4f1176bdc0b13022b8108e22802b1406fa5bf2aa25",
+        "46e7c5b9c5af4622e5b5a95b61a61c36360e7ad3df2f8602c74c3de05f92e43f"
+    ]
+}

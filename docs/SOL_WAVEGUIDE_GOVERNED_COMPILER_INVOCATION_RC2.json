@@ -1,0 +1,99 @@
+{
+    "admission_decision_digests": [
+        "8abf243a97dc3c997ac9984e53d9ee31d0977e06c8cc1888c9e692187218673b",
+        "cf8407523cfe963006fea5db5ff4de465d2a1c8fb9db0ce1ff54cc1b01b1345c",
+        "e75911d54bcd41f6b78040fe7b1b57f6b227f4e908e091a97fcf7eb1e0f2f225"
+    ],
+    "candidate_level": "governed_execution_stack",
+    "capability_resolution_digest": "c35dc87fedb6b53f4f9d9509f7c62cb22a65fb797b4b12fda838052fd8054e60",
+    "compiler_profile": "COST_MODEL_DEBUG",
+    "executed_pass_count": 3,
+    "execution_record_digests": [
+        "1dbaa66b6e21b6c11f280ef60398f8afdc8198c5bcff2d9bb7b87b4d55e63276",
+        "75bc82dfc73702439cd44c584e91de87e84b7b1b51b47fe8f8962a0066390638",
+        "cb03fd9c190ee317403e13622cc71bd752b73bb80dfdcd247e2de7376c41bcd9"
+    ],
+    "failed_replay_count": 0,
+    "final_output_payload_digest": "0f09785f332627b50781c45055105e81a7b691aed354d0fdf9a593b2222ab03b",
+    "handler_ids_used": [
+        "SOL-PASS-HANDLER-COST-MODEL-EVALUATION-V1",
+        "SOL-PASS-HANDLER-DETERMINISTIC-POLICY-SELECTION-V1",
+        "SOL-PASS-HANDLER-PIPELINE-COMPACTION-V1"
+    ],
+    "input_payload_digest": "8c8149029cf90bc1051a181e0d4dbbdaee866ee2ba983bf833fd2b590d69a969",
+    "invocation_record_digest": "3d7e6b383576d6edac8026343c90bdb00e33e25e2f21c24897e9068ddb1010d2",
+    "invocation_record_id": "SOL-WAVEGUIDE-COMPILER-INVOCATION-RECORD-RC2",
+    "invocation_request_id": "SOL-WAVEGUIDE-COMPILER-INVOCATION-REQUEST-RC2",
+    "invocation_status": "invocation_verified",
+    "notes": "Governed compiler session completed with status invocation_verified.",
+    "pass_plan": [
+        {
+            "expected_admission_status": "pass_admitted",
+            "expected_execution_status": "pass_executed",
+            "hybrid_execution_allowed": false,
+            "lane_fabric_fallback_allowed": false,
+            "pass_index": 0,
+            "production_mutation_allowed": false,
+            "requested_pass": "pipeline_compaction",
+            "requested_profile": "COST_MODEL_DEBUG",
+            "requested_scope": "profile_selection",
+            "required_handler_id": "SOL-PASS-HANDLER-PIPELINE-COMPACTION-V1",
+            "strict_waveguide_required": true
+        },
+        {
+            "expected_admission_status": "pass_admitted",
+            "expected_execution_status": "pass_executed",
+            "hybrid_execution_allowed": false,
+            "lane_fabric_fallback_allowed": false,
+            "pass_index": 1,
+            "production_mutation_allowed": false,
+            "requested_pass": "cost_model_evaluation",
+            "requested_profile": "COST_MODEL_DEBUG",
+            "requested_scope": "profile_selection",
+            "required_handler_id": "SOL-PASS-HANDLER-COST-MODEL-EVALUATION-V1",
+            "strict_waveguide_required": true
+        },
+        {
+            "expected_admission_status": "pass_admitted",
+            "expected_execution_status": "pass_executed",
+            "hybrid_execution_allowed": false,
+            "lane_fabric_fallback_allowed": false,
+            "pass_index": 2,
+            "production_mutation_allowed": false,
+            "requested_pass": "deterministic_policy_selection",
+            "requested_profile": "COST_MODEL_DEBUG",
+            "requested_scope": "profile_selection",
+            "required_handler_id": "SOL-PASS-HANDLER-DETERMINISTIC-POLICY-SELECTION-V1",
+            "strict_waveguide_required": true
+        }
+    ],
+    "rc_id": "SOL-WAVEGUIDE-RC2",
+    "reason_codes": [
+        "COMPILER_INVOCATION_ALL_REPLAYS_VERIFIED",
+        "COMPILER_INVOCATION_CAPABILITY_RESOLUTION_VALID",
+        "COMPILER_INVOCATION_PASS_EXECUTED",
+        "COMPILER_INVOCATION_PASS_PLAN_CANONICAL",
+        "COMPILER_INVOCATION_REPLAY_REPORT_VALID",
+        "COMPILER_INVOCATION_REQUEST_CANONICAL",
+        "COMPILER_INVOCATION_SOFTWARE_CAVEAT_INCLUDED",
+        "COMPILER_INVOCATION_STRICT_WAVEGUIDE_REQUIRED",
+        "COMPILER_INVOCATION_TRACE_LEDGER_VALID",
+        "COMPILER_INVOCATION_VERIFIED"
+    ],
+    "rejected_pass_count": 0,
+    "replay_report_digest": "ff7224d152fddfa88b6b9d2d2c0a8a3925cbbc7e4a5546aa5638b7511e56171f",
+    "requested_pass_sequence": [
+        "pipeline_compaction",
+        "cost_model_evaluation",
+        "deterministic_policy_selection"
+    ],
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+    "trace_entry_digests": [
+        "3a6439da6ef0e3aca26100996f1412e477268cf322099296390cde263d9f05fc",
+        "7594bc6390b6be617190655cb7ee55655c86b2fa0cc535a00770f12023f609b4",
+        "f8e155f1d4bac7e528c172d11b8cae1e4d7072ff4f2db6dc0de3aebd081312ad"
+    ],
+    "trace_ledger_digest": "162cc36e203c2bbeef39ac4f1176bdc0b13022b8108e22802b1406fa5bf2aa25",
+    "verified_execution_count": 3,
+    "verified_rejection_count": 0
+}

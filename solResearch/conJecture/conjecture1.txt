@@ -1,0 +1,6 @@
+SOL ICAC Resonant Resolution Conjecture
+
+For any ICAC circuit with K active computational nodes and C simultaneous carrier channels,
+there exists a minimum manifold size N* above which carrier interference becomes stable,
+and a larger saturation size N_sat above which extra nodes mostly add latency, leakage,
+or background modal noise unless topology/capacitance are retuned.

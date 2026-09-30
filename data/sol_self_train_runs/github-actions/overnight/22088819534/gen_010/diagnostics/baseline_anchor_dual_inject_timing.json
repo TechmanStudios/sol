@@ -1,0 +1,157 @@
+{
+  "task_id": "anchor_dual_inject_timing",
+  "family": "timing",
+  "anchor": true,
+  "protocol_name": "dual_inject_timing",
+  "effective_protocol": {
+    "seriesName": "dual_inject_timing",
+    "invariants": {
+      "dt": 0.12,
+      "c_press": 0.1225,
+      "damping": 1.225,
+      "rng_seed": 42
+    },
+    "knobs": {},
+    "steps": 900,
+    "reps": 4,
+    "metrics_every": 5,
+    "baseline": "fresh",
+    "injections": [
+      {
+        "label": "grail",
+        "amount": 50,
+        "at_step": 0
+      },
+      {
+        "label": "consciousness",
+        "amount": 30,
+        "at_step": 100
+      }
+    ]
+  },
+  "summary": {
+    "total_conditions": 1,
+    "total_reps": 4,
+    "total_steps": 3600,
+    "runtime_sec": 8.823369026184082
+  },
+  "sanity": {
+    "all_passed": true,
+    "total": 5,
+    "failures": 0,
+    "checks": [
+      {
+        "name": "baseline_declared",
+        "passed": true,
+        "detail": "Baseline mode: fresh"
+      },
+      {
+        "name": "invariants",
+        "passed": true,
+        "detail": "All 4 invariants constant"
+      },
+      {
+        "name": "no_nan",
+        "passed": true,
+        "detail": "No NaN/Inf values found"
+      },
+      {
+        "name": "entropy_bounds",
+        "passed": true,
+        "detail": "Entropy in [0,1] for all steps"
+      },
+      {
+        "name": "mass_conservation",
+        "passed": true,
+        "detail": "Mass bounded: max=48.73 <= injected=80.00"
+      }
+    ]
+  },
+  "comparison": null,
+  "conditions": {
+    "baseline": {
+      "final_metrics": {
+        "entropy": 0.9976321428175408,
+        "totalFlux": 1.1245146578701566e-06,
+        "maxFluxAbs": 1.3263479719980102e-07,
+        "mass": 0.0003366070553911702,
+        "avgRho": 2.4043361099369303e-06,
+        "maxRho": 2.5225657101980186e-06,
+        "rhoMaxId": 132,
+        "activeCount": 0,
+        "vortNorm_global": 0.0,
+        "vortNorm_global_ema": 0.0,
+        "step": 900,
+        "t": 108.00000000000107,
+        "rep": 3,
+        "condition": "baseline",
+        "param_dt": 0.12,
+        "param_c_press": 0.1225,
+        "param_damping": 1.225,
+        "param_rng_seed": 42
+      },
+      "analysis": {
+        "entropy": {
+          "count": 720,
+          "mean": 0.8787047162060355,
+          "stdev": 0.2530490761258479,
+          "min": 0.01148969189564425,
+          "max": 0.9976321428175408,
+          "final": 0.9976321428175408,
+          "range": 0.9861424509218966
+        },
+        "flux": {
+          "count": 720,
+          "mean": 1.5099707935736901,
+          "stdev": 2.7673117013642163,
+          "min": 1.1245146578701566e-06,
+          "max": 7.620864104888014,
+          "final": 1.1245146578701566e-06,
+          "range": 7.620862980373356
+        },
+        "mass": {
+          "count": 720,
+          "mean": 7.416522033874645,
+          "stdev": 13.373682664443896,
+          "min": 0.0003366070553911702,
+          "max": 48.732381967910875,
+          "final": 0.0003366070553911702,
+          "range": 48.73204536085549
+        },
+        "activeCount": {
+          "count": 720,
+          "mean": 3.5555555555555554,
+          "stdev": 7.9311076865594545,
+          "min": 0,
+          "max": 29,
+          "final": 0,
+          "range": 29
+        },
+        "rhoMax": {
+          "dominant_node": 132,
+          "dominant_ticks": 460,
+          "total_ticks": 720,
+          "peak_rho": 48.41251037776778,
+          "holder_distribution": {
+            "1": 160,
+            "132": 460,
+            "43": 20,
+            "118": 8,
+            "35": 8,
+            "58": 8,
+            "2": 56
+          }
+        },
+        "convergence_entropy": 2.639229046872883e-05,
+        "convergence_flux": 2.1141396389642036e-07
+      }
+    }
+  },
+  "derived_metrics": {
+    "stability": 0.38161829788574214,
+    "novelty": 0.9861424509218966,
+    "usefulness": 0.2000025470432086,
+    "reproducibility": 0.28324674036069136,
+    "cost": 2.4509358406066895
+  }
+}

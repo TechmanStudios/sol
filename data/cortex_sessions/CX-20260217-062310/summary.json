@@ -1,0 +1,82 @@
+{
+  "session_id": "CX-20260217-062310",
+  "completed_at": "2026-02-17T06:25:02.456359Z",
+  "protocols_run": 10,
+  "total_steps": 38500,
+  "hypotheses_generated": 10,
+  "gaps_addressed": [
+    "weak_evidence:PP-2026-02-12-cortex-CX-20260212-084916-",
+    "weak_evidence:PP-2026-02-12-cortex-CX-20260212-031340-",
+    "weak_evidence:PP-2026-02-12-cortex-CX-20260212-034732-",
+    "weak_evidence:PP-2026-02-12-cortex-CX-20260212-070748-",
+    "weak_evidence:PP-2026-02-12-cortex-CX-20260212-052151-",
+    "weak_evidence:PP-2026-02-12-cortex-CX-20260212-032105-",
+    "weak_evidence:PP-2026-02-12-cortex-CX-20260212-032759-",
+    "weak_evidence:PP-2026-02-12-cortex-CX-20260212-074704-",
+    "weak_evidence:PP-2026-02-12-cortex-CX-20260212-033330-",
+    "weak_evidence:PP-2026-02-12-cortex-CX-20260212-082639-"
+  ],
+  "sanity_results": [
+    {
+      "hypothesis": "H-001",
+      "series": "h-001",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-002",
+      "series": "h-002",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-003",
+      "series": "h-003",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-004",
+      "series": "h-004",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-005",
+      "series": "h-005",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-006",
+      "series": "h-006",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-007",
+      "series": "h-007",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-008",
+      "series": "h-008",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-009",
+      "series": "h-009",
+      "sanity_passed": true,
+      "anomalies": []
+    },
+    {
+      "hypothesis": "H-010",
+      "series": "h-010",
+      "sanity_passed": true,
+      "anomalies": []
+    }
+  ],
+  "dry_run": false
+}

@@ -1,0 +1,8 @@
+# Multi-Chamber Resonant Counter-Breathing Report
+
+| Experiment ID | Amplitude ($I_0$) | Drive Frequency ($\omega_d$) | Chamber 1 Nodes ($N_1$) | Chamber 2 Nodes ($N_2$) | Correlation $r(N_1, N_2)$ | Dynamic Behavior |
+|---|---|---|---|---|---|---|
+| 50_med | 50.0 | 0.05 | 730-1710 | 49-107 | -0.7217 | Stable Counter-Breathing (Anti-correlated) |
+| 150_med | 150.0 | 0.05 | 3872-7476 | 41-83 | -0.8341 | Stable Counter-Breathing (Anti-correlated) |
+| 150_fast | 150.0 | 0.2 | 84-2203 | 204-4966 | -0.7841 | Stable Counter-Breathing (Anti-correlated) |
+| 150_slow | 150.0 | 0.01 | 206-1089 | 134-250 | 0.6389 | In-Phase/In-Phase (Correlated) |

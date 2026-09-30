@@ -1,0 +1,16 @@
+condition,jcrit,strategy,strategy_desc,steps,first_collapse_tick,starCount,synthCount,constellationCount,totalNodes,totalEdges,entropy,totalFlux,mass,avgRho,maxRho,activeCount,totalStellarSemanticMass,maxStellarSemanticMass
+Jcrit=8.0_strategy=blast,8.0,blast,Single concentrated injection of 200 rho into one node at step 0,600,0,280,140,280,280,1405,0.966153,7.306,148.589,0.530675,5.8155,269,79.997229,0.408438
+Jcrit=8.0_strategy=drizzle,8.0,drizzle,Slow drizzle: 10 rho into 'grail' every 20 steps for 400 steps,600,0,280,140,280,280,1405,0.958776,9.811,162.1717,0.579185,5.7665,269,80.406047,0.428521
+Jcrit=8.0_strategy=cluster_spray,8.0,cluster_spray,Distribute 200 rho across 5 neighboring spirit nodes at step 0,600,0,280,140,280,280,1405,0.971021,10.2315,253.8383,0.906565,4.866,280,79.541112,0.386967
+Jcrit=15.0_strategy=blast,15.0,blast,Single concentrated injection of 200 rho into one node at step 0,600,0,2,1,2,141,849,0.576439,8.0484,116.5592,0.826661,44.4763,130,0.559928,0.309928
+Jcrit=15.0_strategy=drizzle,15.0,drizzle,Slow drizzle: 10 rho into 'grail' every 20 steps for 400 steps,600,0,2,1,2,141,849,0.514177,8.9434,134.8945,0.956699,69.7635,130,0.559928,0.309928
+Jcrit=15.0_strategy=cluster_spray,15.0,cluster_spray,Distribute 200 rho across 5 neighboring spirit nodes at step 0,600,0,10,5,10,145,865,0.583056,24.3815,331.8935,2.288921,45.4833,133,2.799641,0.309928
+Jcrit=18.0_strategy=blast,18.0,blast,Single concentrated injection of 200 rho into one node at step 0,600,0,2,1,2,141,849,0.576439,8.0484,116.5592,0.826661,44.4763,130,0.559928,0.309928
+Jcrit=18.0_strategy=drizzle,18.0,drizzle,Slow drizzle: 10 rho into 'grail' every 20 steps for 400 steps,600,0,2,1,2,141,849,0.514177,8.9434,134.8945,0.956699,69.7635,130,0.559928,0.309928
+Jcrit=18.0_strategy=cluster_spray,18.0,cluster_spray,Distribute 200 rho across 5 neighboring spirit nodes at step 0,600,0,10,5,10,145,865,0.583056,24.3815,331.8935,2.288921,45.4833,133,2.799641,0.309928
+Jcrit=30.0_strategy=blast,30.0,blast,Single concentrated injection of 200 rho into one node at step 0,600,0,2,1,2,141,849,0.576439,8.0484,116.5592,0.826661,44.4763,130,0.559928,0.309928
+Jcrit=30.0_strategy=drizzle,30.0,drizzle,Slow drizzle: 10 rho into 'grail' every 20 steps for 400 steps,600,0,2,1,2,141,849,0.514177,8.9434,134.8945,0.956699,69.7635,130,0.559928,0.309928
+Jcrit=30.0_strategy=cluster_spray,30.0,cluster_spray,Distribute 200 rho across 5 neighboring spirit nodes at step 0,600,0,10,5,10,145,865,0.583056,24.3815,331.8935,2.288921,45.4833,133,2.799641,0.309928
+Jcrit=50.0_strategy=blast,50.0,blast,Single concentrated injection of 200 rho into one node at step 0,600,0,2,1,2,141,849,0.576439,8.0484,116.5592,0.826661,44.4763,130,0.559928,0.309928
+Jcrit=50.0_strategy=drizzle,50.0,drizzle,Slow drizzle: 10 rho into 'grail' every 20 steps for 400 steps,600,20,2,1,2,141,849,0.524373,8.6741,134.8153,0.956137,63.5171,130,0.599443,0.349443
+Jcrit=50.0_strategy=cluster_spray,50.0,cluster_spray,Distribute 200 rho across 5 neighboring spirit nodes at step 0,600,0,10,5,10,145,865,0.583056,24.3815,331.8935,2.288921,45.4833,133,2.799641,0.309928

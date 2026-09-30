@@ -1,0 +1,29 @@
+{
+  "planName": "baseline_damp_pressure_sweep_v1",
+  "notes": "Example sweep: vary damping and pressureC; inject basin IDs 90 and 82; measure 60s each run.",
+  "basins": [90, 82],
+  "scenario": {
+    "type": "inject_then_watch",
+    "injectAmount": 120,
+    "preSteps": 2,
+    "preDt": 0.12
+  },
+  "measurement": {
+    "durationMs": 60000,
+    "everyMs": 200,
+    "dt": 0.12,
+    "includeBackgroundEdges": false
+  },
+  "engine": {
+    "strictStepParams": true
+  },
+  "grid": {
+    "pressureC": [10, 20],
+    "damping": [4, 8, 12]
+  },
+  "replicates": 2,
+  "timing": {
+    "timingMode": "tight",
+    "spinWaitMs": 2.0
+  }
+}

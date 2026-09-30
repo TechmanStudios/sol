@@ -1,0 +1,233 @@
+(async () => {
+  // ============================================================
+  // SOL — Persisted Baseline V1 (Phase 3.10 carry-forward)
+  // Paste this after every hard refresh.
+  //
+  // What it does:
+  // - waits for physics to be ready
+  // - captures a baseline snapshot ONCE and stores it in localStorage
+  // - restores that same baseline snapshot on demand (and immediately on load)
+  //
+  // What you get on globalThis:
+  // - SOLBaseline.ensure({ force?: boolean, exportJson?: boolean })  // capture if missing, then restore
+  // - SOLBaseline.restore()                                         // restore from localStorage
+  // - SOLBaseline.clear()                                           // delete baseline (intentional recapture)
+  // - SOLBaseline.exportJson()                                      // download the saved baseline JSON
+  // - SOLBaseline.importJsonText(jsonText)                          // paste-import baseline JSON if site data wiped
+  // - __SOL_BASELINE_SNAP / __SOL_BASELINE_META                     // in-session convenience aliases
+  //
+  // Baseline storage key:
+  // - localStorage["__SOL_BASELINE_SNAP_V1"]
+  // ============================================================
+
+  const KEY = "__SOL_BASELINE_SNAP_V1";
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const nowTag = () => new Date().toISOString().replace(/[:.]/g, "") + "Z";
+
+  function downloadText(filename, text, mime = "application/json") {
+    const blob = new Blob([text], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
+
+  // Try a few common places physics might live (kept minimal + robust).
+  function getPhysicsMaybe() {
+    return (
+      globalThis.solver ||
+      window.solver ||
+      globalThis.App?.state?.physics?.network ||
+      null
+    );
+  }
+
+  async function waitForPhysics({ timeoutMs = 20000, pollMs = 50 } = {}) {
+    const t0 = performance.now();
+    while (performance.now() - t0 < timeoutMs) {
+      const phy = getPhysicsMaybe();
+      if (phy && phy.nodes && phy.edges && typeof phy.step === "function") return phy;
+      await sleep(pollMs);
+    }
+    throw new Error("PersistedBaseline: physics not ready. Let dashboard finish initializing, then rerun.");
+  }
+
+  function snapshotState(physics) {
+    const nodes = [];
+    for (const n of physics.nodes || []) {
+      if (!n || n.id == null) continue;
+      nodes.push({
+        id: String(n.id),
+        rho: n.rho,
+        p: n.p,
+        psi: n.psi,
+        psi_bias: n.psi_bias,
+        semanticMass: n.semanticMass,
+        semanticMass0: n.semanticMass0,
+        isBattery: !!n.isBattery,
+        b_q: n.b_q,
+        b_charge: n.b_charge,
+        b_state: n.b_state,
+      });
+    }
+
+    const edgeFlux = (physics.edges || []).map((e) =>
+      e && Number.isFinite(e.flux) ? e.flux : 0
+    );
+
+    return { nodes, edgeFlux };
+  }
+
+  function restoreState(physics, snap) {
+    if (!snap) throw new Error("PersistedBaseline: missing snap");
+
+    const byId = new Map();
+    for (const s of snap.nodes || []) byId.set(String(s.id), s);
+
+    for (const n of physics.nodes || []) {
+      if (!n || n.id == null) continue;
+      const s = byId.get(String(n.id));
+      if (!s) continue;
+
+      n.rho = s.rho;
+      n.p = s.p;
+      n.psi = s.psi;
+      n.psi_bias = s.psi_bias;
+      n.semanticMass = s.semanticMass;
+      n.semanticMass0 = s.semanticMass0;
+
+      if (n.isBattery) {
+        n.b_q = s.b_q;
+        n.b_charge = s.b_charge;
+        n.b_state = s.b_state;
+      }
+    }
+
+    const edges = physics.edges || [];
+    for (let i = 0; i < edges.length; i++) {
+      const e = edges[i];
+      if (!e) continue;
+      e.flux =
+        snap.edgeFlux && Number.isFinite(snap.edgeFlux[i]) ? snap.edgeFlux[i] : 0;
+    }
+  }
+
+  function readBlob() {
+    const raw = localStorage.getItem(KEY);
+    return raw ? JSON.parse(raw) : null;
+  }
+
+  function writeBlob(blob) {
+    localStorage.setItem(KEY, JSON.stringify(blob));
+  }
+
+  async function ensure({ force = false, exportJson = false } = {}) {
+    const physics = await waitForPhysics();
+
+    let blob = readBlob();
+
+    if (!blob || force) {
+      const snap = snapshotState(physics);
+      blob = {
+        v: 1,
+        createdAt: new Date().toISOString(),
+        nodeCount: (physics.nodes || []).length,
+        edgeCount: (physics.edges || []).length,
+        snap,
+      };
+      writeBlob(blob);
+      console.log(`🧊 Baseline CAPTURED → localStorage["${KEY}"]`, {
+        createdAt: blob.createdAt,
+        nodeCount: blob.nodeCount,
+        edgeCount: blob.edgeCount,
+      });
+
+      if (exportJson) {
+        downloadText(`sol_baseline_snap_${nowTag()}.json`, JSON.stringify(blob));
+        console.log("📦 Baseline JSON downloaded.");
+      }
+    } else {
+      console.log(`🧊 Baseline FOUND → localStorage["${KEY}"]`, {
+        createdAt: blob.createdAt,
+        nodeCount: blob.nodeCount,
+        edgeCount: blob.edgeCount,
+      });
+    }
+
+    // Always restore after ensure (so every refresh lands in the same basin).
+    restoreState(physics, blob.snap);
+
+    // Convenience aliases
+    globalThis.__SOL_BASELINE_SNAP = blob.snap;
+    globalThis.__SOL_BASELINE_META = {
+      createdAt: blob.createdAt,
+      nodeCount: blob.nodeCount,
+      edgeCount: blob.edgeCount,
+    };
+
+    return blob;
+  }
+
+  async function restore() {
+    const physics = await waitForPhysics();
+    const blob = readBlob();
+    if (!blob) throw new Error(`PersistedBaseline: no baseline found at localStorage["${KEY}"]`);
+    restoreState(physics, blob.snap);
+
+    globalThis.__SOL_BASELINE_SNAP = blob.snap;
+    globalThis.__SOL_BASELINE_META = {
+      createdAt: blob.createdAt,
+      nodeCount: blob.nodeCount,
+      edgeCount: blob.edgeCount,
+    };
+
+    console.log(`🧊 Baseline RESTORED (created ${blob.createdAt})`);
+    return blob;
+  }
+
+  function clear() {
+    localStorage.removeItem(KEY);
+    delete globalThis.__SOL_BASELINE_SNAP;
+    delete globalThis.__SOL_BASELINE_META;
+    console.log(`🗑️ Baseline CLEARED → localStorage["${KEY}"] removed`);
+  }
+
+  function exportJson() {
+    const blob = readBlob();
+    if (!blob) throw new Error(`PersistedBaseline: no baseline found at localStorage["${KEY}"]`);
+    downloadText(`sol_baseline_snap_${nowTag()}.json`, JSON.stringify(blob));
+    console.log("📦 Baseline JSON downloaded.");
+  }
+
+  function importJsonText(jsonText) {
+    const blob = JSON.parse(jsonText);
+    if (!blob || !blob.snap || !blob.createdAt) throw new Error("PersistedBaseline: invalid baseline JSON");
+    writeBlob(blob);
+    console.log(`📥 Baseline JSON imported → localStorage["${KEY}"]`, {
+      createdAt: blob.createdAt,
+      nodeCount: blob.nodeCount,
+      edgeCount: blob.edgeCount,
+    });
+  }
+
+  // Install global API
+  globalThis.SOLBaseline = {
+    key: KEY,
+    waitForPhysics,
+    ensure,
+    restore,
+    clear,
+    exportJson,
+    importJsonText,
+  };
+
+  // Auto-ensure on paste (captures once if missing, then restores)
+  console.log("🧊 Installing SOLBaseline…");
+  await ensure({ force: false, exportJson: true });
+  console.log("✅ SOLBaseline ready. Use SOLBaseline.ensure() or SOLBaseline.restore() anytime.");
+})().catch((err) => console.error("❌ PersistedBaseline error:", err));

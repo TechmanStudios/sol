@@ -1,0 +1,33 @@
+{
+    "artifact_digest_mismatch_count": 0,
+    "artifact_validation_failure_count": 0,
+    "audit_report_digest": "3e77329fa59243469f2ce38ea187b8c98310d6ec9788270e73e9a69b6088e828",
+    "audit_report_id": "SOL-WAVEGUIDE-RELEASE-CERTIFICATION-AUDIT-REPORT",
+    "audit_report_status": "audit_report_blocked",
+    "audit_report_version": 1,
+    "audited_bundles": [],
+    "blocked_audit_count": 1,
+    "blocked_audits": [],
+    "certification_bundle_digests": [],
+    "compiler_session_registry_digests": [],
+    "failed_audit_count": 0,
+    "failed_audits": [],
+    "manifest_digests": [],
+    "promotion_court_verdict_digests": [],
+    "promotion_record_digests": [],
+    "rc1_audit_count": 0,
+    "rc2_audit_count": 0,
+    "reason_codes": [
+        "RELEASE_AUDIT_BLOCKED",
+        "RELEASE_AUDIT_BUNDLE_INVALID",
+        "RELEASE_AUDIT_CASE_CANONICAL",
+        "RELEASE_AUDIT_FAILED",
+        "RELEASE_AUDIT_REPORT_BLOCKED"
+    ],
+    "release_gate_digests": [],
+    "release_registry_digests": [],
+    "runtime_capability_resolution_digests": [],
+    "software_validation_caveat": "Validation is shadow/sandbox software validation, not quantum hardware validation.",
+    "verified_audit_count": 0,
+    "verified_audits": []
+}

@@ -1,0 +1,31 @@
+{"ts": "2026-08-24T06:20:28.359663Z", "event": "session_start", "session_id": "CX-20260824-062028", "config": {"max_protocols": "3", "max_total_steps": "100000", "gap_type_filter": "None", "dry_run": "False", "out_dir": "/home/runner/work/sol/sol/data/cortex_sessions", "strict_guardrails": "True", "verbose": "True"}}
+{"ts": "2026-08-24T06:20:29.384200Z", "event": "meta_gap_prioritized", "top_gap": "unpromoted:CL-1", "boosted_priority": 4.7138}
+{"ts": "2026-08-24T06:20:29.395997Z", "event": "knowledge_scan", "total_gaps": 647, "by_type": {"unpromoted": 6, "unfalsified": 4, "replication": 343, "unexplored_param": 4, "open_question": 225, "weak_evidence": 64, "headless_baseline": 1}}
+{"ts": "2026-08-24T06:20:29.443263Z", "event": "gap_selected", "gap_id": "unpromoted:CL-1", "gap_type": "unpromoted", "priority": 2, "description": "CL-1 (Robust): Baseline restore is non-negotiable for comparability \u2014 no proof packet found"}
+{"ts": "2026-08-24T06:20:29.444332Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-1", "memory_context": "Memory nodes: 29 | Memory edges: 37 | Avg confidence: 0.454 | Tags: basin(29), entropy(29), rhoMax(29)"}
+{"ts": "2026-08-24T06:20:29.444511Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-1", "template": "replication"}
+{"ts": "2026-08-24T06:20:29.444549Z", "event": "hypothesis_generated", "hypothesis_id": "H-001", "template": "replication", "question": "Can headless sol-core reproduce: ?"}
+{"ts": "2026-08-24T06:20:29.444630Z", "event": "hypothesis_augmented", "hypothesis_id": "H-001", "memory_falsifiers": 2}
+{"ts": "2026-08-24T06:20:29.444979Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260824-062028/protocols/h-001_protocol.json"}
+{"ts": "2026-08-24T06:20:29.534040Z", "event": "execution_start", "hypothesis_id": "H-001", "series": "h-001"}
+{"ts": "2026-08-24T06:20:36.645104Z", "event": "execution_complete", "hypothesis_id": "H-001", "elapsed_sec": 7.11, "sanity_passed": true, "anomalies": [], "total_session_steps": 1500}
+{"ts": "2026-08-24T06:20:36.645320Z", "event": "meta_recorded", "hypothesis_id": "H-001", "template": "replication", "gap_type": "unpromoted"}
+{"ts": "2026-08-24T06:20:36.672074Z", "event": "gap_selected", "gap_id": "unpromoted:CL-2", "gap_type": "unpromoted", "priority": 2, "description": "CL-2 (Supported): Degree-power anchored CapLaw generalizes beyond superhubs and is dt-robust at coarse scale \u2014 no proof "}
+{"ts": "2026-08-24T06:20:36.672930Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-2", "memory_context": "Memory nodes: 29 | Memory edges: 37 | Avg confidence: 0.454 | Tags: basin(29), entropy(29), rhoMax(29)"}
+{"ts": "2026-08-24T06:20:36.673182Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-2", "template": "replication"}
+{"ts": "2026-08-24T06:20:36.673243Z", "event": "hypothesis_generated", "hypothesis_id": "H-002", "template": "parameter_sweep", "question": "How does damping affect entropy, flux, and mass over 200 steps?"}
+{"ts": "2026-08-24T06:20:36.673439Z", "event": "hypothesis_augmented", "hypothesis_id": "H-002", "memory_falsifiers": 2}
+{"ts": "2026-08-24T06:20:36.673680Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260824-062028/protocols/h-002_protocol.json"}
+{"ts": "2026-08-24T06:20:36.673712Z", "event": "execution_start", "hypothesis_id": "H-002", "series": "h-002"}
+{"ts": "2026-08-24T06:20:48.177035Z", "event": "execution_complete", "hypothesis_id": "H-002", "elapsed_sec": 11.5, "sanity_passed": true, "anomalies": [], "total_session_steps": 3900}
+{"ts": "2026-08-24T06:20:48.177288Z", "event": "meta_recorded", "hypothesis_id": "H-002", "template": "parameter_sweep", "gap_type": "unpromoted"}
+{"ts": "2026-08-24T06:20:48.209568Z", "event": "gap_selected", "gap_id": "unpromoted:CL-3", "gap_type": "unpromoted", "priority": 2, "description": "CL-3 (Robust): The system exhibits metastability; dt compresses time-to-failure into runaway mean-pressure basins \u2014 no p"}
+{"ts": "2026-08-24T06:20:48.210509Z", "event": "gap_enriched", "gap_id": "unpromoted:CL-3", "memory_context": "Memory nodes: 29 | Memory edges: 37 | Avg confidence: 0.454 | Tags: basin(29), entropy(29), rhoMax(29)"}
+{"ts": "2026-08-24T06:20:48.210653Z", "event": "meta_template_suggested", "gap_id": "unpromoted:CL-3", "template": "parameter_sweep"}
+{"ts": "2026-08-24T06:20:48.210687Z", "event": "hypothesis_generated", "hypothesis_id": "H-003", "template": "threshold_scan", "question": "At what value of damping does the system behavior qualitatively change?"}
+{"ts": "2026-08-24T06:20:48.210834Z", "event": "hypothesis_augmented", "hypothesis_id": "H-003", "memory_falsifiers": 2}
+{"ts": "2026-08-24T06:20:48.211074Z", "event": "protocol_saved", "path": "/home/runner/work/sol/sol/data/cortex_sessions/CX-20260824-062028/protocols/h-003_protocol.json"}
+{"ts": "2026-08-24T06:20:48.211106Z", "event": "execution_start", "hypothesis_id": "H-003", "series": "h-003"}
+{"ts": "2026-08-24T06:21:46.074840Z", "event": "execution_complete", "hypothesis_id": "H-003", "elapsed_sec": 57.86, "sanity_passed": true, "anomalies": [], "total_session_steps": 15900}
+{"ts": "2026-08-24T06:21:46.075082Z", "event": "meta_recorded", "hypothesis_id": "H-003", "template": "threshold_scan", "gap_type": "unpromoted"}
+{"ts": "2026-08-24T06:21:46.075109Z", "event": "budget_stop", "reason": "max_protocols reached (3/3)"}

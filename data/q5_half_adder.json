@@ -1,0 +1,1314 @@
+{
+  "probe_a": [
+    {
+      "damping": 0.2,
+      "combos": {
+        "(0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0,
+          "iton": 0,
+          "mass": 0,
+          "coherence": 0,
+          "entropy": 0
+        },
+        "(1,0)": {
+          "basin": "metatron[9]",
+          "basin_id": 9,
+          "basin_frac": 0.74,
+          "iton": 0.964,
+          "mass": 142.3973,
+          "coherence": 0.9984,
+          "entropy": 0.9513
+        },
+        "(0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0.0,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.0,
+          "entropy": 0.0
+        },
+        "(1,1)": {
+          "basin": "grail[1]",
+          "basin_id": 1,
+          "basin_frac": 1.0,
+          "iton": 0.986,
+          "mass": 153.1924,
+          "coherence": 0.9984,
+          "entropy": 0.9931
+        }
+      }
+    },
+    {
+      "damping": 1.0,
+      "combos": {
+        "(0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0,
+          "iton": 0,
+          "mass": 0,
+          "coherence": 0,
+          "entropy": 0
+        },
+        "(1,0)": {
+          "basin": "metatron[9]",
+          "basin_id": 9,
+          "basin_frac": 0.78,
+          "iton": 0.986,
+          "mass": 62.1737,
+          "coherence": 0.9856,
+          "entropy": 0.9863
+        },
+        "(0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0.0,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.0,
+          "entropy": 0.0
+        },
+        "(1,1)": {
+          "basin": "grail[1]",
+          "basin_id": 1,
+          "basin_frac": 0.92,
+          "iton": 1.0,
+          "mass": 64.0061,
+          "coherence": 0.9766,
+          "entropy": 0.9986
+        }
+      }
+    },
+    {
+      "damping": 2.0,
+      "combos": {
+        "(0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0,
+          "iton": 0,
+          "mass": 0,
+          "coherence": 0,
+          "entropy": 0
+        },
+        "(1,0)": {
+          "basin": "metatron[9]",
+          "basin_id": 9,
+          "basin_frac": 0.8,
+          "iton": 1.0,
+          "mass": 21.4505,
+          "coherence": 0.9013,
+          "entropy": 0.9994
+        },
+        "(0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0.0,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.0,
+          "entropy": 0.0
+        },
+        "(1,1)": {
+          "basin": "grail[1]",
+          "basin_id": 1,
+          "basin_frac": 0.7,
+          "iton": 1.0,
+          "mass": 21.3248,
+          "coherence": 0.842,
+          "entropy": 0.9989
+        }
+      }
+    },
+    {
+      "damping": 5.0,
+      "combos": {
+        "(0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0,
+          "iton": 0,
+          "mass": 0,
+          "coherence": 0,
+          "entropy": 0
+        },
+        "(1,0)": {
+          "basin": "metatron[9]",
+          "basin_id": 9,
+          "basin_frac": 0.42,
+          "iton": 1.0,
+          "mass": 0.7932,
+          "coherence": 0.6137,
+          "entropy": 0.9998
+        },
+        "(0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0.0,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.0,
+          "entropy": 0.0
+        },
+        "(1,1)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "basin_frac": 0.52,
+          "iton": 1.0,
+          "mass": 0.7841,
+          "coherence": 0.6125,
+          "entropy": 0.9994
+        }
+      }
+    },
+    {
+      "damping": 7.5,
+      "combos": {
+        "(0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0,
+          "iton": 0,
+          "mass": 0,
+          "coherence": 0,
+          "entropy": 0
+        },
+        "(1,0)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "basin_frac": 0.46,
+          "iton": 1.0,
+          "mass": 0.0499,
+          "coherence": 0.6392,
+          "entropy": 0.9998
+        },
+        "(0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0.0,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.0,
+          "entropy": 0.0
+        },
+        "(1,1)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "basin_frac": 0.54,
+          "iton": 1.0,
+          "mass": 0.0492,
+          "coherence": 0.6443,
+          "entropy": 0.9995
+        }
+      }
+    },
+    {
+      "damping": 10.0,
+      "combos": {
+        "(0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0,
+          "iton": 0,
+          "mass": 0,
+          "coherence": 0,
+          "entropy": 0
+        },
+        "(1,0)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "basin_frac": 0.5,
+          "iton": 1.0,
+          "mass": 0.0031,
+          "coherence": 0.6632,
+          "entropy": 0.9998
+        },
+        "(0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0.0,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.0,
+          "entropy": 0.0
+        },
+        "(1,1)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "basin_frac": 0.5,
+          "iton": 1.0,
+          "mass": 0.003,
+          "coherence": 0.6638,
+          "entropy": 0.9996
+        }
+      }
+    },
+    {
+      "damping": 12.0,
+      "combos": {
+        "(0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0,
+          "iton": 0,
+          "mass": 0,
+          "coherence": 0,
+          "entropy": 0
+        },
+        "(1,0)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "basin_frac": 0.5,
+          "iton": 1.0,
+          "mass": 0.0003,
+          "coherence": 0.673,
+          "entropy": 0.9998
+        },
+        "(0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0.0,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.0,
+          "entropy": 0.0
+        },
+        "(1,1)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "basin_frac": 0.54,
+          "iton": 1.0,
+          "mass": 0.0003,
+          "coherence": 0.6717,
+          "entropy": 0.9996
+        }
+      }
+    },
+    {
+      "damping": 15.0,
+      "combos": {
+        "(0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0,
+          "iton": 0,
+          "mass": 0,
+          "coherence": 0,
+          "entropy": 0
+        },
+        "(1,0)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "basin_frac": 0.5,
+          "iton": 1.0,
+          "mass": 0.0,
+          "coherence": 0.6804,
+          "entropy": 0.9998
+        },
+        "(0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0.0,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.0,
+          "entropy": 0.0
+        },
+        "(1,1)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "basin_frac": 0.58,
+          "iton": 1.0,
+          "mass": 0.0,
+          "coherence": 0.6773,
+          "entropy": 0.9996
+        }
+      }
+    },
+    {
+      "damping": 20.0,
+      "combos": {
+        "(0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0,
+          "iton": 0,
+          "mass": 0,
+          "coherence": 0,
+          "entropy": 0
+        },
+        "(1,0)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "basin_frac": 0.5,
+          "iton": 1.0,
+          "mass": 0.0,
+          "coherence": 0.6833,
+          "entropy": 0.9998
+        },
+        "(0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0.0,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.0,
+          "entropy": 0.0
+        },
+        "(1,1)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "basin_frac": 0.54,
+          "iton": 1.0,
+          "mass": 0.0,
+          "coherence": 0.6785,
+          "entropy": 0.9997
+        }
+      }
+    },
+    {
+      "damping": 30.0,
+      "combos": {
+        "(0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0,
+          "iton": 0,
+          "mass": 0,
+          "coherence": 0,
+          "entropy": 0
+        },
+        "(1,0)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "basin_frac": 0.32,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.6748,
+          "entropy": 0.0
+        },
+        "(0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0.0,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.0,
+          "entropy": 0.0
+        },
+        "(1,1)": {
+          "basin": "christine hayes[90]",
+          "basin_id": 90,
+          "basin_frac": 0.38,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.6692,
+          "entropy": 0.0
+        }
+      }
+    },
+    {
+      "damping": 40.0,
+      "combos": {
+        "(0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0,
+          "iton": 0,
+          "mass": 0,
+          "coherence": 0,
+          "entropy": 0
+        },
+        "(1,0)": {
+          "basin": "spirit heart[67]",
+          "basin_id": 67,
+          "basin_frac": 0.2,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.657,
+          "entropy": 0.0
+        },
+        "(0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0.0,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.0,
+          "entropy": 0.0
+        },
+        "(1,1)": {
+          "basin": "temple doors[6]",
+          "basin_id": 6,
+          "basin_frac": 0.18,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.6533,
+          "entropy": 0.0
+        }
+      }
+    },
+    {
+      "damping": 55.0,
+      "combos": {
+        "(0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0,
+          "iton": 0,
+          "mass": 0,
+          "coherence": 0,
+          "entropy": 0
+        },
+        "(1,0)": {
+          "basin": "christic[22]",
+          "basin_id": 22,
+          "basin_frac": 0.7,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.6691,
+          "entropy": 0.0
+        },
+        "(0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "basin_frac": 0.0,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.0,
+          "entropy": 0.0
+        },
+        "(1,1)": {
+          "basin": "heart sanctuary[69]",
+          "basin_id": 69,
+          "basin_frac": 0.24,
+          "iton": 0.0,
+          "mass": 0.0,
+          "coherence": 0.6102,
+          "entropy": 0.0
+        }
+      }
+    }
+  ],
+  "probe_b": [
+    {
+      "damping": 0.2,
+      "w0_tests": {
+        "2.0": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "grail[1]",
+          "differs": true,
+          "iton_a": 0.964,
+          "iton_ab": 0.979
+        },
+        "3.0": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "grail[1]",
+          "differs": true,
+          "iton_a": 0.964,
+          "iton_ab": 0.986
+        },
+        "5.0": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "grail[1]",
+          "differs": true,
+          "iton_a": 0.964,
+          "iton_ab": 0.986
+        },
+        "10.0": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "grail[1]",
+          "differs": true,
+          "iton_a": 0.964,
+          "iton_ab": 0.986
+        },
+        "20.0": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "grail[1]",
+          "differs": true,
+          "iton_a": 0.964,
+          "iton_ab": 0.986
+        },
+        "50.0": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "grail[1]",
+          "differs": true,
+          "iton_a": 0.964,
+          "iton_ab": 0.986
+        }
+      }
+    },
+    {
+      "damping": 5.0,
+      "w0_tests": {
+        "2.0": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": true,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "3.0": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": true,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "5.0": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": true,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "10.0": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": true,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "20.0": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": true,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "50.0": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": true,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        }
+      }
+    },
+    {
+      "damping": 10.0,
+      "w0_tests": {
+        "2.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "3.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "5.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "10.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "20.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "50.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        }
+      }
+    },
+    {
+      "damping": 15.0,
+      "w0_tests": {
+        "2.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "3.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "5.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "10.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "20.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "50.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        }
+      }
+    },
+    {
+      "damping": 20.0,
+      "w0_tests": {
+        "2.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 0.993
+        },
+        "3.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "5.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "10.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "20.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "50.0": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        }
+      }
+    },
+    {
+      "damping": 40.0,
+      "w0_tests": {
+        "2.0": {
+          "basin_a_only": "spirit heart[67]",
+          "basin_a_plus_b": "merkabah[48]",
+          "differs": true,
+          "iton_a": 0.0,
+          "iton_ab": 0.0
+        },
+        "3.0": {
+          "basin_a_only": "spirit heart[67]",
+          "basin_a_plus_b": "temple doors[6]",
+          "differs": true,
+          "iton_a": 0.0,
+          "iton_ab": 0.0
+        },
+        "5.0": {
+          "basin_a_only": "spirit heart[67]",
+          "basin_a_plus_b": "christine hayes[90]",
+          "differs": true,
+          "iton_a": 0.0,
+          "iton_ab": 0.0
+        },
+        "10.0": {
+          "basin_a_only": "spirit heart[67]",
+          "basin_a_plus_b": "christine hayes[90]",
+          "differs": true,
+          "iton_a": 0.0,
+          "iton_ab": 0.0
+        },
+        "20.0": {
+          "basin_a_only": "spirit heart[67]",
+          "basin_a_plus_b": "christine hayes[90]",
+          "differs": true,
+          "iton_a": 0.0,
+          "iton_ab": 0.0
+        },
+        "50.0": {
+          "basin_a_only": "spirit heart[67]",
+          "basin_a_plus_b": "christine hayes[90]",
+          "differs": true,
+          "iton_a": 0.0,
+          "iton_ab": 0.0
+        }
+      }
+    }
+  ],
+  "probe_c": [
+    {
+      "damping": 4.5,
+      "basin_a_only": "metatron[9]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": true,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.6288,
+      "coherence_ab": 0.6186,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9993
+    },
+    {
+      "damping": 5.0,
+      "basin_a_only": "metatron[9]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": true,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.6137,
+      "coherence_ab": 0.6125,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9994
+    },
+    {
+      "damping": 5.5,
+      "basin_a_only": "metatron[9]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": true,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.614,
+      "coherence_ab": 0.6146,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9994
+    },
+    {
+      "damping": 6.0,
+      "basin_a_only": "maia nartoomid[14]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": false,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.6148,
+      "coherence_ab": 0.6213,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9994
+    },
+    {
+      "damping": 6.5,
+      "basin_a_only": "maia nartoomid[14]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": false,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.622,
+      "coherence_ab": 0.6305,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9995
+    },
+    {
+      "damping": 7.0,
+      "basin_a_only": "maia nartoomid[14]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": false,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.6314,
+      "coherence_ab": 0.6381,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9995
+    },
+    {
+      "damping": 7.5,
+      "basin_a_only": "maia nartoomid[14]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": false,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.6392,
+      "coherence_ab": 0.6443,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9995
+    },
+    {
+      "damping": 8.0,
+      "basin_a_only": "maia nartoomid[14]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": false,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.6457,
+      "coherence_ab": 0.6495,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9995
+    },
+    {
+      "damping": 8.5,
+      "basin_a_only": "maia nartoomid[14]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": false,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.6511,
+      "coherence_ab": 0.654,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9995
+    },
+    {
+      "damping": 9.0,
+      "basin_a_only": "maia nartoomid[14]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": false,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.6558,
+      "coherence_ab": 0.6578,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9995
+    },
+    {
+      "damping": 9.5,
+      "basin_a_only": "maia nartoomid[14]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": false,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.6598,
+      "coherence_ab": 0.661,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9996
+    },
+    {
+      "damping": 10.0,
+      "basin_a_only": "maia nartoomid[14]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": false,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.6632,
+      "coherence_ab": 0.6638,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9996
+    },
+    {
+      "damping": 10.5,
+      "basin_a_only": "maia nartoomid[14]",
+      "basin_a_plus_b": "maia nartoomid[14]",
+      "differs": false,
+      "iton_a": 1.0,
+      "iton_ab": 1.0,
+      "coherence_a": 0.6662,
+      "coherence_ab": 0.6662,
+      "entropy_a": 0.9998,
+      "entropy_ab": 0.9996
+    }
+  ],
+  "probe_d": [
+    {
+      "damping": 0.2,
+      "encodings": {
+        "spirit_3x": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "grail[1]",
+          "differs": true,
+          "iton_a": 0.964,
+          "iton_ab": 0.986
+        },
+        "hub_wall": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "metatron[9]",
+          "differs": false,
+          "iton_a": 0.964,
+          "iton_ab": 0.764
+        },
+        "cold_inject": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "metatron[9]",
+          "differs": false,
+          "iton_a": 0.964,
+          "iton_ab": 0.936
+        },
+        "rev_seq": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "metatron[9]",
+          "differs": false,
+          "iton_a": 0.964,
+          "iton_ab": 0.979
+        }
+      }
+    },
+    {
+      "damping": 5.0,
+      "encodings": {
+        "spirit_3x": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": true,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "hub_wall": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "metatron[9]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 0.914
+        },
+        "cold_inject": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "metatron[9]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "rev_seq": {
+          "basin_a_only": "metatron[9]",
+          "basin_a_plus_b": "grail[1]",
+          "differs": true,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        }
+      }
+    },
+    {
+      "damping": 10.0,
+      "encodings": {
+        "spirit_3x": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "hub_wall": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "maia nartoomid[14]",
+          "differs": false,
+          "iton_a": 1.0,
+          "iton_ab": 0.914
+        },
+        "cold_inject": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "metatron[9]",
+          "differs": true,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        },
+        "rev_seq": {
+          "basin_a_only": "maia nartoomid[14]",
+          "basin_a_plus_b": "thothhorra[31]",
+          "differs": true,
+          "iton_a": 1.0,
+          "iton_ab": 1.0
+        }
+      }
+    }
+  ],
+  "probe_e": [
+    {
+      "damping": 0.2,
+      "basin_distinct": 3,
+      "iton_range": 0.986,
+      "coh_range": 0.9984,
+      "ent_range": 0.9931,
+      "channels": 4,
+      "channel_names": [
+        "basin",
+        "iton",
+        "coh",
+        "ent"
+      ]
+    },
+    {
+      "damping": 1.0,
+      "basin_distinct": 3,
+      "iton_range": 1.0,
+      "coh_range": 0.9856,
+      "ent_range": 0.9986,
+      "channels": 4,
+      "channel_names": [
+        "basin",
+        "iton",
+        "coh",
+        "ent"
+      ]
+    },
+    {
+      "damping": 2.0,
+      "basin_distinct": 3,
+      "iton_range": 1.0,
+      "coh_range": 0.9013,
+      "ent_range": 0.9994,
+      "channels": 4,
+      "channel_names": [
+        "basin",
+        "iton",
+        "coh",
+        "ent"
+      ]
+    },
+    {
+      "damping": 5.0,
+      "basin_distinct": 3,
+      "iton_range": 1.0,
+      "coh_range": 0.6137,
+      "ent_range": 0.9998,
+      "channels": 4,
+      "channel_names": [
+        "basin",
+        "iton",
+        "coh",
+        "ent"
+      ]
+    },
+    {
+      "damping": 7.5,
+      "basin_distinct": 2,
+      "iton_range": 1.0,
+      "coh_range": 0.6443,
+      "ent_range": 0.9998,
+      "channels": 4,
+      "channel_names": [
+        "basin",
+        "iton",
+        "coh",
+        "ent"
+      ]
+    },
+    {
+      "damping": 10.0,
+      "basin_distinct": 2,
+      "iton_range": 1.0,
+      "coh_range": 0.6638,
+      "ent_range": 0.9998,
+      "channels": 4,
+      "channel_names": [
+        "basin",
+        "iton",
+        "coh",
+        "ent"
+      ]
+    },
+    {
+      "damping": 12.0,
+      "basin_distinct": 2,
+      "iton_range": 1.0,
+      "coh_range": 0.673,
+      "ent_range": 0.9998,
+      "channels": 4,
+      "channel_names": [
+        "basin",
+        "iton",
+        "coh",
+        "ent"
+      ]
+    },
+    {
+      "damping": 15.0,
+      "basin_distinct": 2,
+      "iton_range": 1.0,
+      "coh_range": 0.6804,
+      "ent_range": 0.9998,
+      "channels": 4,
+      "channel_names": [
+        "basin",
+        "iton",
+        "coh",
+        "ent"
+      ]
+    },
+    {
+      "damping": 20.0,
+      "basin_distinct": 2,
+      "iton_range": 1.0,
+      "coh_range": 0.6833,
+      "ent_range": 0.9998,
+      "channels": 4,
+      "channel_names": [
+        "basin",
+        "iton",
+        "coh",
+        "ent"
+      ]
+    },
+    {
+      "damping": 30.0,
+      "basin_distinct": 3,
+      "iton_range": 0.0,
+      "coh_range": 0.6748,
+      "ent_range": 0.0,
+      "channels": 2,
+      "channel_names": [
+        "basin",
+        "coh"
+      ]
+    },
+    {
+      "damping": 40.0,
+      "basin_distinct": 3,
+      "iton_range": 0.0,
+      "coh_range": 0.657,
+      "ent_range": 0.0,
+      "channels": 2,
+      "channel_names": [
+        "basin",
+        "coh"
+      ]
+    },
+    {
+      "damping": 55.0,
+      "basin_distinct": 3,
+      "iton_range": 0.0,
+      "coh_range": 0.6691,
+      "ent_range": 0.0,
+      "channels": 2,
+      "channel_names": [
+        "basin",
+        "coh"
+      ]
+    }
+  ],
+  "probe_f": [
+    {
+      "damping": 0.2,
+      "combos": {
+        "(0,0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "mass": 0
+        },
+        "(0,0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "mass": 0.0
+        },
+        "(0,1,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "mass": 0.0
+        },
+        "(0,1,1)": {
+          "basin": "grail[1]",
+          "basin_id": 1,
+          "mass": 17.1941
+        },
+        "(1,0,0)": {
+          "basin": "metatron[9]",
+          "basin_id": 9,
+          "mass": 142.3973
+        },
+        "(1,0,1)": {
+          "basin": "grail[1]",
+          "basin_id": 1,
+          "mass": 160.4151
+        },
+        "(1,1,0)": {
+          "basin": "grail[1]",
+          "basin_id": 1,
+          "mass": 153.1924
+        },
+        "(1,1,1)": {
+          "basin": "grail[1]",
+          "basin_id": 1,
+          "mass": 171.2078
+        }
+      }
+    },
+    {
+      "damping": 5.0,
+      "combos": {
+        "(0,0,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "mass": 0
+        },
+        "(0,0,1)": {
+          "basin": "None",
+          "basin_id": null,
+          "mass": 0.0
+        },
+        "(0,1,0)": {
+          "basin": "None",
+          "basin_id": null,
+          "mass": 0.0
+        },
+        "(0,1,1)": {
+          "basin": "grail[1]",
+          "basin_id": 1,
+          "mass": 5.8133
+        },
+        "(1,0,0)": {
+          "basin": "metatron[9]",
+          "basin_id": 9,
+          "mass": 0.7932
+        },
+        "(1,0,1)": {
+          "basin": "grail[1]",
+          "basin_id": 1,
+          "mass": 6.5503
+        },
+        "(1,1,0)": {
+          "basin": "maia nartoomid[14]",
+          "basin_id": 14,
+          "mass": 0.7841
+        },
+        "(1,1,1)": {
+          "basin": "grail[1]",
+          "basin_id": 1,
+          "mass": 6.5881
+        }
+      }
+    }
+  ],
+  "collapse_d": 7.5,
+  "working_dampings": [
+    0.2,
+    1.0,
+    2.0,
+    5.0,
+    30.0,
+    40.0,
+    55.0
+  ],
+  "broken_dampings": [
+    7.5,
+    10.0,
+    12.0,
+    15.0,
+    20.0
+  ],
+  "total_trials": 190,
+  "elapsed_s": 1245.8
+}

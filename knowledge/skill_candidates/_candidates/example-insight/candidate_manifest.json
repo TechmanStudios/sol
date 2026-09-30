@@ -1,0 +1,17 @@
+{
+  "kind": "skill_candidate",
+  "slug": "example-insight",
+  "title": "Example Insight",
+  "description": "Example candidate created by CLI (smoke test).",
+  "domain": "general",
+  "tags": [
+    "smoke-test"
+  ],
+  "createdAt": "2026-01-27T10:14:20+00:00",
+  "sourceRuns": [],
+  "evidence": [
+    "(add a run bundle path here)"
+  ],
+  "triggers": [],
+  "status": "candidate"
+}

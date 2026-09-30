@@ -1,0 +1,133 @@
+{
+  "masterName": "master_map_v1",
+  "notes": "Runs multiple sweep classes sequentially (damp sweep, pressure sweep). Each sweep produces its own bundle plus a combined MASTER bundle.",
+  "defaults": {
+    "basins": [90, 82],
+    "replicates": 2,
+    "engine": {
+      "strictStepParams": true
+    },
+    "scenario": {
+      "type": "inject_then_watch",
+      "injectAmount": 120,
+      "preSteps": 2,
+      "preDt": 0.12
+    },
+    "measurement": {
+      "durationMs": 60000,
+      "everyMs": 200,
+      "dt": 0.12,
+      "includeBackgroundEdges": false
+    },
+    "timing": {
+      "timingMode": "tight",
+      "spinWaitMs": 2.0
+    }
+  },
+  "sweeps": [
+    {
+      "sweepName": "damp_sweep",
+      "notes": "Hold pressureC fixed; vary damping.",
+      "grid": {
+        "pressureC": [20],
+        "damping": [2, 4, 8, 12, 16]
+      }
+    },
+    {
+      "sweepName": "pressure_sweep",
+      "notes": "Hold damping fixed; vary pressureC.",
+      "grid": {
+        "pressureC": [5, 10, 15, 20, 25],
+        "damping": [8]
+      }
+    },
+    {
+      "sweepName": "injectAmount_sweep",
+      "notes": "Source term sweep (s_rho / injection magnitude).",
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "injectAmount": [0, 30, 60, 120, 180]
+      }
+    },
+    {
+      "sweepName": "dt_sweep",
+      "notes": "Integrator step size sweep (numerical stability / dynamics sensitivity).",
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "dt": [0.06, 0.12, 0.18]
+      }
+    },
+    {
+      "sweepName": "duration_sweep",
+      "notes": "Observation window sweep (short vs long-run).",
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "durationMs": [20000, 60000, 120000]
+      }
+    },
+    {
+      "sweepName": "backgroundEdge_flux_toggle",
+      "notes": "Flux measurement class: include vs exclude background edges.",
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "includeBackgroundEdges": [false, true]
+      }
+    },
+    {
+      "sweepName": "belief_bias_sweep",
+      "notes": "Dashboard belief slider semantics (v3_7_2): sets globalBias=bias and conductanceGamma=bias*beliefGammaMax. This is a key modeled variable not covered by pressure/damping alone.",
+      "replicates": 1,
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "beliefBias": [-1, -0.5, 0, 0.5, 1]
+      }
+    },
+    {
+      "sweepName": "psi_dynamics_sweep",
+      "notes": "Psi evolution knobs from dashboard SOLPhysics: psiDiffusion / psiRelaxBase. Uses per-run physics overrides.",
+      "replicates": 1,
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "physics": [
+          { "psiDiffusion": 0.3, "psiRelaxBase": 0.08 },
+          { "psiDiffusion": 0.6, "psiRelaxBase": 0.12 },
+          { "psiDiffusion": 0.9, "psiRelaxBase": 0.18 }
+        ]
+      }
+    },
+    {
+      "sweepName": "phase_gating_sweep",
+      "notes": "Phase gating knobs (phaseCfg.omega / surfaceTension / deepViscosity). Uses dotted-path physics overrides.",
+      "replicates": 1,
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "physics": [
+          { "phaseCfg.omega": 0.08, "phaseCfg.surfaceTension": 1.2, "phaseCfg.deepViscosity": 0.8 },
+          { "phaseCfg.omega": 0.15, "phaseCfg.surfaceTension": 1.2, "phaseCfg.deepViscosity": 0.8 },
+          { "phaseCfg.omega": 0.25, "phaseCfg.surfaceTension": 1.2, "phaseCfg.deepViscosity": 0.8 }
+        ]
+      }
+    },
+    {
+      "sweepName": "semantic_decay_sweep",
+      "notes": "Semantic mass decay knob (semanticCfg.decayRate) affects pressure law via semanticMass and long-run basin stability.",
+      "replicates": 1,
+      "grid": {
+        "pressureC": [20],
+        "damping": [8],
+        "physics": [
+          { "semanticCfg.decayRate": 0.0 },
+          { "semanticCfg.decayRate": 0.05 },
+          { "semanticCfg.decayRate": 0.12 }
+        ]
+      }
+    }
+  ]
+}

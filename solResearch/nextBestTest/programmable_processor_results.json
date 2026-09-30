@@ -1,0 +1,146 @@
+{
+  "or_passed": true,
+  "and_passed": true,
+  "seq_passed": true,
+  "suite_passed": true,
+  "results": {
+    "program_1_or": {
+      "trial_0_0": {
+        "inputs": [
+          0,
+          0
+        ],
+        "expected": 0,
+        "c_comp": -1.0,
+        "c_stored": 0,
+        "passed": true
+      },
+      "trial_1_0": {
+        "inputs": [
+          1,
+          0
+        ],
+        "expected": 1,
+        "c_comp": 1.0,
+        "c_stored": 1,
+        "passed": true
+      },
+      "trial_0_1": {
+        "inputs": [
+          0,
+          1
+        ],
+        "expected": 1,
+        "c_comp": 1.0,
+        "c_stored": 1,
+        "passed": true
+      },
+      "trial_1_1": {
+        "inputs": [
+          1,
+          1
+        ],
+        "expected": 1,
+        "c_comp": 1.0,
+        "c_stored": 1,
+        "passed": true
+      }
+    },
+    "program_2_and": {
+      "trial_0_0": {
+        "inputs": [
+          0,
+          0
+        ],
+        "expected": 0,
+        "c_comp": -1.0,
+        "c_stored": 0,
+        "passed": true
+      },
+      "trial_1_0": {
+        "inputs": [
+          1,
+          0
+        ],
+        "expected": 0,
+        "c_comp": -1.0,
+        "c_stored": 0,
+        "passed": true
+      },
+      "trial_0_1": {
+        "inputs": [
+          0,
+          1
+        ],
+        "expected": 0,
+        "c_comp": -1.0,
+        "c_stored": 0,
+        "passed": true
+      },
+      "trial_1_1": {
+        "inputs": [
+          1,
+          1
+        ],
+        "expected": 1,
+        "c_comp": 1.0,
+        "c_stored": 1,
+        "passed": true
+      }
+    },
+    "program_3_seq": {
+      "trial_0_0": {
+        "inputs": [
+          0,
+          0
+        ],
+        "expected_C1": 0,
+        "expected_C2": 0,
+        "c1_comp": -1.0,
+        "a1_copy": -1.0,
+        "c2_comp": -1.0,
+        "c_stored": 0,
+        "passed": true
+      },
+      "trial_1_0": {
+        "inputs": [
+          1,
+          0
+        ],
+        "expected_C1": 1,
+        "expected_C2": 0,
+        "c1_comp": 1.0,
+        "a1_copy": 1.0,
+        "c2_comp": -1.0,
+        "c_stored": 0,
+        "passed": true
+      },
+      "trial_0_1": {
+        "inputs": [
+          0,
+          1
+        ],
+        "expected_C1": 1,
+        "expected_C2": 1,
+        "c1_comp": 1.0,
+        "a1_copy": 1.0,
+        "c2_comp": -1.0,
+        "c_stored": 1,
+        "passed": true
+      },
+      "trial_1_1": {
+        "inputs": [
+          1,
+          1
+        ],
+        "expected_C1": 1,
+        "expected_C2": 1,
+        "c1_comp": 1.0,
+        "a1_copy": 1.0,
+        "c2_comp": -1.0,
+        "c_stored": 1,
+        "passed": true
+      }
+    }
+  }
+}

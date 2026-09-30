@@ -1,0 +1,17 @@
+{
+  "d50_static": 3.6,
+  "d50_phase_gated": 2.1,
+  "d50_multihop": 4.3,
+  "extended_dampings": {
+    "30.0": {
+      "accuracy_pct": 0.7,
+      "correct": 1,
+      "total": 140
+    },
+    "75.0": {
+      "accuracy_pct": 2.9,
+      "correct": 4,
+      "total": 140
+    }
+  }
+}

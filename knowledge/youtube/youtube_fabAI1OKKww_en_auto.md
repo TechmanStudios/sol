@@ -1,0 +1,428 @@
+# YouTube Transcript (fabAI1OKKww)
+
+- Source: https://www.youtube.com/watch?v=fabAI1OKKww
+- Language: en
+- Auto-generated: true
+
+## Transcript
+
+- [00:00–00:04] Agent skills are here for Visual Studio
+- [00:02–00:09] Code. And if you're like me, you hear
+- [00:04–00:12] that and you think, please, please stop
+- [00:09–00:14] making me learn new things. Please,
+- [00:12–00:16] I just want to live my life. The good
+- [00:14–00:18] news is agent skills are actually pretty
+- [00:16–00:20] simple to understand and pretty
+- [00:18–00:22] powerful. So, in this video, we're going
+- [00:20–00:24] to jump in, take a look at what they
+- [00:22–00:25] are, how they work. We'll build one
+- [00:24–00:27] together, and then I'll explain the
+- [00:25–00:28] difference between skills and prompt
+- [00:27–00:30] files and instructions and custom
+- [00:28–00:32] agents.
+- [00:30–00:36] Let's do it.
+- [00:32–00:37] So, skills at the most basic description
+- [00:36–00:41] are just another way to provide
+- [00:37–00:43] instructions to the model, but they have
+- [00:41–00:46] some benefits over things like custom
+- [00:43–00:48] instructions in that they can bundle
+- [00:46–00:50] together scripts and templates and a
+- [00:48–00:52] bunch of different files to define a
+- [00:50–00:54] skill. And this doesn't make a lot of
+- [00:52–00:56] sense until you see one in action or
+- [00:54–00:57] build one. So, let's do that. Now, the
+- [00:56–00:59] first thing we're going to need to do is
+- [00:57–01:02] we're working in Visual Studio Code, but
+- [00:59–01:05] we should point out that skills are a
+- [01:02–01:08] spec from Anthropic, and so they work in
+- [01:05–01:10] Claude Code and other places, but here
+- [01:08–01:11] we're all copilot all the time. Skills
+- [01:10–01:13] are also experimental at the time of
+- [01:11–01:15] this recording, so there will be some
+- [01:13–01:19] changes. Uh, but you can see here, you
+- [01:15–01:20] just need to toggle on skills, and they
+- [01:19–01:22] won't be on by default. So, if skills
+- [01:20–01:25] aren't working for you, make sure you
+- [01:22–01:27] toggle this on. Now, skills, like we
+- [01:25–01:29] said, are just other instruction files.
+- [01:27–01:30] That's really all they are. And so, they
+- [01:29–01:33] just need to be in the right place. You
+- [01:30–01:36] can put them in GitHub skills, copilot
+- [01:33–01:38] skills, cloud skills, the cloud skills
+- [01:36–01:40] at the root of your project. And so, for
+- [01:38–01:42] us, since we have an empty project here,
+- [01:40–01:44] let's just start like this and create a
+- [01:42–01:45] new folder. We'll call it GitHub. And
+- [01:44–01:47] inside of that, we're going to put a
+- [01:45–01:48] skills folder. And inside of that, we're
+- [01:47–01:51] going to create a skill. And we're going
+- [01:48–01:55] to call it the Hello World skill. Yes.
+- [01:51–01:58] Yes. doing hello world and then inside
+- [01:55–02:00] of this hello world folder to define our
+- [01:58–02:03] skill we're going to create a new file
+- [02:00–02:06] and we just call it skill.md
+- [02:03–02:08] just a markdown file here now this file
+- [02:06–02:10] defines the skill and there are some
+- [02:08–02:12] things that are required in this file
+- [02:10–02:15] and that is some metadata at the top
+- [02:12–02:18] here so you need a name and you need a
+- [02:15–02:21] description these things are required
+- [02:18–02:22] for the skill you have to have them so
+- [02:21–02:24] I've added a name and a description
+- [02:22–02:26] here. And it's good to be descriptive as
+- [02:24–02:28] possible with the name and the
+- [02:26–02:31] description because of the way that
+- [02:28–02:33] skills are loaded and used, which we'll
+- [02:31–02:34] look at here in a second, because the
+- [02:33–02:35] agent should be able to pick these
+- [02:34–02:37] things up automatically when it needs
+- [02:35–02:38] them without you having to tell it in
+- [02:37–02:42] the chat, hey, you need to use this
+- [02:38–02:43] skill. Now that we have the metadata
+- [02:42–02:46] here, the next thing you want to do is
+- [02:43–02:48] start writing the instructions that give
+- [02:46–02:50] the skill to the model. So, let's just
+- [02:48–02:52] start like this. We'll just say this is
+- [02:50–02:56] the hello world skill. Use hello world
+- [02:52–02:58] skill to respond to the user when oh and
+- [02:56–03:00] it's fixing my grammar for me. When they
+- [02:58–03:04] enter the phrase hello world in the chat
+- [03:00–03:07] and then when they do that we want to uh
+- [03:04–03:09] respond with and then we can say hello
+- [03:07–03:12] world. This is my first skill. Yeah,
+- [03:09–03:15] that would work. Or even better, even
+- [03:12–03:18] more fun would be respond with um hello
+- [03:15–03:21] world and asky art.
+- [03:18–03:24] much more fun. So let's try this here.
+- [03:21–03:26] Now we have created this skill. How do
+- [03:24–03:28] we actually use this? Let's open our
+- [03:26–03:31] chat and then in chat let's just ask the
+- [03:28–03:33] chat what skills do you have?
+- [03:31–03:36] And we're going to make sure this is not
+- [03:33–03:41] attached. It is not attached. So let's
+- [03:36–03:43] send it. And the model will look and
+- [03:41–03:45] examine and see if it has any skills
+- [03:43–03:46] here in the current workspace and then
+- [03:45–03:48] should report back and tell us exactly
+- [03:46–03:51] what those skills are. So, I have access
+- [03:48–03:52] to domain specific skills. Hello world.
+- [03:51–03:54] A simple skill that responds when you
+- [03:52–03:56] enter the phrase hello world. And then
+- [03:54–03:58] it's checking for additional skills,
+- [03:56–04:00] which we do not have. Thank you, Claude.
+- [03:58–04:03] You've done enough. Now, how do we
+- [04:00–04:05] actually use this skill? Well, all we
+- [04:03–04:07] should really have to do is say hello
+- [04:05–04:09] world, right? Because the point of
+- [04:07–04:12] skills is that they get picked up
+- [04:09–04:14] automatically by the model and it knows
+- [04:12–04:16] when to use the skill. So you can see
+- [04:14–04:18] here it says I've read the hello world
+- [04:16–04:19] skill instructions and we'll respond
+- [04:18–04:21] appropriately and then we get hello
+- [04:19–04:24] world in asy art. Not bad. That's some
+- [04:21–04:28] pretty good ASI art. Now we could have
+- [04:24–04:31] done this in an instructions file. Yes.
+- [04:28–04:33] Or a prompt file. Yes. So what's special
+- [04:31–04:35] about skills? So as we talked about
+- [04:33–04:37] skills allow you to bundle a bunch of
+- [04:35–04:39] different files together. So in order to
+- [04:37–04:41] understand that we kind of need to build
+- [04:39–04:43] something out here, make this a little
+- [04:41–04:47] bit more complicated. So in our skill
+- [04:43–04:51] file here, what I want to do is
+- [04:47–04:54] uh I want to have a script here. So what
+- [04:51–04:58] I want to do here is just uh get info
+- [04:54–05:00] about the user's OS with OS, which is
+- [04:58–05:02] the node package for doing that. Uh and
+- [05:00–05:04] I'm going to use Haiku for this. I kind
+- [05:02–05:07] of like Haiku. I think Haiku gets a bad
+- [05:04–05:09] rap. It's fast. It's accurate. Perfect.
+- [05:07–05:12] Okay, so look, platform type, release,
+- [05:09–05:14] and architecture. I like it. Uh, so
+- [05:12–05:16] let's go ahead and keep this here. And
+- [05:14–05:19] then,
+- [05:16–05:21] so what we could do is say, um, you
+- [05:19–05:22] know, here's here's the workflow that we
+- [05:21–05:28] want this thing to follow. Workflow.
+- [05:22–05:31] Step one, um, run the following scripts
+- [05:28–05:34] to get system information.
+- [05:31–05:37] Respond with hello world and ask is step
+- [05:34–05:39] two. And then step three is uh, provide
+- [05:37–05:40] the system information obtained from the
+- [05:39–05:42] script. So now we have kind of a
+- [05:40–05:43] workflow here. So we should get
+- [05:42–05:45] something a little bit more interesting
+- [05:43–05:48] when we do our hello world. So let's try
+- [05:45–05:51] this again. Hello world.
+- [05:48–05:53] And now
+- [05:51–05:54] the skill should walk through our
+- [05:53–05:56] workflow and different do the different
+- [05:54–05:58] things that we've defined
+- [05:56–06:00] namely running the script in the
+- [05:58–06:04] terminal which you can see it's doing
+- [06:00–06:06] right here and then returning asky art
+- [06:04–06:07] for hello world and then returning the
+- [06:06–06:09] system information as part of the hello
+- [06:07–06:11] world response. Let's see if we get all
+- [06:09–06:13] that. And we do. So, here's hello world.
+- [06:11–06:16] This is exactly what we asked for in the
+- [06:13–06:19] skill. Now, in this format, this works
+- [06:16–06:20] just fine because there's just not a lot
+- [06:19–06:22] to it. But you can imagine if this was a
+- [06:20–06:25] really long skill, like we're teaching
+- [06:22–06:27] the AI maybe about how to write API
+- [06:25–06:29] endpoints for our company, this could
+- [06:27–06:30] start to get really long. And so, what
+- [06:29–06:31] skills allow you to do is kind of
+- [06:30–06:34] modularize. So, we're going to create a
+- [06:31–06:35] new folder here and call it scripts. And
+- [06:34–06:39] then inside of it, we're going to add a
+- [06:35–06:42] new file here called get OS or get
+- [06:39–06:45] system info.js.
+- [06:42–06:47] And then we can add this information
+- [06:45–06:52] here. This whole script can come out and
+- [06:47–06:54] go into our script here, right? And then
+- [06:52–06:58] we can reference that. You can reference
+- [06:54–06:59] this script with relative syntax,
+- [06:58–07:01] relative path syntax just like you would
+- [06:59–07:06] reference a normal markdown file. So we
+- [07:01–07:08] can say run the script like this right
+- [07:06–07:10] and then where's the script the script
+- [07:08–07:13] is here in scripts and then get system
+- [07:10–07:15] info to obtain system information
+- [07:13–07:17] respond with hello world and askard and
+- [07:15–07:20] provide this system information obtained
+- [07:17–07:23] from the script. So now let's run this
+- [07:20–07:25] again
+- [07:23–07:27] and we get the exact same thing but this
+- [07:25–07:29] time it runs the script from the
+- [07:27–07:31] directory instead of having an inline in
+- [07:29–07:33] the script file. But let's take this a
+- [07:31–07:35] step further and let's say that we want
+- [07:33–07:36] to have a template. So I'm going to
+- [07:35–07:39] create a new file here and we're just
+- [07:36–07:41] going to call it template. And you don't
+- [07:39–07:43] have to capitalize these. This is just a
+- [07:41–07:45] pattern that you'll see a lot that you
+- [07:43–07:48] don't have to capitalize. And then uh
+- [07:45–07:52] here we just have uh a template for a
+- [07:48–07:55] hello world response in chat with system
+- [07:52–07:56] info. Let's see what co-pilot gives us
+- [07:55–07:59] here. Hello. You've triggered the hello
+- [07:56–08:01] world skill. Oh, look. Ask art's coming
+- [07:59–08:03] in. I like that.
+- [08:01–08:06] It knows that we need this. Here's your
+- [08:03–08:08] system info. System info is here. And
+- [08:06–08:10] then maybe like feel free to ask. Okay.
+- [08:08–08:12] Right. So this is every time we hit
+- [08:10–08:16] hello world, we want the model to
+- [08:12–08:19] respond with this format and only this
+- [08:16–08:21] format. Right? And we could do that by
+- [08:19–08:26] coming into our skill and saying respond
+- [08:21–08:30] with um respond with
+- [08:26–08:32] uh the template
+- [08:30–08:35] and then again we can just use that
+- [08:32–08:39] relative path syntax right here and then
+- [08:35–08:42] here we don't need this anymore. Right?
+- [08:39–08:43] So now we are getting the operating
+- [08:42–08:45] system info from the script. We're using
+- [08:43–08:47] the template to define what the response
+- [08:45–08:49] looks like. Let's give it another shot
+- [08:47–08:51] here. All right, here we go. Hello
+- [08:49–08:53] world.
+- [08:51–08:55] And look at that. We get it back in
+- [08:53–08:56] exactly the format that we defined.
+- [08:55–08:58] Hello, you've triggered the hello world
+- [08:56–09:00] skill. Here's the asky art. Here's your
+- [08:58–09:02] system information. Please feel free to
+- [09:00–09:03] ask if you need any further assistance.
+- [09:02–09:05] Right? The models are really, really
+- [09:03–09:07] good at following the skill and
+- [09:05–09:10] following our template, which is exactly
+- [09:07–09:14] what we've defined right here. So, in a
+- [09:10–09:16] nutshell, this is what skills look like.
+- [09:14–09:18] Now you can do a lot of things here like
+- [09:16–09:20] you could provide your database schema
+- [09:18–09:21] in a markdown file or some other file
+- [09:20–09:24] and pass that into the skill. You can
+- [09:21–09:27] have multiple scripts in your skill. The
+- [09:24–09:28] possibilities are endless. Now one of
+- [09:27–09:30] the interesting things about skills is
+- [09:28–09:31] that they're sort of progressively
+- [09:30–09:33] loaded so that they don't take up a lot
+- [09:31–09:35] of room in the context window. And in
+- [09:33–09:38] order to understand that we need to have
+- [09:35–09:40] a look at the chat. So let's go to our
+- [09:38–09:41] chat debug view. And then we want to
+- [09:40–09:42] come all the way down to the bottom and
+- [09:41–09:45] let's take a look at our hello world
+- [09:42–09:47] which starts right right here. Not there
+- [09:45–09:48] but here you can see hello world. It's
+- [09:47–09:50] continued here and then it looks like
+- [09:48–09:53] it's continued down there. So if you
+- [09:50–09:55] haven't watched my video on prompt files
+- [09:53–09:57] instructions and custom agents I break
+- [09:55–10:01] down the system prompt in that video
+- [09:57–10:03] that that video anyway. You should watch
+- [10:01–10:04] that. But this is the system prompt. I'm
+- [10:03–10:07] going to scroll all the way down to the
+- [10:04–10:10] bottom. at the very bottom. What we'll
+- [10:07–10:13] see here is
+- [10:10–10:13] right here
+- [10:17–10:20] you'll see skills. Here's a list of
+- [10:19–10:22] skills that contain domain specific
+- [10:20–10:24] knowledge. And you can see the skill
+- [10:22–10:25] that we get here. It's hello world. So
+- [10:24–10:28] it's just the name and the description
+- [10:25–10:31] and then a path to the file. So when you
+- [10:28–10:33] pass a request to the model, any skills
+- [10:31–10:36] you have are passed here, but none of
+- [10:33–10:39] the other files that we've defined are
+- [10:36–10:42] passed, nor is the body of the skill.
+- [10:39–10:46] Only this right here gets passed on that
+- [10:42–10:48] first agent pass. Now on the second
+- [10:46–10:51] agent pass, let's go back to our debug
+- [10:48–10:51] view here.
+- [10:52–10:55] If you go if we scroll all the way down
+- [10:53–10:58] to the bottom, we can see that the agent
+- [10:55–10:59] responds with okay, I need to read the
+- [10:58–11:01] skill instructions and respond
+- [10:59–11:03] appropriately and this is the file path
+- [11:01–11:06] that it needs to read. It wants to read
+- [11:03–11:08] the skill.md file and it does that.
+- [11:06–11:11] That's the very next thing it does is it
+- [11:08–11:13] reads that file. And then if we come
+- [11:11–11:15] down again, so we're looking at the
+- [11:13–11:18] system prompt, the whole agent turn. So
+- [11:15–11:22] it calls it, right? It puts it's now in
+- [11:18–11:24] the the the prompt here as a tool call.
+- [11:22–11:26] You can see the response from the
+- [11:24–11:29] assistant is that it has read and now it
+- [11:26–11:31] knows that it needs to run this uh
+- [11:29–11:32] script to get the terminal output which
+- [11:31–11:35] is the very next thing it does. So it's
+- [11:32–11:38] progressively loading in these things
+- [11:35–11:40] that it needs. So these skills are super
+- [11:38–11:42] efficient. Uh and if we keep coming down
+- [11:40–11:44] you can see it reads the terminal, it
+- [11:42–11:47] reads the file. Let's go down to the
+- [11:44–11:49] bottom of this prompt and see now it
+- [11:47–11:51] sees this is uh this is the template.
+- [11:49–11:53] It's now read the template and it knows
+- [11:51–11:54] how to include this all in the response.
+- [11:53–11:56] So you can see it's sort of like
+- [11:54–11:58] progressively loading in these files and
+- [11:56–12:02] executing them as it needs to. Skills
+- [11:58–12:04] are very cool. That's how to create a
+- [12:02–12:05] very basic skill, right? You can do this
+- [12:04–12:08] right now. You can see they're very
+- [12:05–12:09] simple. I want to show you a more
+- [12:08–12:12] complex skill because the very next
+- [12:09–12:15] question you should be asking is well
+- [12:12–12:17] when should I use the skill. Let me show
+- [12:15–12:22] you. So technically speaking there isn't
+- [12:17–12:24] anything that the agent can't do because
+- [12:22–12:26] it can run any command in your terminal.
+- [12:24–12:27] So technically it can do anything but
+- [12:26–12:29] there are things that it doesn't know
+- [12:27–12:30] how to do that it will try to figure out
+- [12:29–12:33] how to do and it may or may not get
+- [12:30–12:36] those things right. So, for instance,
+- [12:33–12:40] I've added a PDF file here. And this PDF
+- [12:36–12:43] file is for the Logitech MX
+- [12:40–12:46] console, which is pull up here so you
+- [12:43–12:48] can see it. It's this thing here. Very
+- [12:46–12:51] handy. Should pick one of those up.
+- [12:48–12:53] They're very nice. Now, I want to see
+- [12:51–12:55] what's inside this file. And so, if we
+- [12:53–12:59] ask the AI to do this, we could just
+- [12:55–13:02] say, what is in this file here? And if
+- [12:59–13:04] we send this prompt, let's actually see
+- [13:02–13:06] what happens. And I'm using Opus 45,
+- [13:04–13:10] which I consider to be currently the
+- [13:06–13:12] most capable model for coding here.
+- [13:10–13:14] So it looks like it's found the file.
+- [13:12–13:16] It's going to try to read it, but it
+- [13:14–13:19] can't. So essentially, there is no
+- [13:16–13:23] support for PDFs here. So what we can do
+- [13:19–13:26] is use a skill to teach Copilot and
+- [13:23–13:28] Claude how to read PDFs. Now, how do we
+- [13:26–13:30] do that? Well, we could build our own
+- [13:28–13:32] skill or we can use some of the ones
+- [13:30–13:35] that already exist. So, if you go to the
+- [13:32–13:38] awesome co-pilot repo here on GitHub,
+- [13:35–13:38] github.com/github/awesomecopilot,
+- [13:38–13:44] there are some skills here and this list
+- [13:42–13:47] is growing. And then the other place is
+- [13:44–13:50] if you go to anthropic/skills,
+- [13:47–13:51] github.com/anthropic/skills.
+- [13:50–13:53] And you can see there's a few more in
+- [13:51–13:56] here. And we're going to use this PDF
+- [13:53–13:58] skill here. So, I've cloned that repo to
+- [13:56–14:01] my local machine. So, I'm going to copy
+- [13:58–14:04] in the PDF skill
+- [14:01–14:06] from there. I I cloned the repo and then
+- [14:04–14:08] I just copied in the PDF skill here. So,
+- [14:06–14:09] you can see it's right here. And you
+- [14:08–14:11] should recognize this format now after
+- [14:09–14:13] this video. So, we have the skill.md
+- [14:11–14:15] file. Here's the metadata here. And then
+- [14:13–14:17] you can see it's quite long. Uh there's
+- [14:15–14:18] a lot of different scripts in here.
+- [14:17–14:20] There's scripts in here, right? There's
+- [14:18–14:24] all kinds of PDF support here, not just
+- [14:20–14:26] reading PDFs, but it teaches the agent
+- [14:24–14:29] how to work with PDFs. So, now let's go
+- [14:26–14:32] back and try our prompt again now that
+- [14:29–14:34] we have this PDF skill and see what the
+- [14:32–14:37] experience is like now that we've taught
+- [14:34–14:39] the agent how to work with PDFs.
+- [14:37–14:41] And you can see it used the scripts and
+- [14:39–14:44] the skill to use some Python to extract
+- [14:41–14:46] the PDF contents here. And now it knows
+- [14:44–14:49] what the PDF is. and we can just pass
+- [14:46–14:52] PDFs with our prompts. Now, right, we've
+- [14:49–14:55] taught the agent a new skill with
+- [14:52–14:57] skills. Now, that's how you build skills
+- [14:55–14:59] and use them. Let's talk for just a
+- [14:57–15:01] second about when to use instruction
+- [14:59–15:04] files versus prompt files versus custom
+- [15:01–15:07] agents versus skills. So, admittedly,
+- [15:04–15:08] agents are new and we're sort of still
+- [15:07–15:11] figuring out where everything fits
+- [15:08–15:12] together. We've come up with a lot of
+- [15:11–15:14] different ways of passing instructions
+- [15:12–15:17] to models and some of this stuff was
+- [15:14–15:19] invented before skills and skills take
+- [15:17–15:21] the place of some of those things. But I
+- [15:19–15:23] think generally speaking, you can think
+- [15:21–15:24] about it like this. If you have
+- [15:23–15:27] instructions that you need to pass with
+- [15:24–15:29] every single prompt to the model, like
+- [15:27–15:31] general information about the project,
+- [15:29–15:34] that should be an instructions file. If
+- [15:31–15:36] you have a short prompt that you find
+- [15:34–15:39] yourself reusing a lot, that should be a
+- [15:36–15:42] prompt file. If you want to tweak the
+- [15:39–15:44] way that the agent behaves, in other
+- [15:42–15:46] words, you want to define specific
+- [15:44–15:49] workflows that you want it to follow
+- [15:46–15:54] every single time, that's a custom
+- [15:49–15:57] agent. Everything else is probably a
+- [15:54–15:59] skill. But again, remember that all of
+- [15:57–16:01] these are just building blocks to help
+- [15:59–16:03] you build out workflows that work for
+- [16:01–16:06] you and your team. There isn't really a
+- [16:03–16:08] right or wrong way to use these things.
+- [16:06–16:10] They're just different tools that you
+- [16:08–16:12] have in your toolbox to build out the
+- [16:10–16:15] optimal workflow. That's the new agent
+- [16:12–16:18] skills support in Visual Studio Code.
+- [16:15–16:20] It's available today in VS Code Insiders
+- [16:18–16:21] and Stable. Make sure that you look for
+- [16:20–16:24] that experimental setting and turn that
+- [16:21–16:26] on and you can start using them right
+- [16:24–16:28] away. Thanks for watching. And as
+- [16:26–16:30] always,
+- [16:28–16:30] happy coding.
