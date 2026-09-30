@@ -1,0 +1,96 @@
+1
+00:00:00,380 --> 00:00:04,561
+Agent migrations are often approved from polished final answers.
+
+2
+00:00:04,561 --> 00:00:09,206
+That can hide weak evidence, broken constraints, or unresolved contradictions.
+
+3
+00:00:09,206 --> 00:00:14,780
+SOL Lens makes the observable workflow inspectable before a team promotes it.
+
+4
+00:00:15,860 --> 00:00:22,226
+SOL Lens is a developer workbench for engineering teams comparing reference and candidate agents.
+
+5
+00:00:22,226 --> 00:00:34,050
+It builds on earlier SOL Engine research; during Build Week, I turned that foundation into this runnable packet workbench, deterministic court, teaching gallery, and replay module.
+
+6
+00:00:35,130 --> 00:00:38,032
+I can start without authoring JSON.
+
+7
+00:00:38,032 --> 00:00:51,090
+These seven browser-local fixtures cover grounded answers, tool fan-out, self-correction, handoffs, conflict, and program-scale traces, while using the same validator and scoring path as an imported packet.
+
+8
+00:00:52,170 --> 00:00:58,349
+A Logon is one observable step: a request, tool result, check, contradiction, or output.
+
+9
+00:00:58,349 --> 00:01:03,204
+Typed edges preserve how those steps support or constrain one another.
+
+10
+00:01:03,204 --> 00:01:11,149
+SOL Lens validates the packet, lays out the graph, scores evidence, coherence, and contradiction, then applies explicit gates.
+
+11
+00:01:11,149 --> 00:01:14,680
+This grounded trace moves from HOLD to PROMOTE.
+
+12
+00:01:15,760 --> 00:01:18,033
+Now I load the conflicting-sources fixture.
+
+13
+00:01:18,033 --> 00:01:24,472
+Its candidate contradiction score reaches point two four, so the same court moves from PROMOTE to QUARANTINE.
+
+14
+00:01:24,472 --> 00:01:31,290
+That is the product's value: a busy-looking agent cannot hide a weak evidence structure behind a polished answer.
+
+15
+00:01:32,370 --> 00:01:36,467
+The proof packet preserves the authoritative deterministic result.
+
+16
+00:01:36,467 --> 00:01:41,588
+Manifold Replay separately visualizes density, pressure, conductance, and edge flux.
+
+17
+00:01:41,588 --> 00:01:49,270
+Three Step clicks change the telemetry, but this experimental layer never rewrites the QUARANTINE verdict.
+
+18
+00:01:50,350 --> 00:01:59,739
+During Build Week, I used Codex to implement the versioned packet validator, deterministic graph layout, seven fixtures, replay engine, and thirty-seven-test suite.
+
+19
+00:01:59,739 --> 00:02:08,275
+The first judge flow assumed unfamiliar JSON, so I retained the product decision to replace it with one-click teaching packets.
+
+20
+00:02:08,275 --> 00:02:15,530
+I also kept replay state separate from the court so an experimental visualization cannot change the decision.
+
+21
+00:02:16,610 --> 00:02:19,427
+GPT-5.6 powered those Codex build sessions.
+
+22
+00:02:19,427 --> 00:02:27,878
+It received the build guide, repository, test failures, and interface feedback, then helped produce patches, tests, and revisions.
+
+23
+00:02:27,878 --> 00:02:35,860
+It is a build-time development model here, not a live evaluator; this submitted browser app remains deterministic.
+
+24
+00:02:36,940 --> 00:02:49,560
+For engineering teams, that means migration decisions backed by portable evidence instead of final-answer vibes: visible, deterministic, and independently reviewable before a workflow reaches production.
+

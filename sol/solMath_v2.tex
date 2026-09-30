@@ -1,0 +1,403 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\geometry{margin=1in}
+
+\title{Self-Organizing Logos (SOL): Mathematical Foundation v2}
+\author{Bryan Tucker\\
+New Earth Ark Foundation\\
+Techman Studios}
+\date{December 2025}
+
+\begin{document}
+\maketitle
+
+\section*{1. Notation and Conceptual Mapping}
+
+Let $(\mathcal{M}, g)$ be a low-dimensional Riemannian manifold serving as a conceptual state-space.
+\begin{itemize}
+  \item $x \in \mathcal{M}$ is a conceptual ``location'' (state).
+  \item $t \ge 0$ is interaction time.
+  \item $g$ is the Riemannian metric inducing gradient $\nabla_{\mathcal{M}}$ and divergence $\nabla_{\mathcal{M}}\cdot$.
+\end{itemize}
+
+We define the SOL semantic state field
+\begin{equation}
+u(x,t) \;=\; \big(\rho(x,t),\, v(x,t),\, \phi(x,t)\big),
+\end{equation}
+where:
+\begin{itemize}
+  \item $\rho(x,t)\ge 0$ is semantic mass / activation density,
+  \item $v(x,t)\in T_x\mathcal{M}$ is a semantic flow (velocity) field,
+  \item $\phi(x,t)\in\mathbb{R}$ is a semantic potential (a structured ``drive'' that can shape flow).
+\end{itemize}
+
+We also track semantic modes (topics/roles/perspectives) via
+\begin{equation}
+\psi(x,t)\in\mathbb{R}^k.
+\end{equation}
+
+\subsection*{1.1 Notation Summary}
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Symbol & Meaning \\
+\midrule
+$\mathcal{M}$ & Conceptual manifold (semantic state-space) \\
+$g$ & Riemannian metric on $\mathcal{M}$ \\
+$x\in\mathcal{M}$ & Conceptual location \\
+$t\ge 0$ & Interaction time \\
+$u(x,t)=(\rho,v,\phi)$ & Semantic state field \\
+$\rho(x,t)$ & Semantic mass / activation density \\
+$v(x,t)$ & Semantic flow (tangent vector field) \\
+$\phi(x,t)$ & Semantic potential \\
+$p(x,t)$ & Semantic pressure / Information Density Constraint \\
+$\Pi(\cdot)$ & Equation of state mapping density to pressure \\
+$\psi(x,t)\in\mathbb{R}^k$ & Semantic mode vector \\
+$K$ & Diffusion tensor / operator for $\psi$ \\
+$R(\psi;\cdot)$ & Reaction term for $\psi$ (node-wise / local) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{2. Governing Equations on the Manifold}
+
+\subsection*{2.1 Continuity (Mass Conservation)}
+Semantic density evolves via a continuity equation:
+\begin{equation}
+\partial_t \rho \;+\; \nabla_{\mathcal{M}}\cdot(\rho v) \;=\; s_\rho(x,t),
+\end{equation}
+where $s_\rho$ is an optional source/sink capturing external stimulation (queries, observations, or injected attention).
+
+\subsection*{2.2 Momentum (Inertia + Forcing + Regulation)}
+We introduce a semantic pressure field $p:\mathcal{M}\times[0,\infty)\to\mathbb{R}$ interpreted as an Information Density Constraint.
+
+\paragraph{Definition (Information Density Constraint).}
+When too many concepts crowd into the same semantic region (high $\rho(x,t)$), internal pressure rises and forces flow to diverge toward other regions.
+We posit a monotone equation of state
+\begin{equation}
+p(x,t) \;=\; \Pi\big(\rho(x,t);\psi(x,t)\big),
+\qquad \partial_\rho \Pi(\rho;\psi)\ge 0.
+\end{equation}
+
+A practical default (stable, smooth, monotone) is, for constants $c>0$ and $\rho_0>0$,
+\begin{equation}
+\Pi_0(\rho) \;=\; c\,\log\!\big(1+\rho/\rho_0\big),
+\end{equation}
+or, in ``stiffer'' regimes, a porous-medium style law $\Pi_0(\rho)=c\rho^\gamma$ with $\gamma>1$.
+
+We allow modes $\psi$ to \emph{tilt} regulation (topic/role-dependent capacity) via, e.g.,
+\begin{equation}
+\Pi(\rho;\psi)\;=\;\Pi_0(\rho)\;+\;\beta^\top \psi,
+\end{equation}
+with $\beta\in\mathbb{R}^k$.
+
+The momentum equation is modeled after compressible flow with optional damping/viscosity for stability:
+\begin{equation}\label{eq:momentum_euclid}
+\rho\Big(\partial_t v + (v\cdot\nabla_{\mathcal{M}})v\Big)
+\;=\;
+-\nabla_{\mathcal{M}} p
+\;-\;\alpha \rho v
+\;+\;\mu \Delta_{\mathcal{M}} v
+\;+\; f(x,t;\psi),
+\end{equation}
+where $\alpha\ge 0$ is a friction term, $\mu\ge 0$ is a (semantic) viscosity, $\Delta_{\mathcal{M}}$ is the Laplace--Beltrami operator, and $f$ is an external forcing induced by inputs or controls.
+Figure~\ref{fig:manifold} provides a schematic illustration of how high-density regions induce semantic pressure and deflect the flow field.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{fig1.png}
+    \caption{Conceptual visualization of the Riemannian manifold $(\mathcal{M}, g)$. A high-density conceptual cluster (the glowing peak) creates a region of high semantic pressure. The semantic flow vector field $v(x,t)$, represented by the arrows, is shown advecting (diverging and curving) around this high-pressure zone, rather than passing directly through it, illustrating the Information Density Constraint.}
+    \label{fig:manifold}
+\end{figure}
+
+\subsection*{2.3 Conservative vs. Circulatory Flow (Resolving ``Potential Flow'' vs ``Vortices'')}
+To retain the interpretability of a potential $\phi$ \emph{and} still allow circulation (vortices/eddies as structured recurrence),
+we decompose:
+\begin{equation}
+v \;=\; -\nabla_{\mathcal{M}}\phi \;+\; w,
+\qquad \nabla_{\mathcal{M}}\cdot w = 0.
+\end{equation}
+Here $-\nabla_{\mathcal{M}}\phi$ is the conservative (gradient-driven) component, while $w$ is a divergence-free component that can carry
+circulation around semantic loops without changing local mass directly.
+
+\section*{3. Semantic Modes as Reaction--Diffusion}
+We evolve semantic modes $\psi(x,t)\in\mathbb{R}^k$ by a reaction--diffusion system:
+\begin{equation}
+\partial_t \psi \;=\; \nabla_{\mathcal{M}}\cdot\big(K\nabla_{\mathcal{M}}\psi\big)\;+\;R(\psi;\rho,\phi),
+\end{equation}
+where $K$ is a positive (semi-)definite diffusion tensor/operator.
+
+A concrete, widely-used example for $R$ is competitive logistic dynamics (component-wise),
+\begin{equation}
+R_a(\psi;\rho) \;=\; r_a(\rho)\,\psi_a(1-\psi_a)\;-\;\sum_{b\ne a}\kappa_{ab}\psi_a\psi_b,
+\qquad a=1,\dots,k,
+\end{equation}
+with $\kappa_{ab}\ge 0$ and a density-gated growth rate such as
+\begin{equation}
+r_a(\rho)=\sigma\big(\rho-\rho_a^\star\big),
+\end{equation}
+where $\sigma(\cdot)$ is a smooth step (e.g., logistic).
+
+\paragraph{Coupling back into flow.}
+Beyond the pressure tilt above, $\psi$ can reshape the effective geometry/permeability of the manifold (or graph below),
+e.g., by modulating weights so that certain modes preferentially open or close semantic channels.
+
+\section*{4. Graph-Based Discretization (Manifold $\to$ Semantic Graph)}
+
+In practice, $\mathcal{M}$ is represented by a semantic graph $G=(V,E)$, where vertices are concept/token embeddings and edges encode similarity
+or learned relational structure. Let $n=|V|$ and $m=|E|$.
+
+\subsection*{4.0 The Incidence Matrix Approach (Implementation-Oriented Discretization)}
+The key modeling choice is to place transport dynamics on \emph{edges} via an edge flux $j$, rather than attempting to define a node-wise velocity.
+This matches a finite-volume viewpoint: node variables such as $\rho$ are conserved quantities, while movement occurs across edges as flux.
+Thus the continuity update becomes unambiguous and conservative:
+\begin{equation}
+\dot{\rho} + B^\top j = s_\rho.
+\end{equation}
+A practical challenge is the discrete nonlinear advection term $A(j,\rho)$ used in edge-momentum updates (Section~4.4), which typically requires
+stabilization (e.g., upwinding / controlled numerical diffusion) for robustness.
+
+\subsection*{4.1 Incidence-Matrix Calculus (Node Fields + Edge Fluxes)}
+Fix an arbitrary orientation of edges and define the (signed) incidence matrix $B\in\mathbb{R}^{m\times n}$:
+for an edge $e=(i\to j)$, the row $B_{e\cdot}$ has $-1$ at column $i$, $+1$ at column $j$, and zeros elsewhere.
+
+Let $W_e=\mathrm{diag}(w_e)\in\mathbb{R}^{m\times m}$ be edge weights ($w_e>0$). Define:
+\begin{align}
+\text{Graph gradient:}\quad & \nabla_G \phi \;=\; B\phi \in\mathbb{R}^m,\\
+\text{Graph divergence:}\quad & \nabla_G\cdot j \;=\; B^\top j \in\mathbb{R}^n,\\
+\text{Graph Laplacian:}\quad & L \;=\; B^\top W_e B \in\mathbb{R}^{n\times n}.
+\end{align}
+
+We discretize node fields:
+\begin{equation}
+\rho(t)\in\mathbb{R}^n,\quad \phi(t)\in\mathbb{R}^n,\quad \psi(t)\in\mathbb{R}^{n\times k},
+\end{equation}
+and treat transport primarily through an \emph{edge flux} $j(t)\in\mathbb{R}^m$.
+
+\subsection*{4.2 Discrete Continuity}
+A graph finite-volume style continuity equation is:
+\begin{equation}\label{eq:graph_continuity}
+\dot{\rho} \;+\; B^\top j \;=\; s_\rho(t),
+\end{equation}
+where $s_\rho(t)\in\mathbb{R}^n$ is an optional injection/removal term.
+
+\subsection*{4.3 Flux Model: Conservative + Circulatory Components}
+We define pressure node-wise:
+\begin{equation}
+p_i(t)=\Pi\big(\rho_i(t);\psi_i(t)\big),\qquad p(t)\in\mathbb{R}^n.
+\end{equation}
+
+A conservative (potential-driven) flux is
+\begin{equation}
+j^{(c)} \;=\; -W_e\,B\phi.
+\end{equation}
+
+To allow structured circulation around graph cycles, we add a residual flux $j^{(r)}$:
+\begin{equation}
+j \;=\; j^{(c)} \;+\; j^{(r)}.
+\end{equation}
+
+We constrain $j^{(r)}$ to be divergence-free (no mass creation/destruction):
+\begin{equation}\label{eq:jr_divfree}
+B^\top j^{(r)} = 0.
+\end{equation}
+
+When a cycle basis matrix $C$ (cycle-edge incidence) is available, one may measure circulation via
+\begin{equation}
+\mathrm{curl}_G(j^{(r)}) \;\equiv\; Cj^{(r)}.
+\end{equation}
+
+\subsection*{4.4 Edge-Momentum (One Practical Discretization)}
+To keep an explicit inertia term while living in the edge-flux world, treat $j$ as the primary dynamical variable:
+\begin{equation}\label{eq:edge_momentum}
+\dot{j} \;+\; A(j,\rho) \;=\; -W_e\,B p \;-\;\alpha j \;+\; f_e(t),
+\end{equation}
+where:
+\begin{itemize}
+  \item $A(j,\rho)$ is a discrete nonlinear advection term (implemented, e.g., on the line graph or via upwinded edge-to-edge transport),
+  \item $-\;W_eBp$ is the discrete pressure-gradient forcing,
+  \item $f_e(t)\in\mathbb{R}^m$ is external edge forcing from inputs,
+  \item $\alpha\ge 0$ is damping.
+\end{itemize}
+
+\subsection*{4.5 Discrete Reaction--Diffusion for Modes}
+Using the Laplacian $L$,
+\begin{equation}
+\dot{\psi} \;=\; -K\,L\psi \;+\; R(\psi;\rho,\phi),
+\end{equation}
+where $K$ may be scalar, diagonal, or a full operator acting across mode channels.
+
+\paragraph{Mode-shaped conductance (optional but SOL-flavored).}
+Let edge weights adapt to modes:
+\begin{equation}
+w_e(\psi)\;=\;w_e^{(0)}\exp\!\Big(\gamma^\top \tfrac{\psi_i+\psi_j}{2}\Big)\quad \text{for }e=(i,j),
+\end{equation}
+so that active modes open/close semantic pathways.
+
+\section*{5. Physics-Informed Neural Network (PINN) Surrogates}
+
+We approximate the continuous (or discrete) fields with neural networks:
+\begin{align}
+u_\theta(x,t)&=\big(\rho_\theta(x,t),\,v_\theta(x,t),\,\phi_\theta(x,t)\big)\approx u(x,t),\\
+\psi_\theta(x,t)&\approx \psi(x,t).
+\end{align}
+Define PDE residual operators by substituting $(u_\theta,\psi_\theta)$ into governing equations:
+\begin{align}
+r_{\text{flow}}(x,t;\theta)&=\mathcal{N}_{\text{flow}}[u_\theta](x,t),\\
+r_{\text{mode}}(x,t;\theta)&=\mathcal{N}_{\text{mode}}[\psi_\theta,u_\theta](x,t),
+\end{align}
+where $\mathcal{N}_{\text{flow}}$ encodes the manifold flow equations and $\mathcal{N}_{\text{mode}}$ encodes the mode dynamics.
+
+(For graph implementations, residuals are defined on nodes/edges using \eqref{eq:graph_continuity}--\eqref{eq:edge_momentum} and the constraint \eqref{eq:jr_divfree}.)
+
+\section*{6. Learning Objective}
+
+\subsection*{6.1 Data Fidelity Loss}
+Given observations $u_{\text{obs}}$ and/or $\psi_{\text{obs}}$,
+\begin{equation}
+\mathcal{L}_{\text{data}}(\theta)
+=
+\mathbb{E}_{(x,t)\sim \mathcal{D}}
+\Big[
+\|u_\theta(x,t)-u_{\text{obs}}(x,t)\|^2
++
+\|\psi_\theta(x,t)-\psi_{\text{obs}}(x,t)\|^2
+\Big],
+\end{equation}
+dropping terms for unobserved components.
+
+\subsection*{6.2 PDE Residual Loss}
+At collocation points $(x,t)\sim \mathcal{C}$,
+\begin{equation}
+\mathcal{L}_{\text{PDE}}(\theta)
+=
+\mathbb{E}_{(x,t)\sim \mathcal{C}}
+\Big[
+\|r_{\text{flow}}(x,t;\theta)\|^2
++
+\|r_{\text{mode}}(x,t;\theta)\|^2
+\Big].
+\end{equation}
+
+\subsection*{6.3 Boundary and Initial Conditions}
+Let $\mathcal{B}[u_\theta](x,t)$ denote boundary/initial operators and $b(x,t)$ prescribed values:
+\begin{equation}
+\mathcal{L}_{\text{BC}}(\theta)
+=
+\mathbb{E}_{(x,t)\sim \mathcal{C}_{\text{BC}}}
+\Big[
+\|\mathcal{B}[u_\theta](x,t)-b(x,t)\|^2
+\Big].
+\end{equation}
+
+\subsection*{6.4 Variational Free Energy (Active Inference / Generative Link)}
+Introduce latent variables $z$ with approximate posterior $q_\eta(z|x)$ and generative model $p_\theta(x,z)$.
+Define variational free energy (negative ELBO):
+\begin{equation}
+\mathcal{L}_{\text{FE}}(\theta,\eta)
+=
+\mathbb{E}_{x\sim P_X}
+\Big[
+\mathbb{E}_{z\sim q_\eta(z|x)}
+\big(\log q_\eta(z|x)-\log p_\theta(x,z)\big)
+\Big],
+\end{equation}
+where encoder parameters $\eta$ are distinct from the scalar potential $\phi$.
+
+\subsection*{6.5 Total Objective}
+\begin{equation}
+\mathcal{L}(\theta,\eta)
+=
+\mathcal{L}_{\text{data}}(\theta)
++\lambda_{\text{PDE}}\mathcal{L}_{\text{PDE}}(\theta)
++\lambda_{\text{BC}}\mathcal{L}_{\text{BC}}(\theta)
++\lambda_{\text{FE}}\mathcal{L}_{\text{FE}}(\theta,\eta),
+\end{equation}
+with nonnegative hyperparameters $\lambda_{\text{PDE}},\lambda_{\text{BC}},\lambda_{\text{FE}}$.
+
+\section*{7. Boundary-Layer Hotspot Detection}
+
+Define a hotspot functional highlighting sharp semantic structure:
+\begin{equation}
+H(x,t;\theta)
+=
+\alpha_1\|\nabla_{\mathcal{M}}\rho_\theta(x,t)\|
++\alpha_2\|\nabla_{\mathcal{M}}\phi_\theta(x,t)\|
++\alpha_3\|\mathrm{curl}(w_\theta)(x,t)\|,
+\end{equation}
+with $\alpha_i\ge 0$.
+
+On graphs, replace $\nabla_{\mathcal{M}}$ with $B(\cdot)$ and (optionally) use cycle curl $Cj$:
+\begin{equation}
+H_i(t)
+=
+\tilde{\alpha}_1 \big\|(B\rho)_\text{edges incident to }i\big\|
++\tilde{\alpha}_2 \big\|(B\phi)_\text{edges incident to }i\big\|
++\tilde{\alpha}_3 \big\| (Cj)_\text{cycles touching }i \big\|.
+\end{equation}
+
+Points/regions where $H\ge \tau$ for threshold $\tau>0$ are treated as hotspots: regions where SOL should allocate more attention,
+refine discretization, or adapt generative behavior.
+
+\section*{8. Intellectual Merit: From Static Retrieval to Dynamic Flow}
+
+Modern semantic systems (Transformers, RAG) largely operate on static similarity in an embedding space.
+SOL proposes a shift: semantics as time-dependent transport with inertia, regulation, and structured circulation.
+\begin{itemize}
+  \item \textbf{Inertia vs. instantaneity:} momentum encourages coherent trajectories rather than brittle jumps.
+  \item \textbf{Pressure as regulation:} $\Pi(\rho;\psi)$ offers a physics-based mechanism for crowding control without hard truncation.
+  \item \textbf{Structured recurrence:} circulation components capture ``looping'' conceptual dynamics (recursion, reframing, indirect association)
+        as a first-class signal rather than a bug.
+\end{itemize}
+
+A schematic comparison between static retrieval and SOL-style dynamics is shown in Figure~\ref{fig:rag_vs_sol}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{fig2.png}
+    \caption{\textbf{Comparison of semantic processing paradigms.} \textbf{Left (RAG):} Traditional static vector retrieval finds the nearest neighbor via a direct path, treating intermediate context implicitly. \textbf{Right (SOL):} The proposed dynamic flow model treats semantics as a fluid with inertia. The path from Query to Result is curved, influenced by the ``gravity'' of attractor topics and forced to navigate around high-pressure contextual obstacles.}
+    \label{fig:rag_vs_sol}
+\end{figure}
+
+\section*{9. Notes on Approximations and Implementation Risks}
+
+\paragraph{(i) Curvature and covariant momentum (Section 2).}
+Equation~\eqref{eq:momentum_euclid} uses a chartwise ``Euclidean'' inertial term. The fully covariant form replaces
+$\partial_t v + (v\cdot\nabla_{\mathcal{M}})v$ with $\nabla_{\partial_t}v + \nabla_v v$ (Levi--Civita connection). Curvature corrections
+are available if $\mathcal{M}$ is not well-approximated by locally flat charts.
+
+\paragraph{(ii) Energy and dissipation (Section 2).}
+Without damping/viscosity, pressure gradients can accelerate flow indefinitely. In practice SOL relies on explicit sinks
+(e.g., $\alpha>0$ and/or $\mu>0$), stable pressure laws, and (in discrete settings) mild numerical diffusion or flux limiting near sharp fronts.
+A stricter conservative extension would add an energy/entropy equation or use shock-capturing / relaxation forms.
+
+\paragraph{(iii) Interpreting friction $\alpha$ (Section 2).}
+Cognitively, $\alpha$ may be read as forgetting/decay (damping transient motion) or resistance-to-change (stabilizing settled states).
+A practical refinement is adaptive damping, e.g.\ $\alpha=\alpha(\rho,\|\nabla_{\mathcal{M}}\phi\|,\text{residual})$ to encourage exploration far from
+coherent basins and stabilization near solutions.
+
+\paragraph{(iv) Circulatory flux specification (Section 4).}
+The residual flux $j^{(r)}$ should not be a free ``escape hatch.'' The constraint $B^\top j^{(r)}=0$ in \eqref{eq:jr_divfree} forces $j^{(r)}$ to live
+in the cycle space $\ker(B^\top)$ (a discrete analogue of divergence-free flow). A stronger construction is to parameterize $j^{(r)}$ directly via a
+cycle-space basis or a weighted orthogonal projection.
+
+\paragraph{(v) Cycles at scale (Section 4).}
+Computing a full cycle basis can be expensive on large graphs. For early implementations, circulation can be approximated using fundamental cycles
+from a spanning tree, or local ``curl proxies'' based on short cycles (triangles / 4-cycles) discovered via sparse adjacency operations.
+
+\paragraph{(vi) Stabilizing discrete advection (Sections 4.0--4.4).}
+The advection term $A(j,\rho)$ is typically the main numerical instability source. Robust schemes often use semantic upwinding (donor selection by flow sign),
+controlled numerical diffusion (e.g., local Lax--Friedrichs/Rusanov), and positivity-preserving flux limiting to maintain $\rho\ge 0$.
+
+\paragraph{(vii) PINN training stability (Section 6).}
+Physics residual losses often start much larger than data losses, so naive weighting can ignore physics or destabilize learning. Practical training commonly uses
+curriculum schedules, adaptive loss balancing (e.g., gradient-norm methods such as GradNorm), and residual-guided collocation sampling (often aligned with hotspots).
+
+\end{document}

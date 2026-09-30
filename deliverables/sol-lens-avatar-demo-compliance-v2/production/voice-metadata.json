@@ -1,0 +1,7 @@
+{
+  "provider": "Microsoft Edge neural speech service",
+  "voice": "en-US-AndrewMultilingualNeural",
+  "rate": "+8%",
+  "pitch": "+1Hz",
+  "note": "Andrew HD is installed for Windows Narrator but is not exposed to the legacy System.Speech WAV exporter; this render uses Microsoft's exportable Andrew neural voice and records the exact identifier."
+}

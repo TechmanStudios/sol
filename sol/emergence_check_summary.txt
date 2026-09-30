@@ -1,0 +1,25 @@
+Emergence check (max correlation up to symmetry)
+------------------------------------------------
+Baseline params: c=5.0, rho0=0.35, alpha=0.25, dt=0.05
+
+Seed sweep (2D) raw:     0.058 / 0.083 / 0.137
+Seed sweep (2D) log1p:   0.052 / 0.062 / 0.119
+Seed sweep (2D) mask80:  0.068 / 0.124 / 0.156
+Seed sweep (2D) radial:  -0.073 / 0.274 / 0.594
+
+Seed sweep (3D) raw:     0.383 / 0.450 / 0.537
+Seed sweep (3D) log1p:   0.273 / 0.297 / 0.429
+Seed sweep (3D) mask80:  0.350 / 0.400 / 0.500
+Seed sweep (3D) radial:  0.950 / 0.990 / 0.999
+
+Param sweep (2D) raw:    0.041 / 0.071 / 0.113
+Param sweep (2D) log1p:  0.040 / 0.067 / 0.113
+Param sweep (2D) mask80: 0.052 / 0.104 / 0.140
+Param sweep (2D) radial: -0.581 / 0.086 / 0.686
+
+Param sweep (3D) raw:    0.320 / 0.452 / 0.584
+Param sweep (3D) log1p:  0.194 / 0.328 / 0.467
+Param sweep (3D) mask80: 0.300 / 0.400 / 0.600
+Param sweep (3D) radial: 0.947 / 0.989 / 0.996
+
+Wrote: emergence_check_results.csv

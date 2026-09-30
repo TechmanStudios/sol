@@ -1,0 +1,85 @@
+{
+  "video": "SOL-Lens-Build-Week-Compliant-Demo.mp4",
+  "captions": "SOL-Lens-Build-Week-Compliant-Demo.en.srt",
+  "duration_seconds": 170.26,
+  "resolution": "1920x1080",
+  "fps": 30,
+  "voice": {
+    "provider": "Microsoft Edge neural speech service",
+    "voice": "en-US-AndrewMultilingualNeural",
+    "rate": "+8%",
+    "pitch": "+1Hz",
+    "note": "Andrew HD is installed for Windows Narrator but is not exposed to the legacy System.Speech WAV exporter; this render uses Microsoft's exportable Andrew neural voice and records the exact identifier."
+  },
+  "avatar": "user-supplied dAvatar_transparent.png",
+  "segments": 9,
+  "timeline": [
+    {
+      "id": "01-hook",
+      "start": 0.0,
+      "end": 15.48,
+      "speech_seconds": 14.4,
+      "capture": "01-opening.png"
+    },
+    {
+      "id": "02-product-delta",
+      "start": 15.48,
+      "end": 34.75,
+      "speech_seconds": 18.19,
+      "capture": "01-opening.png"
+    },
+    {
+      "id": "03-one-click-fixtures",
+      "start": 34.75,
+      "end": 51.79,
+      "speech_seconds": 15.96,
+      "capture": "02-gallery.png"
+    },
+    {
+      "id": "04-core-workflow",
+      "start": 51.79,
+      "end": 75.38,
+      "speech_seconds": 22.51,
+      "capture": "04-grounded-graph.png"
+    },
+    {
+      "id": "05-conflict",
+      "start": 75.38,
+      "end": 91.99,
+      "speech_seconds": 15.53,
+      "capture": "06-conflict-verdict.png"
+    },
+    {
+      "id": "06-replay-proof",
+      "start": 91.99,
+      "end": 109.97,
+      "speech_seconds": 16.9,
+      "capture": "08-manifold-step3.png"
+    },
+    {
+      "id": "07-codex-story",
+      "start": 109.97,
+      "end": 136.23,
+      "speech_seconds": 25.18,
+      "capture": "evidence-codex.png"
+    },
+    {
+      "id": "08-gpt-boundary",
+      "start": 136.23,
+      "end": 156.56,
+      "speech_seconds": 19.25,
+      "capture": "evidence-gpt.png"
+    },
+    {
+      "id": "09-close",
+      "start": 156.56,
+      "end": 170.26,
+      "speech_seconds": 12.62,
+      "capture": "09-manifold-reset.png"
+    }
+  ],
+  "sha256": {
+    "video": "645C97210C38189387282FFBA8CFC3427A1DA9843684C21A58197B772F142B3F",
+    "avatar": "7E78E818B38B508C7CEB4F728EF1B5E2E5E8F5E34C42E83E49CBCB6C6F3A341C"
+  }
+}
