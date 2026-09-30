@@ -40,6 +40,7 @@ Desktop.ini
 # Temporary / scratch files
 _*.txt
 _*.py
+!__init__.py
 scratch/archive/
 
 # Generated frames
