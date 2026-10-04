@@ -76,7 +76,9 @@ solData/testResults/cogload_replications/
 
 # PDFs (binary, track separately if needed)
 *.pdf
-!solResearch/SOL_mathFoundation _v2.pdf
+# Canon exception. Negation patterns do not match an unescaped space, so the
+# foundation PDF is tracked under a space-free name.
+!solResearch/SOL_mathFoundation_v2.pdf
 
 # Backup archives
 backUps/
