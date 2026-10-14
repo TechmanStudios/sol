@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-13T04:25:20.512286+00:00",
-  "records": 1853,
-  "runs": 433,
+  "generated_at": "2026-10-14T04:20:23.498895+00:00",
+  "records": 1854,
+  "runs": 434,
   "experiments": {
     "cortex": {
       "runs": 106,
@@ -210,9 +210,9 @@
       }
     },
     "dream": {
-      "runs": 308,
-      "generations": 308,
-      "accepted_generations": 308,
+      "runs": 309,
+      "generations": 309,
+      "accepted_generations": 309,
       "acceptance_rate": 1.0,
       "top_runs_by_anchor": [
         {
@@ -358,9 +358,9 @@
       ],
       "by_mode": {
         "discovery": {
-          "generations": 218,
-          "runs": 218,
-          "accepted_generations": 218,
+          "generations": 219,
+          "runs": 219,
+          "accepted_generations": 219,
           "acceptance_rate": 1.0,
           "best_anchor_delta": 15.0,
           "best_full_delta": 0.9999998269539733
@@ -746,8 +746,8 @@
   },
   "knowledge_domains": {
     "sol_manifold": {
-      "records": 1552,
-      "accepted_generations": 405,
+      "records": 1553,
+      "accepted_generations": 406,
       "experiments": [
         "cortex",
         "dream",
@@ -762,15 +762,15 @@
       ]
     },
     "dream_replay": {
-      "records": 308,
-      "accepted_generations": 308,
+      "records": 309,
+      "accepted_generations": 309,
       "experiments": [
         "dream"
       ]
     },
     "entropy_band:0p90": {
-      "records": 301,
-      "accepted_generations": 301,
+      "records": 302,
+      "accepted_generations": 302,
       "experiments": [
         "dream"
       ]
@@ -783,15 +783,15 @@
       ]
     },
     "entropy_band:0p70": {
-      "records": 205,
-      "accepted_generations": 205,
+      "records": 206,
+      "accepted_generations": 206,
       "experiments": [
         "dream"
       ]
     },
     "entropy_band:0p80": {
-      "records": 153,
-      "accepted_generations": 153,
+      "records": 154,
+      "accepted_generations": 154,
       "experiments": [
         "dream"
       ]
@@ -1049,8 +1049,8 @@
       ]
     },
     "source:cx_20260914_063956": {
-      "records": 32,
-      "accepted_generations": 32,
+      "records": 33,
+      "accepted_generations": 33,
       "experiments": [
         "dream"
       ]
@@ -1063,8 +1063,8 @@
       ]
     },
     "source:cx_20260921_064036": {
-      "records": 25,
-      "accepted_generations": 25,
+      "records": 26,
+      "accepted_generations": 26,
       "experiments": [
         "dream"
       ]
@@ -1097,14 +1097,14 @@
         "cortex"
       ]
     },
-    "source:cx_20260214_074804": {
-      "records": 18,
-      "accepted_generations": 18,
+    "source:cx_20260928_064358": {
+      "records": 19,
+      "accepted_generations": 19,
       "experiments": [
         "dream"
       ]
     },
-    "source:cx_20260928_064358": {
+    "source:cx_20260214_074804": {
       "records": 18,
       "accepted_generations": 18,
       "experiments": [
@@ -1146,14 +1146,14 @@
         "dream"
       ]
     },
-    "rho:1003": {
-      "records": 10,
-      "accepted_generations": 10,
+    "source:cx_20261005_064626": {
+      "records": 11,
+      "accepted_generations": 11,
       "experiments": [
         "dream"
       ]
     },
-    "source:cx_20261005_064626": {
+    "rho:1003": {
       "records": 10,
       "accepted_generations": 10,
       "experiments": [
@@ -1791,6 +1791,13 @@
       ]
     },
     "source:cx_20260214_022242": {
+      "records": 3,
+      "accepted_generations": 3,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "source:cx_20261012_064729": {
       "records": 3,
       "accepted_generations": 3,
       "experiments": [
@@ -3071,6 +3078,13 @@
         "dream"
       ]
     },
+    "rho:1285": {
+      "records": 2,
+      "accepted_generations": 2,
+      "experiments": [
+        "dream"
+      ]
+    },
     "source:cx_20260213_203542": {
       "records": 2,
       "accepted_generations": 2,
@@ -3079,13 +3093,6 @@
       ]
     },
     "source:cx_20260214_001519": {
-      "records": 2,
-      "accepted_generations": 2,
-      "experiments": [
-        "dream"
-      ]
-    },
-    "source:cx_20261012_064729": {
       "records": 2,
       "accepted_generations": 2,
       "experiments": [
@@ -5948,6 +5955,13 @@
         "dream"
       ]
     },
+    "basin:1e0cd402": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
     "basin:1e57ce57": {
       "records": 1,
       "accepted_generations": 1,
@@ -6495,6 +6509,13 @@
       ]
     },
     "basin:24391308": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "basin:24550ec4": {
       "records": 1,
       "accepted_generations": 1,
       "experiments": [
@@ -8363,6 +8384,13 @@
         "dream"
       ]
     },
+    "basin:36ee4e95": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
     "basin:36f8aac3": {
       "records": 1,
       "accepted_generations": 1,
@@ -8518,6 +8546,13 @@
       ]
     },
     "basin:3849b769": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "basin:386062dd": {
       "records": 1,
       "accepted_generations": 1,
       "experiments": [
@@ -9134,6 +9169,13 @@
       ]
     },
     "basin:3e3271e5": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "basin:3e33605b": {
       "records": 1,
       "accepted_generations": 1,
       "experiments": [
@@ -16518,6 +16560,13 @@
         "dream"
       ]
     },
+    "basin:8b9723c9": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
     "basin:8ba70673": {
       "records": 1,
       "accepted_generations": 1,
@@ -16588,6 +16637,13 @@
         "dream"
       ]
     },
+    "basin:8caa2c00": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
     "basin:8ce8fd84": {
       "records": 1,
       "accepted_generations": 1,
@@ -16603,6 +16659,13 @@
       ]
     },
     "basin:8d0d6113": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "basin:8d122010": {
       "records": 1,
       "accepted_generations": 1,
       "experiments": [
@@ -17016,6 +17079,13 @@
       ]
     },
     "basin:91f0a673": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "basin:92114cf0": {
       "records": 1,
       "accepted_generations": 1,
       "experiments": [
@@ -18269,6 +18339,13 @@
       ]
     },
     "basin:a03ef4fc": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "basin:a048dd39": {
       "records": 1,
       "accepted_generations": 1,
       "experiments": [
@@ -20172,6 +20249,13 @@
         "dream"
       ]
     },
+    "basin:b39f4cdf": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
     "basin:b3bb0e96": {
       "records": 1,
       "accepted_generations": 1,
@@ -20348,6 +20432,13 @@
       ]
     },
     "basin:b54a9da5": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "basin:b54d5cac": {
       "records": 1,
       "accepted_generations": 1,
       "experiments": [
@@ -22784,6 +22875,13 @@
       ]
     },
     "basin:cc70fd56": {
+      "records": 1,
+      "accepted_generations": 1,
+      "experiments": [
+        "dream"
+      ]
+    },
+    "basin:cc932f08": {
       "records": 1,
       "accepted_generations": 1,
       "experiments": [
@@ -28201,13 +28299,6 @@
         "dream"
       ]
     },
-    "rho:1285": {
-      "records": 1,
-      "accepted_generations": 1,
-      "experiments": [
-        "dream"
-      ]
-    },
     "rho:1287": {
       "records": 1,
       "accepted_generations": 1,
@@ -28239,15 +28330,15 @@
   },
   "potential_emergence": {
     "stable_basin_present": {
-      "records": 308,
-      "accepted_generations": 308,
+      "records": 309,
+      "accepted_generations": 309,
       "experiments": [
         "dream"
       ]
     },
     "new_basin_discovered": {
-      "records": 307,
-      "accepted_generations": 307,
+      "records": 308,
+      "accepted_generations": 308,
       "experiments": [
         "dream"
       ]
@@ -28346,8 +28437,8 @@
       ]
     },
     "decay_dominant": {
-      "records": 302,
-      "accepted_generations": 302,
+      "records": 303,
+      "accepted_generations": 303,
       "experiments": [
         "dream"
       ]
@@ -28360,8 +28451,8 @@
       ]
     },
     "entropy_band_drift": {
-      "records": 104,
-      "accepted_generations": 104,
+      "records": 105,
+      "accepted_generations": 105,
       "experiments": [
         "dream"
       ]
