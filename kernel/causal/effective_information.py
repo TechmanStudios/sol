@@ -36,6 +36,18 @@ class CausalMetrics:
     max_possible_ei: float             # log2(N)
     effectiveness: float               # EI / log2(N) in [0, 1]
 
+    def to_dict(self) -> Dict[str, Union[int, float]]:
+        return {
+            "state_dimension": int(self.state_dimension),
+            "determinism": round(float(self.determinism), 4),
+            "degeneracy": round(float(self.degeneracy), 4),
+            "effective_information": round(float(self.effective_information), 4),
+            "average_row_entropy": round(float(self.average_row_entropy), 4),
+            "target_entropy": round(float(self.target_entropy), 4),
+            "max_possible_ei": round(float(self.max_possible_ei), 4),
+            "effectiveness": round(float(self.effectiveness), 4),
+        }
+
 
 @dataclass
 class CausalEmergenceReport:
@@ -50,6 +62,22 @@ class CausalEmergenceReport:
     degeneracy_reduction: float        # Degeneracy(W_micro) - Degeneracy(W_macro)
     coarse_graining_ratio: float       # N_micro / N_macro
     macro_mapping: np.ndarray          # 1D array mapping micro indices -> macro index
+
+    def to_dict(self) -> Dict[str, object]:
+        return {
+            "micro_metrics": self.micro_metrics.to_dict(),
+            "macro_metrics": self.macro_metrics.to_dict(),
+            "delta_ei": round(float(self.delta_ei), 4),
+            "has_causal_emergence": bool(self.has_causal_emergence),
+            "is_emergent": bool(self.has_causal_emergence),
+            "is_causal_emergence": bool(self.has_causal_emergence),
+            "delta_effectiveness": round(float(self.delta_effectiveness), 4),
+            "delta_size": round(float(self.delta_size), 4),
+            "determinism_gain": round(float(self.determinism_gain), 4),
+            "degeneracy_reduction": round(float(self.degeneracy_reduction), 4),
+            "coarse_graining_ratio": round(float(self.coarse_graining_ratio), 4),
+            "macro_mapping": [int(x) for x in np.asarray(self.macro_mapping).tolist()],
+        }
 
 
 def compute_entropy(p: np.ndarray, base: float = 2.0) -> float:
@@ -369,3 +397,41 @@ def generate_noisy_logic_micro_tpm(
     # Row normalize
     W_micro = W_micro / np.sum(W_micro, axis=1, keepdims=True)
     return W_micro, mapping
+
+
+class EffectiveInformationEngine:
+    """
+    Stateful engine wrapper for Erik Hoel's Effective Information & Causal Emergence
+    evaluation over micro/macro Transition Probability Matrices (TPMs).
+    """
+
+    def __init__(
+        self,
+        default_network_type: str = "fig4_degenerate_cycle",
+        default_noise_eps: float = 0.05,
+    ) -> None:
+        self.default_network_type = default_network_type
+        self.default_noise_eps = default_noise_eps
+
+    def evaluate_causal_emergence(
+        self,
+        W_micro: Optional[np.ndarray] = None,
+        mapping: Optional[np.ndarray] = None,
+        network_type: Optional[str] = None,
+        noise_eps: Optional[float] = None,
+    ) -> CausalEmergenceReport:
+        """
+        Evaluates causal emergence (Delta EI = EI(macro) - EI(micro)) on either an explicit
+        micro TPM + macro coarse-graining mapping, or a canonical Hoel network.
+        """
+        if W_micro is None or mapping is None:
+            net_type = network_type or self.default_network_type
+            eps = self.default_noise_eps if noise_eps is None else noise_eps
+            W_micro_eval, mapping_eval = generate_hoel_canonical_network(
+                network_type=net_type,
+                noise_eps=eps,
+            )
+        else:
+            W_micro_eval = np.asarray(W_micro, dtype=np.float64)
+            mapping_eval = np.asarray(mapping, dtype=np.int64)
+        return compute_causal_emergence(W_micro_eval, mapping_eval)

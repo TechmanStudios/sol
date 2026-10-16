@@ -1,0 +1,14 @@
+{
+  "sol_wideword_32bit_pdm_calibrator": {
+    "component_name": "sol_wideword_32bit_pdm_calibrator",
+    "path": "components/staged_sol_wideword_32bit_pdm_calibrator.py",
+    "verification_status": "AWAITING_OBSERVATORY_REVIEW",
+    "review_status": "awaiting_review",
+    "observatory_experiment_id": "exp_lumina_f57ffc28849b",
+    "sovereign_packet_id": "PKT_PHASE_OBS_2722314646016_120335",
+    "reproducibility_hash": "sha256_33bdea0a8b12",
+    "court_decision": "observe",
+    "target_level": 12,
+    "timestamp": "2026-10-16T12:03:35.449764+00:00"
+  }
+}

@@ -134,9 +134,16 @@ class RiemannianLogicManifold:
         evals = np.clip(evals, 1e-4, 100.0)
         return (evecs * evals) @ evecs.T
 
+    @staticmethod
+    def _smooth_gate(val: float, threshold: float = 0.35, sharpness: float = 24.0) -> float:
+        """Smooth C^infinity logistic activation envelope replacing hard threshold branches."""
+        z = float(np.clip(sharpness * (val - threshold), -40.0, 40.0))
+        return float(1.0 / (1.0 + np.exp(-z)))
+
     def evaluate_potential(self, x: np.ndarray, gate_type: LogicGateType, a: float, b: float) -> Tuple[float, np.ndarray]:
         """
-        Evaluates effective potential Phi(x) and its analytical gradient grad_Phi(x).
+        Evaluates effective potential Phi(x) and its analytical gradient grad_Phi(x)
+        using branch-free C^infinity activation envelopes over continuous inputs (a, b).
         """
         px, py = float(x[0]), float(x[1])
         phi = 0.0
@@ -144,6 +151,8 @@ class RiemannianLogicManifold:
 
         def add_gaussian_hill(cx, cy, amp, sx, sy):
             nonlocal phi, grad
+            if abs(amp) < 1e-12:
+                return
             dx = px - cx
             dy = py - cy
             g_val = amp * np.exp(-(dx * dx / (2.0 * sx * sx) + dy * dy / (2.0 * sy * sy)))
@@ -163,10 +172,10 @@ class RiemannianLogicManifold:
             default_barrier = 2.2 * (1.0 - 0.85 * a * b)
             add_gaussian_hill(cx=0.5, cy=0.8, amp=default_barrier, sx=1.4, sy=1.2)
 
-            # Constructive channel towards True basin when BOTH active
-            if a > 0.35 and b > 0.35:
-                lens_depth = 3.6 * (a * b)
-                add_gaussian_well(cx=1.8, cy=1.4, depth=lens_depth, sx=1.8, sy=1.2)
+            # Constructive channel towards True basin weighted smoothly by both inputs active
+            w_both = self._smooth_gate(a, 0.35) * self._smooth_gate(b, 0.35)
+            lens_depth = 3.6 * (a * b) * w_both
+            add_gaussian_well(cx=1.8, cy=1.4, depth=lens_depth, sx=1.8, sy=1.2)
 
             # False attractor well
             add_gaussian_well(cx=self.basin_false[0], cy=self.basin_false[1], depth=2.0, sx=1.5, sy=1.5)
@@ -178,10 +187,10 @@ class RiemannianLogicManifold:
             both_low = float(np.clip((1.0 - a) * (1.0 - b), 0.0, 1.0))
             add_gaussian_hill(cx=0.2, cy=0.7, amp=2.6 * both_low, sx=1.4, sy=1.2)
 
-            # Attractive well if either input active
+            # Attractive well weighted smoothly by either input active
             either_active = float(np.clip(a + b - 0.3 * a * b, 0.0, 1.0))
-            if either_active > 0.25:
-                add_gaussian_well(cx=1.5, cy=1.2, depth=3.2 * either_active, sx=1.8, sy=1.4)
+            w_either = self._smooth_gate(either_active, 0.25)
+            add_gaussian_well(cx=1.5, cy=1.2, depth=3.2 * either_active * w_either, sx=1.8, sy=1.4)
 
             add_gaussian_well(cx=self.basin_false[0], cy=self.basin_false[1], depth=2.0, sx=1.5, sy=1.5)
             add_gaussian_well(cx=self.basin_true[0], cy=self.basin_true[1], depth=2.5, sx=1.5, sy=1.5)
@@ -198,50 +207,53 @@ class RiemannianLogicManifold:
             add_gaussian_well(cx=self.basin_true[0], cy=self.basin_true[1], depth=2.5, sx=1.5, sy=1.5)
 
         elif gate_type == LogicGateType.XOR:
-            # XOR Constructive / Destructive Interference:
-            # If A alone (a=1, b=0): Upper conduit pulls into True basin.
-            # If B alone (a=0, b=1): Lower conduit pulls into True basin.
-            # If BOTH (a=1, b=1): Central collision hill creates destructive deflection into False basin!
-            # If NEITHER (a=0, b=0): Damped out or guided to False basin.
+            # Smooth continuous activation weights for XOR constructive/destructive regimes:
+            s_a_low = self._smooth_gate(a, 0.25)
+            s_b_low = self._smooth_gate(b, 0.25)
+            s_a_high = self._smooth_gate(a, 0.35)
+            s_b_high = self._smooth_gate(b, 0.35)
 
-            if a > 0.25 and b < 0.35:
-                # A only: attractive pull from upper conduit into True basin
-                add_gaussian_well(cx=1.2, cy=1.5, depth=3.5 * a, sx=1.6, sy=1.2)
-            elif b > 0.25 and a < 0.35:
-                # B only: attractive pull from lower conduit into True basin
-                add_gaussian_well(cx=1.2, cy=0.8, depth=3.5 * b, sx=1.6, sy=1.2)
-            elif a > 0.35 and b > 0.35:
-                # BOTH ACTIVE: Destructive interference ridge directly on the approach to True basin
-                collision_barrier = 5.0 * (a * b)
-                add_gaussian_hill(cx=0.5, cy=0.5, amp=collision_barrier, sx=1.3, sy=1.3)
-                add_gaussian_hill(cx=1.8, cy=1.5, amp=collision_barrier * 0.8, sx=1.2, sy=1.2)
-                # Channel both streams down into False basin
-                add_gaussian_well(cx=1.5, cy=-1.5, depth=3.5 * (a * b), sx=1.5, sy=1.2)
+            w_a_only = s_a_low * (1.0 - s_b_high)
+            w_b_only = s_b_low * (1.0 - s_a_high)
+            w_both = s_a_high * s_b_high
+
+            # A only: attractive pull from upper conduit into True basin
+            add_gaussian_well(cx=1.2, cy=1.5, depth=3.5 * a * w_a_only, sx=1.6, sy=1.2)
+            # B only: attractive pull from lower conduit into True basin
+            add_gaussian_well(cx=1.2, cy=0.8, depth=3.5 * b * w_b_only, sx=1.6, sy=1.2)
+            # BOTH ACTIVE: Destructive interference ridge directly on approach to True basin
+            collision_barrier = 5.0 * (a * b) * w_both
+            add_gaussian_hill(cx=0.5, cy=0.5, amp=collision_barrier, sx=1.3, sy=1.3)
+            add_gaussian_hill(cx=1.8, cy=1.5, amp=collision_barrier * 0.8, sx=1.2, sy=1.2)
+            # Channel both streams down into False basin
+            add_gaussian_well(cx=1.5, cy=-1.5, depth=3.5 * (a * b) * w_both, sx=1.5, sy=1.2)
 
             add_gaussian_well(cx=self.basin_false[0], cy=self.basin_false[1], depth=2.5, sx=1.5, sy=1.5)
             add_gaussian_well(cx=self.basin_true[0], cy=self.basin_true[1], depth=2.5, sx=1.5, sy=1.5)
 
         elif gate_type == LogicGateType.HALF_ADDER:
-            # Dual manifold for Sum (XOR) and Carry (AND)
+            # Smooth continuous activation weights for Sum (XOR) and Carry (AND)
+            s_a_low = self._smooth_gate(a, 0.25)
+            s_b_low = self._smooth_gate(b, 0.25)
+            s_a_high = self._smooth_gate(a, 0.35)
+            s_b_high = self._smooth_gate(b, 0.35)
+
+            w_a_only = s_a_low * (1.0 - s_b_high)
+            w_b_only = s_b_low * (1.0 - s_a_high)
+            w_both = s_a_high * s_b_high
+            w_not_both = 1.0 - w_both
+
             # Sum channel (upper half, py > 0)
-            if a > 0.25 and b < 0.35:
-                add_gaussian_well(cx=1.5, cy=2.0, depth=3.5 * a, sx=1.6, sy=1.0)
-            elif b > 0.25 and a < 0.35:
-                add_gaussian_well(cx=1.5, cy=1.8, depth=3.5 * b, sx=1.6, sy=1.0)
-            elif a > 0.35 and b > 0.35:
-                # Sum = 0 (destructive interference at S1)
-                add_gaussian_hill(cx=1.2, cy=2.0, amp=4.5 * (a * b), sx=1.2, sy=1.0)
-                add_gaussian_well(cx=self.basin_sum_0[0], cy=self.basin_sum_0[1], depth=3.0, sx=1.4, sy=1.0)
+            add_gaussian_well(cx=1.5, cy=2.0, depth=3.5 * a * w_a_only, sx=1.6, sy=1.0)
+            add_gaussian_well(cx=1.5, cy=1.8, depth=3.5 * b * w_b_only, sx=1.6, sy=1.0)
+            add_gaussian_hill(cx=1.2, cy=2.0, amp=4.5 * (a * b) * w_both, sx=1.2, sy=1.0)
+            add_gaussian_well(cx=self.basin_sum_0[0], cy=self.basin_sum_0[1], depth=3.0 * w_both, sx=1.4, sy=1.0)
 
             # Carry channel (lower half, py < 0)
-            if a > 0.35 and b > 0.35:
-                # Carry = 1 (constructive pull into C1)
-                add_gaussian_well(cx=1.5, cy=-0.8, depth=3.8 * (a * b), sx=1.5, sy=1.0)
-                add_gaussian_well(cx=self.basin_carry_1[0], cy=self.basin_carry_1[1], depth=3.0, sx=1.4, sy=1.0)
-            else:
-                # Carry = 0 (deflection into C0)
-                add_gaussian_hill(cx=0.8, cy=-0.8, amp=2.5, sx=1.4, sy=1.0)
-                add_gaussian_well(cx=self.basin_carry_0[0], cy=self.basin_carry_0[1], depth=2.5, sx=1.4, sy=1.0)
+            add_gaussian_well(cx=1.5, cy=-0.8, depth=3.8 * (a * b) * w_both, sx=1.5, sy=1.0)
+            add_gaussian_well(cx=self.basin_carry_1[0], cy=self.basin_carry_1[1], depth=3.0 * w_both, sx=1.4, sy=1.0)
+            add_gaussian_hill(cx=0.8, cy=-0.8, amp=2.5 * w_not_both, sx=1.4, sy=1.0)
+            add_gaussian_well(cx=self.basin_carry_0[0], cy=self.basin_carry_0[1], depth=2.5 * w_not_both, sx=1.4, sy=1.0)
 
             # Attractor basins for Half-Adder
             add_gaussian_well(cx=self.basin_sum_0[0], cy=self.basin_sum_0[1], depth=2.2, sx=1.2, sy=0.8)
@@ -264,29 +276,37 @@ class RiemannianLogicManifold:
         gate_type: LogicGateType,
         a: float,
         b: float,
-        eps: float = 1e-4
+        eps: float = 1e-3
     ) -> Tuple[np.ndarray, float]:
         """
-        Computes Levi-Civita Christoffel symbols Gamma^k_ij and the 2D scalar curvature R.
+        Computes Levi-Civita Christoffel symbols Gamma^k_ij and the 2D Brioschi/Gauss-Bonnet
+        scalar curvature R from second-order metric derivatives and connection contractions.
         """
         g_0 = self.evaluate_metric(x, gate_type, a, b)
         inv_g = la.pinvh(g_0)
 
         dg = np.zeros((2, 2, 2), dtype=np.float64)
+        d2g_diag = np.zeros((2, 2, 2), dtype=np.float64)
         for l in range(2):
             dx = np.zeros(2)
             dx[l] = eps
             g_plus = self.evaluate_metric(x + dx, gate_type, a, b)
             g_minus = self.evaluate_metric(x - dx, gate_type, a, b)
             dg[l] = (g_plus - g_minus) / (2.0 * eps)
+            d2g_diag[l] = (g_plus - 2.0 * g_0 + g_minus) / (eps * eps)
 
         # term[l, i, j] = d_i g_jl + d_j g_il - d_l g_ij
         term = np.transpose(dg, (2, 0, 1)) + np.transpose(dg, (2, 1, 0)) - dg
         Gamma = 0.5 * np.einsum('kl,lij->kij', inv_g, term)
 
-        # Approximate 2D Gaussian/scalar curvature: R ~ det(Gamma) / det(g)
+        # 2D Gauss-Bonnet / Brioschi scalar curvature:
+        # R = -(1 / det(g)) * (0.5 * (d_0^2 g_11 + d_1^2 g_00) - g_kl * (Gamma^k_01 Gamma^l_01 - Gamma^k_00 Gamma^l_11))
         det_g = max(float(la.det(g_0)), 1e-6)
-        r_scalar = float((Gamma[0, 0, 0] * Gamma[1, 1, 1] - Gamma[0, 1, 0] * Gamma[1, 0, 1]) / det_g)
+        sec_deriv_term = 0.5 * (d2g_diag[0, 1, 1] + d2g_diag[1, 0, 0])
+        quad_gamma_term = float(
+            Gamma[:, 0, 1] @ g_0 @ Gamma[:, 0, 1] - Gamma[:, 0, 0] @ g_0 @ Gamma[:, 1, 1]
+        )
+        r_scalar = float(-(sec_deriv_term - quad_gamma_term) / det_g)
         return Gamma, r_scalar
 
     def step_exciton(
@@ -357,11 +377,12 @@ class RiemannianLogicManifold:
                 }
             }
         elif gate_type in (LogicGateType.AND, LogicGateType.OR, LogicGateType.NAND):
-            # Probe injected along central axis with kinetic energy
+            # Probe injected along central axis with smooth continuous transverse momentum
+            vy_init = -0.10 + 0.25 * self._smooth_gate(a_clamped + b_clamped, 0.50)
             probes = {
                 "probe": {
                     "x": np.array([-3.5, 0.0], dtype=np.float64),
-                    "v": np.array([2.4, 0.15 if (a + b) > 0.5 else -0.1], dtype=np.float64)
+                    "v": np.array([2.4, vy_init], dtype=np.float64)
                 }
             }
         elif gate_type == LogicGateType.XOR:
@@ -448,11 +469,11 @@ class RiemannianLogicManifold:
             min_dist_false = min(d_false_A, d_false_B)
 
             beta = 1.8
-            p_true = float(np.exp(-beta * min_dist_true) / (np.exp(-beta * min_dist_true) + np.exp(-beta * min_dist_false) + 1e-12))
+            p_raw = float(np.exp(-beta * min_dist_true) / (np.exp(-beta * min_dist_true) + np.exp(-beta * min_dist_false) + 1e-12))
 
-            # Case: a=0 and b=0: neither probe had activation
-            if a_clamped < 0.2 and b_clamped < 0.2:
-                p_true = 0.0
+            # Smooth continuous wavepacket excitation envelope (vanishes when both inputs are quiescent)
+            excitation = 1.0 - (1.0 - self._smooth_gate(a_clamped, 0.20, 28.0)) * (1.0 - self._smooth_gate(b_clamped, 0.20, 28.0))
+            p_true = p_raw * excitation
 
             outputs = {"Y": round(p_true, 4)}
             binary_outputs = {"Y": 1 if p_true >= 0.5 else 0}
@@ -461,12 +482,12 @@ class RiemannianLogicManifold:
             sum_pos = traj_arrays["sum_probe"][-1]
             carry_pos = traj_arrays["carry_probe"][-1]
 
-            # Sum (XOR) readout
+            # Sum (XOR) readout modulated by smooth input wavepacket excitation
             d_s1 = np.linalg.norm(sum_pos - self.basin_sum_1)
             d_s0 = np.linalg.norm(sum_pos - self.basin_sum_0)
-            p_sum = float(np.exp(-2.0 * d_s1) / (np.exp(-2.0 * d_s1) + np.exp(-2.0 * d_s0) + 1e-12))
-            if a_clamped < 0.2 and b_clamped < 0.2:
-                p_sum = 0.0
+            p_sum_raw = float(np.exp(-2.0 * d_s1) / (np.exp(-2.0 * d_s1) + np.exp(-2.0 * d_s0) + 1e-12))
+            excitation = 1.0 - (1.0 - self._smooth_gate(a_clamped, 0.20, 28.0)) * (1.0 - self._smooth_gate(b_clamped, 0.20, 28.0))
+            p_sum = p_sum_raw * excitation
 
             # Carry (AND) readout
             d_c1 = np.linalg.norm(carry_pos - self.basin_carry_1)

@@ -43,6 +43,25 @@ class MetaplasticityReport:
     repair_time_ms: float
     dissipated_energy_healed: float
 
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "circuit_id": self.circuit_id,
+            "spec_name": self.spec_name,
+            "initial_accuracy": round(float(self.initial_accuracy), 4),
+            "perturbed_accuracy": round(float(self.perturbed_accuracy), 4),
+            "repaired_accuracy": round(float(self.repaired_accuracy), 4),
+            "initial_max_cond": round(float(self.initial_max_cond), 4),
+            "perturbed_max_cond": round(float(self.perturbed_max_cond), 4),
+            "repaired_max_cond": round(float(self.repaired_max_cond), 4),
+            "initial_min_eval": round(float(self.initial_min_eval), 6),
+            "perturbed_min_eval": round(float(self.perturbed_min_eval), 6),
+            "repaired_min_eval": round(float(self.repaired_min_eval), 6),
+            "steps_taken": int(self.steps_taken),
+            "is_healed": bool(self.is_healed),
+            "repair_time_ms": round(float(self.repair_time_ms), 3),
+            "dissipated_energy_healed": round(float(self.dissipated_energy_healed), 6),
+        }
+
 
 class MetaplasticityEngine:
     """

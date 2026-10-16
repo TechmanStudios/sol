@@ -151,28 +151,8 @@ class SolLensTelemetryEmitter:
                 })
                 edge_id_counter += 1
 
-        # Calculate SolMetrics
-        contradiction_ratio = divergent_count / max(total_nodes, 1)
-        avg_evidence = float(np.mean([lg["evidence"] for lg in logons])) if logons else 0.8
-        coherence = round(float(np.clip(1.0 - contradiction_ratio, 0.1, 0.99)), 3)
-        continuity = round(float(np.clip(0.98 - 0.5 * contradiction_ratio, 0.1, 0.99)), 3)
-
-        metrics = {
-            "evidence": round(avg_evidence, 3),
-            "coherence": coherence,
-            "contradiction": round(contradiction_ratio, 3),
-            "continuity": continuity,
-            "authority": 0.92,
-            "faithfulness": round(float(np.clip(1.0 - 0.8 * contradiction_ratio, 0.1, 0.99)), 3)
-        }
-
-        # Calculate Verdict
-        if contradiction_ratio > 0.2:
-            verdict = "QUARANTINE"
-        elif contradiction_ratio > 0.05:
-            verdict = "HOLD"
-        else:
-            verdict = "PROMOTE"
+        # Calculate exact SolMetrics & Verdict matching sol-lens/lib/sol-engine.ts
+        metrics, verdict = evaluate_sol_lens_logons(logons)
 
         # Baseline Evaluation
         baseline_eval = {
@@ -218,3 +198,50 @@ class SolLensTelemetryEmitter:
         with open(p, "w", encoding="utf-8") as f:
             json.dump(packet, f, indent=2)
         return p
+
+
+def evaluate_sol_lens_logons(logons: List[Dict[str, Any]]) -> Tuple[Dict[str, float], str]:
+    """
+    Computes exact SolMetrics and SolVerdict matching `sol-lens/lib/sol-engine.ts`
+    (`evaluateLogons` and `courtVerdict`) to within < 1e-12 floating-point tolerance.
+    """
+    def _clamp(val: float) -> float:
+        return max(0.0, min(1.0, float(val)))
+
+    def _avg(vals: List[float]) -> float:
+        return sum(vals) / max(len(vals), 1)
+
+    non_contradictions = [lg for lg in logons if lg.get("status") != "contradiction"]
+    contradictions = [lg for lg in logons if lg.get("status") == "contradiction"]
+
+    evidence = _clamp(_avg([float(lg["evidence"]) for lg in non_contradictions]))
+    constraint_alignment = _avg([float(lg["psi"]) for lg in logons])
+    unresolved_pressure = _avg([float(lg["pressure"]) for lg in logons])
+    contradiction = _clamp(len(contradictions) / max(len(logons) + 4, 1))
+    coherence = _clamp(
+        evidence * 0.45
+        + constraint_alignment * 0.42
+        + (1.0 - unresolved_pressure) * 0.13
+    )
+    continuity = _clamp(_avg([float(lg["rho"]) for lg in logons]) + 0.08)
+    authority = _clamp(evidence + 0.025)
+    faithfulness = _clamp(constraint_alignment - contradiction * 0.18)
+
+    metrics = {
+        "evidence": evidence,
+        "coherence": coherence,
+        "contradiction": contradiction,
+        "continuity": continuity,
+        "authority": authority,
+        "faithfulness": faithfulness,
+    }
+
+    if contradiction > 0.2 or coherence < 0.72:
+        verdict = "QUARANTINE"
+    elif contradiction > 0.1 or evidence < 0.82:
+        verdict = "HOLD"
+    else:
+        verdict = "PROMOTE"
+
+    return metrics, verdict
+

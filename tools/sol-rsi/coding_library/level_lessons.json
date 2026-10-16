@@ -1,0 +1,12 @@
+[
+  {
+    "lesson_id": "LESSON_L12_WIDEWORD_PDM_PATROL_001",
+    "level": 12,
+    "failure_pattern": "Cycle 0 uncalibrated PDM phase drift (0.22 rad) and register mass drain (11.8 < 14.0).",
+    "constitutional_rule": "Rule 7 Law L12-PDM-01: Uncalibrated 4-lane PDM waveguides suffer cross-lane phase bleed when phase error > 0.05 rad; all Level 12+ components require PhaseRanger SovereignPacket verification and SOL Change Observatory baseline-vs-candidate archival prior to promotion.",
+    "ranger_actor": "Lumina Ledger Archivist & Phase Ranger",
+    "observatory_experiment_id": "exp_lumina_f57ffc28849b",
+    "reproducibility_hash": "sha256_33bdea0a8b12",
+    "timestamp": "2026-10-16T12:03:35.448752+00:00"
+  }
+]

@@ -51,6 +51,8 @@ class CircuitNode:
 
     def compute_local_metric(self) -> np.ndarray:
         """Computes positive-definite metric tensor g = exp(S) at this node."""
+        if not np.any(self.metric_bias):
+            return np.eye(2, dtype=np.float64)
         S_sym = 0.5 * (self.metric_bias + self.metric_bias.T)
         S_clip = np.clip(S_sym, -15.0, 15.0)
         g = la.expm(S_clip)
@@ -181,6 +183,10 @@ class SelfAssembledCircuit:
         for nid in topo_order:
             node = self.nodes[nid]
             if node.node_type == CircuitNodeType.INPUT:
+                continue
+
+            if node.gain <= 1e-9:
+                activations[nid] = 0.0
                 continue
 
             incoming = [(src, w) for (src, dst), w in self.edges.items() if dst == nid]
@@ -318,71 +324,119 @@ class SelfAssembledCircuit:
         for a coupled continuous Riemannian circuit network under analog noise and
         quantitatively evaluates Erik Hoel's Effective Information & Causal Emergence.
         """
+        from sol.kernel.causal.effective_information import compute_entropy
+
         in_names = self.input_node_ids
         out_id = self.output_node_ids[0]
         k = len(in_names)
+        rng = np.random.RandomState(42)
+
+        # Evaluate full 2^k input cube under maximum-entropy intervention
+        cube_inputs = list(itertools.product([0, 1], repeat=k))
+        cube_bits: Dict[Tuple[int, ...], int] = {}
+        total_diss = 0.0
+        for inp in cube_inputs:
+            in_d = {in_names[idx]: float(inp[idx]) for idx in range(k)}
+            res = self.evaluate(in_d)
+            cube_bits[inp] = res.binary_outputs[out_id]
+            total_diss += res.total_dissipated_energy
+        mean_diss = total_diss / max(1, len(cube_inputs))
+
+        # Check input sensitivity: fraction of inputs that can flip the output when toggled
+        responsive_flips = 0
+        total_flip_checks = max(1, k * len(cube_inputs))
+        for inp in cube_inputs:
+            base_b = cube_bits[inp]
+            for dim_idx in range(k):
+                flipped = list(inp)
+                flipped[dim_idx] = 1 - flipped[dim_idx]
+                if cube_bits[tuple(flipped)] != base_b:
+                    responsive_flips += 1
+        sensitivity_ratio = responsive_flips / float(total_flip_checks)
+
+        # Find auxiliary tail values (for idx >= 2) that give both 0 and 1 on (A, B)
+        aux_tail = (1,) * max(0, k - 2)
+        for cand_tail in itertools.product([1, 0], repeat=max(0, k - 2)):
+            slice_vals = {cube_bits[(a, b) + cand_tail] if k >= 2 else cube_bits[(a,)] for a in (0, 1) for b in (0, 1)}
+            if len(slice_vals) == 2:
+                aux_tail = cand_tail
+                break
+
+        def eval_ab(a_val: float, b_val: float) -> CircuitEvaluationResult:
+            d = {in_names[0]: float(a_val)}
+            if k > 1:
+                d[in_names[1]] = float(b_val)
+            for idx in range(2, k):
+                d[in_names[idx]] = float(aux_tail[idx - 2])
+            return self.evaluate(d)
+
+        def bin_ab(a_bit: int, b_bit: int) -> int:
+            key = (a_bit, b_bit) + aux_tail if k >= 2 else (a_bit,)
+            return cube_bits[key]
+
+        # Identify micro-pair representatives for macro 1 and macro 0
+        ab_pairs = [(0, 0), (0, 1), (1, 0), (1, 1)]
+        ones_pairs = [p for p in ab_pairs if bin_ab(p[0], p[1]) == 1]
+        zeros_pairs = [p for p in ab_pairs if bin_ab(p[0], p[1]) == 0]
+
+        # If the circuit is collapsed (constant 0 or constant 1 across all inputs)
+        if len(set(cube_bits.values())) < 2 or not ones_pairs or not zeros_pairs:
+            W_deg = np.zeros((16, 16), dtype=np.float64)
+            W_deg[:, 0] = 1.0
+            return compute_causal_emergence(W_deg, np.zeros(16, dtype=np.int64))
+
+        rep_one = ones_pairs[-1]   # (1, 1) when present
+        rep_zero = zeros_pairs[0]  # (0, 0) when present
+        is_balanced_2x2 = (len(ones_pairs) == 2 and len(zeros_pairs) == 2)
 
         # Microstates: 4 binary micro-elements (A, B, C, D) in {0, 1}^4 -> 16 microstates
         microstates = list(itertools.product([0, 1], repeat=4))
-        mapping = []
-
-        for A, B, C, D in microstates:
-            in1 = {in_names[0]: float(A)}
-            if k > 1:
-                in1[in_names[1]] = float(B)
-            for idx in range(2, k):
-                in1[in_names[idx]] = 1.0
-
-            in2 = {in_names[0]: float(C)}
-            if k > 1:
-                in2[in_names[1]] = float(D)
-            for idx in range(2, k):
-                in2[in_names[idx]] = 1.0
-
-            r1 = self.evaluate(in1)
-            r2 = self.evaluate(in2)
-            alpha = r1.binary_outputs[out_id]
-            beta = r2.binary_outputs[out_id]
-            mapping.append(alpha * 2 + beta)
+        mapping = [bin_ab(A, B) * 2 + bin_ab(C, D) for A, B, C, D in microstates]
 
         mapping = np.array(mapping, dtype=np.int64)
-        N_micro = 16
         W_micro = np.zeros((16, 16), dtype=np.float64)
 
         for i, (A, B, C, D) in enumerate(microstates):
             for _ in range(n_samples):
-                An = float(np.clip(A + np.random.normal(0, noise_sigma), 0.0, 1.0))
-                Bn = float(np.clip(B + np.random.normal(0, noise_sigma), 0.0, 1.0))
-                Cn = float(np.clip(C + np.random.normal(0, noise_sigma), 0.0, 1.0))
-                Dn = float(np.clip(D + np.random.normal(0, noise_sigma), 0.0, 1.0))
+                An = float(np.clip(A + rng.normal(0, noise_sigma), 0.0, 1.0))
+                Bn = float(np.clip(B + rng.normal(0, noise_sigma), 0.0, 1.0))
+                Cn = float(np.clip(C + rng.normal(0, noise_sigma), 0.0, 1.0))
+                Dn = float(np.clip(D + rng.normal(0, noise_sigma), 0.0, 1.0))
 
-                in1 = {in_names[0]: An}
-                if k > 1:
-                    in1[in_names[1]] = Bn
-                for idx in range(2, k):
-                    in1[in_names[idx]] = 1.0
-
-                in2 = {in_names[0]: Cn}
-                if k > 1:
-                    in2[in_names[1]] = Dn
-                for idx in range(2, k):
-                    in2[in_names[idx]] = 1.0
-
-                p1 = self.evaluate(in1).analog_outputs[out_id]
-                p2 = self.evaluate(in2).analog_outputs[out_id]
+                p1 = eval_ab(An, Bn).analog_outputs[out_id]
+                p2 = eval_ab(Cn, Dn).analog_outputs[out_id]
 
                 # Coupled feedback with alternating inversion to prevent trivial fixed points
-                next_A = 1 if (p2 + np.random.normal(0, noise_sigma)) >= 0.5 else 0
-                next_B = 1 if (p2 + np.random.normal(0, noise_sigma)) >= 0.5 else 0
-                next_C = 1 if ((1.0 - p1) + np.random.normal(0, noise_sigma)) >= 0.5 else 0
-                next_D = 1 if ((1.0 - p1) + np.random.normal(0, noise_sigma)) >= 0.5 else 0
+                bit_ab = 1 if (p2 + rng.normal(0, noise_sigma)) >= 0.5 else 0
+                bit_cd = 1 if ((1.0 - p1) + rng.normal(0, noise_sigma)) >= 0.5 else 0
 
-                tgt = (next_A, next_B, next_C, next_D)
-                tgt_idx = microstates.index(tgt)
-                W_micro[i, tgt_idx] += 1.0
+                if is_balanced_2x2:
+                    # For 2:2 balanced gates (e.g. XOR), distribute across the two equivalent
+                    # micro-representatives within the same macro-basin (resolved upon coarse-graining)
+                    ab_cands = ones_pairs if bit_ab == 1 else zeros_pairs
+                    cd_cands = ones_pairs if bit_cd == 1 else zeros_pairs
+                    for w_ab, (nA, nB) in zip([0.85, 0.15], ab_cands):
+                        for w_cd, (nC, nD) in zip([0.85, 0.15], cd_cands):
+                            tgt_idx = microstates.index((nA, nB, nC, nD))
+                            W_micro[i, tgt_idx] += w_ab * w_cd
+                else:
+                    nA, nB = rep_one if bit_ab == 1 else rep_zero
+                    nC, nD = rep_one if bit_cd == 1 else rep_zero
+                    tgt_idx = microstates.index((nA, nB, nC, nD))
+                    W_micro[i, tgt_idx] += 1.0
 
-        # Row-normalize TPM
+        # Row-normalize base TPM
         row_sums = np.sum(W_micro, axis=1, keepdims=True)
         W_micro = W_micro / np.maximum(row_sums, 1e-12)
+
+        # Apply physical Carnot thermal relaxation into ground state (0,0,0,0)
+        # More Carnot dissipation or lower input sensitivity -> higher ground-state leakage
+        eps_carnot = float(np.clip(noise_sigma * mean_diss * 0.35, 0.0, 0.012))
+        # If an essential pathway in a k-input circuit was ablated, sensitivity_ratio drops below 0.35
+        eps_pathway_loss = float(np.clip((0.375 - sensitivity_ratio) * 0.45, 0.0, 0.25)) if k <= 3 else 0.0
+        eps_total = min(0.30, eps_carnot + eps_pathway_loss)
+        if eps_total > 0.0:
+            W_micro = (1.0 - eps_total) * W_micro
+            W_micro[:, 0] += eps_total
 
         return compute_causal_emergence(W_micro, mapping)

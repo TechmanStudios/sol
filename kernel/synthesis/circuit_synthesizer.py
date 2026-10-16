@@ -243,26 +243,8 @@ class RiemannianCircuitSynthesizer:
                 coords=[-4.0, float(y_inputs[i])]
             )
 
-        # 2. Functional Topology Generation based on specification structure
-        if spec.name == "XOR":
-            self._assemble_xor(circuit, spec)
-        elif spec.name == "MUX_2to1":
-            self._assemble_mux(circuit, spec)
-        elif spec.name == "MAJORITY_3":
-            self._assemble_majority(circuit, spec)
-        elif spec.name == "PARITY_3":
-            self._assemble_parity3(circuit, spec)
-        elif spec.name == "EQUALS_2BIT":
-            self._assemble_equals2bit(circuit, spec)
-        elif spec.name == "HALF_SUBTRACTOR":
-            self._assemble_half_subtractor(circuit, spec)
-        elif spec.name == "FULL_ADDER":
-            self._assemble_full_adder(circuit, spec)
-        elif spec.name == "HALF_ADDER":
-            self._assemble_half_adder(circuit, spec)
-        else:
-            # Generic synthesis via Disjunctive Normal Form (DNF) manifold decomposition
-            self._assemble_generic_dnf(circuit, spec)
+        # 2. Functional Topology Generation via algebraic analysis of spec.table
+        self._synthesize_topology_from_truth_table(circuit, spec)
 
         # 3. Fine-tuning & Parameter Optimization Loop
         best_accuracy = 0.0
@@ -303,175 +285,218 @@ class RiemannianCircuitSynthesizer:
             max_condition_number=eval_probe.max_condition_number
         )
 
+    def _synthesize_topology_from_truth_table(self, c: SelfAssembledCircuit, spec: TruthTableSpec) -> None:
+        """
+        Analyzes the boolean algebraic structure of spec.table directly (without
+        inspecting spec.name) to compile minimal interference, threshold, selector,
+        or DNF Riemannian circuit topologies.
+        """
+        k = spec.num_inputs
+        m = spec.num_outputs
+        table = spec.table
+
+        def matches_func(out_idx: int, fn: Callable[[Tuple[int, ...]], int]) -> bool:
+            return all(out_tuple[out_idx] == fn(in_tuple) for in_tuple, out_tuple in table.items())
+
+        if k == 2 and m == 1 and len(table) == 4:
+            if matches_func(0, lambda x: x[0] ^ x[1]):
+                self._assemble_xor(c, spec)
+                return
+
+        if k == 2 and m == 2 and len(table) == 4:
+            if matches_func(0, lambda x: x[0] ^ x[1]) and matches_func(1, lambda x: (1 - x[0]) & x[1]):
+                self._assemble_half_subtractor(c, spec)
+                return
+            if matches_func(0, lambda x: x[0] ^ x[1]) and matches_func(1, lambda x: x[0] & x[1]):
+                self._assemble_half_adder(c, spec)
+                return
+
+        if k == 3 and m == 1 and len(table) == 8:
+            if matches_func(0, lambda x: x[0] ^ x[1] ^ x[2]):
+                self._assemble_parity3(c, spec)
+                return
+            if matches_func(0, lambda x: 1 if (x[0] + x[1] + x[2]) >= 2 else 0):
+                self._assemble_majority(c, spec)
+                return
+            if matches_func(0, lambda x: x[2] if x[0] == 1 else x[1]):
+                self._assemble_mux(c, spec)
+                return
+
+        if k == 3 and m == 2 and len(table) == 8:
+            if (
+                matches_func(0, lambda x: x[0] ^ x[1] ^ x[2])
+                and matches_func(1, lambda x: 1 if (x[0] + x[1] + x[2]) >= 2 else 0)
+            ):
+                self._assemble_full_adder(c, spec)
+                return
+
+        if k == 4 and m == 1 and len(table) == 16:
+            if matches_func(0, lambda x: 1 if (x[0] == x[2] and x[1] == x[3]) else 0):
+                self._assemble_equals2bit(c, spec)
+                return
+
+        # Generic synthesis via Disjunctive Normal Form (DNF) manifold decomposition
+        self._assemble_generic_dnf(c, spec)
+
     def _assemble_xor(self, c: SelfAssembledCircuit, spec: TruthTableSpec) -> None:
         """Assembles destructive wave interference junction for 2-input XOR."""
-        # Destructive interference locus at x = 0.0, y = 0.0
+        in0, in1 = spec.inputs[0], spec.inputs[1]
+        out0 = spec.outputs[0]
         c.add_node("interf_xor", CircuitNodeType.INTERFERENCE, coords=[0.0, 0.0], gain=1.0, threshold=0.5)
-        # Output basin at x = 4.0, y = 0.0
-        c.add_node(spec.outputs[0], CircuitNodeType.BASIN, coords=[4.0, 0.0], gain=1.0, threshold=0.5)
+        c.add_node(out0, CircuitNodeType.BASIN, coords=[4.0, 0.0], gain=1.0, threshold=0.5)
 
-        c.add_edge("A", "interf_xor", weight=1.0)
-        c.add_edge("B", "interf_xor", weight=1.0)
-        c.add_edge("interf_xor", spec.outputs[0], weight=1.0)
+        c.add_edge(in0, "interf_xor", weight=1.0)
+        c.add_edge(in1, "interf_xor", weight=1.0)
+        c.add_edge("interf_xor", out0, weight=1.0)
 
     def _assemble_mux(self, c: SelfAssembledCircuit, spec: TruthTableSpec) -> None:
         """Assembles 2-to-1 Multiplexer topology: Y = (NOT S AND I0) OR (S AND I1)."""
-        # Inversion well for select S
+        in_s, in_0, in_1 = spec.inputs[0], spec.inputs[1], spec.inputs[2]
+        out0 = spec.outputs[0]
         c.add_node("inv_S", CircuitNodeType.INVERTER, coords=[-1.5, -2.0], gain=1.0, threshold=0.5)
-        # Branch 0 (NOT S AND I0)
         c.add_node("lens_branch0", CircuitNodeType.LENS_AND, coords=[0.5, -1.5], gain=1.0, threshold=0.5)
-        # Branch 1 (S AND I1)
         c.add_node("lens_branch1", CircuitNodeType.LENS_AND, coords=[0.5, 1.5], gain=1.0, threshold=0.5)
-        # Output Basin (OR combination of both branches)
-        c.add_node(spec.outputs[0], CircuitNodeType.BASIN, coords=[4.0, 0.0], gain=1.0, threshold=0.5)
+        c.add_node(out0, CircuitNodeType.BASIN, coords=[4.0, 0.0], gain=1.0, threshold=0.5)
 
-        # Wire S to inverter and branch 1
-        c.add_edge("S", "inv_S", weight=1.0)
-        c.add_edge("S", "lens_branch1", weight=1.0)
+        c.add_edge(in_s, "inv_S", weight=1.0)
+        c.add_edge(in_s, "lens_branch1", weight=1.0)
         c.add_edge("inv_S", "lens_branch0", weight=1.0)
 
-        # Wire data lines
-        c.add_edge("I0", "lens_branch0", weight=1.0)
-        c.add_edge("I1", "lens_branch1", weight=1.0)
+        c.add_edge(in_0, "lens_branch0", weight=1.0)
+        c.add_edge(in_1, "lens_branch1", weight=1.0)
 
-        # Combine into output basin
-        c.add_edge("lens_branch0", spec.outputs[0], weight=1.0)
-        c.add_edge("lens_branch1", spec.outputs[0], weight=1.0)
+        c.add_edge("lens_branch0", out0, weight=1.0)
+        c.add_edge("lens_branch1", out0, weight=1.0)
 
     def _assemble_majority(self, c: SelfAssembledCircuit, spec: TruthTableSpec) -> None:
         """Assembles 3-input Majority Voter: Y = 1 if sum(A, B, C) >= 2."""
-        # Pairwise lenses: (A & B), (B & C), (A & C)
+        in_a, in_b, in_c = spec.inputs[0], spec.inputs[1], spec.inputs[2]
+        out0 = spec.outputs[0]
         c.add_node("lens_ab", CircuitNodeType.LENS_AND, coords=[0.0, -1.8], gain=1.0, threshold=0.5)
         c.add_node("lens_bc", CircuitNodeType.LENS_AND, coords=[0.0, 0.0], gain=1.0, threshold=0.5)
         c.add_node("lens_ac", CircuitNodeType.LENS_AND, coords=[0.0, 1.8], gain=1.0, threshold=0.5)
 
-        # Output Basin (OR combination)
-        c.add_node(spec.outputs[0], CircuitNodeType.BASIN, coords=[4.0, 0.0], gain=1.0, threshold=0.5)
+        c.add_node(out0, CircuitNodeType.BASIN, coords=[4.0, 0.0], gain=1.0, threshold=0.5)
 
-        c.add_edge("A", "lens_ab", weight=1.0)
-        c.add_edge("B", "lens_ab", weight=1.0)
+        c.add_edge(in_a, "lens_ab", weight=1.0)
+        c.add_edge(in_b, "lens_ab", weight=1.0)
 
-        c.add_edge("B", "lens_bc", weight=1.0)
-        c.add_edge("C", "lens_bc", weight=1.0)
+        c.add_edge(in_b, "lens_bc", weight=1.0)
+        c.add_edge(in_c, "lens_bc", weight=1.0)
 
-        c.add_edge("A", "lens_ac", weight=1.0)
-        c.add_edge("C", "lens_ac", weight=1.0)
+        c.add_edge(in_a, "lens_ac", weight=1.0)
+        c.add_edge(in_c, "lens_ac", weight=1.0)
 
-        c.add_edge("lens_ab", spec.outputs[0], weight=1.0)
-        c.add_edge("lens_bc", spec.outputs[0], weight=1.0)
-        c.add_edge("lens_ac", spec.outputs[0], weight=1.0)
+        c.add_edge("lens_ab", out0, weight=1.0)
+        c.add_edge("lens_bc", out0, weight=1.0)
+        c.add_edge("lens_ac", out0, weight=1.0)
 
     def _assemble_parity3(self, c: SelfAssembledCircuit, spec: TruthTableSpec) -> None:
         """Assembles 3-input Odd Parity (A ^ B ^ C)."""
-        # First stage XOR: A ^ B
+        in_a, in_b, in_c = spec.inputs[0], spec.inputs[1], spec.inputs[2]
+        out0 = spec.outputs[0]
         c.add_node("interf_ab", CircuitNodeType.INTERFERENCE, coords=[0.0, -1.0], gain=1.0, threshold=0.5)
-        # Second stage XOR: (A ^ B) ^ C
         c.add_node("interf_abc", CircuitNodeType.INTERFERENCE, coords=[2.0, 0.0], gain=1.0, threshold=0.5)
-        # Output Basin
-        c.add_node(spec.outputs[0], CircuitNodeType.BASIN, coords=[4.0, 0.0], gain=1.0, threshold=0.5)
+        c.add_node(out0, CircuitNodeType.BASIN, coords=[4.0, 0.0], gain=1.0, threshold=0.5)
 
-        c.add_edge("A", "interf_ab", weight=1.0)
-        c.add_edge("B", "interf_ab", weight=1.0)
+        c.add_edge(in_a, "interf_ab", weight=1.0)
+        c.add_edge(in_b, "interf_ab", weight=1.0)
 
         c.add_edge("interf_ab", "interf_abc", weight=1.0)
-        c.add_edge("C", "interf_abc", weight=1.0)
+        c.add_edge(in_c, "interf_abc", weight=1.0)
 
-        c.add_edge("interf_abc", spec.outputs[0], weight=1.0)
+        c.add_edge("interf_abc", out0, weight=1.0)
 
     def _assemble_equals2bit(self, c: SelfAssembledCircuit, spec: TruthTableSpec) -> None:
         """Assembles 2-bit Equality Comparator: EQUAL = (A1 == B1) AND (A0 == B0)."""
-        # XNOR bit 1: NOT(A1 ^ B1)
+        in_a1, in_a0, in_b1, in_b0 = spec.inputs[0], spec.inputs[1], spec.inputs[2], spec.inputs[3]
+        out0 = spec.outputs[0]
         c.add_node("xor_1", CircuitNodeType.INTERFERENCE, coords=[-1.5, 1.5], gain=1.0, threshold=0.5)
         c.add_node("xnor_1", CircuitNodeType.INVERTER, coords=[0.5, 1.5], gain=1.0, threshold=0.5)
 
-        # XNOR bit 0: NOT(A0 ^ B0)
         c.add_node("xor_0", CircuitNodeType.INTERFERENCE, coords=[-1.5, -1.5], gain=1.0, threshold=0.5)
         c.add_node("xnor_0", CircuitNodeType.INVERTER, coords=[0.5, -1.5], gain=1.0, threshold=0.5)
 
-        # Final AND Lens: xnor_1 AND xnor_0
         c.add_node("lens_and", CircuitNodeType.LENS_AND, coords=[2.2, 0.0], gain=1.0, threshold=0.5)
-        c.add_node(spec.outputs[0], CircuitNodeType.BASIN, coords=[4.0, 0.0], gain=1.0, threshold=0.5)
+        c.add_node(out0, CircuitNodeType.BASIN, coords=[4.0, 0.0], gain=1.0, threshold=0.5)
 
-        c.add_edge("A1", "xor_1", weight=1.0)
-        c.add_edge("B1", "xor_1", weight=1.0)
+        c.add_edge(in_a1, "xor_1", weight=1.0)
+        c.add_edge(in_b1, "xor_1", weight=1.0)
         c.add_edge("xor_1", "xnor_1", weight=1.0)
 
-        c.add_edge("A0", "xor_0", weight=1.0)
-        c.add_edge("B0", "xor_0", weight=1.0)
+        c.add_edge(in_a0, "xor_0", weight=1.0)
+        c.add_edge(in_b0, "xor_0", weight=1.0)
         c.add_edge("xor_0", "xnor_0", weight=1.0)
 
         c.add_edge("xnor_1", "lens_and", weight=1.0)
         c.add_edge("xnor_0", "lens_and", weight=1.0)
 
-        c.add_edge("lens_and", spec.outputs[0], weight=1.0)
+        c.add_edge("lens_and", out0, weight=1.0)
 
     def _assemble_half_subtractor(self, c: SelfAssembledCircuit, spec: TruthTableSpec) -> None:
         """Assembles Half-Subtractor: Difference D = A ^ B, Borrow = (NOT A) AND B."""
-        # Difference D
+        in_a, in_b = spec.inputs[0], spec.inputs[1]
+        out_diff, out_borrow = spec.outputs[0], spec.outputs[1]
         c.add_node("interf_diff", CircuitNodeType.INTERFERENCE, coords=[0.0, 1.5], gain=1.0, threshold=0.5)
-        c.add_node("DIFF", CircuitNodeType.BASIN, coords=[4.0, 1.5], gain=1.0, threshold=0.5)
+        c.add_node(out_diff, CircuitNodeType.BASIN, coords=[4.0, 1.5], gain=1.0, threshold=0.5)
 
-        # Borrow B = NOT A AND B
         c.add_node("inv_a", CircuitNodeType.INVERTER, coords=[-1.5, -1.5], gain=1.0, threshold=0.5)
         c.add_node("lens_borrow", CircuitNodeType.LENS_AND, coords=[0.5, -1.5], gain=1.0, threshold=0.5)
-        c.add_node("BORROW", CircuitNodeType.BASIN, coords=[4.0, -1.5], gain=1.0, threshold=0.5)
+        c.add_node(out_borrow, CircuitNodeType.BASIN, coords=[4.0, -1.5], gain=1.0, threshold=0.5)
 
-        c.add_edge("A", "interf_diff", weight=1.0)
-        c.add_edge("B", "interf_diff", weight=1.0)
-        c.add_edge("interf_diff", "DIFF", weight=1.0)
+        c.add_edge(in_a, "interf_diff", weight=1.0)
+        c.add_edge(in_b, "interf_diff", weight=1.0)
+        c.add_edge("interf_diff", out_diff, weight=1.0)
 
-        c.add_edge("A", "inv_a", weight=1.0)
+        c.add_edge(in_a, "inv_a", weight=1.0)
         c.add_edge("inv_a", "lens_borrow", weight=1.0)
-        c.add_edge("B", "lens_borrow", weight=1.0)
-        c.add_edge("lens_borrow", "BORROW", weight=1.0)
+        c.add_edge(in_b, "lens_borrow", weight=1.0)
+        c.add_edge("lens_borrow", out_borrow, weight=1.0)
 
     def _assemble_full_adder(self, c: SelfAssembledCircuit, spec: TruthTableSpec) -> None:
         """Assembles 1-bit Full Adder: Sum S = A ^ B ^ CIN, Cout = (A & B) | (CIN & (A ^ B))."""
-        # Sum stage 1: A ^ B
+        in_a, in_b, in_cin = spec.inputs[0], spec.inputs[1], spec.inputs[2]
+        out_sum, out_cout = spec.outputs[0], spec.outputs[1]
         c.add_node("xor_ab", CircuitNodeType.INTERFERENCE, coords=[-1.0, 1.5], gain=1.0, threshold=0.5)
-        # Sum stage 2: (A ^ B) ^ CIN
         c.add_node("xor_sum", CircuitNodeType.INTERFERENCE, coords=[1.5, 1.5], gain=1.0, threshold=0.5)
-        c.add_node("SUM", CircuitNodeType.BASIN, coords=[4.0, 1.5], gain=1.0, threshold=0.5)
+        c.add_node(out_sum, CircuitNodeType.BASIN, coords=[4.0, 1.5], gain=1.0, threshold=0.5)
 
-        # Carry generation: ab_lens = A & B
         c.add_node("lens_ab", CircuitNodeType.LENS_AND, coords=[-0.5, -1.0], gain=1.0, threshold=0.5)
-        # cin_xor_lens = CIN & (A ^ B)
         c.add_node("lens_cin_xor", CircuitNodeType.LENS_AND, coords=[1.0, -1.8], gain=1.0, threshold=0.5)
-        # Cout OR combination
-        c.add_node("COUT", CircuitNodeType.BASIN, coords=[4.0, -1.5], gain=1.0, threshold=0.5)
+        c.add_node(out_cout, CircuitNodeType.BASIN, coords=[4.0, -1.5], gain=1.0, threshold=0.5)
 
-        # Wire Sum
-        c.add_edge("A", "xor_ab", weight=1.0)
-        c.add_edge("B", "xor_ab", weight=1.0)
+        c.add_edge(in_a, "xor_ab", weight=1.0)
+        c.add_edge(in_b, "xor_ab", weight=1.0)
         c.add_edge("xor_ab", "xor_sum", weight=1.0)
-        c.add_edge("CIN", "xor_sum", weight=1.0)
-        c.add_edge("xor_sum", "SUM", weight=1.0)
+        c.add_edge(in_cin, "xor_sum", weight=1.0)
+        c.add_edge("xor_sum", out_sum, weight=1.0)
 
-        # Wire Carry
-        c.add_edge("A", "lens_ab", weight=1.0)
-        c.add_edge("B", "lens_ab", weight=1.0)
+        c.add_edge(in_a, "lens_ab", weight=1.0)
+        c.add_edge(in_b, "lens_ab", weight=1.0)
 
-        c.add_edge("CIN", "lens_cin_xor", weight=1.0)
+        c.add_edge(in_cin, "lens_cin_xor", weight=1.0)
         c.add_edge("xor_ab", "lens_cin_xor", weight=1.0)
 
-        c.add_edge("lens_ab", "COUT", weight=1.0)
-        c.add_edge("lens_cin_xor", "COUT", weight=1.0)
+        c.add_edge("lens_ab", out_cout, weight=1.0)
+        c.add_edge("lens_cin_xor", out_cout, weight=1.0)
 
     def _assemble_half_adder(self, c: SelfAssembledCircuit, spec: TruthTableSpec) -> None:
         """Assembles Half Adder: Sum S = A ^ B, Carry = A & B."""
+        in_a, in_b = spec.inputs[0], spec.inputs[1]
+        out_sum, out_carry = spec.outputs[0], spec.outputs[1]
         c.add_node("interf_sum", CircuitNodeType.INTERFERENCE, coords=[0.0, 1.5], gain=1.0, threshold=0.5)
-        c.add_node("SUM", CircuitNodeType.BASIN, coords=[4.0, 1.5], gain=1.0, threshold=0.5)
+        c.add_node(out_sum, CircuitNodeType.BASIN, coords=[4.0, 1.5], gain=1.0, threshold=0.5)
 
         c.add_node("lens_carry", CircuitNodeType.LENS_AND, coords=[0.0, -1.5], gain=1.0, threshold=0.5)
-        c.add_node("CARRY", CircuitNodeType.BASIN, coords=[4.0, -1.5], gain=1.0, threshold=0.5)
+        c.add_node(out_carry, CircuitNodeType.BASIN, coords=[4.0, -1.5], gain=1.0, threshold=0.5)
 
-        c.add_edge("A", "interf_sum", weight=1.0)
-        c.add_edge("B", "interf_sum", weight=1.0)
-        c.add_edge("interf_sum", "SUM", weight=1.0)
+        c.add_edge(in_a, "interf_sum", weight=1.0)
+        c.add_edge(in_b, "interf_sum", weight=1.0)
+        c.add_edge("interf_sum", out_sum, weight=1.0)
 
-        c.add_edge("A", "lens_carry", weight=1.0)
-        c.add_edge("B", "lens_carry", weight=1.0)
-        c.add_edge("lens_carry", "CARRY", weight=1.0)
+        c.add_edge(in_a, "lens_carry", weight=1.0)
+        c.add_edge(in_b, "lens_carry", weight=1.0)
+        c.add_edge("lens_carry", out_carry, weight=1.0)
 
     def _assemble_generic_dnf(self, c: SelfAssembledCircuit, spec: TruthTableSpec) -> None:
         """Assembles arbitrary boolean function via Disjunctive Normal Form (minterms)."""
