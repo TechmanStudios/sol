@@ -36,6 +36,18 @@ class DAGNodeInfo:
     out_degree: int
     expression: str
 
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "node_id": self.node_id,
+            "node_type": self.node_type.value if hasattr(self.node_type, "value") else str(self.node_type),
+            "depth": int(self.depth),
+            "parents": list(self.parents),
+            "children": list(self.children),
+            "in_degree": int(self.in_degree),
+            "out_degree": int(self.out_degree),
+            "expression": self.expression,
+        }
+
 
 @dataclass
 class CircuitDAG:
@@ -49,6 +61,18 @@ class CircuitDAG:
     max_fan_out: int
     total_edges: int
 
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "circuit_id": self.circuit_id,
+            "nodes": {nid: ninfo.to_dict() for nid, ninfo in self.nodes.items()},
+            "layers": {str(k): list(v) for k, v in self.layers.items()},
+            "critical_path_length": int(self.critical_path_length),
+            "max_depth": int(self.max_depth),
+            "max_fan_in": int(self.max_fan_in),
+            "max_fan_out": int(self.max_fan_out),
+            "total_edges": int(self.total_edges),
+        }
+
 
 @dataclass
 class SymbolicReflectionReport:
@@ -61,6 +85,18 @@ class SymbolicReflectionReport:
     mermaid_markdown: str
     reflection_time_ms: float
     algebraic_summary: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "circuit_id": self.circuit_id,
+            "dag": self.dag.to_dict(),
+            "expressions": dict(self.expressions),
+            "simplified_expressions": dict(self.simplified_expressions),
+            "is_equivalent": bool(self.is_equivalent),
+            "mermaid_markdown": self.mermaid_markdown,
+            "reflection_time_ms": round(float(self.reflection_time_ms), 4),
+            "algebraic_summary": self.algebraic_summary,
+        }
 
 
 class SymbolicReflector:

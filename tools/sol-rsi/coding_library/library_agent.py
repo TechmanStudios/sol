@@ -36,6 +36,8 @@ class LuminaLibraryAgent:
         self.components_dir = self.lib_dir / "components"
         self.doc_dir = self.lib_dir / "documentation"
         self.registry_path = self.lib_dir / "registry.json"
+        self.observatory_staging_path = self.lib_dir / "observatory_staged_registry.json"
+        self.lessons_path = self.lib_dir / "level_lessons.json"
         
         # Ensure directories exist
         self.components_dir.mkdir(parents=True, exist_ok=True)
@@ -43,6 +45,8 @@ class LuminaLibraryAgent:
         
         # Load registry
         self.registry = self._load_registry()
+        self.observatory_staged = self._load_observatory_staged()
+        self.level_lessons = self._load_level_lessons()
 
     def _load_registry(self) -> Dict[str, dict]:
         if not self.registry_path.exists():
@@ -56,6 +60,121 @@ class LuminaLibraryAgent:
     def _save_registry(self):
         with open(self.registry_path, "w", encoding="utf-8") as f:
             json.dump(self.registry, f, indent=2, ensure_ascii=False)
+
+    def _load_observatory_staged(self) -> Dict[str, dict]:
+        if not self.observatory_staging_path.exists():
+            return {}
+        try:
+            with open(self.observatory_staging_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            return {}
+
+    def _save_observatory_staged(self) -> None:
+        with open(self.observatory_staging_path, "w", encoding="utf-8") as f:
+            json.dump(self.observatory_staged, f, indent=2, ensure_ascii=False)
+
+    def _load_level_lessons(self) -> List[dict]:
+        if not self.lessons_path.exists():
+            return []
+        try:
+            with open(self.lessons_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                return data if isinstance(data, list) else []
+        except (json.JSONDecodeError, OSError):
+            return []
+
+    def _save_level_lessons(self) -> None:
+        with open(self.lessons_path, "w", encoding="utf-8") as f:
+            json.dump(self.level_lessons, f, indent=2, ensure_ascii=False)
+
+    def stage_observatory_candidate(
+        self,
+        *,
+        component_name: str,
+        code_source: str,
+        experiment_id: str,
+        sovereign_packet_id: str,
+        reproducibility_hash: str,
+        court_decision: str,
+        target_level: int = 12,
+        review_status: str = "awaiting_review",
+        persist_to_disk: bool = True,
+    ) -> Dict[str, str]:
+        """
+        Stages a candidate Lumina component under SOL Change Observatory + PromotionCourt
+        governance (`Rule 1: Agents propose; courts promote`).
+        Candidate components remain `AWAITING_OBSERVATORY_REVIEW` (`review_status='awaiting_review'`)
+        until human reviewer sign-off in the SOL Change Observatory.
+        """
+        record = {
+            "component_name": component_name,
+            "path": f"components/staged_{component_name}.py",
+            "verification_status": "AWAITING_OBSERVATORY_REVIEW",
+            "review_status": review_status,
+            "observatory_experiment_id": experiment_id,
+            "sovereign_packet_id": sovereign_packet_id,
+            "reproducibility_hash": reproducibility_hash,
+            "court_decision": court_decision,
+            "target_level": int(target_level),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+        self.observatory_staged[component_name] = record
+        if persist_to_disk:
+            staged_file = self.components_dir / f"staged_{component_name}.py"
+            with open(staged_file, "w", encoding="utf-8") as out_f:
+                out_f.write(code_source)
+            self._save_observatory_staged()
+        return record
+
+    def list_observatory_staged_candidates(self) -> Dict[str, dict]:
+        """Return all candidate components staged with SOL Change Observatory provenance."""
+        return dict(self.observatory_staged)
+
+    def record_lesson_law(
+        self,
+        *,
+        lesson_id: str,
+        level: int,
+        failure_pattern: str,
+        constitutional_rule: str,
+        ranger_actor: str,
+        experiment_id: str,
+        reproducibility_hash: str,
+        persist_to_disk: bool = True,
+    ) -> Dict[str, object]:
+        """
+        Implements Rule 7 (`Lessons become law` from LuminaRangerCorps.md §10):
+        Persists a verified field failure lesson into `level_lessons.json` so deliberative
+        councils and Continuum agents load it before future proposals.
+        """
+        entry = {
+            "lesson_id": lesson_id,
+            "level": int(level),
+            "failure_pattern": failure_pattern,
+            "constitutional_rule": constitutional_rule,
+            "ranger_actor": ranger_actor,
+            "observatory_experiment_id": experiment_id,
+            "reproducibility_hash": reproducibility_hash,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+        existing_ids = {item.get("lesson_id") for item in self.level_lessons}
+        if lesson_id not in existing_ids:
+            self.level_lessons.append(entry)
+        else:
+            self.level_lessons = [
+                entry if item.get("lesson_id") == lesson_id else item
+                for item in self.level_lessons
+            ]
+        if persist_to_disk:
+            self._save_level_lessons()
+        return entry
+
+    def load_level_lessons(self, level: Optional[int] = None) -> List[dict]:
+        """Load constitutional lessons from `level_lessons.json`, optionally filtered by level."""
+        if level is None:
+            return list(self.level_lessons)
+        return [item for item in self.level_lessons if int(item.get("level", -1)) == int(level)]
 
     def sync_from_ledger(self, ledger_path: Optional[Path] = None) -> List[str]:
         """Scan the inventor ledger and migrate successful code blocks to library components."""
@@ -179,6 +298,10 @@ class LuminaLibraryAgent:
             from coding_library.cognitive_experts import CognitiveExpertTeam
             team = CognitiveExpertTeam(library_dir=self.lib_dir)
             return team.ask_expert(expert_name_lower, query, context)
+        elif expert_name_lower in ["sovereign", "court", "ranger_team", "agent_team"]:
+            from coding_library.sovereign_domain import SovereignDomain
+            domain = SovereignDomain(library_dir=self.lib_dir)
+            return domain.route(expert_name_lower, query, context)
         elif expert_name_lower in ["ranger", "substrate_ranger", "hotfix_dispatcher", "payload_courier", "telemetry_collector", "ledger_archivist", "substrate_scout"]:
             from coding_library.roaming_agents import (
                 LuminaSubstrateRanger, LuminaHotfixDispatcher, LuminaPayloadCourier,

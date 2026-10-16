@@ -44,6 +44,13 @@ from .roaming_agents import (
     LuminaRoamingAgent, LuminaSubstrateRanger, LuminaHotfixDispatcher,
     LuminaPayloadCourier, LuminaTelemetryCollector, LuminaLedgerArchivist, LuminaSubstrateScout
 )
+from .sovereign_domain import (
+    PromotionCourt,
+    PromotionGateResult,
+    RangerMission,
+    SovereignDomain,
+    SovereignPacket,
+)
 
 __all__ = [
     "LuminaLibraryAgent",
@@ -87,7 +94,13 @@ __all__ = [
     "LuminaPayloadCourier",
     "LuminaTelemetryCollector",
     "LuminaLedgerArchivist",
-    "LuminaSubstrateScout"
+    "LuminaSubstrateScout",
+    "PromotionCourt",
+    "PromotionGateResult",
+    "RangerMission",
+    "SovereignDomain",
+    "SovereignPacket",
 ]
+
 
 
