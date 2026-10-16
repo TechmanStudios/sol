@@ -53,10 +53,10 @@ class CircuitNode:
         """Computes positive-definite metric tensor g = exp(S) at this node."""
         S_sym = 0.5 * (self.metric_bias + self.metric_bias.T)
         S_clip = np.clip(S_sym, -15.0, 15.0)
-        g = la.expm(S_clip)
-        g = 0.5 * (g + g.T)
-        evals, evecs = la.eigh(g)
-        evals = np.clip(evals, 1e-4, 100.0)
+        # S_clip is symmetric: exponentiate its eigenvalues directly rather
+        # than computing a matrix exponential and then decomposing it again.
+        evals, evecs = la.eigh(S_clip)
+        evals = np.clip(np.exp(evals), 1e-4, 100.0)
         return (evecs * evals) @ evecs.T
 
 
@@ -177,6 +177,13 @@ class SelfAssembledCircuit:
             raw_in = inputs.get(nid, 0.0)
             activations[nid] = float(np.clip(raw_in, 0.0, 1.0))
 
+        # Geometry does not change during this propagation. Reuse each tensor
+        # across incident edges and stability checks, but recompute on the next
+        # call so in-place metric perturbations remain visible immediately.
+        metrics_by_node = {
+            nid: node.compute_local_metric() for nid, node in self.nodes.items()
+        }
+
         # 2. Forward propagation
         for nid in topo_order:
             node = self.nodes[nid]
@@ -196,7 +203,7 @@ class SelfAssembledCircuit:
 
                 # Distance on manifold
                 diff = node.coords - src_node.coords
-                g_avg = 0.5 * (node.compute_local_metric() + src_node.compute_local_metric())
+                g_avg = 0.5 * (metrics_by_node[nid] + metrics_by_node[src_id])
                 dist_g = float(np.sqrt(np.maximum(diff @ g_avg @ diff, 1e-12)))
 
                 # Attenuation and Carnot dissipation tracking
@@ -261,7 +268,7 @@ class SelfAssembledCircuit:
             binary_outs[out_id] = 1 if val >= self.nodes[out_id].threshold else 0
 
         # Compute metric condition numbers
-        metrics = [node.compute_local_metric() for node in self.nodes.values()]
+        metrics = list(metrics_by_node.values())
         min_eval = min(float(np.min(la.eigvalsh(g))) for g in metrics)
         max_cond = max(float(np.linalg.cond(g)) for g in metrics)
 
