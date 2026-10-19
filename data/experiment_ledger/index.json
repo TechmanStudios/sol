@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-10-19T04:20:11.010395+00:00",
-  "records": 1859,
-  "runs": 439,
+  "generated_at": "2026-10-19T06:40:33.969148+00:00",
+  "records": 1860,
+  "runs": 440,
   "experiments": {
     "cortex": {
-      "runs": 106,
-      "generations": 106,
-      "accepted_generations": 72,
-      "acceptance_rate": 0.6792452830188679,
+      "runs": 107,
+      "generations": 107,
+      "accepted_generations": 73,
+      "acceptance_rate": 0.6822429906542056,
       "top_runs_by_anchor": [
         {
           "experiment": "cortex",
@@ -192,9 +192,9 @@
           "best_full_delta": 1.0
         },
         "unpromoted": {
-          "generations": 34,
-          "runs": 34,
-          "accepted_generations": 34,
+          "generations": 35,
+          "runs": 35,
+          "accepted_generations": 35,
           "acceptance_rate": 1.0,
           "best_anchor_delta": 1.0,
           "best_full_delta": 5.0
@@ -746,8 +746,8 @@
   },
   "knowledge_domains": {
     "sol_manifold": {
-      "records": 1558,
-      "accepted_generations": 411,
+      "records": 1559,
+      "accepted_generations": 412,
       "experiments": [
         "cortex",
         "dream",
@@ -804,15 +804,15 @@
       ]
     },
     "injection:grail": {
-      "records": 105,
-      "accepted_generations": 72,
+      "records": 106,
+      "accepted_generations": 73,
       "experiments": [
         "cortex"
       ]
     },
     "damping": {
-      "records": 91,
-      "accepted_generations": 64,
+      "records": 92,
+      "accepted_generations": 65,
       "experiments": [
         "cortex"
       ]
@@ -28848,8 +28848,8 @@
       ]
     },
     "stable_replay": {
-      "records": 68,
-      "accepted_generations": 68,
+      "records": 69,
+      "accepted_generations": 69,
       "experiments": [
         "cortex"
       ]
@@ -28934,15 +28934,15 @@
       ]
     },
     "mechanistic_gap": {
-      "records": 71,
-      "accepted_generations": 56,
+      "records": 72,
+      "accepted_generations": 57,
       "experiments": [
         "cortex"
       ]
     },
     "unknown_mechanics": {
-      "records": 63,
-      "accepted_generations": 54,
+      "records": 64,
+      "accepted_generations": 55,
       "experiments": [
         "cortex"
       ]
