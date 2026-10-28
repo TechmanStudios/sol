@@ -1,0 +1,153 @@
+{
+  "task_id": "anchor_damping_baseline",
+  "family": "damping",
+  "anchor": true,
+  "protocol_name": "damping_sweep_smoke",
+  "effective_protocol": {
+    "seriesName": "damping_sweep_smoke",
+    "invariants": {
+      "dt": 0.12,
+      "c_press": 0.128,
+      "rng_seed": 42,
+      "psi_diffusion": 0.036,
+      "cap_threshold": 0.38
+    },
+    "knobs": {
+      "damping": [
+        1.28
+      ]
+    },
+    "steps": 100,
+    "reps": 1,
+    "metrics_every": 10,
+    "baseline": "fresh",
+    "injections": [
+      {
+        "label": "grail",
+        "amount": 50,
+        "at_step": 0
+      }
+    ]
+  },
+  "summary": {
+    "total_conditions": 1,
+    "total_reps": 1,
+    "total_steps": 100,
+    "runtime_sec": 0.4495067596435547
+  },
+  "sanity": {
+    "all_passed": true,
+    "total": 5,
+    "failures": 0,
+    "checks": [
+      {
+        "name": "baseline_declared",
+        "passed": true,
+        "detail": "Baseline mode: fresh"
+      },
+      {
+        "name": "invariants",
+        "passed": true,
+        "detail": "All 5 invariants constant"
+      },
+      {
+        "name": "no_nan",
+        "passed": true,
+        "detail": "No NaN/Inf values found"
+      },
+      {
+        "name": "entropy_bounds",
+        "passed": true,
+        "detail": "Entropy in [0,1] for all steps"
+      },
+      {
+        "name": "mass_conservation",
+        "passed": true,
+        "detail": "Mass bounded: max=47.95 <= injected=50.00"
+      }
+    ]
+  },
+  "comparison": null,
+  "conditions": {
+    "damping=1.28": {
+      "final_metrics": {
+        "entropy": 0.463512737808086,
+        "totalFlux": 7.65260072458815,
+        "maxFluxAbs": 0.5314922130828273,
+        "mass": 29.674608816162582,
+        "avgRho": 0.21196149154401844,
+        "maxRho": 19.387153902071873,
+        "rhoMaxId": 1,
+        "activeCount": 20,
+        "vortNorm_global": 0.0,
+        "vortNorm_global_ema": 0.0,
+        "step": 100,
+        "t": 11.99999999999998,
+        "rep": 0,
+        "condition": "damping=1.28",
+        "param_dt": 0.12,
+        "param_c_press": 0.128,
+        "param_rng_seed": 42,
+        "param_psi_diffusion": 0.036,
+        "param_cap_threshold": 0.38,
+        "param_damping": 1.28
+      },
+      "analysis": {
+        "entropy": {
+          "count": 10,
+          "mean": 0.25538765322446505,
+          "stdev": 0.1346989872873696,
+          "min": 0.03454328775744817,
+          "max": 0.463512737808086,
+          "final": 0.463512737808086,
+          "range": 0.4289694500506378
+        },
+        "flux": {
+          "count": 10,
+          "mean": 7.0987974186591565,
+          "stdev": 1.0642558564606466,
+          "min": 4.210056079357802,
+          "max": 7.809695589588188,
+          "final": 7.65260072458815,
+          "range": 3.5996395102303858
+        },
+        "mass": {
+          "count": 10,
+          "mean": 39.28181376408256,
+          "stdev": 5.92592124147662,
+          "min": 29.674608816162582,
+          "max": 47.9533018907203,
+          "final": 29.674608816162582,
+          "range": 18.278693074557715
+        },
+        "activeCount": {
+          "count": 10,
+          "mean": 8.5,
+          "stdev": 5.277309920783504,
+          "min": 4,
+          "max": 20,
+          "final": 20,
+          "range": 16
+        },
+        "rhoMax": {
+          "dominant_node": 1,
+          "dominant_ticks": 10,
+          "total_ticks": 10,
+          "peak_rho": 46.98378680498041,
+          "holder_distribution": {
+            "1": 10
+          }
+        },
+        "convergence_entropy": null,
+        "convergence_flux": null
+      }
+    }
+  },
+  "derived_metrics": {
+    "stability": 0.6130441209814497,
+    "novelty": 0.4289694500506378,
+    "usefulness": 0.7091473202857139,
+    "reproducibility": 0.42607767999253543,
+    "cost": 0.4495067596435547
+  }
+}

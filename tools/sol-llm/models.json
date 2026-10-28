@@ -15,10 +15,11 @@
       "sdk": "anthropic"
     },
     "google": {
-      "name": "Google (Gemini)",
+      "name": "Google (Gemini Interactions API)",
       "endpoint": "https://generativelanguage.googleapis.com",
-      "env_var": "GOOGLE_API_KEY",
-      "sdk": "openai"
+      "env_var": "GEMINI_API_KEY",
+      "fallback_env_var": "GOOGLE_API_KEY",
+      "sdk": "google-genai"
     },
     "openai": {
       "name": "OpenAI (Direct)",
@@ -29,35 +30,44 @@
   },
   "slots": {
     "primary": {
-      "id": "gemini-3.5-flash",
-      "name": "Gemini 3.5 Flash",
+      "id": "gemini-4-argon",
+      "name": "Gemini 4 Argon",
       "provider": "google",
+      "sdk": "google-genai",
       "context_window": 1048576,
-      "cost_per_1k_input": 0.000075,
-      "cost_per_1k_output": 0.0003,
-      "is_reasoning": false
+      "max_output_tokens": 32768,
+      "thinking_level": "high",
+      "cost_per_1k_input": 0.002,
+      "cost_per_1k_output": 0.012,
+      "is_reasoning": true
     },
     "fallback": {
-      "id": "gemini-3.5-flash",
-      "name": "Gemini 3.5 Flash",
+      "id": "gemini-3.8-flash",
+      "name": "Gemini 3.8 Flash",
       "provider": "google",
+      "sdk": "google-genai",
       "context_window": 1048576,
-      "cost_per_1k_input": 0.000075,
-      "cost_per_1k_output": 0.0003,
-      "is_reasoning": false
+      "max_output_tokens": 32768,
+      "thinking_level": "medium",
+      "cost_per_1k_input": 0.0005,
+      "cost_per_1k_output": 0.003,
+      "is_reasoning": true
     },
     "reasoning": {
-      "id": "gemini-3.5-flash",
-      "name": "Gemini 3.5 Flash",
+      "id": "gemini-4-argon",
+      "name": "Gemini 4 Argon (Reflective Reasoning)",
       "provider": "google",
+      "sdk": "google-genai",
       "context_window": 1048576,
-      "cost_per_1k_input": 0.000075,
-      "cost_per_1k_output": 0.0003,
-      "is_reasoning": false
+      "max_output_tokens": 32768,
+      "thinking_level": "high",
+      "cost_per_1k_input": 0.002,
+      "cost_per_1k_output": 0.012,
+      "is_reasoning": true
     }
   },
   "budget": {
-    "max_tokens_per_call": 4096,
+    "max_tokens_per_call": 32768,
     "max_calls_per_cycle": 20,
     "max_cost_per_cycle_usd": 2.0,
     "max_cost_per_day_usd": 10.0,

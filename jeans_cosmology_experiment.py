@@ -174,6 +174,10 @@ class SynthSpawner:
                 "isStellar": False,
                 "isConstellation": False,
                 "isSynth": True,
+                "z_gate": 1.0,
+                "r_gate": 1.0,
+                "z_bias": 0.0,
+                "r_bias": 0.0,
             }
             self._synth_birth_tick[synth_id] = tick
 
@@ -191,6 +195,10 @@ class SynthSpawner:
                 "kind": "synth",
                 "flux": 0.0,
                 "conductance": 1.0,
+                "src_node": self.physics.node_by_id.get(node["id"]),
+                "dst_node": synth_node,
+                "from_idx": self.physics.node_index_by_id.get(node["id"]),
+                "to_idx": self.physics.node_index_by_id.get(synth_id),
             }
             self.physics.edges.append(synth_edge)
 
@@ -219,6 +227,10 @@ class SynthSpawner:
                     "kind": "synth",
                     "flux": 0.0,
                     "conductance": 1.0,
+                    "src_node": synth_node,
+                    "dst_node": self.physics.node_by_id.get(nid),
+                    "from_idx": self.physics.node_index_by_id.get(synth_id),
+                    "to_idx": self.physics.node_index_by_id.get(nid),
                 }
                 self.physics.edges.append(bridge_edge)
 
