@@ -14,18 +14,19 @@ import ast
 import inspect
 import sys
 from pathlib import Path
-from typing import Type, Any, Optional
+from typing import Any, ClassVar
 
 sol_root = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(sol_root))
 sys.path.insert(0, str(sol_root / "scratch"))
 
-from logos_compiler import LogosCompiler
 from hybrid_subsystem_framework import Instruction
+from logos_compiler import CompiledLogosProgram, LogosCompiler
+
 
 class ComponentInstance:
     """Bound instance of a library sub-component."""
-    def __init__(self, name: str, agent_cls: Type['LuminaAgent'], inputs: dict[str, str], outputs: dict[str, str], source_code: str):
+    def __init__(self, name: str, agent_cls: type['LuminaAgent'], inputs: dict[str, str], outputs: dict[str, str], source_code: str):
         self.name = name
         self.agent_cls = agent_cls
         self.inputs = inputs
@@ -34,7 +35,15 @@ class ComponentInstance:
 
     def run(self):
         """Placeholder stub for AST visitor inlining."""
-        pass
+
+
+def _is_component_instance(obj: Any) -> bool:
+    return isinstance(obj, ComponentInstance) or (
+        getattr(type(obj), "__name__", "") == "ComponentInstance"
+        and hasattr(obj, "agent_cls")
+        and hasattr(obj, "inputs")
+        and hasattr(obj, "outputs")
+    )
 
 
 class ComponentASTTransformer(ast.NodeTransformer):
@@ -47,8 +56,11 @@ class ComponentASTTransformer(ast.NodeTransformer):
         self.sub_outputs = sub_outputs
 
     def visit_Attribute(self, node: ast.Attribute):
+        node = self.generic_visit(node)
         if isinstance(node.value, ast.Name) and node.value.id == "self":
             attr = node.attr
+            if attr in ("nudge", "settle", "assert_mass", "use_component"):
+                return node
             if attr in self.inputs_map:
                 mapped = self.inputs_map[attr]
             elif attr in self.outputs_map:
@@ -60,7 +72,7 @@ class ComponentASTTransformer(ast.NodeTransformer):
                 attr=mapped,
                 ctx=node.ctx
             )
-        return self.generic_visit(node)
+        return node
 
 
 class LuminaAgent:
@@ -74,15 +86,54 @@ class LuminaAgent:
         if not hasattr(self, "outputs") or not self.outputs:
             self.outputs = {}
         self._components = {}
+        self._component_seq = 0
+        if hasattr(self, "components") and isinstance(self.components, dict):
+            for alias, comp_spec in dict(self.components).items():
+                self._bind_component_spec(str(alias), comp_spec)
         self.configure()
+
+    def _bind_component_spec(self, alias: str, comp_spec: Any) -> ComponentInstance:
+        """Bind a declarative component class, ComponentInstance, or library name under alias."""
+        if isinstance(comp_spec, ComponentInstance):
+            self._components[alias] = comp_spec
+            setattr(self, alias, comp_spec)
+            return comp_spec
+        if isinstance(comp_spec, str):
+            inst = self.use_component(comp_spec, inputs={}, outputs={}, instance_name=alias)
+            setattr(self, alias, inst)
+            return inst
+        if isinstance(comp_spec, type) and issubclass(comp_spec, LuminaAgent):
+            sub_agent = comp_spec()
+            try:
+                code = inspect.getsource(comp_spec)
+            except (OSError, TypeError):
+                code = getattr(comp_spec, "_source", "")
+            in_map = {k: f"{alias}_{k}" for k in sub_agent.inputs}
+            out_map = {k: f"{alias}_{k}" for k in sub_agent.outputs}
+            inst = ComponentInstance(alias, comp_spec, in_map, out_map, code)
+            self._components[alias] = inst
+            setattr(self, alias, inst)
+            for attr_name, attr_val in sub_agent.__dict__.items():
+                if _is_component_instance(attr_val):
+                    def _remap(w: str, _in=in_map, _out=out_map, _al=alias) -> str:
+                        return _in.get(w) or _out.get(w) or f"{_al}_{w}"
+                    prefixed_name = f"{alias}_{attr_name}"
+                    rebound = ComponentInstance(
+                        prefixed_name,
+                        attr_val.agent_cls,
+                        {k: _remap(v) for k, v in attr_val.inputs.items()},
+                        {k: _remap(v) for k, v in attr_val.outputs.items()},
+                        attr_val.source_code,
+                    )
+                    setattr(self, prefixed_name, rebound)
+            return inst
+        raise ValueError(f"Unsupported declarative component specification for '{alias}': {comp_spec!r}")
 
     def configure(self):
         """Map symbolic variables to physical memory attractor basins."""
-        pass
 
     def flow(self):
         """Logic execution flow."""
-        pass
 
     # Helper stubs for static analysis / typing
     def nudge(self, basin: str, amount: float):
@@ -94,24 +145,29 @@ class LuminaAgent:
     def assert_mass(self, reg: str, min_mass: float):
         pass
 
-    def use_component(self, component_name: str, inputs: dict[str, str], outputs: dict[str, str]) -> ComponentInstance:
-        """Register and load a verified sub-component from the library."""
+    def use_component(
+        self,
+        component_name: str,
+        inputs: dict[str, str],
+        outputs: dict[str, str],
+        instance_name: str | None = None,
+    ) -> ComponentInstance:
+        """Register and load a verified sub-component from the library with unique instance scoping."""
         from coding_library.library_agent import LuminaLibraryAgent
         lib = LuminaLibraryAgent()
         code = lib.load_component(component_name)
         if not code:
             raise ValueError(f"Component '{component_name}' not found in Coding Library.")
             
-        # Execute the code to extract the agent class
         local_vars = {}
         exec_globals = {
             "LuminaAgent": LuminaAgent,
             "LuminaCompiler": globals().get("LuminaCompiler")
         }
-        exec(code, exec_globals, local_vars)
-        
+        exec(code, exec_globals, local_vars)  # noqa: S102
+
         agent_cls = None
-        for name, val in local_vars.items():
+        for val in local_vars.values():
             if isinstance(val, type) and issubclass(val, LuminaAgent) and val != LuminaAgent:
                 agent_cls = val
                 break
@@ -119,26 +175,49 @@ class LuminaAgent:
         if not agent_cls:
             raise ValueError(f"No LuminaAgent subclass found for component '{component_name}'.")
             
-        # Instantiate sub-agent to register its own sub-components and variables
         sub_agent = agent_cls()
+
+        if instance_name:
+            alias = instance_name
+        elif component_name not in self._components:
+            alias = component_name
+        else:
+            self._component_seq += 1
+            alias = f"{component_name}_{self._component_seq}"
+
+        eff_inputs = {k: (inputs.get(k) or f"{alias}_{k}") for k in sub_agent.inputs}
+        eff_inputs.update(inputs)
+        eff_outputs = {k: (outputs.get(k) or f"{alias}_{k}") for k in sub_agent.outputs}
+        eff_outputs.update(outputs)
+
+        instance = ComponentInstance(alias, agent_cls, eff_inputs, eff_outputs, code)
+        self._components[alias] = instance
         
-        instance = ComponentInstance(component_name, agent_cls, inputs, outputs, code)
-        self._components[component_name] = instance
-        
-        # Copy any sub-component instances to parent, prefixed
+        # Bind nested child components under unique prefixed names
         for attr_name, attr_val in sub_agent.__dict__.items():
-            if isinstance(attr_val, ComponentInstance):
-                prefixed_name = f"{component_name}_{attr_name}"
-                setattr(self, prefixed_name, attr_val)
+            if _is_component_instance(attr_val):
+                def _remap(w: str) -> str:
+                    return eff_inputs.get(w) or eff_outputs.get(w) or f"{alias}_{w}"
+                prefixed_name = f"{alias}_{attr_name}"
+                rebound = ComponentInstance(
+                    prefixed_name,
+                    attr_val.agent_cls,
+                    {k: _remap(v) for k, v in attr_val.inputs.items()},
+                    {k: _remap(v) for k, v in attr_val.outputs.items()},
+                    attr_val.source_code,
+                )
+                setattr(self, prefixed_name, rebound)
                 
         return instance
 
 
 class LuminaASTVisitor(ast.NodeVisitor):
     """AST visitor to transform a Python function definition into Logos intermediate statements."""
-    def __init__(self, agent_instance: LuminaAgent):
+    def __init__(self, agent_instance: LuminaAgent, pure_wave: bool = False):
         self.agent = agent_instance
+        self.pure_wave = bool(pure_wave)
         self.statements = []
+        self.component_scope_basins: dict[str, str] = {}
         self.label_counter = 0
         self.temp_counter = 0
 
@@ -150,24 +229,131 @@ class LuminaASTVisitor(ast.NodeVisitor):
         self.temp_counter += 1
         return f"lumina_tmp_{self.temp_counter}"
 
+    def _parse_subscript(self, sub_node: ast.Subscript) -> tuple[str, Any, bool]:
+        """Parses self.arr[idx] / self.arr[msb, lsb] / self.arr[2] into (array_prefix, index_spec, is_const)."""
+        if isinstance(sub_node.value, ast.Attribute) and isinstance(sub_node.value.value, ast.Name) and sub_node.value.value.id == "self":
+            raw_arr = sub_node.value.attr
+        elif isinstance(sub_node.value, ast.Name):
+            raw_arr = sub_node.value.id
+        else:
+            raise ValueError(f"Unsupported subscript base in Lumina flow: {ast.dump(sub_node)}")
+
+        mapped = self.agent.inputs.get(raw_arr) or self.agent.outputs.get(raw_arr)
+        if mapped:
+            array_prefix = mapped.removeprefix("Basin_")
+        else:
+            elem0 = (
+                self.agent.inputs.get(f"{raw_arr}_0")
+                or self.agent.outputs.get(f"{raw_arr}_0")
+                or self.agent.inputs.get(f"{raw_arr}0")
+                or self.agent.outputs.get(f"{raw_arr}0")
+            )
+            if elem0:
+                stripped = elem0.removeprefix("Basin_")
+                array_prefix = stripped.removesuffix("0")
+            else:
+                array_prefix = raw_arr
+
+        slc = sub_node.slice
+        if isinstance(slc, ast.Index):  # Python <3.9 compatibility guard
+            slc = slc.value
+
+        if isinstance(slc, ast.Constant) and isinstance(slc.value, int):
+            return array_prefix, int(slc.value), True
+
+        if isinstance(slc, ast.Tuple):
+            if all(isinstance(elt, ast.Constant) and isinstance(elt.value, int) for elt in slc.elts):
+                idx_val = 0
+                for elt in slc.elts:
+                    idx_val = (idx_val << 1) | (int(elt.value) & 1)
+                return array_prefix, idx_val, True
+            addr_vars = [self._visit_expression(elt) for elt in slc.elts]
+            return array_prefix, addr_vars, False
+
+        addr_var = self._visit_expression(slc)
+        return array_prefix, addr_var, False
+
     def visit_Assign(self, node: ast.Assign):
         if len(node.targets) != 1:
             raise ValueError("Multiple assignment targets not supported in Lumina flow.")
-        target_name = self._resolve_target(node.targets[0])
+        target = node.targets[0]
+        if isinstance(target, ast.Subscript):
+            expr_val = self._visit_expression(node.value)
+            array_prefix, index_spec, is_const = self._parse_subscript(target)
+            if is_const:
+                self.statements.append(("STORE", expr_val, f"Basin_{array_prefix}{index_spec}"))
+            else:
+                self.statements.append(("STORE_INDIRECT", expr_val, array_prefix, index_spec))
+            return
+
+        target_name = self._resolve_target(target)
+        # Allow dynamic inline self.ha = self.use_component(...) inside flow() if written there
+        if (
+            isinstance(node.value, ast.Call)
+            and isinstance(node.value.func, ast.Attribute)
+            and isinstance(node.value.func.value, ast.Name)
+            and node.value.func.value.id == "self"
+            and node.value.func.attr == "use_component"
+        ):
+            comp_inst = self._eval_use_component_call(node.value, instance_name=target_name)
+            setattr(self.agent, target_name, comp_inst)
+            return
+
         expr_val = self._visit_expression(node.value, target_name)
         
-        # If target_name is in outputs, explicitly compile a STORE operation
         if target_name in self.agent.outputs:
             self.statements.append(("STORE", target_name, self.agent.outputs[target_name]))
 
+    def _eval_use_component_call(self, call: ast.Call, instance_name: str | None = None) -> ComponentInstance:
+        comp_name = self._resolve_constant(call.args[0])
+        in_map = None
+        out_map = None
+        if len(call.args) >= 2:
+            in_map = ast.literal_eval(call.args[1])
+        if len(call.args) >= 3:
+            out_map = ast.literal_eval(call.args[2])
+        for kw in call.keywords:
+            if kw.arg == "inputs":
+                in_map = ast.literal_eval(kw.value)
+            elif kw.arg == "outputs":
+                out_map = ast.literal_eval(kw.value)
+            elif kw.arg == "instance_name" and instance_name is None:
+                instance_name = self._resolve_constant(kw.value)
+        return self.agent.use_component(comp_name, inputs=in_map or {}, outputs=out_map or {}, instance_name=instance_name)
+
     def _resolve_target(self, node: ast.AST) -> str:
+        if (
+            isinstance(node, ast.Attribute)
+            and isinstance(node.value, ast.Attribute)
+            and isinstance(node.value.value, ast.Name)
+            and node.value.value.id == "self"
+        ):
+            comp_alias = node.value.attr
+            port_name = node.attr
+            comp_inst = getattr(self.agent, comp_alias, None)
+            if _is_component_instance(comp_inst):
+                return comp_inst.inputs.get(port_name) or comp_inst.outputs.get(port_name) or f"{comp_alias}_{port_name}"
         if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name) and node.value.id == "self":
             return node.attr
         elif isinstance(node, ast.Name):
             return node.id
         raise ValueError(f"Unsupported assignment target: {ast.dump(node)}")
 
-    def _visit_expression(self, expr: ast.AST, dest_var: str = None) -> str:
+    def _visit_expression(self, expr: ast.AST, dest_var: str | None = None) -> str:
+        if (
+            isinstance(expr, ast.Attribute)
+            and isinstance(expr.value, ast.Attribute)
+            and isinstance(expr.value.value, ast.Name)
+            and expr.value.value.id == "self"
+        ):
+            comp_alias = expr.value.attr
+            port_name = expr.attr
+            comp_inst = getattr(self.agent, comp_alias, None)
+            if _is_component_instance(comp_inst):
+                var_name = comp_inst.outputs.get(port_name) or comp_inst.inputs.get(port_name) or f"{comp_alias}_{port_name}"
+                if dest_var:
+                    self.statements.append(("COND_ASSIGN", dest_var, var_name, var_name, var_name))
+                return var_name
         if isinstance(expr, ast.Attribute) and isinstance(expr.value, ast.Name) and expr.value.id == "self":
             var_name = expr.attr
             if dest_var:
@@ -178,17 +364,31 @@ class LuminaASTVisitor(ast.NodeVisitor):
             if dest_var:
                 self.statements.append(("COND_ASSIGN", dest_var, var_name, var_name, var_name))
             return var_name
+        elif isinstance(expr, ast.Subscript):
+            array_prefix, index_spec, is_const = self._parse_subscript(expr)
+            var_name = dest_var if dest_var else self._next_temp()
+            if is_const:
+                self.statements.append(("LOAD", var_name, f"Basin_{array_prefix}{index_spec}"))
+            else:
+                self.statements.append(("LOAD_INDIRECT", var_name, array_prefix, index_spec))
+            return var_name
 
         elif isinstance(expr, ast.BinOp):
             left = self._visit_expression(expr.left)
             right = self._visit_expression(expr.right)
             
-            # Map operator classes to SOL mixed-signal logic gates
-            op_map = {
-                ast.BitXor: "XOR",
-                ast.BitAnd: "AND_MS",
-                ast.BitOr: "OR_MS",
-            }
+            if self.pure_wave:
+                op_map = {
+                    ast.BitXor: "XOR_WAVE",
+                    ast.BitAnd: "AND_WAVE",
+                    ast.BitOr: "OR_WAVE",
+                }
+            else:
+                op_map = {
+                    ast.BitXor: "XOR",
+                    ast.BitAnd: "AND_MS",
+                    ast.BitOr: "OR_MS",
+                }
             op_type = type(expr.op)
             if op_type not in op_map:
                 raise ValueError(f"Unsupported binary operator: {op_type}")
@@ -201,7 +401,8 @@ class LuminaASTVisitor(ast.NodeVisitor):
         elif isinstance(expr, ast.UnaryOp) and isinstance(expr.op, (ast.Invert, ast.Not)):
             operand = self._visit_expression(expr.operand)
             var_name = dest_var if dest_var else self._next_temp()
-            self.statements.append(("OP", var_name, "NOT", operand, operand))
+            not_op = "NOT_WAVE" if self.pure_wave else "NOT"
+            self.statements.append(("OP", var_name, not_op, operand, operand))
             return var_name
 
         elif isinstance(expr, ast.IfExp):
@@ -238,9 +439,9 @@ class LuminaASTVisitor(ast.NodeVisitor):
         self.statements.append(("LABEL", start_label))
         cond_var = self._visit_expression(node.test)
         
-        # Invert condition to exit loop
         cond_inv = self._next_temp()
-        self.statements.append(("OP", cond_inv, "NOT", cond_var, cond_var))
+        not_op = "NOT_WAVE" if self.pure_wave else "NOT"
+        self.statements.append(("OP", cond_inv, not_op, cond_var, cond_var))
         
         self.statements.append(("JUMP_IF_ACTIVE", cond_inv, end_label))
         
@@ -253,7 +454,7 @@ class LuminaASTVisitor(ast.NodeVisitor):
     def visit_Expr(self, node: ast.Expr):
         if isinstance(node.value, ast.Call):
             call = node.value
-            # Check if it is a call to a sub-component run(), e.g. self.ha1.run()
+            # Sub-component run(), e.g. self.ha1.run()
             if isinstance(call.func, ast.Attribute) and isinstance(call.func.value, ast.Attribute):
                 inner_attr = call.func.value
                 if isinstance(inner_attr.value, ast.Name) and inner_attr.value.id == "self":
@@ -261,21 +462,39 @@ class LuminaASTVisitor(ast.NodeVisitor):
                     method_name = call.func.attr
                     if method_name == "run" and hasattr(self.agent, instance_name):
                         comp_inst = getattr(self.agent, instance_name)
-                        if isinstance(comp_inst, ComponentInstance):
-                            self._inline_component(comp_inst)
+                        if _is_component_instance(comp_inst):
+                            self._inline_component(comp_inst, instance_alias=instance_name)
                             return
-            # Standard self helper calls (nudge, settle, assert_mass)
+            # Chained inline self.use_component(...).run()
+            elif (
+                isinstance(call.func, ast.Attribute)
+                and call.func.attr == "run"
+                and isinstance(call.func.value, ast.Call)
+                and isinstance(call.func.value.func, ast.Attribute)
+                and isinstance(call.func.value.func.value, ast.Name)
+                and call.func.value.func.value.id == "self"
+                and call.func.value.func.attr == "use_component"
+            ):
+                comp_inst = self._eval_use_component_call(call.func.value)
+                self._inline_component(comp_inst, instance_alias=comp_inst.name)
+                return
+            # Standard self helper calls (nudge, settle, assert_mass) or direct self.comp() invocation
             elif isinstance(call.func, ast.Attribute) and isinstance(call.func.value, ast.Name) and call.func.value.id == "self":
                 method_name = call.func.attr
                 if method_name in ("nudge", "settle", "assert_mass"):
                     args = [self._resolve_constant(arg) for arg in call.args]
                     self.statements.append((method_name.upper(), *args))
                     return
+                if hasattr(self.agent, method_name):
+                    comp_inst = getattr(self.agent, method_name)
+                    if _is_component_instance(comp_inst):
+                        self._inline_component(comp_inst, instance_alias=method_name)
+                        return
         self.generic_visit(node)
 
-    def _inline_component(self, comp_inst: ComponentInstance):
+    def _inline_component(self, comp_inst: ComponentInstance, instance_alias: str | None = None):
         import textwrap
-        # Get the flow method source code
+        alias = instance_alias or comp_inst.name
         try:
             flow_src = textwrap.dedent(inspect.getsource(comp_inst.agent_cls.flow))
         except (OSError, TypeError):
@@ -284,7 +503,6 @@ class LuminaASTVisitor(ast.NodeVisitor):
             else:
                 flow_src = comp_inst.source_code
             
-            # Extract flow method
             parsed = ast.parse(flow_src)
             for node in ast.walk(parsed):
                 if isinstance(node, ast.FunctionDef) and node.name == "flow":
@@ -300,12 +518,27 @@ class LuminaASTVisitor(ast.NodeVisitor):
         parsed_ast = ast.parse(flow_src)
         func_def = parsed_ast.body[0]
         
-        # Instantiate sub-agent to get its inputs and outputs lists
         sub_agent = comp_inst.agent_cls()
+        for port_k in (*sub_agent.inputs.keys(), *sub_agent.outputs.keys()):
+            self.component_scope_basins.setdefault(f"{alias}_{port_k}", f"Basin_{alias}_{port_k}")
+
+        # Recursively bind any nested sub-components under alias_<child_attr>
+        for child_attr, child_inst in sub_agent.__dict__.items():
+            if _is_component_instance(child_inst):
+                def _remap(w: str) -> str:
+                    return comp_inst.inputs.get(w) or comp_inst.outputs.get(w) or f"{alias}_{w}"
+                nested_alias = f"{alias}_{child_attr}"
+                rebound_child = ComponentInstance(
+                    nested_alias,
+                    child_inst.agent_cls,
+                    {k: _remap(v) for k, v in child_inst.inputs.items()},
+                    {k: _remap(v) for k, v in child_inst.outputs.items()},
+                    child_inst.source_code,
+                )
+                setattr(self.agent, nested_alias, rebound_child)
         
-        # Transform the AST
         transformer = ComponentASTTransformer(
-            instance_name=comp_inst.name,
+            instance_name=alias,
             inputs_map=comp_inst.inputs,
             outputs_map=comp_inst.outputs,
             sub_inputs=sub_agent.inputs,
@@ -313,16 +546,15 @@ class LuminaASTVisitor(ast.NodeVisitor):
         )
         transformed_func = transformer.visit(func_def)
         
-        # Visit statements of the transformed function definition
         for stmt in transformed_func.body:
             self.visit(stmt)
 
     def _resolve_constant(self, node: ast.AST) -> Any:
         if isinstance(node, ast.Constant):
             return node.value
-        elif isinstance(node, ast.Num):
+        elif hasattr(ast, "Num") and isinstance(node, ast.Num):
             return node.n
-        elif isinstance(node, ast.Str):
+        elif hasattr(ast, "Str") and isinstance(node, ast.Str):
             return node.s
         raise ValueError(f"Lumina analog helper call arguments must be constants: {ast.dump(node)}")
 
@@ -330,469 +562,235 @@ class LuminaASTVisitor(ast.NodeVisitor):
 class LuminaLogosCompiler(LogosCompiler):
     """
     Extended Logos Compiler supporting Lumina analog/verification instructions
-    which pass through register-allocation safely.
+    (NUDGE, SETTLE, ASSERT_MASS), input-basin insulation, and automatic scratch-basin spilling.
     """
-    def _allocate_to_register(self, var: str, target_reg: str, idx: int, statements: list, program: list) -> str:
-        """Ensures that var is loaded in target_reg, evacuating target_reg first if necessary."""
-        current_reg = next((r for r, v in self.register_map.items() if v == var), None)
-        if current_reg == target_reg:
-            return target_reg
-            
-        val_in_target = self.register_map[target_reg]
-        if val_in_target and self._is_live(val_in_target, idx):
-            free_reg = self._find_free_register(idx, statements, exclude_reg=current_reg)
-            if free_reg:
-                program.append(Instruction("COPY", [target_reg, free_reg]))
-                self.register_map[free_reg] = val_in_target
-                self.register_map[target_reg] = None
-            else:
-                spill_basin = self.var_destinations.get(val_in_target) or self.var_sources.get(val_in_target)
-                if spill_basin:
-                    program.append(Instruction("STORE", [target_reg, spill_basin]))
-                    self.register_map[target_reg] = None
-                else:
-                    raise RuntimeError(f"Register spill failed at stmt {idx}: {statements[idx]} | No free register to save {val_in_target}")
-                    
-        if current_reg:
-            program.append(Instruction("COPY", [current_reg, target_reg]))
-            self.register_map[current_reg] = None
-        else:
-            basin = self.var_sources.get(var) or self.var_destinations.get(var)
-            if not basin:
-                raise ValueError(f"Unknown variable source for {var}")
-            program.append(Instruction("LOAD", [target_reg, basin]))
-            
-        self._set_register_var(target_reg, var)
-        return target_reg
-
-    def compile(self, inputs: dict[str, str], outputs: dict[str, str], statements: list[tuple], subroutines: dict[str, dict] = None) -> list[Instruction]:
-        self.register_map = {'A': None, 'B': None, 'C': None, 'D': None}
-        self.var_sources = inputs.copy()
-        self.var_destinations = outputs.copy()
-        
-        # Precompute input operands for each statement
-        self.stmt_inputs = []
-        for stmt in statements:
-            inputs_set = set()
-            op_type = stmt[0]
-            if op_type == "OP":
-                inputs_set.add(stmt[3])
-                inputs_set.add(stmt[4])
-            elif op_type == "COND_ASSIGN":
-                inputs_set.add(stmt[2])
-                inputs_set.add(stmt[3])
-                inputs_set.add(stmt[4])
-            elif op_type == "STORE":
-                inputs_set.add(stmt[1])
-            elif op_type == "STORE_INDIRECT":
-                inputs_set.add(stmt[1])
-                addr = stmt[3]
-                if isinstance(addr, (list, tuple)):
-                    inputs_set.update(addr)
-                else:
-                    inputs_set.add(addr)
-            elif op_type == "LOAD_INDIRECT":
-                addr = stmt[3]
-                if isinstance(addr, (list, tuple)):
-                    inputs_set.update(addr)
-                else:
-                    inputs_set.add(addr)
-            elif op_type == "JUMP_IF_ACTIVE":
-                inputs_set.add(stmt[1])
-            self.stmt_inputs.append(inputs_set)
-            
-        # Precompute CFG-aware liveness sets
-        self._compute_liveness(statements)
-        
-        program = []
-        
-        for idx, stmt in enumerate(statements):
-            op_type = stmt[0]
-            
-            if op_type == "NUDGE":
-                program.append(Instruction("NUDGE", [stmt[1], stmt[2]]))
-            elif op_type == "SETTLE":
-                program.append(Instruction("SETTLE", [stmt[1]]))
-            elif op_type == "ASSERT_MASS":
-                program.append(Instruction("ASSERT_MASS", [stmt[1], stmt[2]]))
-            elif op_type == "OP":
-                dest_var, op_name, src1, src2 = stmt[1], stmt[2], stmt[3], stmt[4]
-                self._allocate_to_register(src1, 'A', idx, statements, program)
-                self._allocate_to_register(src2, 'B', idx, statements, program)
-                
-                dest_reg = 'C' if op_name not in ("AND", "AND_MS") else 'D'
-                if self.register_map[dest_reg] and self._is_live(self.register_map[dest_reg], idx):
-                    dying_vars = set()
-                    if src1 and not self._is_live(src1, idx):
-                        dying_vars.add(src1)
-                    if src2 and not self._is_live(src2, idx):
-                        dying_vars.add(src2)
-                        
-                    candidate_regs = ['C', 'D'] if dest_reg == 'C' else ['D', 'C']
-                    
-                    def get_reg_cost(r):
-                        v = self.register_map[r]
-                        if r == 'A' and v == src1 and src1 in self.live_out[idx]:
-                            return 100
-                        if r == 'B' and v == src2 and src2 in self.live_out[idx]:
-                            return 100
-                        if v is None:
-                            return 0
-                        if v in dying_vars:
-                            return 1
-                        if not self._is_live(v, idx):
-                            return 2
-                        if self.var_destinations.get(v) or self.var_sources.get(v):
-                            return 3
-                        return 4
-                        
-                    dest_reg = min(candidate_regs, key=get_reg_cost)
-                
-                val_in_dest = self.register_map[dest_reg]
-                if val_in_dest and val_in_dest in self.live_out[idx]:
-                    other_reg = next((r for r, v in self.register_map.items() if r != dest_reg and v == val_in_dest), None)
-                    if other_reg is None:
-                        free_reg = self._find_free_register(idx, statements)
-                        if free_reg:
-                            program.append(Instruction("COPY", [dest_reg, free_reg]))
-                            self.register_map[free_reg] = val_in_dest
-                            self.register_map[dest_reg] = None
-                        else:
-                            spill_basin = self.var_destinations.get(val_in_dest) or self.var_sources.get(val_in_dest)
-                            if spill_basin:
-                                program.append(Instruction("STORE", [dest_reg, spill_basin]))
-                                self.register_map[dest_reg] = None
-                            else:
-                                raise RuntimeError(f"Register spill failed: No free register to save {val_in_dest}")
-                
-                if val_in_dest:
-                    program.append(Instruction("CLEAR", [dest_reg]))
-                
-                program.append(Instruction(op_name, [dest_reg]))
-                self._set_register_var(dest_reg, dest_var)
-                
-            elif op_type == "STORE":
-                src_var, dest_basin = stmt[1], stmt[2]
-                reg_src = next((r for r, v in self.register_map.items() if v == src_var), None)
-                if not reg_src:
-                    basin = self.var_sources.get(src_var)
-                    if not basin:
-                        raise ValueError(f"Cannot store variable {src_var}: Not loaded in any register and no input source defined")
-                    
-                    reg_src = self._find_free_register(idx, statements) or 'C'
-                    val_in_reg = self.register_map[reg_src]
-                    if val_in_reg and self._is_live(val_in_reg, idx):
-                        free_reg = self._find_free_register(idx, statements)
-                        if free_reg:
-                            program.append(Instruction("COPY", [reg_src, free_reg]))
-                            self.register_map[free_reg] = val_in_reg
-                            self.register_map[reg_src] = None
-                        else:
-                            spill_basin = self.var_destinations.get(val_in_reg) or self.var_sources.get(val_in_reg)
-                            if spill_basin:
-                                program.append(Instruction("STORE", [reg_src, spill_basin]))
-                                self.register_map[reg_src] = None
-                            else:
-                                raise RuntimeError(f"Register spill failed: No free register to save {val_in_reg}")
-                    program.append(Instruction("LOAD", [reg_src, basin]))
-                    self.register_map[reg_src] = src_var
-                
-                program.append(Instruction("STORE", [reg_src, dest_basin]))
-                if not self._is_live(src_var, idx):
-                    program.append(Instruction("CLEAR", [reg_src]))
-                    self.register_map[reg_src] = None
-                    
-            elif op_type == "LOAD":
-                dest_var, source_basin = stmt[1], stmt[2]
-                candidate_regs = ['C', 'D', 'A', 'B']
-                def get_reg_cost(r):
-                    v = self.register_map[r]
-                    if v is None:
-                        return 0
-                    if not self._is_live(v, idx):
-                        return 1
-                    if self.var_destinations.get(v) or self.var_sources.get(v):
-                        return 2
-                    return 3
-                dest_reg = min(candidate_regs, key=get_reg_cost)
-                val_in_dest = self.register_map[dest_reg]
-                if val_in_dest and val_in_dest in self.live_out[idx]:
-                    other_reg = next((r for r, v in self.register_map.items() if r != dest_reg and v == val_in_dest), None)
-                    if other_reg is None:
-                        free_reg = self._find_free_register(idx, statements)
-                        if free_reg:
-                            program.append(Instruction("COPY", [dest_reg, free_reg]))
-                            self.register_map[free_reg] = val_in_dest
-                            self.register_map[dest_reg] = None
-                        else:
-                            spill_basin = self.var_destinations.get(val_in_dest) or self.var_sources.get(val_in_dest)
-                            if spill_basin:
-                                program.append(Instruction("STORE", [dest_reg, spill_basin]))
-                                self.register_map[dest_reg] = None
-                            else:
-                                raise RuntimeError(f"Register spill failed: No free register to save {val_in_dest}")
-                program.append(Instruction("LOAD", [dest_reg, source_basin]))
-                self._set_register_var(dest_reg, dest_var)
-                
-            elif op_type == "CALL_SUB":
-                sub_name = stmt[1]
-                program.append(Instruction("CALL", [sub_name]))
-                
-            elif op_type in ("RETURN", "RET"):
-                program.append(Instruction("RET", []))
-                
-            elif op_type == "COND_ASSIGN":
-                dest_var, cond_var, true_var, false_var = stmt[1], stmt[2], stmt[3], stmt[4]
-                self._allocate_to_register(cond_var, 'A', idx, statements, program)
-                self._allocate_to_register(true_var, 'B', idx, statements, program)
-                self._allocate_to_register(false_var, 'C', idx, statements, program)
-                
-                dest_reg = 'D'
-                val_in_dest = self.register_map[dest_reg]
-                if val_in_dest and val_in_dest in self.live_out[idx]:
-                    other_reg = next((r for r, v in self.register_map.items() if r != dest_reg and v == val_in_dest), None)
-                    if other_reg is None:
-                        free_reg = self._find_free_register(idx, statements)
-                        if free_reg:
-                            program.append(Instruction("COPY", [dest_reg, free_reg]))
-                            self.register_map[free_reg] = val_in_dest
-                            self.register_map[dest_reg] = None
-                        else:
-                            spill_basin = self.var_destinations.get(val_in_dest) or self.var_sources.get(val_in_dest)
-                            if spill_basin:
-                                program.append(Instruction("STORE", [dest_reg, spill_basin]))
-                                self.register_map[dest_reg] = None
-                            else:
-                                raise RuntimeError(f"Register spill failed: No free register to save {val_in_dest}")
-                
-                program.append(Instruction("COPY", ['C', dest_reg]))
-                program.append(Instruction("CMOVE", [dest_reg, 'B', 'A']))
-                self._set_register_var(dest_reg, dest_var)
-                
-            elif op_type == "LOAD_INDIRECT":
-                dest_var, array_prefix, addr_var = stmt[1], stmt[2], stmt[3]
-                if isinstance(addr_var, (list, tuple)):
-                    self._allocate_to_register(addr_var[0], 'C', idx, statements, program)
-                    self._allocate_to_register(addr_var[1], 'D', idx, statements, program)
-                    reg_addr = ['C', 'D']
-                else:
-                    self._allocate_to_register(addr_var, 'D', idx, statements, program)
-                    reg_addr = 'D'
-                    
-                forbidden_regs = reg_addr if isinstance(reg_addr, list) else [reg_addr]
-                candidate_regs = [r for r in ['A', 'B', 'C', 'D'] if r not in forbidden_regs]
-                def get_reg_cost(r):
-                    v = self.register_map[r]
-                    if v is None:
-                        return 0
-                    if not self._is_live(v, idx):
-                        return 1
-                    if self.var_destinations.get(v) or self.var_sources.get(v):
-                        return 2
-                    return 3
-                dest_reg = min(candidate_regs, key=get_reg_cost)
-
-                val_in_dest = self.register_map[dest_reg]
-                if val_in_dest and val_in_dest in self.live_out[idx]:
-                    other_reg = next((r for r, v in self.register_map.items() if r != dest_reg and v == val_in_dest), None)
-                    if other_reg is None:
-                        free_reg = self._find_free_register(idx, statements)
-                        if free_reg:
-                            program.append(Instruction("COPY", [dest_reg, free_reg]))
-                            self.register_map[free_reg] = val_in_dest
-                            self.register_map[dest_reg] = None
-                        else:
-                            spill_basin = self.var_destinations.get(val_in_dest) or self.var_sources.get(val_in_dest)
-                            if spill_basin:
-                                program.append(Instruction("STORE", [dest_reg, spill_basin]))
-                                self.register_map[dest_reg] = None
-                            else:
-                                raise RuntimeError(f"Register spill failed: No free register to save {val_in_dest}")
-                
-                program.append(Instruction("LOAD_INDIRECT", [dest_reg, array_prefix, reg_addr]))
-                self._set_register_var(dest_reg, dest_var)
-                
-            elif op_type == "STORE_INDIRECT":
-                src_var, array_prefix, addr_var = stmt[1], stmt[2], stmt[3]
-                reg_src = next((r for r, v in self.register_map.items() if v == src_var), None)
-                if not reg_src:
-                    raise ValueError(f"Cannot store variable {src_var}: Not loaded in any register")
-                    
-                forbidden_regs = ['C', 'D'] if isinstance(addr_var, (list, tuple)) else ['D']
-                if reg_src in forbidden_regs:
-                    safe_regs = [r for r in ['A', 'B', 'C'] if r not in forbidden_regs]
-                    target_reg = None
-                    for r in safe_regs:
-                        if self.register_map[r] is None:
-                            target_reg = r
-                            break
-                    if not target_reg:
-                        for r in safe_regs:
-                            if not self._is_live(self.register_map[r] or "", idx):
-                                target_reg = r
-                                break
-                    if not target_reg:
-                        target_reg = safe_regs[0]
-                    self._allocate_to_register(src_var, target_reg, idx, statements, program)
-                    reg_src = target_reg
-
-                if isinstance(addr_var, (list, tuple)):
-                    self._allocate_to_register(addr_var[0], 'C', idx, statements, program)
-                    self._allocate_to_register(addr_var[1], 'D', idx, statements, program)
-                    reg_src = next((r for r, v in self.register_map.items() if v == src_var), None)
-                    reg_addr = ['C', 'D']
-                else:
-                    self._allocate_to_register(addr_var, 'D', idx, statements, program)
-                    reg_src = next((r for r, v in self.register_map.items() if v == src_var), None)
-                    reg_addr = 'D'
-                    
-                program.append(Instruction("STORE_INDIRECT", [reg_src, array_prefix, reg_addr]))
-                if reg_src is not None and not self._is_live(src_var, idx):
-                    program.append(Instruction("CLEAR", [reg_src]))
-                    self.register_map[reg_src] = None
-
-            elif op_type == "LABEL":
-                self._spill_all_registers(idx, statements, program)
-                program.append(Instruction("LABEL", [stmt[1]]))
-
-            elif op_type == "JUMP":
-                self._spill_all_registers(idx, statements, program)
-                program.append(Instruction("JUMP", [stmt[1]]))
-
-            elif op_type == "JUMP_IF_ACTIVE":
-                cond_var, label_name = stmt[1], stmt[2]
-                reg_cond = next((r for r, v in self.register_map.items() if v == cond_var), None)
-                if not reg_cond:
-                    reg_cond = self._allocate_to_register(cond_var, 'A', idx, statements, program)
-                
-                for reg in ['A', 'B', 'C', 'D']:
-                    if reg != reg_cond:
-                        var = self.register_map[reg]
-                        if var is not None:
-                            if self._is_live(var, idx):
-                                spill_basin = self.var_destinations.get(var) or self.var_sources.get(var)
-                                if spill_basin:
-                                    program.append(Instruction("STORE", [reg, spill_basin]))
-                                else:
-                                    raise RuntimeError(f"Register spill failed during boundary sync for variable '{var}' at statement {idx}")
-                            program.append(Instruction("CLEAR", [reg]))
-                            self.register_map[reg] = None
-                
-                program.append(Instruction("JUMP_IF_ACTIVE", [reg_cond, label_name]))
-                var = self.register_map[reg_cond]
-                if var is not None:
-                    if self._is_live(var, idx):
-                        spill_basin = self.var_destinations.get(var) or self.var_sources.get(var)
-                        if spill_basin:
-                            program.append(Instruction("STORE", [reg_cond, spill_basin]))
-                    program.append(Instruction("CLEAR", [reg_cond]))
-                    self.register_map[reg_cond] = None
-
-            elif op_type == "CLEAR_VAR":
-                var_name = stmt[1]
-                reg_var = next((r for r, v in self.register_map.items() if v == var_name), None)
-                if not reg_var:
-                    reg_var = self._find_free_register(idx, statements) or 'C'
-                    val_in_reg = self.register_map[reg_var]
-                    if val_in_reg and self._is_live(val_in_reg, idx):
-                        free_reg = self._find_free_register(idx, statements)
-                        if free_reg:
-                            program.append(Instruction("COPY", [reg_var, free_reg]))
-                            self.register_map[free_reg] = val_in_reg
-                            self.register_map[reg_var] = None
-                        else:
-                            spill_basin = self.var_destinations.get(val_in_reg) or self.var_sources.get(val_in_reg)
-                            if spill_basin:
-                                program.append(Instruction("STORE", [reg_var, spill_basin]))
-                                self.register_map[reg_var] = None
-                            else:
-                                raise RuntimeError(f"Register spill failed: No free register to save {val_in_reg}")
-                program.append(Instruction("CLEAR", [reg_var]))
-                if self._is_live(var_name, idx):
-                    self.register_map[reg_var] = var_name
-
-        program.append(Instruction("CLEAR", ["A"]))
-        program.append(Instruction("CLEAR", ["B"]))
-        program.append(Instruction("CLEAR", ["C"]))
-        program.append(Instruction("CLEAR", ["D"]))
-        
-        if subroutines:
-            program.append(Instruction("JUMP", ["L_COMPILER_EXIT"]))
-            for sub_name, sub_def in subroutines.items():
-                sub_compiler = LuminaLogosCompiler()
-                sub_insts = sub_compiler.compile(
-                    sub_def.get("inputs", {}),
-                    sub_def.get("outputs", {}),
-                    sub_def.get("statements", [])
-                )
-                program.append(Instruction("LABEL", [sub_name]))
-                program.extend(sub_insts)
-                if not sub_insts or sub_insts[-1].op.upper() not in ("RET", "RETURN"):
-                    program.append(Instruction("RET", []))
-            program.append(Instruction("LABEL", ["L_COMPILER_EXIT"]))
-        
-        return program
+    def compile(
+        self,
+        inputs: dict[str, str],
+        outputs: dict[str, str],
+        statements: list[tuple],
+        subroutines: dict[str, dict] | None = None,
+        pure_wave: bool = False,
+        preallocated_scratch_basins: dict[str, str] | None = None,
+    ) -> CompiledLogosProgram:
+        return super().compile(
+            inputs,
+            outputs,
+            statements,
+            subroutines=subroutines,
+            pure_wave=pure_wave,
+            preallocated_scratch_basins=preallocated_scratch_basins,
+        )
 
 
 class StaticVerificationError(Exception):
     """Exception raised when static analysis detects a safety violation (e.g. mass preservation breach)."""
-    pass
 
 
 class StaticMassSentinel:
-    """Symbolically checks compiled Logos instructions to prove register mass safety bounds."""
-    
-    @staticmethod
-    def verify(instructions: list[Instruction], damping: float = 0.01) -> bool:
+    """
+    Symbolically checks compiled Logos instructions across straight-line code AND CFG loop
+    back-edges (both unrolled bounded checks and monotone cycle-gain fixed-point projection)
+    to prove register and semantic-basin mass safety bounds (>= 14.0).
+    """
+
+    MIN_MASS_THRESHOLD: float = 14.0
+    _EXACT_REG_ALIASES: ClassVar[dict[str, set[str]]] = {
+        reg: {reg, f"R{reg}", f"S_R{reg}", f"S_R{reg}_B", f"Register_{reg}", f"Basin_R{reg}"}
+        for reg in ("A", "B", "C", "D")
+    }
+    _ALL_REG_ALIASES: ClassVar[set[str]] = set().union(*_EXACT_REG_ALIASES.values())
+    _GATE_OPS: ClassVar[set[str]] = {
+        "OR", "AND", "OR_MS", "AND_MS", "NOT", "NAND", "NOR", "XOR", "XNOR",
+        "OR_WAVE", "AND_WAVE", "NOT_WAVE", "NAND_WAVE", "NOR_WAVE", "XOR_WAVE", "XNOR_WAVE",
+    }
+
+    @classmethod
+    def verify(
+        cls,
+        instructions: list[Instruction],
+        damping: float = 0.01,
+        max_loop_unroll: int = 8,
+    ) -> bool:
         registers = {"A": 15.0, "B": 15.0, "C": 15.0, "D": 15.0}
         active_registers = {"A": False, "B": False, "C": False, "D": False}
-        
+        reg_basins: dict[str, set[str]] = {"A": set(), "B": set(), "C": set(), "D": set()}
+        basin_masses: dict[str, float] = {}
+        active_basins: set[str] = set()
+
+        label_to_idx: dict[str, int] = {}
         for idx, inst in enumerate(instructions):
+            if inst.op.upper() == "LABEL" and inst.args:
+                label_to_idx[str(inst.args[0])] = idx
+
+        backedge_counts: dict[tuple[int, int], int] = {}
+        backedge_snapshots: dict[
+            tuple[int, int],
+            tuple[dict[str, bool], dict[str, float], set[str], dict[str, float]],
+        ] = {}
+        pc = 0
+        steps_executed = 0
+        max_total_steps = max(256, len(instructions) * (max_loop_unroll + 4))
+
+        while pc < len(instructions) and steps_executed < max_total_steps:
+            steps_executed += 1
+            inst = instructions[pc]
             op = inst.op.upper()
             args = inst.args
-            
+
             if op == "LOAD":
-                reg = args[0]
+                reg = str(args[0])
+                basin = str(args[1])
                 active_registers[reg] = True
+                reg_basins[reg] = {basin}
+                basin_masses.setdefault(basin, 15.0)
+                active_basins.add(basin)
+                registers[reg] = basin_masses[basin]
+            elif op == "LOAD_INDIRECT":
+                reg = str(args[0])
+                prefix = str(args[1])
+                pseudo_basin = f"Basin_{prefix}*"
+                active_registers[reg] = True
+                reg_basins[reg] = {pseudo_basin}
+                basin_masses.setdefault(pseudo_basin, 15.0)
+                active_basins.add(pseudo_basin)
+                registers[reg] = basin_masses[pseudo_basin]
+            elif op == "STORE":
+                reg = str(args[0])
+                basin = str(args[1])
+                reg_basins[reg].add(basin)
+                if active_registers[reg]:
+                    basin_masses[basin] = registers[reg]
+                else:
+                    basin_masses.setdefault(basin, 15.0)
+                active_basins.add(basin)
+            elif op == "STORE_INDIRECT":
+                reg = str(args[0])
+                prefix = str(args[1])
+                pseudo_basin = f"Basin_{prefix}*"
+                reg_basins[reg].add(pseudo_basin)
+                if active_registers[reg]:
+                    basin_masses[pseudo_basin] = registers[reg]
+                else:
+                    basin_masses.setdefault(pseudo_basin, 15.0)
+                active_basins.add(pseudo_basin)
             elif op == "CLEAR":
-                reg = args[0]
+                reg = str(args[0])
                 active_registers[reg] = False
-                registers[reg] = 15.0  # Reset mass when cleared
+                registers[reg] = 15.0
+                reg_basins[reg] = set()
             elif op == "COPY":
-                src, dest = args[0], args[1]
+                src, dest = str(args[0]), str(args[1])
                 registers[dest] = registers[src]
                 active_registers[dest] = active_registers[src]
+                reg_basins[dest] = set(reg_basins[src])
             elif op == "CMOVE":
-                dest, src, cond = args[0], args[1], args[2]
-                registers[dest] = min(registers[dest], registers[src])
+                dest, src = str(args[0]), str(args[1])
+                if active_registers[dest] and active_registers[src]:
+                    registers[dest] = min(registers[dest], registers[src])
+                elif active_registers[src]:
+                    registers[dest] = registers[src]
                 active_registers[dest] = active_registers[dest] or active_registers[src]
+                reg_basins[dest] = reg_basins[dest] | reg_basins[src]
+            elif op in cls._GATE_OPS:
+                dest = str(args[0]) if args else "C"
+                if op in ("NOT", "NOT_WAVE"):
+                    src_r = str(args[1]) if len(args) > 1 else "A"
+                    registers[dest] = registers[src_r] if active_registers[src_r] else 15.0
+                    reg_basins[dest] = set(reg_basins[src_r])
+                else:
+                    src_masses = [registers[r] for r in ("A", "B") if active_registers[r]]
+                    registers[dest] = min(src_masses) if src_masses else 15.0
+                    reg_basins[dest] = reg_basins["A"] | reg_basins["B"]
+                active_registers[dest] = True
             elif op == "NUDGE":
-                basin = args[0]
+                target = str(args[0])
                 amount = float(args[1])
-                for reg in ('A', 'B', 'C', 'D'):
-                    if reg in basin or f"R{reg}" in basin:
+                for reg in ("A", "B", "C", "D"):
+                    if target in cls._EXACT_REG_ALIASES[reg] or target in reg_basins[reg]:
                         registers[reg] += amount
+                if target not in cls._ALL_REG_ALIASES:
+                    basin_masses[target] = basin_masses.get(target, 15.0) + amount
+                    active_basins.add(target)
+                    # Also match wildcard array prefix if target is Basin_X0 vs Basin_X*
+                    for b_key in list(basin_masses.keys()):
+                        if b_key.endswith("*") and target.startswith(b_key[:-1]):
+                            basin_masses[b_key] += amount
             elif op == "SETTLE":
                 steps = int(args[0])
-                for reg in ('A', 'B', 'C', 'D'):
+                drain = damping * steps
+                for reg in ("A", "B", "C", "D"):
                     if active_registers[reg]:
-                        registers[reg] = max(0.0, registers[reg] - damping * steps)
-                        
-            # Verify active registers bounds
-            for reg in ('A', 'B', 'C', 'D'):
+                        registers[reg] = max(0.0, registers[reg] - drain)
+                for b_name in active_basins:
+                    basin_masses[b_name] = max(0.0, basin_masses[b_name] - drain)
+
+            # Verify active registers and active basins mass floor (>= 14.0)
+            for reg in ("A", "B", "C", "D"):
                 if active_registers[reg] and registers[reg] < 14.0:
                     raise StaticVerificationError(
-                        f"Static verification failure: instruction '{inst.op} {', '.join(map(str, inst.args))}' at index {idx} "
+                        f"Static verification failure: instruction '{inst.op} {', '.join(map(str, inst.args))}' at index {pc} "
                         f"drains Register {reg} mass to {registers[reg]:.2f} (< 14.0)."
                     )
-                    
+            for b_name in sorted(active_basins):
+                if basin_masses[b_name] < 14.0:
+                    raise StaticVerificationError(
+                        f"Static verification failure: instruction '{inst.op} {', '.join(map(str, inst.args))}' at index {pc} "
+                        f"drains Basin {b_name} mass across CFG execution/loop back-edge to {basin_masses[b_name]:.2f} (< 14.0)."
+                    )
+
+            # Follow CFG loop back-edges and detect strictly negative net cycle mass gain (unbounded slow drain)
+            if op in ("JUMP", "JUMP_IF_ACTIVE"):
+                target_label = str(args[0]) if op == "JUMP" else str(args[1])
+                if target_label in label_to_idx:
+                    target_idx = label_to_idx[target_label]
+                    if target_idx < pc:
+                        edge_key = (pc, target_idx)
+                        count = backedge_counts.get(edge_key, 0)
+                        if count >= 1 and edge_key in backedge_snapshots:
+                            prev_active_regs, prev_regs, prev_active_basins, prev_basins = backedge_snapshots[edge_key]
+                            for reg in ("A", "B", "C", "D"):
+                                if active_registers[reg] and prev_active_regs.get(reg, False):
+                                    delta_r = registers[reg] - prev_regs[reg]
+                                    if delta_r < -1e-9:
+                                        raise StaticVerificationError(
+                                            f"Static verification failure: loop back-edge at index {pc} -> {target_idx} "
+                                            f"has negative net cycle mass gain ({delta_r:.4f}/iter) on active Register {reg} "
+                                            f"(current {registers[reg]:.2f}, inevitably drains < 14.0)."
+                                        )
+                            for b_name in sorted(active_basins & prev_active_basins):
+                                delta_b = basin_masses[b_name] - prev_basins[b_name]
+                                if delta_b < -1e-9:
+                                    raise StaticVerificationError(
+                                        f"Static verification failure: loop back-edge at index {pc} -> {target_idx} "
+                                        f"has negative net cycle mass gain ({delta_b:.4f}/iter) on Basin {b_name} "
+                                        f"(current {basin_masses[b_name]:.2f}, inevitably drains < 14.0)."
+                                    )
+                        backedge_snapshots[edge_key] = (
+                            dict(active_registers),
+                            dict(registers),
+                            set(active_basins),
+                            dict(basin_masses),
+                        )
+                        if count < max_loop_unroll:
+                            backedge_counts[edge_key] = count + 1
+                            pc = target_idx
+                            continue
+
+            pc += 1
+
         return True
 
 
 class LuminaCompiler:
     """Orchestrates class inspection, AST extraction, and Lumina compilation."""
     @staticmethod
-    def compile_agent(agent_cls: Type[LuminaAgent], verify_mass: bool = True) -> list[Instruction]:
+    def compile_agent(
+        agent_cls: type[LuminaAgent],
+        verify_mass: bool = True,
+        pure_wave: bool = False,
+        damping: float = 0.01,
+    ) -> CompiledLogosProgram:
         agent = agent_cls()
         import textwrap
         try:
@@ -808,10 +806,27 @@ class LuminaCompiler:
                     raise ValueError("Could not find flow() method in dynamic agent source.")
             else:
                 raise OSError("Could not get source code. Please set '_source' attribute on dynamically executed class.")
-        return LuminaCompiler.compile_flow_src(agent.inputs, agent.outputs, flow_src, agent=agent, verify_mass=verify_mass)
+        return LuminaCompiler.compile_flow_src(
+            agent.inputs,
+            agent.outputs,
+            flow_src,
+            agent=agent,
+            verify_mass=verify_mass,
+            pure_wave=pure_wave,
+            damping=damping,
+        )
 
     @staticmethod
-    def compile_flow_src(inputs: dict[str, str], outputs: dict[str, str], flow_src: str, agent: Optional[LuminaAgent] = None, verify_mass: bool = True) -> list[Instruction]:
+    def compile_flow_src(
+        inputs: dict[str, str],
+        outputs: dict[str, str],
+        flow_src: str,
+        agent: LuminaAgent | None = None,
+        components: dict[str, Any] | None = None,
+        verify_mass: bool = True,
+        pure_wave: bool = False,
+        damping: float = 0.01,
+    ) -> CompiledLogosProgram:
         import textwrap
         flow_src = textwrap.dedent(flow_src)
         if not flow_src.strip().startswith("def "):
@@ -821,15 +836,26 @@ class LuminaCompiler:
         parsed_ast = ast.parse(flow_src)
         if agent is None:
             agent = type("MockAgent", (LuminaAgent,), {"inputs": inputs.copy(), "outputs": outputs.copy()})()
-        visitor = LuminaASTVisitor(agent)
+        if components:
+            for alias, comp_spec in components.items():
+                agent._bind_component_spec(str(alias), comp_spec)
+        visitor = LuminaASTVisitor(agent, pure_wave=pure_wave)
         func_def = parsed_ast.body[0]
         for stmt in func_def.body:
             visitor.visit(stmt)
             
         compiler = LuminaLogosCompiler()
-        program = compiler.compile(inputs, outputs, visitor.statements)
+        program = compiler.compile(
+            inputs,
+            outputs,
+            visitor.statements,
+            pure_wave=pure_wave,
+            preallocated_scratch_basins=visitor.component_scope_basins,
+        )
+        for k_var, b_val in visitor.component_scope_basins.items():
+            program.allocated_scratch_basins.setdefault(k_var, b_val)
         
         if verify_mass:
-            StaticMassSentinel.verify(program)
+            StaticMassSentinel.verify(program, damping=damping)
             
         return program

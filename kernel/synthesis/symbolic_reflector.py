@@ -11,17 +11,12 @@ Performs neuro-symbolic reflection on continuous Riemannian semantic circuits:
 4. Mermaid Flowchart Export: Generates interactive GitHub-flavored Mermaid diagrams.
 """
 
-from dataclasses import dataclass, field
 import time
-from typing import Any, Dict, List, Optional, Set, Tuple
-import numpy as np
+from dataclasses import dataclass
+from typing import Any
 
-from sol.kernel.synthesis.circuit_topology import (
-    CircuitNode,
-    CircuitNodeType,
-    SelfAssembledCircuit
-)
 from sol.kernel.synthesis.circuit_synthesizer import TruthTableSpec
+from sol.kernel.synthesis.circuit_topology import CircuitNodeType, SelfAssembledCircuit
 
 
 @dataclass
@@ -30,13 +25,13 @@ class DAGNodeInfo:
     node_id: str
     node_type: CircuitNodeType
     depth: int
-    parents: List[str]
-    children: List[str]
+    parents: list[str]
+    children: list[str]
     in_degree: int
     out_degree: int
     expression: str
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "node_id": self.node_id,
             "node_type": self.node_type.value if hasattr(self.node_type, "value") else str(self.node_type),
@@ -53,15 +48,15 @@ class DAGNodeInfo:
 class CircuitDAG:
     """Topological graph structure of a synthesized Riemannian circuit."""
     circuit_id: str
-    nodes: Dict[str, DAGNodeInfo]
-    layers: Dict[int, List[str]]
+    nodes: dict[str, DAGNodeInfo]
+    layers: dict[int, list[str]]
     critical_path_length: int
     max_depth: int
     max_fan_in: int
     max_fan_out: int
     total_edges: int
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "circuit_id": self.circuit_id,
             "nodes": {nid: ninfo.to_dict() for nid, ninfo in self.nodes.items()},
@@ -79,14 +74,14 @@ class SymbolicReflectionReport:
     """Comprehensive neuro-symbolic reflection analysis report."""
     circuit_id: str
     dag: CircuitDAG
-    expressions: Dict[str, str]
-    simplified_expressions: Dict[str, str]
+    expressions: dict[str, str]
+    simplified_expressions: dict[str, str]
     is_equivalent: bool
     mermaid_markdown: str
     reflection_time_ms: float
     algebraic_summary: str
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "circuit_id": self.circuit_id,
             "dag": self.dag.to_dict(),
@@ -111,7 +106,7 @@ class SymbolicReflector:
     def reflect(
         self,
         circuit: SelfAssembledCircuit,
-        spec: Optional[TruthTableSpec] = None
+        spec: TruthTableSpec | None = None
     ) -> SymbolicReflectionReport:
         """Executes full neuro-symbolic reflection pipeline on a Riemannian circuit."""
         t0 = time.time()
@@ -151,24 +146,24 @@ class SymbolicReflector:
 
     def extract_dag(self, circuit: SelfAssembledCircuit) -> CircuitDAG:
         """Extracts directed acyclic graph topology, computing depths and critical paths."""
-        nodes_dict: Dict[str, DAGNodeInfo] = {}
-        parents_map: Dict[str, List[str]] = {nid: [] for nid in circuit.nodes}
-        children_map: Dict[str, List[str]] = {nid: [] for nid in circuit.nodes}
+        nodes_dict: dict[str, DAGNodeInfo] = {}
+        parents_map: dict[str, list[str]] = {nid: [] for nid in circuit.nodes}
+        children_map: dict[str, list[str]] = {nid: [] for nid in circuit.nodes}
 
-        for (src, dst) in circuit.edges.keys():
+        for src, dst in circuit.edges:
             if src in children_map:
                 children_map[src].append(dst)
             if dst in parents_map:
                 parents_map[dst].append(src)
 
         # Compute depths using topological forward propagation
-        depth_map: Dict[str, int] = {}
+        depth_map: dict[str, int] = {}
         for nid in circuit.input_node_ids:
             depth_map[nid] = 0
 
         # Topological sort
-        visited: Set[str] = set()
-        topo_order: List[str] = []
+        visited: set[str] = set()
+        topo_order: list[str] = []
 
         def topo_visit(n: str):
             if n in visited:
@@ -189,7 +184,7 @@ class SymbolicReflector:
                 depth_map[nid] = (max(p_depths) + 1) if p_depths else 0
 
         # Build layers map
-        layers: Dict[int, List[str]] = {}
+        layers: dict[int, list[str]] = {}
         for nid, d in depth_map.items():
             layers.setdefault(d, []).append(nid)
 
@@ -224,12 +219,12 @@ class SymbolicReflector:
         self,
         circuit: SelfAssembledCircuit,
         dag: CircuitDAG
-    ) -> Tuple[Dict[str, str], Dict[str, str]]:
+    ) -> tuple[dict[str, str], dict[str, str]]:
         """
         Recursively translates topological wave connections into boolean expressions.
         Returns: (raw_expressions, simplified_expressions).
         """
-        memo: Dict[str, str] = {}
+        memo: dict[str, str] = {}
 
         def get_node_expr(nid: str) -> str:
             if nid in memo:
@@ -283,8 +278,8 @@ class SymbolicReflector:
 
             return memo[nid]
 
-        raw_exprs: Dict[str, str] = {}
-        simplified_exprs: Dict[str, str] = {}
+        raw_exprs: dict[str, str] = {}
+        simplified_exprs: dict[str, str] = {}
 
         for out_id in circuit.output_node_ids:
             raw = get_node_expr(out_id)
@@ -314,7 +309,7 @@ class SymbolicReflector:
 
     def verify_semantic_equivalence(
         self,
-        expressions: Dict[str, str],
+        expressions: dict[str, str],
         spec: TruthTableSpec
     ) -> bool:
         """
@@ -332,25 +327,28 @@ class SymbolicReflector:
 
         return True
 
-    def _evaluate_expr_string(self, expr: str, env: Dict[str, int]) -> int:
+    def _evaluate_expr_string(self, expr: str, env: dict[str, int]) -> int:
         """Evaluates a propositional boolean formula string under variable assignments."""
-        # Replace propositional operators with Python boolean operators
-        # Note: Must replace XOR before OR, as OR is a substring of XOR
-        py_expr = expr
-        py_expr = py_expr.replace("XOR", " ^ ")
-        py_expr = py_expr.replace("AND", " and ")
-        py_expr = py_expr.replace("OR", " or ")
-        py_expr = py_expr.replace("NOT", " not ")
+        import re
+
+        # Replace propositional operators at word boundaries so input identifiers
+        # containing substrings like OR/AND/NOT/XOR (e.g. SENSOR, NOT_EN) stay intact.
+        op_map = {"XOR": "^", "AND": "and", "OR": "or", "NOT": "not"}
+        py_expr = re.sub(
+            r"\b(XOR|AND|OR|NOT)\b",
+            lambda m: f" {op_map[m.group(1)]} ",
+            expr,
+        )
 
         # Safe evaluation namespace
         safe_env = {k: bool(v) for k, v in env.items()}
         try:
             res = eval(py_expr, {"__builtins__": {}}, safe_env)
             return 1 if bool(res) else 0
-        except Exception:
+        except (SyntaxError, NameError, TypeError, ValueError, ZeroDivisionError):
             return 0
 
-    def generate_mermaid(self, circuit: SelfAssembledCircuit, dag: Optional[CircuitDAG] = None) -> str:
+    def generate_mermaid(self, circuit: SelfAssembledCircuit, dag: CircuitDAG | None = None) -> str:
         """Generates GitHub-flavored Mermaid flowchart markup for the circuit."""
         if dag is None:
             dag = self.extract_dag(circuit)

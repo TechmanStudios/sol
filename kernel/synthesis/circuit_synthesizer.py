@@ -11,28 +11,24 @@ and topological assembly to guarantee:
 4. Minimal Carnot dissipation & smooth metric curvature.
 """
 
-from dataclasses import dataclass, field
-import itertools
 import time
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from collections.abc import Callable
+from dataclasses import dataclass
+from typing import Any
+
 import numpy as np
 
 from sol.kernel.causal.effective_information import CausalEmergenceReport
-from sol.kernel.synthesis.circuit_topology import (
-    CircuitNode,
-    CircuitNodeType,
-    CircuitEvaluationResult,
-    SelfAssembledCircuit
-)
+from sol.kernel.synthesis.circuit_topology import CircuitNodeType, SelfAssembledCircuit
 
 
 @dataclass
 class TruthTableSpec:
     """Specification of an arbitrary boolean / symbolic truth table."""
     name: str
-    inputs: List[str]
-    outputs: List[str]
-    table: Dict[Tuple[int, ...], Tuple[int, ...]]
+    inputs: list[str]
+    outputs: list[str]
+    table: dict[tuple[int, ...], tuple[int, ...]]
     description: str = ""
 
     @property
@@ -44,7 +40,7 @@ class TruthTableSpec:
         return len(self.outputs)
 
 
-def build_canonical_specs() -> Dict[str, TruthTableSpec]:
+def build_canonical_specs() -> dict[str, TruthTableSpec]:
     """Library of canonical logic and arithmetic truth tables."""
     specs = {}
 
@@ -178,6 +174,30 @@ def build_canonical_specs() -> Dict[str, TruthTableSpec]:
 CANONICAL_SPECS = build_canonical_specs()
 
 
+def build_sequential_specs() -> dict[str, TruthTableSpec]:
+    """Library of synchronous next-state sequential bistable specifications."""
+    specs: dict[str, TruthTableSpec] = {}
+    sr_table: dict[tuple[int, ...], tuple[int, ...]] = {}
+    for s in (0, 1):
+        for r in (0, 1):
+            for q in (0, 1):
+                not_both = 1 - (s & r)
+                q_next = (s | (q & (1 - r))) & not_both
+                qbar_next = (1 - q_next) & not_both
+                sr_table[(s, r, q)] = (q_next, qbar_next)
+    specs["SR_LATCH_SYNC"] = TruthTableSpec(
+        name="SR_LATCH_SYNC",
+        inputs=["S", "R", "Q"],
+        outputs=["Q_NEXT", "QBAR_NEXT"],
+        table=sr_table,
+        description="Synchronous SR Latch next-state transition (S, R, Q) -> (Q_NEXT, QBAR_NEXT) with S=R=1 hazard clamping",
+    )
+    return specs
+
+
+SEQUENTIAL_SPECS = build_sequential_specs()
+
+
 @dataclass
 class SynthesisResult:
     """Complete report detailing the autonomous circuit synthesis outcome."""
@@ -187,8 +207,8 @@ class SynthesisResult:
     verified: bool
     iterations_used: int
     synthesis_time_ms: float
-    causal_emergence: Optional[CausalEmergenceReport]
-    case_reports: List[Dict[str, Any]]
+    causal_emergence: CausalEmergenceReport | None
+    case_reports: list[dict[str, Any]]
     max_condition_number: float
 
 
@@ -208,10 +228,13 @@ class RiemannianCircuitSynthesizer:
         self.noise_attractor_beta = noise_attractor_beta
 
     def synthesize_canonical(self, spec_name: str) -> SynthesisResult:
-        """Synthesizes a circuit from the canonical specifications library."""
-        if spec_name not in CANONICAL_SPECS:
-            raise KeyError(f"Unknown canonical spec: {spec_name}. Available: {list(CANONICAL_SPECS.keys())}")
-        return self.synthesize(CANONICAL_SPECS[spec_name])
+        """Synthesizes a circuit from the canonical or sequential specifications library."""
+        if spec_name in CANONICAL_SPECS:
+            return self.synthesize(CANONICAL_SPECS[spec_name])
+        if spec_name in SEQUENTIAL_SPECS:
+            return self.synthesize(SEQUENTIAL_SPECS[spec_name])
+        available = list(CANONICAL_SPECS.keys()) + list(SEQUENTIAL_SPECS.keys())
+        raise KeyError(f"Unknown canonical spec: {spec_name}. Available: {available}")
 
     def synthesize(
         self,
@@ -224,7 +247,6 @@ class RiemannianCircuitSynthesizer:
         """
         t0 = time.time()
         k = spec.num_inputs
-        m = spec.num_outputs
 
         # 1. Initialize Topological Manifold Layout
         circuit = SelfAssembledCircuit(
@@ -248,7 +270,7 @@ class RiemannianCircuitSynthesizer:
 
         # 3. Fine-tuning & Parameter Optimization Loop
         best_accuracy = 0.0
-        best_cases: List[Dict[str, Any]] = []
+        best_cases: list[dict[str, Any]] = []
         iteration = 0
 
         for it in range(max_iterations):
@@ -295,13 +317,12 @@ class RiemannianCircuitSynthesizer:
         m = spec.num_outputs
         table = spec.table
 
-        def matches_func(out_idx: int, fn: Callable[[Tuple[int, ...]], int]) -> bool:
+        def matches_func(out_idx: int, fn: Callable[[tuple[int, ...]], int]) -> bool:
             return all(out_tuple[out_idx] == fn(in_tuple) for in_tuple, out_tuple in table.items())
 
-        if k == 2 and m == 1 and len(table) == 4:
-            if matches_func(0, lambda x: x[0] ^ x[1]):
-                self._assemble_xor(c, spec)
-                return
+        if k == 2 and m == 1 and len(table) == 4 and matches_func(0, lambda x: x[0] ^ x[1]):
+            self._assemble_xor(c, spec)
+            return
 
         if k == 2 and m == 2 and len(table) == 4:
             if matches_func(0, lambda x: x[0] ^ x[1]) and matches_func(1, lambda x: (1 - x[0]) & x[1]):
@@ -322,18 +343,24 @@ class RiemannianCircuitSynthesizer:
                 self._assemble_mux(c, spec)
                 return
 
-        if k == 3 and m == 2 and len(table) == 8:
-            if (
-                matches_func(0, lambda x: x[0] ^ x[1] ^ x[2])
-                and matches_func(1, lambda x: 1 if (x[0] + x[1] + x[2]) >= 2 else 0)
-            ):
-                self._assemble_full_adder(c, spec)
-                return
+        if (
+            k == 3
+            and m == 2
+            and len(table) == 8
+            and matches_func(0, lambda x: x[0] ^ x[1] ^ x[2])
+            and matches_func(1, lambda x: 1 if (x[0] + x[1] + x[2]) >= 2 else 0)
+        ):
+            self._assemble_full_adder(c, spec)
+            return
 
-        if k == 4 and m == 1 and len(table) == 16:
-            if matches_func(0, lambda x: 1 if (x[0] == x[2] and x[1] == x[3]) else 0):
-                self._assemble_equals2bit(c, spec)
-                return
+        if (
+            k == 4
+            and m == 1
+            and len(table) == 16
+            and matches_func(0, lambda x: 1 if (x[0] == x[2] and x[1] == x[3]) else 0)
+        ):
+            self._assemble_equals2bit(c, spec)
+            return
 
         # Generic synthesis via Disjunctive Normal Form (DNF) manifold decomposition
         self._assemble_generic_dnf(c, spec)
@@ -535,7 +562,7 @@ class RiemannianCircuitSynthesizer:
         self,
         c: SelfAssembledCircuit,
         spec: TruthTableSpec,
-        cases: List[Dict[str, Any]]
+        cases: list[dict[str, Any]]
     ) -> None:
         """Performs small stochastic gradient/coordinate step to adjust thresholds and gains."""
         for case in cases:

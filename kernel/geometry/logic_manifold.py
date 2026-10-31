@@ -12,11 +12,11 @@ Mathematical Invariants Enforced:
 4. Noise Tolerance: Stable basin classification with >= 0.20 noise margins around boolean endpoints.
 """
 
-from dataclasses import dataclass, field
+import math
+from dataclasses import dataclass
 from enum import Enum
-from typing import Callable, Dict, List, Optional, Tuple, Union
+
 import numpy as np
-import scipy.linalg as la
 
 
 class LogicGateType(str, Enum):
@@ -32,10 +32,10 @@ class LogicGateType(str, Enum):
 class LogicGateResult:
     """Detailed telemetry and readout from a Riemannian logic gate evaluation."""
     gate_type: str
-    inputs: Dict[str, float]
-    outputs: Dict[str, float]            # Continuous analog readout in [0, 1]
-    binary_outputs: Dict[str, int]       # Thresholded discrete bits (0 or 1)
-    trajectories: Dict[str, np.ndarray]  # Sampled geodesic paths (N, 2)
+    inputs: dict[str, float]
+    outputs: dict[str, float]            # Continuous analog readout in [0, 1]
+    binary_outputs: dict[str, int]       # Thresholded discrete bits (0 or 1)
+    trajectories: dict[str, np.ndarray]  # Sampled geodesic paths (N, 2)
     ricci_scalar_min: float
     ricci_scalar_max: float
     min_eigenvalue: float
@@ -74,140 +74,152 @@ class RiemannianLogicManifold:
         self.basin_carry_0 = np.array([3.5, -2.2], dtype=np.float64)
         self.basin_carry_1 = np.array([3.5, -0.6], dtype=np.float64)
 
+    def _metric_components(
+        self,
+        px: float,
+        py: float,
+        gate_type: LogicGateType,
+        a: float,
+        b: float,
+    ) -> tuple[float, float, float, float, float]:
+        """
+        Closed-form 2x2 Log-Euclidean metric g = clip_eig(exp(S), 1e-4, 100.0)
+        via Sylvester's spectral projector formula.
+        Returns (g00, g01, g11, min_eval, max_eval).
+        """
+        _exp = math.exp
+        r_sq = px * px + py * py
+        s00 = 0.0
+        s01 = 0.0
+        s11 = 0.0
+
+        if gate_type in (LogicGateType.AND, LogicGateType.NAND):
+            coupling = min(max(a * b, 0.0), 1.0)
+            dx = px - 0.5
+            ce = coupling * _exp(-(dx * dx + py * py) / 3.0)
+            s00 += 0.45 * ce
+            s11 -= 0.35 * ce
+        elif gate_type == LogicGateType.OR:
+            coupling = min(max(a + b - 0.5 * a * b, 0.0), 1.0)
+            dx = px - 0.2
+            ce = coupling * _exp(-(dx * dx + py * py) / 3.5)
+            s00 += 0.40 * ce
+            s11 -= 0.30 * ce
+        elif gate_type in (LogicGateType.XOR, LogicGateType.HALF_ADDER):
+            both_active = min(max(a * b, 0.0), 1.0)
+            ce = both_active * _exp(-r_sq / 1.5)
+            s00 -= 0.60 * ce
+            s11 += 0.60 * ce
+            py_s = py + 1e-6
+            sgn = 1.0 if py_s > 0.0 else (-1.0 if py_s < 0.0 else 0.0)
+            s01 += 0.25 * ce * sgn
+        elif gate_type == LogicGateType.NOT:
+            coupling = min(max(a, 0.0), 1.0)
+            dx = px - 1.0
+            dy = py - 1.0
+            ce = coupling * _exp(-(dx * dx + dy * dy) / 2.0)
+            s00 -= 0.50 * ce
+            s11 += 0.50 * ce
+
+        r_thresh = (self.horizon_radius - 1.5) ** 2
+        if r_sq > r_thresh:
+            t_b = (r_sq - r_thresh) * 0.25
+            barrier = 0.5 * (t_b * t_b)
+            s00 += barrier
+            s11 += barrier
+
+        if s01 == 0.0:
+            g00 = min(max(_exp(min(max(s00, -20.0), 20.0)), 1e-4), 100.0)
+            g11 = min(max(_exp(min(max(s11, -20.0), 20.0)), 1e-4), 100.0)
+            if g00 <= g11:
+                return g00, 0.0, g11, g00, g11
+            return g00, 0.0, g11, g11, g00
+
+        half_tr = 0.5 * (s00 + s11)
+        half_diff = 0.5 * (s00 - s11)
+        rad = math.hypot(half_diff, s01)
+        l1 = min(max(_exp(min(max(half_tr - rad, -20.0), 20.0)), 1e-4), 100.0)
+        l2 = min(max(_exp(min(max(half_tr + rad, -20.0), 20.0)), 1e-4), 100.0)
+        avg_l = 0.5 * (l1 + l2)
+        scale = 0.5 * (l2 - l1) / rad
+        return (
+            avg_l + scale * half_diff,
+            scale * s01,
+            avg_l - scale * half_diff,
+            l1,
+            l2,
+        )
+
     def evaluate_metric(self, x: np.ndarray, gate_type: LogicGateType, a: float, b: float) -> np.ndarray:
         """
         Evaluates the local 2x2 Riemannian metric tensor g_ij(x) using Log-Euclidean Lie algebra
         retraction g = exp(S) to strictly guarantee positive-definiteness and lambda_k > 0.
         """
-        px, py = float(x[0]), float(x[1])
-        r_sq = px * px + py * py
-
-        # Base Euclidean Lie generator (identity metric: exp(0) = I)
-        S = np.zeros((2, 2), dtype=np.float64)
-
-        # Gate-dependent Riemannian metric deformations
-        if gate_type in (LogicGateType.AND, LogicGateType.NAND):
-            # Constructive lensing when both inputs active: compression in y, expansion in x
-            coupling = float(np.clip(a * b, 0.0, 1.0))
-            envelope = np.exp(-((px - 0.5)**2 + py**2) / 3.0)
-            S[0, 0] += 0.45 * coupling * envelope
-            S[1, 1] -= 0.35 * coupling * envelope
-
-        elif gate_type == LogicGateType.OR:
-            # Lensing when either input active
-            coupling = float(np.clip(a + b - 0.5 * a * b, 0.0, 1.0))
-            envelope = np.exp(-((px - 0.2)**2 + py**2) / 3.5)
-            S[0, 0] += 0.40 * coupling * envelope
-            S[1, 1] -= 0.30 * coupling * envelope
-
-        elif gate_type == LogicGateType.XOR or gate_type == LogicGateType.HALF_ADDER:
-            # Hyperbolic saddle geometry in central zone when both collide (destructive interference)
-            both_active = float(np.clip(a * b, 0.0, 1.0))
-            central_saddle = np.exp(-(px**2 + py**2) / 1.5)
-            # Divergent curvature: stretches y, contracts x (scattering rays transversely away from center)
-            S[0, 0] -= 0.60 * both_active * central_saddle
-            S[1, 1] += 0.60 * both_active * central_saddle
-
-            # Off-diagonal shear coupling to induce geometric deflection
-            S[0, 1] += 0.25 * both_active * central_saddle * np.sign(py + 1e-6)
-            S[1, 0] = S[0, 1]
-
-        elif gate_type == LogicGateType.NOT:
-            # Repulsive deflection barrier for input a
-            coupling = float(np.clip(a, 0.0, 1.0))
-            envelope = np.exp(-((px - 1.0)**2 + (py - 1.0)**2) / 2.0)
-            S[0, 0] -= 0.50 * coupling * envelope
-            S[1, 1] += 0.50 * coupling * envelope
-
-        # AdS cosmological boundary term to prevent horizon escape
-        if r_sq > (self.horizon_radius - 1.5)**2:
-            barrier = 0.5 * ((r_sq - (self.horizon_radius - 1.5)**2) / 4.0)**2
-            S[0, 0] += barrier
-            S[1, 1] += barrier
-
-        # Matrix exponential retraction: g = expm(S)
-        g_ij = la.expm(S)
-
-        # Symmetrize and regularize condition number
-        g_ij = 0.5 * (g_ij + g_ij.T)
-        evals, evecs = la.eigh(g_ij)
-        evals = np.clip(evals, 1e-4, 100.0)
-        return (evecs * evals) @ evecs.T
+        g00, g01, g11, _, _ = self._metric_components(float(x[0]), float(x[1]), gate_type, a, b)
+        return np.array([[g00, g01], [g01, g11]], dtype=np.float64)
 
     @staticmethod
     def _smooth_gate(val: float, threshold: float = 0.35, sharpness: float = 24.0) -> float:
         """Smooth C^infinity logistic activation envelope replacing hard threshold branches."""
-        z = float(np.clip(sharpness * (val - threshold), -40.0, 40.0))
-        return float(1.0 / (1.0 + np.exp(-z)))
+        z = min(max(sharpness * (val - threshold), -40.0), 40.0)
+        return 1.0 / (1.0 + math.exp(-z))
 
-    def evaluate_potential(self, x: np.ndarray, gate_type: LogicGateType, a: float, b: float) -> Tuple[float, np.ndarray]:
-        """
-        Evaluates effective potential Phi(x) and its analytical gradient grad_Phi(x)
-        using branch-free C^infinity activation envelopes over continuous inputs (a, b).
-        """
-        px, py = float(x[0]), float(x[1])
-        phi = 0.0
-        grad = np.zeros(2, dtype=np.float64)
+    def _potential_components(
+        self,
+        px: float,
+        py: float,
+        gate_type: LogicGateType,
+        a: float,
+        b: float,
+    ) -> tuple[float, float, float]:
+        """Returns (phi, grad_x, grad_y) using pure scalar math."""
+        _exp = math.exp
+        phi = 0.05 * px
+        gx = 0.05
+        gy = 0.0
 
-        def add_gaussian_hill(cx, cy, amp, sx, sy):
-            nonlocal phi, grad
+        def _hill(cx: float, cy: float, amp: float, sx: float, sy: float) -> None:
+            nonlocal phi, gx, gy
             if abs(amp) < 1e-12:
                 return
             dx = px - cx
             dy = py - cy
-            g_val = amp * np.exp(-(dx * dx / (2.0 * sx * sx) + dy * dy / (2.0 * sy * sy)))
+            inv_sx2 = 1.0 / (sx * sx)
+            inv_sy2 = 1.0 / (sy * sy)
+            g_val = amp * _exp(-0.5 * (dx * dx * inv_sx2 + dy * dy * inv_sy2))
             phi += g_val
-            grad[0] += -g_val * (dx / (sx * sx))
-            grad[1] += -g_val * (dy / (sy * sy))
+            gx -= g_val * (dx * inv_sx2)
+            gy -= g_val * (dy * inv_sy2)
 
-        def add_gaussian_well(cx, cy, depth, sx, sy):
-            add_gaussian_hill(cx, cy, -abs(depth), sx, sy)
-
-        # Baseline flow: slight rightward and neutral drift
-        phi += 0.05 * px
-        grad[0] += 0.05
+        bf_x = float(self.basin_false[0])
+        bf_y = float(self.basin_false[1])
+        bt_x = float(self.basin_true[0])
+        bt_y = float(self.basin_true[1])
 
         if gate_type in (LogicGateType.AND, LogicGateType.NAND):
-            # Default state (a=0 or b=0): diversion barrier directs rays down towards False basin
-            default_barrier = 2.2 * (1.0 - 0.85 * a * b)
-            add_gaussian_hill(cx=0.5, cy=0.8, amp=default_barrier, sx=1.4, sy=1.2)
-
-            # Constructive channel towards True basin weighted smoothly by both inputs active
+            _hill(0.5, 0.8, 2.2 * (1.0 - 0.85 * a * b), 1.4, 1.2)
             w_both = self._smooth_gate(a, 0.35) * self._smooth_gate(b, 0.35)
-            lens_depth = 3.6 * (a * b) * w_both
-            add_gaussian_well(cx=1.8, cy=1.4, depth=lens_depth, sx=1.8, sy=1.2)
-
-            # False attractor well
-            add_gaussian_well(cx=self.basin_false[0], cy=self.basin_false[1], depth=2.0, sx=1.5, sy=1.5)
-            # True attractor well
-            add_gaussian_well(cx=self.basin_true[0], cy=self.basin_true[1], depth=2.5, sx=1.5, sy=1.5)
+            _hill(1.8, 1.4, -abs(3.6 * (a * b) * w_both), 1.8, 1.2)
+            _hill(bf_x, bf_y, -2.0, 1.5, 1.5)
+            _hill(bt_x, bt_y, -2.5, 1.5, 1.5)
 
         elif gate_type == LogicGateType.OR:
-            # Default barrier only when BOTH a and b are low
-            both_low = float(np.clip((1.0 - a) * (1.0 - b), 0.0, 1.0))
-            add_gaussian_hill(cx=0.2, cy=0.7, amp=2.6 * both_low, sx=1.4, sy=1.2)
-
-            # Attractive well weighted smoothly by either input active
-            either_active = float(np.clip(a + b - 0.3 * a * b, 0.0, 1.0))
+            both_low = min(max((1.0 - a) * (1.0 - b), 0.0), 1.0)
+            _hill(0.2, 0.7, 2.6 * both_low, 1.4, 1.2)
+            either_active = min(max(a + b - 0.3 * a * b, 0.0), 1.0)
             w_either = self._smooth_gate(either_active, 0.25)
-            add_gaussian_well(cx=1.5, cy=1.2, depth=3.2 * either_active * w_either, sx=1.8, sy=1.4)
-
-            add_gaussian_well(cx=self.basin_false[0], cy=self.basin_false[1], depth=2.0, sx=1.5, sy=1.5)
-            add_gaussian_well(cx=self.basin_true[0], cy=self.basin_true[1], depth=2.5, sx=1.5, sy=1.5)
+            _hill(1.5, 1.2, -abs(3.2 * either_active * w_either), 1.8, 1.4)
+            _hill(bf_x, bf_y, -2.0, 1.5, 1.5)
+            _hill(bt_x, bt_y, -2.5, 1.5, 1.5)
 
         elif gate_type == LogicGateType.NOT:
-            # Free transit to True basin when a == 0
-            # Strong repulsive deflection barrier when a == 1
-            barrier_height = 4.2 * float(np.clip(a, 0.0, 1.0))
-            add_gaussian_hill(cx=0.5, cy=0.5, amp=barrier_height, sx=1.2, sy=1.5)
-
-            # Channel to False basin when deflected
-            add_gaussian_well(cx=1.5, cy=-1.2, depth=2.5 * a, sx=1.5, sy=1.2)
-            add_gaussian_well(cx=self.basin_false[0], cy=self.basin_false[1], depth=2.5, sx=1.5, sy=1.5)
-            add_gaussian_well(cx=self.basin_true[0], cy=self.basin_true[1], depth=2.5, sx=1.5, sy=1.5)
+            barrier_height = 4.2 * min(max(a, 0.0), 1.0)
+            _hill(0.5, 0.5, barrier_height, 1.2, 1.5)
+            _hill(1.5, -1.2, -abs(2.5 * a), 1.5, 1.2)
+            _hill(bf_x, bf_y, -2.5, 1.5, 1.5)
+            _hill(bt_x, bt_y, -2.5, 1.5, 1.5)
 
         elif gate_type == LogicGateType.XOR:
-            # Smooth continuous activation weights for XOR constructive/destructive regimes:
             s_a_low = self._smooth_gate(a, 0.25)
             s_b_low = self._smooth_gate(b, 0.25)
             s_a_high = self._smooth_gate(a, 0.35)
@@ -217,22 +229,16 @@ class RiemannianLogicManifold:
             w_b_only = s_b_low * (1.0 - s_a_high)
             w_both = s_a_high * s_b_high
 
-            # A only: attractive pull from upper conduit into True basin
-            add_gaussian_well(cx=1.2, cy=1.5, depth=3.5 * a * w_a_only, sx=1.6, sy=1.2)
-            # B only: attractive pull from lower conduit into True basin
-            add_gaussian_well(cx=1.2, cy=0.8, depth=3.5 * b * w_b_only, sx=1.6, sy=1.2)
-            # BOTH ACTIVE: Destructive interference ridge directly on approach to True basin
+            _hill(1.2, 1.5, -abs(3.5 * a * w_a_only), 1.6, 1.2)
+            _hill(1.2, 0.8, -abs(3.5 * b * w_b_only), 1.6, 1.2)
             collision_barrier = 5.0 * (a * b) * w_both
-            add_gaussian_hill(cx=0.5, cy=0.5, amp=collision_barrier, sx=1.3, sy=1.3)
-            add_gaussian_hill(cx=1.8, cy=1.5, amp=collision_barrier * 0.8, sx=1.2, sy=1.2)
-            # Channel both streams down into False basin
-            add_gaussian_well(cx=1.5, cy=-1.5, depth=3.5 * (a * b) * w_both, sx=1.5, sy=1.2)
-
-            add_gaussian_well(cx=self.basin_false[0], cy=self.basin_false[1], depth=2.5, sx=1.5, sy=1.5)
-            add_gaussian_well(cx=self.basin_true[0], cy=self.basin_true[1], depth=2.5, sx=1.5, sy=1.5)
+            _hill(0.5, 0.5, collision_barrier, 1.3, 1.3)
+            _hill(1.8, 1.5, collision_barrier * 0.8, 1.2, 1.2)
+            _hill(1.5, -1.5, -abs(3.5 * (a * b) * w_both), 1.5, 1.2)
+            _hill(bf_x, bf_y, -2.5, 1.5, 1.5)
+            _hill(bt_x, bt_y, -2.5, 1.5, 1.5)
 
         elif gate_type == LogicGateType.HALF_ADDER:
-            # Smooth continuous activation weights for Sum (XOR) and Carry (AND)
             s_a_low = self._smooth_gate(a, 0.25)
             s_b_low = self._smooth_gate(b, 0.25)
             s_a_high = self._smooth_gate(a, 0.35)
@@ -243,32 +249,110 @@ class RiemannianLogicManifold:
             w_both = s_a_high * s_b_high
             w_not_both = 1.0 - w_both
 
-            # Sum channel (upper half, py > 0)
-            add_gaussian_well(cx=1.5, cy=2.0, depth=3.5 * a * w_a_only, sx=1.6, sy=1.0)
-            add_gaussian_well(cx=1.5, cy=1.8, depth=3.5 * b * w_b_only, sx=1.6, sy=1.0)
-            add_gaussian_hill(cx=1.2, cy=2.0, amp=4.5 * (a * b) * w_both, sx=1.2, sy=1.0)
-            add_gaussian_well(cx=self.basin_sum_0[0], cy=self.basin_sum_0[1], depth=3.0 * w_both, sx=1.4, sy=1.0)
+            bs0_x, bs0_y = float(self.basin_sum_0[0]), float(self.basin_sum_0[1])
+            bs1_x, bs1_y = float(self.basin_sum_1[0]), float(self.basin_sum_1[1])
+            bc0_x, bc0_y = float(self.basin_carry_0[0]), float(self.basin_carry_0[1])
+            bc1_x, bc1_y = float(self.basin_carry_1[0]), float(self.basin_carry_1[1])
 
-            # Carry channel (lower half, py < 0)
-            add_gaussian_well(cx=1.5, cy=-0.8, depth=3.8 * (a * b) * w_both, sx=1.5, sy=1.0)
-            add_gaussian_well(cx=self.basin_carry_1[0], cy=self.basin_carry_1[1], depth=3.0 * w_both, sx=1.4, sy=1.0)
-            add_gaussian_hill(cx=0.8, cy=-0.8, amp=2.5 * w_not_both, sx=1.4, sy=1.0)
-            add_gaussian_well(cx=self.basin_carry_0[0], cy=self.basin_carry_0[1], depth=2.5 * w_not_both, sx=1.4, sy=1.0)
+            _hill(1.5, 2.0, -abs(3.5 * a * w_a_only), 1.6, 1.0)
+            _hill(1.5, 1.8, -abs(3.5 * b * w_b_only), 1.6, 1.0)
+            _hill(1.2, 2.0, 4.5 * (a * b) * w_both, 1.2, 1.0)
+            _hill(bs0_x, bs0_y, -abs(3.0 * w_both), 1.4, 1.0)
 
-            # Attractor basins for Half-Adder
-            add_gaussian_well(cx=self.basin_sum_0[0], cy=self.basin_sum_0[1], depth=2.2, sx=1.2, sy=0.8)
-            add_gaussian_well(cx=self.basin_sum_1[0], cy=self.basin_sum_1[1], depth=2.2, sx=1.2, sy=0.8)
-            add_gaussian_well(cx=self.basin_carry_0[0], cy=self.basin_carry_0[1], depth=2.2, sx=1.2, sy=0.8)
-            add_gaussian_well(cx=self.basin_carry_1[0], cy=self.basin_carry_1[1], depth=2.2, sx=1.2, sy=0.8)
+            _hill(1.5, -0.8, -abs(3.8 * (a * b) * w_both), 1.5, 1.0)
+            _hill(bc1_x, bc1_y, -abs(3.0 * w_both), 1.4, 1.0)
+            _hill(0.8, -0.8, 2.5 * w_not_both, 1.4, 1.0)
+            _hill(bc0_x, bc0_y, -abs(2.5 * w_not_both), 1.4, 1.0)
 
-        # Boundary confining potential
-        r = np.linalg.norm(x)
-        if r > self.horizon_radius - 1.0:
-            dr = r - (self.horizon_radius - 1.0)
-            phi += 10.0 * (dr ** 2)
-            grad += 20.0 * dr * (x / (r + 1e-8))
+            _hill(bs0_x, bs0_y, -2.2, 1.2, 0.8)
+            _hill(bs1_x, bs1_y, -2.2, 1.2, 0.8)
+            _hill(bc0_x, bc0_y, -2.2, 1.2, 0.8)
+            _hill(bc1_x, bc1_y, -2.2, 1.2, 0.8)
 
-        return phi, grad
+        r = math.hypot(px, py)
+        r_lim = self.horizon_radius - 1.0
+        if r > r_lim:
+            dr = r - r_lim
+            phi += 10.0 * (dr * dr)
+            scale = 20.0 * dr / (r + 1e-8)
+            gx += scale * px
+            gy += scale * py
+
+        return phi, gx, gy
+
+    def evaluate_potential(
+        self,
+        x: np.ndarray,
+        gate_type: LogicGateType,
+        a: float,
+        b: float,
+    ) -> tuple[float, np.ndarray]:
+        """
+        Evaluates effective potential Phi(x) and its analytical gradient grad_Phi(x)
+        using branch-free C^infinity activation envelopes over continuous inputs (a, b).
+        """
+        phi, gx, gy = self._potential_components(float(x[0]), float(x[1]), gate_type, a, b)
+        return phi, np.array([gx, gy], dtype=np.float64)
+
+    def _christoffel_and_ricci_components(
+        self,
+        px: float,
+        py: float,
+        g00: float,
+        g01: float,
+        g11: float,
+        gate_type: LogicGateType,
+        a: float,
+        b: float,
+        eps: float = 1e-3,
+    ) -> tuple[float, float, float, float, float, float, float, float, float, float]:
+        """
+        Closed-form 2D Levi-Civita Christoffel components and Gauss-Bonnet/Brioschi
+        scalar curvature R, plus inverse metric (ig00, ig01, ig11).
+        Returns (G0_00, G0_01, G0_11, G1_00, G1_01, G1_11, r_scalar, ig00, ig01, ig11).
+        """
+        det_raw = g00 * g11 - g01 * g01
+        inv_det = 1.0 / det_raw
+        ig00 = g11 * inv_det
+        ig01 = -g01 * inv_det
+        ig11 = g00 * inv_det
+
+        inv_2eps = 0.5 / eps
+        inv_eps2 = 1.0 / (eps * eps)
+
+        gp00, gp01, gp11, _, _ = self._metric_components(px + eps, py, gate_type, a, b)
+        gm00, gm01, gm11, _, _ = self._metric_components(px - eps, py, gate_type, a, b)
+        d0_g00 = (gp00 - gm00) * inv_2eps
+        d0_g01 = (gp01 - gm01) * inv_2eps
+        d0_g11 = (gp11 - gm11) * inv_2eps
+        d2_0_g11 = (gp11 - 2.0 * g11 + gm11) * inv_eps2
+
+        gp00, gp01, gp11, _, _ = self._metric_components(px, py + eps, gate_type, a, b)
+        gm00, gm01, gm11, _, _ = self._metric_components(px, py - eps, gate_type, a, b)
+        d1_g00 = (gp00 - gm00) * inv_2eps
+        d1_g01 = (gp01 - gm01) * inv_2eps
+        d1_g11 = (gp11 - gm11) * inv_2eps
+        d2_1_g00 = (gp00 - 2.0 * g00 + gm00) * inv_eps2
+
+        t0_00 = d0_g00
+        t1_00 = 2.0 * d0_g01 - d1_g00
+        t0_01 = d1_g00
+        t1_01 = d0_g11
+        t0_11 = 2.0 * d1_g01 - d0_g11
+        t1_11 = d1_g11
+
+        g0_00 = 0.5 * (ig00 * t0_00 + ig01 * t1_00)
+        g1_00 = 0.5 * (ig01 * t0_00 + ig11 * t1_00)
+        g0_01 = 0.5 * (ig00 * t0_01 + ig01 * t1_01)
+        g1_01 = 0.5 * (ig01 * t0_01 + ig11 * t1_01)
+        g0_11 = 0.5 * (ig00 * t0_11 + ig01 * t1_11)
+        g1_11 = 0.5 * (ig01 * t0_11 + ig11 * t1_11)
+
+        q_01 = g00 * g0_01 * g0_01 + 2.0 * g01 * g0_01 * g1_01 + g11 * g1_01 * g1_01
+        q_00_11 = g0_00 * (g00 * g0_11 + g01 * g1_11) + g1_00 * (g01 * g0_11 + g11 * g1_11)
+        sec_deriv_term = 0.5 * (d2_0_g11 + d2_1_g00)
+        r_scalar = -(sec_deriv_term - (q_01 - q_00_11)) / max(det_raw, 1e-6)
+        return g0_00, g0_01, g0_11, g1_00, g1_01, g1_11, r_scalar, ig00, ig01, ig11
 
     def compute_christoffel_and_ricci(
         self,
@@ -276,38 +360,64 @@ class RiemannianLogicManifold:
         gate_type: LogicGateType,
         a: float,
         b: float,
-        eps: float = 1e-3
-    ) -> Tuple[np.ndarray, float]:
+        eps: float = 1e-3,
+    ) -> tuple[np.ndarray, float]:
         """
         Computes Levi-Civita Christoffel symbols Gamma^k_ij and the 2D Brioschi/Gauss-Bonnet
         scalar curvature R from second-order metric derivatives and connection contractions.
         """
-        g_0 = self.evaluate_metric(x, gate_type, a, b)
-        inv_g = la.pinvh(g_0)
-
-        dg = np.zeros((2, 2, 2), dtype=np.float64)
-        d2g_diag = np.zeros((2, 2, 2), dtype=np.float64)
-        for l in range(2):
-            dx = np.zeros(2)
-            dx[l] = eps
-            g_plus = self.evaluate_metric(x + dx, gate_type, a, b)
-            g_minus = self.evaluate_metric(x - dx, gate_type, a, b)
-            dg[l] = (g_plus - g_minus) / (2.0 * eps)
-            d2g_diag[l] = (g_plus - 2.0 * g_0 + g_minus) / (eps * eps)
-
-        # term[l, i, j] = d_i g_jl + d_j g_il - d_l g_ij
-        term = np.transpose(dg, (2, 0, 1)) + np.transpose(dg, (2, 1, 0)) - dg
-        Gamma = 0.5 * np.einsum('kl,lij->kij', inv_g, term)
-
-        # 2D Gauss-Bonnet / Brioschi scalar curvature:
-        # R = -(1 / det(g)) * (0.5 * (d_0^2 g_11 + d_1^2 g_00) - g_kl * (Gamma^k_01 Gamma^l_01 - Gamma^k_00 Gamma^l_11))
-        det_g = max(float(la.det(g_0)), 1e-6)
-        sec_deriv_term = 0.5 * (d2g_diag[0, 1, 1] + d2g_diag[1, 0, 0])
-        quad_gamma_term = float(
-            Gamma[:, 0, 1] @ g_0 @ Gamma[:, 0, 1] - Gamma[:, 0, 0] @ g_0 @ Gamma[:, 1, 1]
+        px = float(x[0])
+        py = float(x[1])
+        g00, g01, g11, _, _ = self._metric_components(px, py, gate_type, a, b)
+        g0_00, g0_01, g0_11, g1_00, g1_01, g1_11, r_scalar, _, _, _ = (
+            self._christoffel_and_ricci_components(px, py, g00, g01, g11, gate_type, a, b, eps)
         )
-        r_scalar = float(-(sec_deriv_term - quad_gamma_term) / det_g)
-        return Gamma, r_scalar
+        gamma_arr = np.array(
+            [
+                [[g0_00, g0_01], [g0_01, g0_11]],
+                [[g1_00, g1_01], [g1_01, g1_11]],
+            ],
+            dtype=np.float64,
+        )
+        return gamma_arr, r_scalar
+
+    def _step_exciton_scalar(
+        self,
+        px: float,
+        py: float,
+        vx: float,
+        vy: float,
+        g00: float,
+        g01: float,
+        g11: float,
+        gate_type: LogicGateType,
+        a: float,
+        b: float,
+    ) -> tuple[float, float, float, float, float, float]:
+        _, gx, gy = self._potential_components(px, py, gate_type, a, b)
+        g0_00, g0_01, g0_11, g1_00, g1_01, g1_11, r_scalar, ig00, ig01, ig11 = (
+            self._christoffel_and_ricci_components(px, py, g00, g01, g11, gate_type, a, b)
+        )
+
+        vx2 = vx * vx
+        two_vx_vy = 2.0 * vx * vy
+        vy2 = vy * vy
+        geo_ax = -(g0_00 * vx2 + g0_01 * two_vx_vy + g0_11 * vy2)
+        geo_ay = -(g1_00 * vx2 + g1_01 * two_vx_vy + g1_11 * vy2)
+
+        pot_ax = -(ig00 * gx + ig01 * gy)
+        pot_ay = -(ig01 * gx + ig11 * gy)
+
+        v_norm_sq = g00 * vx2 + g01 * two_vx_vy + g11 * vy2
+        damping_gamma = self.gamma_base + 0.15 * min(abs(r_scalar), 10.0) + 0.05 * v_norm_sq
+
+        dt = self.dt
+        vx_next = vx + dt * (geo_ax + pot_ax - damping_gamma * vx)
+        vy_next = vy + dt * (geo_ay + pot_ay - damping_gamma * vy)
+        px_next = px + dt * vx_next
+        py_next = py + dt * vy_next
+        dissipated_de = damping_gamma * v_norm_sq * dt
+        return px_next, py_next, vx_next, vy_next, dissipated_de, r_scalar
 
     def step_exciton(
         self,
@@ -315,43 +425,30 @@ class RiemannianLogicManifold:
         v: np.ndarray,
         gate_type: LogicGateType,
         a: float,
-        b: float
-    ) -> Tuple[np.ndarray, np.ndarray, float, float]:
+        b: float,
+    ) -> tuple[np.ndarray, np.ndarray, float, float]:
         """
         Single symplectic geodesic integration step with adaptive velocity damping:
             dv^k/dt = -Gamma^k_ij v^i v^j - g^kl grad_l Phi - gamma(v, R) v^k
         """
-        g = self.evaluate_metric(x, gate_type, a, b)
-        inv_g = la.pinvh(g)
-        phi, grad_phi = self.evaluate_potential(x, gate_type, a, b)
-        Gamma, r_scalar = self.compute_christoffel_and_ricci(x, gate_type, a, b)
-
-        # Geodesic acceleration: -Gamma^k_ij v^i v^j
-        geodesic_acc = -np.einsum('kij,i,j->k', Gamma, v, v)
-
-        # Potential acceleration: -g^kl grad_l Phi
-        potential_acc = -inv_g @ grad_phi
-
-        # Adaptive damping: increases near singularities or high kinetic energy
-        v_norm_sq = float(v @ g @ v)
-        damping_gamma = self.gamma_base + 0.15 * min(abs(r_scalar), 10.0) + 0.05 * v_norm_sq
-        drag_acc = -damping_gamma * v
-
-        # Symplectic acceleration update
-        acc = geodesic_acc + potential_acc + drag_acc
-        v_next = v + self.dt * acc
-        x_next = x + self.dt * v_next
-
-        # Dissipation absorbed: dE = 2 * gamma * E_k * dt
-        dissipated_dE = 2.0 * damping_gamma * (0.5 * v_norm_sq) * self.dt
-
-        return x_next, v_next, dissipated_dE, r_scalar
+        px = float(x[0])
+        py = float(x[1])
+        g00, g01, g11, _, _ = self._metric_components(px, py, gate_type, a, b)
+        px_n, py_n, vx_n, vy_n, dissipated_de, r_scalar = self._step_exciton_scalar(
+            px, py, float(v[0]), float(v[1]), g00, g01, g11, gate_type, a, b
+        )
+        return (
+            np.array([px_n, py_n], dtype=np.float64),
+            np.array([vx_n, vy_n], dtype=np.float64),
+            dissipated_de,
+            r_scalar,
+        )
 
     def evaluate_gate(
         self,
-        gate_type: Union[LogicGateType, str],
+        gate_type: LogicGateType | str,
         a: float,
-        b: float = 0.0
+        b: float = 0.0,
     ) -> LogicGateResult:
         """
         Executes a continuous Riemannian logic gate computation.
@@ -360,93 +457,84 @@ class RiemannianLogicManifold:
         if isinstance(gate_type, str):
             gate_type = LogicGateType(gate_type)
 
-        def _sanitize(val: Union[float, int, None]) -> float:
-            if val is None or not np.isfinite(val):
+        def _sanitize(val: float | None) -> float:
+            if val is None or not math.isfinite(val):
                 return 0.0
-            return float(np.clip(val, 0.0, 1.0))
+            return min(max(float(val), 0.0), 1.0)
 
         a_clamped = _sanitize(a)
         b_clamped = _sanitize(b)
 
-        # Setup probe injection ports
+        # Setup probe injection ports: (name, px, py, vx, vy)
         if gate_type == LogicGateType.NOT:
-            probes = {
-                "probe": {
-                    "x": np.array([-3.5, 0.2], dtype=np.float64),
-                    "v": np.array([2.5, 0.0], dtype=np.float64)
-                }
-            }
+            probe_specs = [("probe", -3.5, 0.2, 2.5, 0.0)]
         elif gate_type in (LogicGateType.AND, LogicGateType.OR, LogicGateType.NAND):
-            # Probe injected along central axis with smooth continuous transverse momentum
             vy_init = -0.10 + 0.25 * self._smooth_gate(a_clamped + b_clamped, 0.50)
-            probes = {
-                "probe": {
-                    "x": np.array([-3.5, 0.0], dtype=np.float64),
-                    "v": np.array([2.4, vy_init], dtype=np.float64)
-                }
-            }
+            probe_specs = [("probe", -3.5, 0.0, 2.4, vy_init)]
         elif gate_type == LogicGateType.XOR:
-            # Two complementary Exciton rays from upper and lower conduits
-            probes = {
-                "exciton_A": {
-                    "x": np.array([-3.5, 1.5], dtype=np.float64),
-                    "v": np.array([2.4 * a_clamped + 0.2, -0.4 * a_clamped], dtype=np.float64)
-                },
-                "exciton_B": {
-                    "x": np.array([-3.5, -1.5], dtype=np.float64),
-                    "v": np.array([2.4 * b_clamped + 0.2, 0.4 * b_clamped], dtype=np.float64)
-                }
-            }
+            probe_specs = [
+                ("exciton_A", -3.5, 1.5, 2.4 * a_clamped + 0.2, -0.4 * a_clamped),
+                ("exciton_B", -3.5, -1.5, 2.4 * b_clamped + 0.2, 0.4 * b_clamped),
+            ]
         elif gate_type == LogicGateType.HALF_ADDER:
-            probes = {
-                "sum_probe": {
-                    "x": np.array([-3.5, 1.4], dtype=np.float64),
-                    "v": np.array([2.4, 0.1], dtype=np.float64)
-                },
-                "carry_probe": {
-                    "x": np.array([-3.5, -1.4], dtype=np.float64),
-                    "v": np.array([2.4, -0.1], dtype=np.float64)
-                }
-            }
+            probe_specs = [
+                ("sum_probe", -3.5, 1.4, 2.4, 0.1),
+                ("carry_probe", -3.5, -1.4, 2.4, -0.1),
+            ]
         else:
             raise ValueError(f"Unsupported gate type: {gate_type}")
 
-        trajectories = {name: [p["x"].copy()] for name, p in probes.items()}
+        max_steps = self.max_steps
+        traj_arrays: dict[str, np.ndarray] = {}
         total_dissipated = 0.0
-        ricci_scalars = []
-        min_evals = []
-        cond_numbers = []
+        has_telemetry = False
+        r_min = float("inf")
+        r_max = float("-inf")
+        min_eval_overall = float("inf")
+        max_cond_overall = 0.0
 
-        # Execute geodesic integration
-        for step in range(self.max_steps):
-            for name, p in probes.items():
-                x_curr, v_curr = p["x"], p["v"]
-                x_next, v_next, dE, r_scalar = self.step_exciton(
-                    x_curr, v_curr, gate_type, a_clamped, b_clamped
+        for name, px0, py0, vx0, vy0 in probe_specs:
+            traj = np.empty((max_steps + 1, 2), dtype=np.float64)
+            traj[0, 0] = px0
+            traj[0, 1] = py0
+            px, py, vx, vy = px0, py0, vx0, vy0
+            g00, g01, g11, _, _ = self._metric_components(px, py, gate_type, a_clamped, b_clamped)
+            for step_idx in range(max_steps):
+                px, py, vx, vy, de, r_scalar = self._step_exciton_scalar(
+                    px, py, vx, vy, g00, g01, g11, gate_type, a_clamped, b_clamped
                 )
-                p["x"], p["v"] = x_next, v_next
-                trajectories[name].append(x_next.copy())
-                total_dissipated += dE
-                ricci_scalars.append(r_scalar)
+                traj[step_idx + 1, 0] = px
+                traj[step_idx + 1, 1] = py
+                total_dissipated += de
+                g00, g01, g11, l_min, l_max = self._metric_components(
+                    px, py, gate_type, a_clamped, b_clamped
+                )
+                has_telemetry = True
+                r_min = min(r_min, r_scalar)
+                r_max = max(r_max, r_scalar)
+                min_eval_overall = min(min_eval_overall, l_min)
+                cond_val = l_max / max(l_min, 1e-9)
+                max_cond_overall = max(max_cond_overall, cond_val)
+            traj_arrays[name] = traj
 
-                # Monitor metric invariants
-                g_test = self.evaluate_metric(x_next, gate_type, a_clamped, b_clamped)
-                evals = la.eigvalsh(g_test)
-                min_evals.append(float(np.min(evals)))
-                cond_numbers.append(float(np.max(evals) / max(np.min(evals), 1e-9)))
-
-        # Convert trajectories to numpy arrays
-        traj_arrays = {k: np.array(v) for k, v in trajectories.items()}
-
+        _exp = math.exp
+        _hypot = math.hypot
         # Readout from final positions
         if gate_type in (LogicGateType.AND, LogicGateType.OR, LogicGateType.NOT, LogicGateType.NAND):
             final_pos = traj_arrays["probe"][-1]
-            dist_false = float(np.linalg.norm(final_pos - self.basin_false))
-            dist_true = float(np.linalg.norm(final_pos - self.basin_true))
+            dist_false = _hypot(
+                float(final_pos[0]) - float(self.basin_false[0]),
+                float(final_pos[1]) - float(self.basin_false[1]),
+            )
+            dist_true = _hypot(
+                float(final_pos[0]) - float(self.basin_true[0]),
+                float(final_pos[1]) - float(self.basin_true[1]),
+            )
 
-            # Softmax confidence readout
             beta = 1.8
-            p_true = float(np.exp(-beta * dist_true) / (np.exp(-beta * dist_true) + np.exp(-beta * dist_false) + 1e-12))
+            et = _exp(-beta * dist_true)
+            ef = _exp(-beta * dist_false)
+            p_true = et / (et + ef + 1e-12)
 
             if gate_type == LogicGateType.NAND:
                 p_true = 1.0 - p_true
@@ -455,24 +543,27 @@ class RiemannianLogicManifold:
             binary_outputs = {"Y": 1 if p_true >= 0.5 else 0}
 
         elif gate_type == LogicGateType.XOR:
-            # XOR integrates both Exciton terminal endpoints
-            final_A = traj_arrays["exciton_A"][-1]
-            final_B = traj_arrays["exciton_B"][-1]
+            final_a = traj_arrays["exciton_A"][-1]
+            final_b = traj_arrays["exciton_B"][-1]
 
-            # Measure proximity to True basin vs False basin
-            d_true_A = np.linalg.norm(final_A - self.basin_true)
-            d_true_B = np.linalg.norm(final_B - self.basin_true)
-            d_false_A = np.linalg.norm(final_A - self.basin_false)
-            d_false_B = np.linalg.norm(final_B - self.basin_false)
+            bt0, bt1 = float(self.basin_true[0]), float(self.basin_true[1])
+            bf0, bf1 = float(self.basin_false[0]), float(self.basin_false[1])
+            d_true_a = _hypot(float(final_a[0]) - bt0, float(final_a[1]) - bt1)
+            d_true_b = _hypot(float(final_b[0]) - bt0, float(final_b[1]) - bt1)
+            d_false_a = _hypot(float(final_a[0]) - bf0, float(final_a[1]) - bf1)
+            d_false_b = _hypot(float(final_b[0]) - bf0, float(final_b[1]) - bf1)
 
-            min_dist_true = min(d_true_A, d_true_B)
-            min_dist_false = min(d_false_A, d_false_B)
+            min_dist_true = min(d_true_a, d_true_b)
+            min_dist_false = min(d_false_a, d_false_b)
 
             beta = 1.8
-            p_raw = float(np.exp(-beta * min_dist_true) / (np.exp(-beta * min_dist_true) + np.exp(-beta * min_dist_false) + 1e-12))
+            et = _exp(-beta * min_dist_true)
+            ef = _exp(-beta * min_dist_false)
+            p_raw = et / (et + ef + 1e-12)
 
-            # Smooth continuous wavepacket excitation envelope (vanishes when both inputs are quiescent)
-            excitation = 1.0 - (1.0 - self._smooth_gate(a_clamped, 0.20, 28.0)) * (1.0 - self._smooth_gate(b_clamped, 0.20, 28.0))
+            excitation = 1.0 - (1.0 - self._smooth_gate(a_clamped, 0.20, 28.0)) * (
+                1.0 - self._smooth_gate(b_clamped, 0.20, 28.0)
+            )
             p_true = p_raw * excitation
 
             outputs = {"Y": round(p_true, 4)}
@@ -482,25 +573,41 @@ class RiemannianLogicManifold:
             sum_pos = traj_arrays["sum_probe"][-1]
             carry_pos = traj_arrays["carry_probe"][-1]
 
-            # Sum (XOR) readout modulated by smooth input wavepacket excitation
-            d_s1 = np.linalg.norm(sum_pos - self.basin_sum_1)
-            d_s0 = np.linalg.norm(sum_pos - self.basin_sum_0)
-            p_sum_raw = float(np.exp(-2.0 * d_s1) / (np.exp(-2.0 * d_s1) + np.exp(-2.0 * d_s0) + 1e-12))
-            excitation = 1.0 - (1.0 - self._smooth_gate(a_clamped, 0.20, 28.0)) * (1.0 - self._smooth_gate(b_clamped, 0.20, 28.0))
+            d_s1 = _hypot(
+                float(sum_pos[0]) - float(self.basin_sum_1[0]),
+                float(sum_pos[1]) - float(self.basin_sum_1[1]),
+            )
+            d_s0 = _hypot(
+                float(sum_pos[0]) - float(self.basin_sum_0[0]),
+                float(sum_pos[1]) - float(self.basin_sum_0[1]),
+            )
+            es1 = _exp(-2.0 * d_s1)
+            es0 = _exp(-2.0 * d_s0)
+            p_sum_raw = es1 / (es1 + es0 + 1e-12)
+            excitation = 1.0 - (1.0 - self._smooth_gate(a_clamped, 0.20, 28.0)) * (
+                1.0 - self._smooth_gate(b_clamped, 0.20, 28.0)
+            )
             p_sum = p_sum_raw * excitation
 
-            # Carry (AND) readout
-            d_c1 = np.linalg.norm(carry_pos - self.basin_carry_1)
-            d_c0 = np.linalg.norm(carry_pos - self.basin_carry_0)
-            p_carry = float(np.exp(-2.0 * d_c1) / (np.exp(-2.0 * d_c1) + np.exp(-2.0 * d_c0) + 1e-12))
+            d_c1 = _hypot(
+                float(carry_pos[0]) - float(self.basin_carry_1[0]),
+                float(carry_pos[1]) - float(self.basin_carry_1[1]),
+            )
+            d_c0 = _hypot(
+                float(carry_pos[0]) - float(self.basin_carry_0[0]),
+                float(carry_pos[1]) - float(self.basin_carry_0[1]),
+            )
+            ec1 = _exp(-2.0 * d_c1)
+            ec0 = _exp(-2.0 * d_c0)
+            p_carry = ec1 / (ec1 + ec0 + 1e-12)
 
             outputs = {
                 "Sum": round(p_sum, 4),
-                "Carry": round(p_carry, 4)
+                "Carry": round(p_carry, 4),
             }
             binary_outputs = {
                 "Sum": 1 if p_sum >= 0.5 else 0,
-                "Carry": 1 if p_carry >= 0.5 else 0
+                "Carry": 1 if p_carry >= 0.5 else 0,
             }
 
         return LogicGateResult(
@@ -509,15 +616,15 @@ class RiemannianLogicManifold:
             outputs=outputs,
             binary_outputs=binary_outputs,
             trajectories=traj_arrays,
-            ricci_scalar_min=float(np.min(ricci_scalars)) if ricci_scalars else 0.0,
-            ricci_scalar_max=float(np.max(ricci_scalars)) if ricci_scalars else 0.0,
-            min_eigenvalue=float(np.min(min_evals)) if min_evals else 1.0,
-            max_condition_number=float(np.max(cond_numbers)) if cond_numbers else 1.0,
+            ricci_scalar_min=r_min if has_telemetry else 0.0,
+            ricci_scalar_max=r_max if has_telemetry else 0.0,
+            min_eigenvalue=min_eval_overall if has_telemetry else 1.0,
+            max_condition_number=max_cond_overall if has_telemetry else 1.0,
             absorbed_energy=round(total_dissipated, 4),
-            converged=True
+            converged=True,
         )
 
-    def evaluate_truth_table(self, gate_type: Union[LogicGateType, str]) -> List[LogicGateResult]:
+    def evaluate_truth_table(self, gate_type: LogicGateType | str) -> list[LogicGateResult]:
         """Evaluates complete 2-input boolean truth table [(0,0), (0,1), (1,0), (1,1)] or NOT [(0,), (1,)]."""
         if isinstance(gate_type, str):
             gate_type = LogicGateType(gate_type)
@@ -556,7 +663,7 @@ class RiemannianLogicManifold:
         Stage 2: Half-Adder(S1, Cin) -> (Sum, C2)
         Stage 3: OR(C1, C2) -> Cout
         """
-        def _sanitize(val: Union[float, int, None]) -> float:
+        def _sanitize(val: float | None) -> float:
             if val is None or not np.isfinite(val):
                 return 0.0
             return float(np.clip(val, 0.0, 1.0))
@@ -597,9 +704,9 @@ class RiemannianLogicManifold:
 @dataclass
 class FullAdderResult:
     """Readout from a continuous 1-bit Riemannian Full Adder."""
-    inputs: Dict[str, float]             # "A", "B", "Cin"
-    outputs: Dict[str, float]            # Continuous analog readout
-    binary_outputs: Dict[str, int]       # "Sum", "Cout" in {0, 1}
+    inputs: dict[str, float]             # "A", "B", "Cin"
+    outputs: dict[str, float]            # Continuous analog readout
+    binary_outputs: dict[str, int]       # "Sum", "Cout" in {0, 1}
     half_adder_1: LogicGateResult
     half_adder_2: LogicGateResult
     or_gate: LogicGateResult
@@ -615,9 +722,9 @@ class RippleCarryResult:
     a_int: int
     b_int: int
     sum_int: int
-    sum_bits: List[int]
+    sum_bits: list[int]
     carry_out: int
-    stages: List[FullAdderResult]
+    stages: list[FullAdderResult]
     total_absorbed_energy: float
     min_eigenvalue: float
     max_condition_number: float
@@ -629,7 +736,7 @@ class RippleCarryManifoldCircuit:
     N-bit Ripple-Carry arithmetic circuit implemented entirely via cascading
     continuous Riemannian logic manifold stages.
     """
-    def __init__(self, num_bits: int = 4, manifold: Optional[RiemannianLogicManifold] = None):
+    def __init__(self, num_bits: int = 4, manifold: RiemannianLogicManifold | None = None):
         self.num_bits = num_bits
         self.manifold = manifold or RiemannianLogicManifold()
 
@@ -643,7 +750,7 @@ class RippleCarryManifoldCircuit:
         a_bits = [(a_clamped >> i) & 1 for i in range(self.num_bits)]
         b_bits = [(b_clamped >> i) & 1 for i in range(self.num_bits)]
 
-        stages: List[FullAdderResult] = []
+        stages: list[FullAdderResult] = []
         c_in = float(cin_clamped)
         sum_bits = []
         total_dE = 0.0
@@ -692,10 +799,10 @@ class ALUResult:
     a_int: int
     b_int: int
     result_int: int
-    result_bits: List[int]
+    result_bits: list[int]
     carry_or_borrow: int
     is_negative: bool
-    stages: List[Union[FullAdderResult, LogicGateResult]]
+    stages: list[FullAdderResult | LogicGateResult]
     total_absorbed_energy: float
     min_eigenvalue: float
     max_condition_number: float
@@ -711,15 +818,17 @@ class RiemannianALU:
     - OR:  A | B (Bitwise parallel Riemannian threshold lensing)
     - XOR: A ^ B (Bitwise parallel Riemannian destructive collision)
     """
-    def __init__(self, num_bits: int = 4, manifold: Optional[RiemannianLogicManifold] = None):
+    def __init__(self, num_bits: int = 4, manifold: RiemannianLogicManifold | None = None):
         self.num_bits = num_bits
         self.manifold = manifold or RiemannianLogicManifold()
         self.adder = RippleCarryManifoldCircuit(num_bits=num_bits, manifold=self.manifold)
 
-    def execute(self, op: Union[ALUOp, str], a_val: int, b_val: int) -> ALUResult:
+    def execute(self, op: LogicGateType | ALUOp | str, a_val: int, b_val: int) -> ALUResult:
         """Executes arithmetic or bitwise logical operation on the Riemannian manifold."""
         if isinstance(op, str):
             op = ALUOp(op.upper())
+        elif isinstance(op, LogicGateType):
+            op = ALUOp(op.value)
 
         max_val = (1 << self.num_bits) - 1
         a_clamped = int(np.clip(a_val, 0, max_val))
@@ -748,7 +857,7 @@ class RiemannianALU:
         elif op == ALUOp.SUB:
             # Two's complement subtraction: A + (~B) + 1
             b_inv_bits = [1 - bit for bit in b_bits]
-            stages: List[FullAdderResult] = []
+            stages: list[FullAdderResult] = []
             c_in = 1.0  # Two's complement +1
             sum_bits = []
             total_dE = 0.0

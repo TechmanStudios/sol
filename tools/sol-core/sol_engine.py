@@ -20,10 +20,9 @@ Usage:
 """
 from __future__ import annotations
 
+import contextlib
 import json
 import math
-import os
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -31,12 +30,12 @@ __all__ = [
     "SOLEngine",
     "SOLPhysics",
     "apply_cap_law",
-    "get_cap_law_signature",
-    "compute_metrics",
-    "snapshot_state",
-    "restore_state",
     "compute_all_edges",
+    "compute_metrics",
     "create_engine",
+    "get_cap_law_signature",
+    "restore_state",
+    "snapshot_state",
 ]
 
 DEFAULT_GRAPH_PATH = Path(__file__).parent / "default_graph.json"
@@ -217,15 +216,19 @@ class SOLPhysics:
         cfg = self.semantic_cfg
         if not cfg:
             return
-        decay = cfg.get("decayRate", 0.05)
-        min_mass = cfg.get("minMass", 0.25)
-        axiom = cfg.get("singularityMass", 1000)
-        factor = math.exp(-decay * max(0.0, dt))
+        factor: float | None = None
+        min_mass = 0.25
+        axiom = 1000
         for n in self.nodes:
             if not n.get("isConstellation"):
                 continue
             if n.get("isSingularity"):
                 continue
+            if factor is None:
+                decay = cfg.get("decayRate", 0.05)
+                min_mass = cfg.get("minMass", 0.25)
+                axiom = cfg.get("singularityMass", 1000)
+                factor = math.exp(-decay * max(0.0, dt))
             m = n.get("semanticMass", 1.0)
             n["semanticMass"] = max(min_mass, m * factor)
             if n["semanticMass"] > axiom:
@@ -251,64 +254,92 @@ class SOLPhysics:
         if node["semanticMass"] > axiom:
             node["isSingularity"] = True
 
+    _DEFAULT_GATE_10 = 1.0 / (1.0 + math.exp(-10.0))
+
     # ---- Equation of State: P = c * log(1 + rho/m) ----
     def compute_pressure(self, c_press: float):
+        _log = math.log
         for n in self.nodes:
             m = n.get("semanticMass", 1.0)
-            if not (isinstance(m, (int, float)) and math.isfinite(m) and m > 0):
+            if not ((m.__class__ is float or isinstance(m, int)) and m > 0.0 and 0.0 * m == 0.0):
                 m = 1.0
-            n["p"] = c_press * math.log(1 + (n["rho"] / m))
+            n["p"] = c_press * _log(1 + (n["rho"] / m))
 
     # ---- Psi (Belief Field) Diffusion ----
     def update_psi(self, dt: float):
-        lap = [0.0] * len(self.nodes)
+        nodes = self.nodes
+        lap = [0.0] * len(nodes)
         for e in self.edges:
             ia = e["from_idx"]
             ib = e["to_idx"]
             if ia is None or ib is None:
                 continue
-            d = self.nodes[ib]["psi"] - self.nodes[ia]["psi"]
+            d = nodes[ib]["psi"] - nodes[ia]["psi"]
             lap[ia] += d
             lap[ib] -= d
 
-        for idx, n in enumerate(self.nodes):
+        psi_relax = self.psi_relax_base
+        psi_nudge = self.psi_global_nudge
+        g_bias = self.global_bias
+        psi_diff = self.psi_diffusion
+        p_clamp = self.psi_clamp
+        neg_clamp = -p_clamp
+        for idx, n in enumerate(nodes):
             if n.get("isBattery"):
                 s = n.get("b_state", 1)
                 if s not in (1, -1):
                     s = 1
                 n["b_state"] = s
-                n["psi_bias"] = float(s)
-                n["psi"] = float(s)
+                s_f = float(s)
+                n["psi_bias"] = s_f
+                n["psi"] = s_f
                 continue
-            rho_norm = n["rho"] / (n["rho"] + 40)
-            relax_to_bias = (self.psi_relax_base * (0.35 + 0.65 * rho_norm)) * (n["psi_bias"] - n["psi"])
-            relax_to_global = self.psi_global_nudge * (self.global_bias - n["psi"])
-            diffusion = self.psi_diffusion * lap[idx]
-            n["psi"] += dt * (diffusion + relax_to_bias + relax_to_global)
-            n["psi"] = _clamp(n["psi"], -self.psi_clamp, self.psi_clamp)
+            rho = n["rho"]
+            rho_norm = rho / (rho + 40)
+            relax_to_bias = (psi_relax * (0.35 + 0.65 * rho_norm)) * (n["psi_bias"] - n["psi"])
+            relax_to_global = psi_nudge * (g_bias - n["psi"])
+            diffusion = psi_diff * lap[idx]
+            p_new = n["psi"] + dt * (diffusion + relax_to_bias + relax_to_global)
+            if p_new <= neg_clamp:
+                n["psi"] = neg_clamp
+            elif p_new < p_clamp:
+                n["psi"] = p_new
+            else:
+                n["psi"] = p_clamp
 
-    # ---- Battery (Lighthouse) Logic ----
-    def update_batteries(self, dt: float):
+    def _update_batteries_indexed(
+        self,
+        dt: float,
+        batteries: list[dict],
+        bat_edges_by_id: dict[Any, list[tuple[dict, dict | None]]],
+    ) -> None:
         cfg = self.battery_cfg
-        if not cfg:
+        if not cfg or not batteries:
             return
-        for b in self.nodes:
-            if not b.get("isBattery"):
-                continue
+        res_drive = cfg.get("resonanceDrive", 1.5)
+        damp_drag = cfg.get("dampingDrag", 0.5)
+        leak_lambda = cfg.get("leakLambda", 0.05)
+        leak_lambda_active = leak_lambda * 0.2
+        tau = cfg.get("flipThreshold", 0.85)
+        collapse_thresh = tau * cfg.get("collapseFactor", 0.3)
+        q_max = cfg.get("qMax", 40)
+        av_gain = cfg.get("avalancheGain", 1.15)
+        _tanh = math.tanh
+        _isfinite = math.isfinite
+
+        for b in batteries:
             if b.get("b_state") not in (1, -1):
                 b["b_state"] = -1
-            if not isinstance(b.get("b_charge"), (int, float)) or not math.isfinite(b["b_charge"]):
+            b_chg = b.get("b_charge")
+            if not (isinstance(b_chg, (float, int)) and _isfinite(b_chg)):
                 b["b_charge"] = 0.0
+                b_chg = 0.0
 
+            b_id = b["id"]
+            connected = bat_edges_by_id.get(b_id, ())
             incoming = 0.0
             drag_val = 0.0
-            for e in self.edges:
-                if e.get("background"):
-                    continue
-                if e["from"] != b["id"] and e["to"] != b["id"]:
-                    continue
-                nb_id = e["to"] if e["from"] == b["id"] else e["from"]
-                nb = self.node_by_id.get(nb_id)
+            for e, nb in connected:
                 if not nb:
                     continue
                 w = e.get("conductance", 1.0)
@@ -317,136 +348,261 @@ class SOLPhysics:
                     if nb_state not in (1, -1):
                         nb_state = 1
                 else:
-                    nb_state = 1 if (nb.get("psi", 0) >= 0) else -1
+                    nb_psi = nb.get("psi", 0)
+                    nb_state = 1 if (nb_psi >= 0) else -1
                 if nb_state == 1:
-                    incoming += w * cfg.get("resonanceDrive", 1.5)
+                    incoming += w * res_drive
                 else:
-                    drag_val += w * cfg.get("dampingDrag", 0.5)
+                    drag_val += w * damp_drag
 
             net_flux = incoming - drag_val
-            charge_delta = math.tanh(net_flux) * dt
+            charge_delta = _tanh(net_flux) * dt
 
-            if b["b_state"] == 1:
-                leakage = b["b_charge"] * (cfg.get("leakLambda", 0.05) * 0.2)
+            b_state = b["b_state"]
+            leakage = b_chg * (leak_lambda_active if b_state == 1 else leak_lambda)
+
+            new_chg = b_chg + charge_delta - leakage
+            if new_chg <= 0:
+                b_chg = 0
+            elif new_chg < 1:
+                b_chg = new_chg
             else:
-                leakage = b["b_charge"] * cfg.get("leakLambda", 0.05)
+                b_chg = 1
+            b["b_charge"] = b_chg
 
-            b["b_charge"] = _clamp(b["b_charge"] + charge_delta - leakage, 0, 1)
-
-            tau = cfg.get("flipThreshold", 0.85)
-            collapse_thresh = tau * cfg.get("collapseFactor", 0.3)
-
-            if b["b_state"] == -1 and b["b_charge"] > tau:
-                pulse_mass = cfg.get("qMax", 40) * b["b_charge"] * cfg.get("avalancheGain", 1.15)
-                connected = [e for e in self.edges if not e.get("background") and (e["from"] == b["id"] or e["to"] == b["id"])]
+            if b_state == -1 and b_chg > tau:
+                pulse_mass = q_max * b_chg * av_gain
                 share = pulse_mass / max(1, len(connected))
-                for e in connected:
-                    nb_id = e["to"] if e["from"] == b["id"] else e["from"]
-                    nb = self.node_by_id.get(nb_id)
+                for _, nb in connected:
                     if nb:
                         nb["rho"] += share
                 b["b_state"] = 1
                 b["b_charge"] = 1.0
                 b["psi"] = 1.0
-            elif b["b_state"] == 1 and b["b_charge"] < collapse_thresh:
+            elif b_state == 1 and b_chg < collapse_thresh:
                 b["b_state"] = -1
                 b["psi"] = -1.0
 
-            b["psi"] = float(b["b_state"])
-            b["psi_bias"] = float(b["b_state"])
+            s_f = float(b["b_state"])
+            b["psi"] = s_f
+            b["psi_bias"] = s_f
+
+    # ---- Battery (Lighthouse) Logic ----
+    def update_batteries(self, dt: float):
+        cfg = self.battery_cfg
+        if not cfg:
+            return
+        batteries = [b for b in self.nodes if b.get("isBattery")]
+        if not batteries:
+            return
+
+        node_by_id = self.node_by_id
+        bat_edges_by_id: dict[Any, list[tuple[dict, dict | None]]] = {
+            b["id"]: [] for b in batteries
+        }
+        for e in self.edges:
+            u = e["from"]
+            v = e["to"]
+            u_in = u in bat_edges_by_id
+            v_in = (v != u) and (v in bat_edges_by_id)
+            if not (u_in or v_in) or e.get("background"):
+                continue
+            if u_in:
+                bat_edges_by_id[u].append((e, node_by_id.get(v)))
+            if v_in:
+                bat_edges_by_id[v].append((e, node_by_id.get(u)))
+
+        self._update_batteries_indexed(dt, batteries, bat_edges_by_id)
 
     # ---- Edge Conductance (psi-shaped) ----
-    def update_conductance(self):
-        for e in self.edges:
+    def update_conductance(self, _edges: list[dict] | None = None):
+        target_edges = self.edges if _edges is None else _edges
+        _exp = math.exp
+        c_base = self.conductance_base
+        c_gamma = self.conductance_gamma
+        c_min = self.conductance_min
+        c_max = self.conductance_max
+        tight_max = max(c_min, min(c_max, 0.6))
+
+        mhd_cfg = self.mhd_cfg
+        has_mhd = bool(mhd_cfg)
+        b_gamma = mhd_cfg.get("bGamma", 0.35) if has_mhd else 0.0
+
+        bat_cfg = self.battery_cfg
+        has_bat = bool(bat_cfg)
+        res_boost = bat_cfg.get("resonanceBoost", 1.8) if has_bat else 1.0
+        damp_clamp = bat_cfg.get("dampingClamp", 0.35) if has_bat else 1.0
+
+        for e in target_edges:
             src = e["src_node"]
             dst = e["dst_node"]
             if not src or not dst:
                 continue
-            avg_psi = (src["psi"] + dst["psi"]) / 2
-            w = (e["w0"] * self.conductance_base) * math.exp(self.conductance_gamma * avg_psi)
+            avg_psi = (src["psi"] + dst["psi"]) * 0.5
+            w = (e["w0"] * c_base) * _exp(c_gamma * avg_psi)
 
-            if self.mhd_cfg:
-                b_gamma = self.mhd_cfg.get("bGamma", 0.35)
-                b_mag = e.get("bMag", 0.0)
-                if isinstance(b_mag, (int, float)) and math.isfinite(b_mag):
-                    w *= (1 + b_gamma * b_mag)
+            if has_mhd and "bMag" in e:
+                b_mag = e["bMag"]
+                if b_mag and (b_mag.__class__ is float or isinstance(b_mag, int)) and 0.0 * b_mag == 0.0:
+                    w *= 1 + b_gamma * b_mag
 
-            b_node = src if src.get("isBattery") else (dst if dst.get("isBattery") else None)
-            if b_node and self.battery_cfg:
-                s = b_node.get("b_state", 1)
-                if s not in (1, -1):
-                    s = 1
-                if s == 1:
-                    w *= self.battery_cfg.get("resonanceBoost", 1.8)
-                else:
-                    w *= self.battery_cfg.get("dampingClamp", 0.35)
-                    tight_max = max(self.conductance_min, min(self.conductance_max, 0.6))
-                    e["conductance"] = _clamp(w, self.conductance_min, tight_max)
-                    continue
+            if has_bat:
+                b_node = (
+                    src
+                    if src.get("isBattery")
+                    else (dst if dst.get("isBattery") else None)
+                )
+                if b_node is not None:
+                    s = b_node.get("b_state", 1)
+                    if s not in (1, -1):
+                        s = 1
+                    if s == 1:
+                        w *= res_boost
+                    else:
+                        w *= damp_clamp
+                        if w <= c_min:
+                            e["conductance"] = c_min
+                        elif w < tight_max:
+                            e["conductance"] = w
+                        else:
+                            e["conductance"] = tight_max
+                        continue
 
-            e["conductance"] = _clamp(w, self.conductance_min, self.conductance_max)
+            if w <= c_min:
+                e["conductance"] = c_min
+            elif w < c_max:
+                e["conductance"] = w
+            else:
+                e["conductance"] = c_max
 
     # ---- MHD (Magnetic Frozen-In Field) ----
-    def update_magnetic_field(self, dt: float):
+    def update_magnetic_field(self, dt: float, _edges: list[dict] | None = None):
         cfg = self.mhd_cfg
         if not cfg:
             return
         build = cfg.get("bBuild", 0.10)
         decay = cfg.get("bDecay", 0.06)
         b_max = cfg.get("bMax", 4.0)
+        dt_pos = max(0.0, dt)
+        decay_factor = math.exp(-decay * dt_pos)
+        _abs = abs
+        if _edges is None:
+            for e in self.edges:
+                if e.get("background"):
+                    continue
+                if "bMag" in e:
+                    b_prev = e["bMag"]
+                    if not ((b_prev.__class__ is float or isinstance(b_prev, int)) and 0.0 * b_prev == 0.0):
+                        b_prev = 0.0
+                else:
+                    b_prev = 0.0
+                f_val = e.get("flux", 0.0)
+                b_next = (b_prev * decay_factor) + (build * _abs(f_val) * dt_pos)
+                if b_next <= 0:
+                    e["bMag"] = 0
+                elif b_next < b_max:
+                    e["bMag"] = b_next
+                else:
+                    e["bMag"] = b_max
+        else:
+            for e in _edges:
+                if "bMag" in e:
+                    b_prev = e["bMag"]
+                    if not ((b_prev.__class__ is float or isinstance(b_prev, int)) and 0.0 * b_prev == 0.0):
+                        b_prev = 0.0
+                else:
+                    b_prev = 0.0
+                f_val = e.get("flux", 0.0)
+                b_next = (b_prev * decay_factor) + (build * _abs(f_val) * dt_pos)
+                if b_next <= 0:
+                    e["bMag"] = 0
+                elif b_next < b_max:
+                    e["bMag"] = b_next
+                else:
+                    e["bMag"] = b_max
+
+    def _build_tax_neighbors_by_star(self) -> dict[Any, list[dict]]:
+        node_by_id = self.node_by_id
+        tax_nb_by_star: dict[Any, list[dict]] = {}
         for e in self.edges:
-            if e.get("background"):
+            if e.get("background") or e.get("kind") != "tax":
                 continue
-            b_prev = e.get("bMag", 0.0)
-            if not isinstance(b_prev, (int, float)) or not math.isfinite(b_prev):
-                b_prev = 0.0
-            flux_abs = abs(e.get("flux", 0.0))
-            b_next = (b_prev * math.exp(-decay * max(0.0, dt))) + (build * flux_abs * max(0.0, dt))
-            e["bMag"] = _clamp(b_next, 0, b_max)
+            u = e["from"]
+            v = e["to"]
+            if u == v:
+                nb_u = node_by_id.get(u)
+                if nb_u and not nb_u.get("isBattery"):
+                    if u in tax_nb_by_star:
+                        tax_nb_by_star[u].append(nb_u)
+                    else:
+                        tax_nb_by_star[u] = [nb_u]
+            else:
+                nb_v = node_by_id.get(v)
+                if nb_v and not nb_v.get("isBattery"):
+                    if u in tax_nb_by_star:
+                        tax_nb_by_star[u].append(nb_v)
+                    else:
+                        tax_nb_by_star[u] = [nb_v]
+                nb_u = node_by_id.get(u)
+                if nb_u and not nb_u.get("isBattery"):
+                    if v in tax_nb_by_star:
+                        tax_nb_by_star[v].append(nb_u)
+                    else:
+                        tax_nb_by_star[v] = [nb_u]
+        return tax_nb_by_star
 
     # ---- Jeans Collapse and Accretion ----
-    def jeans_collapse_and_accrete(self, dt: float, c_press: float, damping: float):
+    def jeans_collapse_and_accrete(
+        self,
+        dt: float,
+        c_press: float,
+        damping: float,
+        _tax_nb_by_star: dict[Any, list[dict]] | None = None,
+    ):
         cfg = self.jeans_cfg
         if not cfg:
             return
         j_crit = cfg.get("Jcrit", 18.0)
         acc_rate = cfg.get("accreteRate", 0.55)
         to_mass = cfg.get("accreteToMass", 0.04)
+        tax_nb_map = _tax_nb_by_star
+        dt_pos = max(0.0, dt)
+        _log = math.log
+        _abs = abs
+        _min = min
 
         for star in self.nodes:
-            eps = 1e-6
-            p = star.get("p", c_press * math.log(1 + star["rho"]))
-            if not isinstance(p, (int, float)) or not math.isfinite(p):
-                p = c_press * math.log(1 + star["rho"])
-            j_val = star["rho"] / (abs(p) + eps)
+            rho = star["rho"]
+            p = star.get("p")
+            if not ((p.__class__ is float or isinstance(p, int)) and 0.0 * p == 0.0):
+                p = c_press * _log(1 + rho)
+            j_val = rho / (_abs(p) + 1e-6)
 
-            if not star.get("isConstellation") and j_val >= j_crit:
-                star["isConstellation"] = True
-                star["protoStar"] = True
             if j_val >= j_crit:
+                if not star.get("isConstellation"):
+                    star["isConstellation"] = True
+                    star["protoStar"] = True
                 star["isStellar"] = True
 
             if not star.get("isStellar"):
                 continue
+            if tax_nb_map is None:
+                tax_nb_map = self._build_tax_neighbors_by_star()
+            if not tax_nb_map:
+                continue
+
+            star_id = star["id"]
+            neighbors = tax_nb_map.get(star_id)
+            if not neighbors:
+                continue
 
             accreted = 0.0
-            for e in self.edges:
-                if e.get("background") or e.get("kind") != "tax":
-                    continue
-                other_id = None
-                if e["from"] == star["id"]:
-                    other_id = e["to"]
-                elif e["to"] == star["id"]:
-                    other_id = e["from"]
-                if other_id is None:
-                    continue
-                nb = self.node_by_id.get(other_id)
-                if not nb or nb.get("isBattery"):
-                    continue
-                pull = min(nb["rho"], nb["rho"] * acc_rate * max(0.0, dt))
+            for nb in neighbors:
+                nb_rho = nb["rho"]
+                pull = _min(nb_rho, nb_rho * acc_rate * dt_pos)
                 if pull <= 0:
                     continue
-                nb["rho"] -= pull
+                nb["rho"] = nb_rho - pull
                 star["rho"] += pull
                 accreted += pull
 
@@ -459,266 +615,805 @@ class SOLPhysics:
     # ==================================================================
     # SACRED MATH — transcribed verbatim from the dashboard.
     # ==================================================================
-    def _compute_derivatives(self, rho_vals: list[float], flux_vals: list[float], psi_vals: list[float], dt: float, c_press: float, damping: float) -> tuple[list[float], list[float], list[float]]:
-        # Save original states
-        orig_rho = [n["rho"] for n in self.nodes]
-        orig_flux = [e["flux"] for e in self.edges]
-        orig_psi = [n["psi"] for n in self.nodes]
-        
-        # Apply state S
-        for idx, val in enumerate(rho_vals):
-            self.nodes[idx]["rho"] = val
-        for idx, val in enumerate(flux_vals):
-            self.edges[idx]["flux"] = val
-        for idx, val in enumerate(psi_vals):
-            self.nodes[idx]["psi"] = val
-            
+    def _compute_derivatives(
+        self,
+        rho_vals: list[float],
+        flux_vals: list[float],
+        psi_vals: list[float],
+        dt: float,
+        c_press: float,
+        damping: float,
+        *,
+        _restore: bool = True,
+        _apply_state: bool = True,
+        _active_edges: list[tuple[int, dict, int, int]] | None = None,
+        _active_edge_dicts: list[dict] | None = None,
+    ) -> tuple[list[float], list[float], list[float]]:
+        nodes = self.nodes
+        edges = self.edges
+        n_nodes = len(nodes)
+        n_edges = len(edges)
+
+        if _restore:
+            orig_rho = [n["rho"] for n in nodes]
+            orig_flux = [e["flux"] for e in edges]
+            orig_psi = [n["psi"] for n in nodes]
+
+        if _apply_state:
+            for idx, val in enumerate(rho_vals):
+                nodes[idx]["rho"] = val
+            if _active_edges is not None:
+                for idx, e, _, _ in _active_edges:
+                    e["flux"] = flux_vals[idx]
+            else:
+                for idx, val in enumerate(flux_vals):
+                    edges[idx]["flux"] = val
+            for idx, val in enumerate(psi_vals):
+                nodes[idx]["psi"] = val
+
         # Recompute derived pressures and conductances based on new rho and psi
         self.compute_pressure(c_press)
-        self.update_conductance()
-        
+        self.update_conductance(_active_edge_dicts if not _restore else None)
+
         # Phase active masks (based on self._t)
         phase = math.cos(self.phase_cfg["omega"] * self._t * 10)
         is_surface_active = phase > -0.2
         is_deep_active = phase < 0.2
-        
+
         # Compute gates if GRMN is enabled
-        z_gates = [1.0] * len(self.nodes)
-        r_gates = [1.0] * len(self.nodes)
-        if self.gated_recurrent_cfg and self.gated_recurrent_cfg.get("enabled"):
-            cfg = self.gated_recurrent_cfg
-            for idx, n in enumerate(self.nodes):
-                w_z = n.get("W_z", cfg.get("W_z", 0.0))
-                u_z = n.get("U_z", cfg.get("U_z", 0.0))
-                b_z = n.get("b_z", cfg.get("b_z", 10.0))
-                w_r = n.get("W_r", cfg.get("W_r", 0.0))
-                u_r = n.get("U_r", cfg.get("U_r", 0.0))
-                b_r = n.get("b_r", cfg.get("b_r", 10.0))
-                
-                z = 1.0 / (1.0 + math.exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
-                r = 1.0 / (1.0 + math.exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
+        default_gate = self._DEFAULT_GATE_10
+        z_gates = [default_gate] * n_nodes
+        r_gates = [default_gate] * n_nodes
+        _exp = math.exp
+        grmn_cfg = self.gated_recurrent_cfg
+        if grmn_cfg and grmn_cfg.get("enabled"):
+            def_wz = grmn_cfg.get("W_z", 0.0)
+            def_uz = grmn_cfg.get("U_z", 0.0)
+            def_bz = grmn_cfg.get("b_z", 10.0)
+            def_wr = grmn_cfg.get("W_r", 0.0)
+            def_ur = grmn_cfg.get("U_r", 0.0)
+            def_br = grmn_cfg.get("b_r", 10.0)
+            for idx, n in enumerate(nodes):
+                w_z = n.get("W_z", def_wz)
+                u_z = n.get("U_z", def_uz)
+                b_z = n.get("b_z", def_bz)
+                w_r = n.get("W_r", def_wr)
+                u_r = n.get("U_r", def_ur)
+                b_r = n.get("b_r", def_br)
+
+                zb = n.get("z_bias", 0.0)
+                rb = n.get("r_bias", 0.0)
+                az = w_z * n["rho"] + u_z * n["psi"] + b_z + zb
+                cz = _clamp(az, -20.0, 20.0)
+                ar = w_r * n["rho"] + u_r * n["psi"] + b_r + rb
+                cr = _clamp(ar, -20.0, 20.0)
+                z = 1.0 / (1.0 + _exp(-cz))
+                r = 1.0 / (1.0 + _exp(-cr))
                 z_gates[idx] = z
                 r_gates[idx] = r
                 n["z_gate"] = z
                 n["r_gate"] = r
         else:
-            for idx, n in enumerate(self.nodes):
-                # Still check if node-specific overrides are set even if global weights are off
-                # Support node-specific weights and biases as overrides if defined on the node
-                w_z = n.get("W_z", 0.0)
-                u_z = n.get("U_z", 0.0)
-                b_z = n.get("b_z", 10.0)
-                w_r = n.get("W_r", 0.0)
-                u_r = n.get("U_r", 0.0)
-                b_r = n.get("b_r", 10.0)
-                
-                z = 1.0 / (1.0 + math.exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
-                r = 1.0 / (1.0 + math.exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
+            for idx, n in enumerate(nodes):
+                rho = n["rho"]
+                psi = n["psi"]
+                finite_rp = (0.0 * rho == 0.0) and (0.0 * psi == 0.0)
+                zb = n.get("z_bias", 0.0)
+                if finite_rp and zb == 0.0 and "W_z" not in n and "U_z" not in n and "b_z" not in n:
+                    z = default_gate
+                else:
+                    w_z = n.get("W_z", 0.0)
+                    u_z = n.get("U_z", 0.0)
+                    b_z = n.get("b_z", 10.0)
+                    az = w_z * rho + u_z * psi + b_z + zb
+                    z = 1.0 / (1.0 + _exp(-_clamp(az, -20.0, 20.0)))
+
+                rb = n.get("r_bias", 0.0)
+                if finite_rp and rb == 0.0 and "W_r" not in n and "U_r" not in n and "b_r" not in n:
+                    r = default_gate
+                else:
+                    w_r = n.get("W_r", 0.0)
+                    u_r = n.get("U_r", 0.0)
+                    b_r = n.get("b_r", 10.0)
+                    ar = w_r * rho + u_r * psi + b_r + rb
+                    r = 1.0 / (1.0 + _exp(-_clamp(ar, -20.0, 20.0)))
+
                 z_gates[idx] = z
                 r_gates[idx] = r
                 n["z_gate"] = z
                 n["r_gate"] = r
-                
+
         # Modulate pressure with reset gates
-        orig_p = [n["p"] for n in self.nodes]
-        for idx, n in enumerate(self.nodes):
+        for idx, n in enumerate(nodes):
             n["p"] = r_gates[idx] * n["p"]
-            
+
         # Compute flux derivatives dF/dt
-        d_flux = [0.0] * len(self.edges)
-        d_rho_transport = [0.0] * len(self.nodes)
-        
-        for idx, e in enumerate(self.edges):
-            ia = e["from_idx"]
-            ib = e["to_idx"]
-            if ia is None or ib is None:
-                continue
-                
+        d_flux = [0.0] * n_edges
+        d_rho_transport = [0.0] * n_nodes
+
+        surf_tension = self.phase_cfg["surfaceTension"]
+        deep_visc = self.phase_cfg["deepViscosity"]
+        bat_cfg = self.battery_cfg
+        has_bat = bool(bat_cfg)
+
+        if _active_edges is None:
+            iter_edges = [
+                (idx, e, e["from_idx"], e["to_idx"])
+                for idx, e in enumerate(edges)
+                if e["from_idx"] is not None and e["to_idx"] is not None
+            ]
+        else:
+            iter_edges = _active_edges
+
+        for idx, e, ia, ib in iter_edges:
             src = e["src_node"]
             dst = e["dst_node"]
-            
+
             src_group = src.get("group", "bridge")
             dst_group = dst.get("group", "bridge")
-            
-            src_awake = True
-            dst_awake = True
-            
-            if src_group == "tech" and not is_surface_active:
-                src_awake = False
-            if src_group == "spirit" and not is_deep_active:
-                src_awake = False
-            if dst_group == "tech" and not is_surface_active:
-                dst_awake = False
-            if dst_group == "spirit" and not is_deep_active:
-                dst_awake = False
-                
+
+            src_awake = not (
+                (src_group == "tech" and not is_surface_active)
+                or (src_group == "spirit" and not is_deep_active)
+            )
+            dst_awake = not (
+                (dst_group == "tech" and not is_surface_active)
+                or (dst_group == "spirit" and not is_deep_active)
+            )
+
+            e_flux = e["flux"]
             if not src_awake and not dst_awake:
-                d_flux[idx] = -e["flux"]
+                d_flux[idx] = -e_flux
                 continue
-                
+
             delta_p = src["p"] - dst["p"]
-            
+
             tension = 1.0
             if src_group == "tech" or dst_group == "tech":
-                tension = self.phase_cfg["surfaceTension"]
+                tension = surf_tension
             if src_group == "spirit" or dst_group == "spirit":
-                tension = self.phase_cfg["deepViscosity"]
-                
+                tension = deep_visc
+
             diode_gain = 1.0
-            if self.battery_cfg and (src.get("isBattery") or dst.get("isBattery")) and not e.get("background"):
-                b_node = src if src.get("isBattery") else dst
-                b_s = b_node.get("b_state", 1)
-                if b_s not in (1, -1):
-                    b_s = 1
-                batt_is_src = src.get("isBattery")
-                outflow = (delta_p > 0) if batt_is_src else (delta_p < 0)
-                if b_s == 1:
-                    diode_gain = self.battery_cfg["diodeResonanceOut"] if outflow else self.battery_cfg["diodeResonanceIn"]
-                else:
-                    diode_gain = self.battery_cfg["diodeDampingOut"] if outflow else self.battery_cfg["diodeDampingIn"]
-                    
+            if has_bat and not e.get("background"):
+                src_bat = bool(src.get("isBattery"))
+                dst_bat = bool(dst.get("isBattery"))
+                if src_bat or dst_bat:
+                    b_node = src if src_bat else dst
+                    b_s = b_node.get("b_state", 1)
+                    if b_s not in (1, -1):
+                        b_s = 1
+                    outflow = (delta_p > 0) if src_bat else (delta_p < 0)
+                    if b_s == 1:
+                        diode_gain = bat_cfg["diodeResonanceOut"] if outflow else bat_cfg["diodeResonanceIn"]
+                    else:
+                        diode_gain = bat_cfg["diodeDampingOut"] if outflow else bat_cfg["diodeDampingIn"]
+
             target_flux = (e["conductance"] * tension * diode_gain) * delta_p
-            d_flux[idx] = target_flux - e["flux"]
-            
-            flow_amt_rate = e["flux"] * 0.5
+            d_flux[idx] = target_flux - e_flux
+
+            flow_amt_rate = e_flux * 0.5
             if src_awake:
                 d_rho_transport[ia] -= flow_amt_rate
             if dst_awake:
                 d_rho_transport[ib] += flow_amt_rate
-                
-        # Restore original pressures
-        for idx, n in enumerate(self.nodes):
-            n["p"] = orig_p[idx]
-            
+
         # Compute drho/dt
-        d_rho = [0.0] * len(self.nodes)
-        for idx, n in enumerate(self.nodes):
-            star_factor = 1.0
-            if n.get("isStellar") and self.jeans_cfg:
-                star_factor = self.jeans_cfg.get("starDampingFactor", 0.18)
-            decay_rate = -damping * 0.1 * star_factor * n["rho"]
+        d_rho = [0.0] * n_nodes
+        jeans_cfg = self.jeans_cfg
+        has_jeans = bool(jeans_cfg)
+        star_damp = jeans_cfg.get("starDampingFactor", 0.18) if has_jeans else 1.0
+        damp_base = -damping * 0.1
+        for idx, n in enumerate(nodes):
+            star_factor = star_damp if (has_jeans and n.get("isStellar")) else 1.0
+            decay_rate = damp_base * star_factor * n["rho"]
             d_rho[idx] = z_gates[idx] * (d_rho_transport[idx] + decay_rate)
-            
+
         # Compute dpsi/dt
-        lap = [0.0] * len(self.nodes)
-        for e in self.edges:
+        lap = [0.0] * n_nodes
+        for _, _, ia, ib in iter_edges:
+            d = nodes[ib]["psi"] - nodes[ia]["psi"]
+            lap[ia] += d
+            lap[ib] -= d
+
+        d_psi = [0.0] * n_nodes
+        psi_relax = self.psi_relax_base
+        psi_nudge = self.psi_global_nudge
+        g_bias = self.global_bias
+        psi_diff = self.psi_diffusion
+        for idx, n in enumerate(nodes):
+            if n.get("isBattery"):
+                continue
+            rho = n["rho"]
+            rho_norm = rho / (rho + 40)
+            relax_to_bias = (psi_relax * (0.35 + 0.65 * rho_norm)) * (n["psi_bias"] - n["psi"])
+            relax_to_global = psi_nudge * (g_bias - n["psi"])
+            diffusion = psi_diff * lap[idx]
+            d_psi[idx] = diffusion + relax_to_bias + relax_to_global
+
+        if _restore:
+            for idx, val in enumerate(orig_rho):
+                nodes[idx]["rho"] = val
+            for idx, val in enumerate(orig_flux):
+                edges[idx]["flux"] = val
+            for idx, val in enumerate(orig_psi):
+                nodes[idx]["psi"] = val
+            self.compute_pressure(c_press)
+            self.update_conductance()
+
+        return d_rho, d_flux, d_psi
+
+    def run_rk4_steps(
+        self,
+        steps: int,
+        dt: float,
+        c_press: float,
+        damping: float,
+        *,
+        pre_step_node: dict | None = None,
+        pre_step_rho: float = 500.0,
+        pre_step_psi: float = 0.0,
+    ) -> dict:
+        nodes = self.nodes
+        edges = self.edges
+        if steps <= 0:
+            return {
+                "totalFlux": sum(abs(e["flux"]) for e in edges),
+                "activeCount": sum(1 for n in nodes if n["rho"] > 0.1),
+            }
+
+        n_nodes = len(nodes)
+        _log = math.log
+        _exp = math.exp
+        _cos = math.cos
+        _max = max
+
+        default_gate = self._DEFAULT_GATE_10
+        grmn_cfg = self.gated_recurrent_cfg
+        grmn_enabled = bool(grmn_cfg and grmn_cfg.get("enabled"))
+        if grmn_enabled:
+            def_wz = grmn_cfg.get("W_z", 0.0)
+            def_uz = grmn_cfg.get("U_z", 0.0)
+            def_bz = grmn_cfg.get("b_z", 10.0)
+            def_wr = grmn_cfg.get("W_r", 0.0)
+            def_ur = grmn_cfg.get("U_r", 0.0)
+            def_br = grmn_cfg.get("b_r", 10.0)
+            grmn_params: list[tuple[float, float, float, float, float, float, float, float]] = [
+                (
+                    n.get("W_z", def_wz),
+                    n.get("U_z", def_uz),
+                    n.get("b_z", def_bz),
+                    n.get("z_bias", 0.0),
+                    n.get("W_r", def_wr),
+                    n.get("U_r", def_ur),
+                    n.get("b_r", def_br),
+                    n.get("r_bias", 0.0),
+                )
+                for n in nodes
+            ]
+            custom_z: list[tuple[int, float, float, float, float]] = []
+            custom_r: list[tuple[int, float, float, float, float]] = []
+        else:
+            grmn_params = []
+            custom_z = []
+            custom_r = []
+            for i, n in enumerate(nodes):
+                zb = n.get("z_bias", 0.0)
+                if zb != 0.0 or "W_z" in n or "U_z" in n or "b_z" in n:
+                    custom_z.append(
+                        (
+                            i,
+                            n.get("W_z", 0.0),
+                            n.get("U_z", 0.0),
+                            n.get("b_z", 10.0),
+                            zb,
+                        )
+                    )
+                rb = n.get("r_bias", 0.0)
+                if rb != 0.0 or "W_r" in n or "U_r" in n or "b_r" in n:
+                    custom_r.append(
+                        (
+                            i,
+                            n.get("W_r", 0.0),
+                            n.get("U_r", 0.0),
+                            n.get("b_r", 10.0),
+                            rb,
+                        )
+                    )
+
+        jeans_cfg = self.jeans_cfg
+        has_jeans = bool(jeans_cfg)
+        star_damp = jeans_cfg.get("starDampingFactor", 0.18) if has_jeans else 1.0
+        damp_base = -damping * 0.1
+
+        c_base = self.conductance_base
+        c_gamma = self.conductance_gamma
+        c_min = self.conductance_min
+        c_max = self.conductance_max
+        tight_max = max(c_min, min(c_max, 0.6))
+
+        mhd_cfg = self.mhd_cfg
+        has_mhd = bool(mhd_cfg)
+        b_gamma = mhd_cfg.get("bGamma", 0.35) if has_mhd else 0.0
+        mhd_edges = [e for e in edges if not e.get("background")] if (has_mhd and steps > 1) else None
+
+        bat_cfg = self.battery_cfg
+        has_bat = bool(bat_cfg)
+        res_boost = bat_cfg.get("resonanceBoost", 1.8) if has_bat else 1.0
+        damp_clamp = bat_cfg.get("dampingClamp", 0.35) if has_bat else 1.0
+        if has_bat:
+            d_res_out = bat_cfg["diodeResonanceOut"]
+            d_res_in = bat_cfg["diodeResonanceIn"]
+            d_dmp_out = bat_cfg["diodeDampingOut"]
+            d_dmp_in = bat_cfg["diodeDampingIn"]
+            batteries = [b for b in nodes if b.get("isBattery")]
+        else:
+            d_res_out = 1.0
+            d_res_in = 1.0
+            d_dmp_out = 1.0
+            d_dmp_in = 1.0
+            batteries = []
+
+        bat_edges_by_id: dict[Any, list[tuple[dict, dict | None]]] = {}
+        unique_bat_edges: list[dict] = []
+        if batteries:
+            node_by_id = self.node_by_id
+            bat_edges_by_id = {b["id"]: [] for b in batteries}
+            seen_bat_edge_ids: set[int] = set()
+            for e in edges:
+                u = e["from"]
+                v = e["to"]
+                u_in = u in bat_edges_by_id
+                v_in = (v != u) and (v in bat_edges_by_id)
+                if not (u_in or v_in) or e.get("background"):
+                    continue
+                if u_in:
+                    bat_edges_by_id[u].append((e, node_by_id.get(v)))
+                if v_in:
+                    bat_edges_by_id[v].append((e, node_by_id.get(u)))
+                eid = id(e)
+                if eid not in seen_bat_edge_ids:
+                    seen_bat_edge_ids.add(eid)
+                    unique_bat_edges.append(e)
+
+        surf_tension = self.phase_cfg["surfaceTension"]
+        deep_visc = self.phase_cfg["deepViscosity"]
+        omega10 = self.phase_cfg["omega"] * 10
+
+        is_bat_arr = [bool(n.get("isBattery")) for n in nodes]
+        active_edge_refs: list[dict] = []
+        edge_ia: list[int] = []
+        edge_ib: list[int] = []
+        edge_w0_base: list[float] = []
+        edge_special: list[tuple[int, int, int, float, int, float, float] | None] = []
+        bat_edge_specs: list[tuple[int, dict, bool, int, int, float, bool]] = []
+        compiled_edges: list[tuple[int, int, float, float | None, tuple | None]] = []
+        for e in edges:
             ia = e["from_idx"]
             ib = e["to_idx"]
             if ia is None or ib is None:
                 continue
-            d = self.nodes[ib]["psi"] - self.nodes[ia]["psi"]
-            lap[ia] += d
-            lap[ib] -= d
-            
-        d_psi = [0.0] * len(self.nodes)
-        for idx, n in enumerate(self.nodes):
-            if n.get("isBattery"):
-                d_psi[idx] = 0.0
-                continue
-            rho_norm = n["rho"] / (n["rho"] + 40)
-            relax_to_bias = (self.psi_relax_base * (0.35 + 0.65 * rho_norm)) * (n["psi_bias"] - n["psi"])
-            relax_to_global = self.psi_global_nudge * (self.global_bias - n["psi"])
-            diffusion = self.psi_diffusion * lap[idx]
-            d_psi[idx] = diffusion + relax_to_bias + relax_to_global
-            
-        # Restore original states
-        for idx, val in enumerate(orig_rho):
-            self.nodes[idx]["rho"] = val
-        for idx, val in enumerate(orig_flux):
-            self.edges[idx]["flux"] = val
-        for idx, val in enumerate(orig_psi):
-            self.nodes[idx]["psi"] = val
-        self.compute_pressure(c_press)
-        self.update_conductance()
-        
-        return d_rho, d_flux, d_psi
+            src = e["src_node"]
+            dst = e["dst_node"]
+            src_group = src.get("group", "bridge")
+            dst_group = dst.get("group", "bridge")
+            sg_code = 1 if src_group == "tech" else (2 if src_group == "spirit" else 0)
+            dg_code = 1 if dst_group == "tech" else (2 if dst_group == "spirit" else 0)
+            tension = 1.0
+            if sg_code == 1 or dg_code == 1:
+                tension = surf_tension
+            if sg_code == 2 or dg_code == 2:
+                tension = deep_visc
+            w0_base = e["w0"] * c_base
+            is_bg = bool(e.get("background"))
+            a_idx = len(active_edge_refs)
+            active_edge_refs.append(e)
+            edge_ia.append(ia)
+            edge_ib.append(ib)
+            edge_w0_base.append(w0_base)
+
+            src_bat = is_bat_arr[ia]
+            dst_bat = is_bat_arr[ib]
+            if has_bat and (src_bat or dst_bat):
+                b_node = src if src_bat else dst
+                bat_edge_specs.append((a_idx, b_node, src_bat, sg_code, dg_code, tension, is_bg))
+                spec: tuple[int, int, int, float, int, float, float] | None = None
+            elif sg_code == 0 and dg_code == 0:
+                spec = None
+            else:
+                spec = (0, sg_code, dg_code, tension, 0, 1.0, 1.0)
+            edge_special.append(spec)
+            compiled_edges.append((ia, ib, w0_base, None, spec))
+
+        tax_nb_cache = self._build_tax_neighbors_by_star() if (has_jeans and steps > 1) else None
+        n_active = len(active_edge_refs)
+        psi_relax = self.psi_relax_base
+        psi_nudge = self.psi_global_nudge
+        g_bias = self.global_bias
+        psi_diff = self.psi_diffusion
+        p_clamp = self.psi_clamp
+        neg_clamp = -p_clamp
+        half_dt = 0.5 * dt
+        dt6 = dt / 6.0
+
+        rho_0 = [0.0] * n_nodes
+        psi_0 = [0.0] * n_nodes
+        m_arr = [1.0] * n_nodes
+        damp_arr = [damp_base] * n_nodes
+        psi_bias_arr = [0.0] * n_nodes
+        rho_s = [0.0] * n_nodes
+        psi_s = [0.0] * n_nodes
+        flux_a0 = [0.0] * n_active
+        flux_s = [0.0] * n_active
+
+        def _eval_rk4_stage(
+            rho_st: list[float],
+            flux_st: list[float],
+            psi_st: list[float],
+            t_stage: float,
+        ) -> tuple[list[float], list[float], list[float]]:
+            p_arr = [0.0] * n_nodes
+            z_arr: list[float] | None = None
+            if grmn_enabled:
+                z_arr = [default_gate] * n_nodes
+                for i in range(n_nodes):
+                    rho_i = rho_st[i]
+                    psi_i = psi_st[i]
+                    w_z, u_z, b_z, zb, w_r, u_r, b_r, rb = grmn_params[i]
+                    az = w_z * rho_i + u_z * psi_i + b_z + zb
+                    if az <= -20.0:
+                        cz = -20.0
+                    elif az < 20.0:
+                        cz = az
+                    else:
+                        cz = 20.0
+                    ar = w_r * rho_i + u_r * psi_i + b_r + rb
+                    if ar <= -20.0:
+                        cr = -20.0
+                    elif ar < 20.0:
+                        cr = ar
+                    else:
+                        cr = 20.0
+                    z_arr[i] = 1.0 / (1.0 + _exp(-cz))
+                    r_val = 1.0 / (1.0 + _exp(-cr))
+                    p_arr[i] = r_val * (c_press * _log(1 + (rho_i / m_arr[i])))
+            else:
+                for i in range(n_nodes):
+                    rho_i = rho_st[i]
+                    psi_i = psi_st[i]
+                    p_raw = c_press * _log(1 + (rho_i / m_arr[i]))
+                    if (0.0 * rho_i == 0.0) and (0.0 * psi_i == 0.0):
+                        p_arr[i] = default_gate * p_raw
+                    else:
+                        if z_arr is None:
+                            z_arr = [default_gate] * n_nodes
+                        az = 0.0 * rho_i + 0.0 * psi_i + 10.0 + 0.0
+                        if az <= -20.0:
+                            cz = -20.0
+                        elif az < 20.0:
+                            cz = az
+                        else:
+                            cz = 20.0
+                        z_val = 1.0 / (1.0 + _exp(-cz))
+                        z_arr[i] = z_val
+                        p_arr[i] = z_val * p_raw
+                if custom_r:
+                    for i, w_r, u_r, b_r, rb in custom_r:
+                        rho_i = rho_st[i]
+                        ar = w_r * rho_i + u_r * psi_st[i] + b_r + rb
+                        if ar <= -20.0:
+                            cr = -20.0
+                        elif ar < 20.0:
+                            cr = ar
+                        else:
+                            cr = 20.0
+                        r_val = 1.0 / (1.0 + _exp(-cr))
+                        p_arr[i] = r_val * (c_press * _log(1 + (rho_i / m_arr[i])))
+                if custom_z:
+                    if z_arr is None:
+                        z_arr = [default_gate] * n_nodes
+                    for i, w_z, u_z, b_z, zb in custom_z:
+                        az = w_z * rho_st[i] + u_z * psi_st[i] + b_z + zb
+                        if az <= -20.0:
+                            cz = -20.0
+                        elif az < 20.0:
+                            cz = az
+                        else:
+                            cz = 20.0
+                        z_arr[i] = 1.0 / (1.0 + _exp(-cz))
+
+            d_flux = [0.0] * n_active
+            d_rho_tr = [0.0] * n_nodes
+            lap = [0.0] * n_nodes
+
+            phase = _cos(omega10 * t_stage)
+            is_surf = phase > -0.2
+            is_deep = phase < 0.2
+            for a_idx, (ia, ib, w0_base, bmag_mul, special) in enumerate(compiled_edges):
+                psi_a = psi_st[ia]
+                psi_b = psi_st[ib]
+                d_psi_e = psi_b - psi_a
+                lap[ia] += d_psi_e
+                lap[ib] -= d_psi_e
+
+                if special is None:
+                    w = w0_base * _exp(c_gamma * ((psi_a + psi_b) * 0.5))
+                    if bmag_mul is not None:
+                        w *= bmag_mul
+                    if w <= c_min:
+                        cond = c_min
+                    elif w < c_max:
+                        cond = w
+                    else:
+                        cond = c_max
+                    e_flux = flux_st[a_idx]
+                    d_flux[a_idx] = cond * (p_arr[ia] - p_arr[ib]) - e_flux
+                    flow_amt = e_flux * 0.5
+                    d_rho_tr[ia] -= flow_amt
+                    d_rho_tr[ib] += flow_amt
+                    continue
+
+                (
+                    bat_cond_mode,
+                    sg_code,
+                    dg_code,
+                    tension,
+                    diode_mode,
+                    gain_out,
+                    gain_in,
+                ) = special
+                src_awake = not ((sg_code == 1 and not is_surf) or (sg_code == 2 and not is_deep))
+                dst_awake = not ((dg_code == 1 and not is_surf) or (dg_code == 2 and not is_deep))
+                e_flux = flux_st[a_idx]
+                if not src_awake and not dst_awake:
+                    d_flux[a_idx] = -e_flux
+                    continue
+
+                w = w0_base * _exp(c_gamma * ((psi_a + psi_b) * 0.5))
+                if bmag_mul is not None:
+                    w *= bmag_mul
+                if bat_cond_mode == 1:
+                    w *= res_boost
+                    if w <= c_min:
+                        cond = c_min
+                    elif w < c_max:
+                        cond = w
+                    else:
+                        cond = c_max
+                elif bat_cond_mode == -1:
+                    w *= damp_clamp
+                    if w <= c_min:
+                        cond = c_min
+                    elif w < tight_max:
+                        cond = w
+                    else:
+                        cond = tight_max
+                else:
+                    if w <= c_min:
+                        cond = c_min
+                    elif w < c_max:
+                        cond = w
+                    else:
+                        cond = c_max
+
+                delta_p = p_arr[ia] - p_arr[ib]
+                if diode_mode == 0:
+                    diode_gain = 1.0
+                elif diode_mode == 1:
+                    diode_gain = gain_out if delta_p > 0 else gain_in
+                else:
+                    diode_gain = gain_out if delta_p < 0 else gain_in
+
+                d_flux[a_idx] = (cond * tension * diode_gain) * delta_p - e_flux
+                flow_amt = e_flux * 0.5
+                if src_awake:
+                    d_rho_tr[ia] -= flow_amt
+                if dst_awake:
+                    d_rho_tr[ib] += flow_amt
+
+            d_rho = [0.0] * n_nodes
+            if z_arr is None:
+                for i in range(n_nodes):
+                    d_rho[i] = default_gate * (d_rho_tr[i] + damp_arr[i] * rho_st[i])
+            else:
+                for i in range(n_nodes):
+                    d_rho[i] = z_arr[i] * (d_rho_tr[i] + damp_arr[i] * rho_st[i])
+
+            d_psi = [0.0] * n_nodes
+            for i in range(n_nodes):
+                if is_bat_arr[i]:
+                    continue
+                rho_i = rho_st[i]
+                psi_i = psi_st[i]
+                rho_norm = rho_i / (rho_i + 40)
+                relax_to_bias = (psi_relax * (0.35 + 0.65 * rho_norm)) * (psi_bias_arr[i] - psi_i)
+                relax_to_global = psi_nudge * (g_bias - psi_i)
+                d_psi[i] = psi_diff * lap[i] + relax_to_bias + relax_to_global
+
+            return d_rho, d_flux, d_psi
+
+        for step_idx in range(steps):
+            is_last = step_idx == (steps - 1)
+            if pre_step_node is not None:
+                pre_step_node["rho"] = pre_step_rho
+                pre_step_node["psi"] = pre_step_psi
+
+            self.apply_semantic_mass_decay(dt)
+            if batteries:
+                self._update_batteries_indexed(dt, batteries, bat_edges_by_id)
+
+            for i, n in enumerate(nodes):
+                rho_0[i] = n["rho"]
+                psi_0[i] = n["psi"]
+                m = n.get("semanticMass", 1.0)
+                if not ((m.__class__ is float or isinstance(m, int)) and m > 0.0 and 0.0 * m == 0.0):
+                    m = 1.0
+                m_arr[i] = m
+                damp_arr[i] = (
+                    damp_base * star_damp
+                    if (has_jeans and n.get("isStellar"))
+                    else damp_base
+                )
+                if not is_bat_arr[i]:
+                    psi_bias_arr[i] = n["psi_bias"]
+
+            for a_idx, b_node, src_bat, sg_code, dg_code, tension, is_bg in bat_edge_specs:
+                s_c = b_node.get("b_state", 1)
+                if s_c not in (1, -1):
+                    s_c = 1
+                bat_cond_mode = 1 if s_c == 1 else -1
+                if not is_bg:
+                    diode_mode = 1 if src_bat else 2
+                    if s_c == 1:
+                        gain_out = d_res_out
+                        gain_in = d_res_in
+                    else:
+                        gain_out = d_dmp_out
+                        gain_in = d_dmp_in
+                else:
+                    diode_mode = 0
+                    gain_out = 1.0
+                    gain_in = 1.0
+                b_spec = (bat_cond_mode, sg_code, dg_code, tension, diode_mode, gain_out, gain_in)
+                edge_special[a_idx] = b_spec
+                if not has_mhd:
+                    compiled_edges[a_idx] = (
+                        edge_ia[a_idx],
+                        edge_ib[a_idx],
+                        edge_w0_base[a_idx],
+                        None,
+                        b_spec,
+                    )
+
+            if has_mhd:
+                for a_idx, e in enumerate(active_edge_refs):
+                    flux_a0[a_idx] = e["flux"]
+                    bmag_mul: float | None = None
+                    if "bMag" in e:
+                        b_mag = e["bMag"]
+                        if b_mag and (b_mag.__class__ is float or isinstance(b_mag, int)) and 0.0 * b_mag == 0.0:
+                            bmag_mul = 1 + b_gamma * b_mag
+                    compiled_edges[a_idx] = (
+                        edge_ia[a_idx],
+                        edge_ib[a_idx],
+                        edge_w0_base[a_idx],
+                        bmag_mul,
+                        edge_special[a_idx],
+                    )
+            else:
+                for a_idx, e in enumerate(active_edge_refs):
+                    flux_a0[a_idx] = e["flux"]
+
+            orig_t = self._t
+
+            # 1. k1 at t
+            d_rho1, d_flux1, d_psi1 = _eval_rk4_stage(rho_0, flux_a0, psi_0, orig_t)
+
+            # 2. k2 at t + 0.5*dt
+            for i in range(n_nodes):
+                rho_s[i] = _max(0.0, rho_0[i] + half_dt * d_rho1[i])
+                vp = psi_0[i] + half_dt * d_psi1[i]
+                if vp <= neg_clamp:
+                    psi_s[i] = neg_clamp
+                elif vp < p_clamp:
+                    psi_s[i] = vp
+                else:
+                    psi_s[i] = p_clamp
+            for a_idx in range(n_active):
+                flux_s[a_idx] = flux_a0[a_idx] + half_dt * d_flux1[a_idx]
+            t_mid = orig_t + half_dt
+            d_rho2, d_flux2, d_psi2 = _eval_rk4_stage(rho_s, flux_s, psi_s, t_mid)
+
+            # 3. k3 at t + 0.5*dt
+            for i in range(n_nodes):
+                rho_s[i] = _max(0.0, rho_0[i] + half_dt * d_rho2[i])
+                vp = psi_0[i] + half_dt * d_psi2[i]
+                if vp <= neg_clamp:
+                    psi_s[i] = neg_clamp
+                elif vp < p_clamp:
+                    psi_s[i] = vp
+                else:
+                    psi_s[i] = p_clamp
+            for a_idx in range(n_active):
+                flux_s[a_idx] = flux_a0[a_idx] + half_dt * d_flux2[a_idx]
+            d_rho3, d_flux3, d_psi3 = _eval_rk4_stage(rho_s, flux_s, psi_s, t_mid)
+
+            # 4. k4 at t + dt
+            for i in range(n_nodes):
+                rho_s[i] = _max(0.0, rho_0[i] + dt * d_rho3[i])
+                vp = psi_0[i] + dt * d_psi3[i]
+                if vp <= neg_clamp:
+                    psi_s[i] = neg_clamp
+                elif vp < p_clamp:
+                    psi_s[i] = vp
+                else:
+                    psi_s[i] = p_clamp
+            for a_idx in range(n_active):
+                flux_s[a_idx] = flux_a0[a_idx] + dt * d_flux3[a_idx]
+            self._t = orig_t + dt
+            d_rho4, d_flux4, d_psi4 = _eval_rk4_stage(rho_s, flux_s, psi_s, self._t)
+
+            # Final RK4 update written back to nodes & active edges
+            for i in range(n_nodes):
+                n = nodes[i]
+                r_new = rho_0[i] + dt6 * (d_rho1[i] + 2.0 * d_rho2[i] + 2.0 * d_rho3[i] + d_rho4[i])
+                n["rho"] = _max(0.0, r_new)
+                p_new = psi_0[i] + dt6 * (d_psi1[i] + 2.0 * d_psi2[i] + 2.0 * d_psi3[i] + d_psi4[i])
+                if p_new <= neg_clamp:
+                    n["psi"] = neg_clamp
+                elif p_new < p_clamp:
+                    n["psi"] = p_new
+                else:
+                    n["psi"] = p_clamp
+
+            for a_idx, e in enumerate(active_edge_refs):
+                e["flux"] = flux_a0[a_idx] + dt6 * (
+                    d_flux1[a_idx] + 2.0 * d_flux2[a_idx] + 2.0 * d_flux3[a_idx] + d_flux4[a_idx]
+                )
+
+            self.compute_pressure(c_press)
+            if is_last:
+                self.update_conductance()
+                if grmn_enabled:
+                    for i, n in enumerate(nodes):
+                        w_z, u_z, b_z, zb, w_r, u_r, b_r, rb = grmn_params[i]
+                        az = w_z * n["rho"] + u_z * n["psi"] + b_z + zb
+                        ar = w_r * n["rho"] + u_r * n["psi"] + b_r + rb
+                        n["z_gate"] = 1.0 / (1.0 + _exp(-_clamp(az, -20.0, 20.0)))
+                        n["r_gate"] = 1.0 / (1.0 + _exp(-_clamp(ar, -20.0, 20.0)))
+                else:
+                    for n in nodes:
+                        rho_f = n["rho"]
+                        psi_f = n["psi"]
+                        if (0.0 * rho_f == 0.0) and (0.0 * psi_f == 0.0):
+                            n["z_gate"] = default_gate
+                            n["r_gate"] = default_gate
+                        else:
+                            az = 0.0 * rho_f + 0.0 * psi_f + 10.0 + 0.0
+                            g_f = 1.0 / (1.0 + _exp(-_clamp(az, -20.0, 20.0)))
+                            n["z_gate"] = g_f
+                            n["r_gate"] = g_f
+                    for i, w_z, u_z, b_z, zb in custom_z:
+                        n = nodes[i]
+                        az = w_z * n["rho"] + u_z * n["psi"] + b_z + zb
+                        n["z_gate"] = 1.0 / (1.0 + _exp(-_clamp(az, -20.0, 20.0)))
+                    for i, w_r, u_r, b_r, rb in custom_r:
+                        n = nodes[i]
+                        ar = w_r * n["rho"] + u_r * n["psi"] + b_r + rb
+                        n["r_gate"] = 1.0 / (1.0 + _exp(-_clamp(ar, -20.0, 20.0)))
+            elif unique_bat_edges:
+                self.update_conductance(unique_bat_edges)
+
+            self.update_magnetic_field(dt, mhd_edges)
+            self.jeans_collapse_and_accrete(dt, c_press, damping, tax_nb_cache)
+
+        _abs = abs
+        total_flux = sum(_abs(e["flux"]) for e in edges)
+        active_count = sum(1 for n in nodes if n["rho"] > 0.1)
+        return {"totalFlux": total_flux, "activeCount": active_count}
 
     def step_rk4(self, dt: float, c_press: float, damping: float) -> dict:
-        # Standard dynamic updates at step boundary
-        self.apply_semantic_mass_decay(dt)
-        self.update_batteries(dt)
-
-        # Save state at start of RK4 step
-        rho_0 = [n["rho"] for n in self.nodes]
-        flux_0 = [e["flux"] for e in self.edges]
-        psi_0 = [n["psi"] for n in self.nodes]
-        
-        # RK4 Integration Stages
-        # 1. k1
-        d_rho1, d_flux1, d_psi1 = self._compute_derivatives(rho_0, flux_0, psi_0, dt, c_press, damping)
-        
-        # 2. k2 at t + 0.5*dt
-        rho_1 = [max(0.0, rho_0[i] + 0.5 * dt * d_rho1[i]) for i in range(len(self.nodes))]
-        flux_1 = [flux_0[i] + 0.5 * dt * d_flux1[i] for i in range(len(self.edges))]
-        psi_1 = [_clamp(psi_0[i] + 0.5 * dt * d_psi1[i], -self.psi_clamp, self.psi_clamp) for i in range(len(self.nodes))]
-        
-        orig_t = self._t
-        self._t = orig_t + 0.5 * dt
-        d_rho2, d_flux2, d_psi2 = self._compute_derivatives(rho_1, flux_1, psi_1, dt, c_press, damping)
-        
-        # 3. k3 at t + 0.5*dt
-        rho_2 = [max(0.0, rho_0[i] + 0.5 * dt * d_rho2[i]) for i in range(len(self.nodes))]
-        flux_2 = [flux_0[i] + 0.5 * dt * d_flux2[i] for i in range(len(self.edges))]
-        psi_2 = [_clamp(psi_0[i] + 0.5 * dt * d_psi2[i], -self.psi_clamp, self.psi_clamp) for i in range(len(self.nodes))]
-        
-        d_rho3, d_flux3, d_psi3 = self._compute_derivatives(rho_2, flux_2, psi_2, dt, c_press, damping)
-        
-        # 4. k4 at t + dt
-        rho_3 = [max(0.0, rho_0[i] + dt * d_rho3[i]) for i in range(len(self.nodes))]
-        flux_3 = [flux_0[i] + dt * d_flux3[i] for i in range(len(self.edges))]
-        psi_3 = [_clamp(psi_0[i] + dt * d_psi3[i], -self.psi_clamp, self.psi_clamp) for i in range(len(self.nodes))]
-        
-        self._t = orig_t + dt
-        d_rho4, d_flux4, d_psi4 = self._compute_derivatives(rho_3, flux_3, psi_3, dt, c_press, damping)
-        
-        # Final RK4 update
-        for i in range(len(self.nodes)):
-            self.nodes[i]["rho"] = max(0.0, rho_0[i] + (dt / 6.0) * (d_rho1[i] + 2.0 * d_rho2[i] + 2.0 * d_rho3[i] + d_rho4[i]))
-            self.nodes[i]["psi"] = _clamp(psi_0[i] + (dt / 6.0) * (d_psi1[i] + 2.0 * d_psi2[i] + 2.0 * d_psi3[i] + d_psi4[i]), -self.psi_clamp, self.psi_clamp)
-            
-        for i in range(len(self.edges)):
-            self.edges[i]["flux"] = flux_0[i] + (dt / 6.0) * (d_flux1[i] + 2.0 * d_flux2[i] + 2.0 * d_flux3[i] + d_flux4[i])
-            
-        # Recompute final pressure, gates, and conductances
-        self.compute_pressure(c_press)
-        self.update_conductance()
-        
-        if self.gated_recurrent_cfg and self.gated_recurrent_cfg.get("enabled"):
-            cfg = self.gated_recurrent_cfg
-            for n in self.nodes:
-                w_z = n.get("W_z", cfg.get("W_z", 0.0))
-                u_z = n.get("U_z", cfg.get("U_z", 0.0))
-                b_z = n.get("b_z", cfg.get("b_z", 10.0))
-                w_r = n.get("W_r", cfg.get("W_r", 0.0))
-                u_r = n.get("U_r", cfg.get("U_r", 0.0))
-                b_r = n.get("b_r", cfg.get("b_r", 10.0))
-                
-                z = 1.0 / (1.0 + math.exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
-                r = 1.0 / (1.0 + math.exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
-                n["z_gate"] = z
-                n["r_gate"] = r
-        else:
-            for n in self.nodes:
-                w_z = n.get("W_z", 0.0)
-                u_z = n.get("U_z", 0.0)
-                b_z = n.get("b_z", 10.0)
-                w_r = n.get("W_r", 0.0)
-                u_r = n.get("U_r", 0.0)
-                b_r = n.get("b_r", 10.0)
-                
-                z = 1.0 / (1.0 + math.exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
-                r = 1.0 / (1.0 + math.exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
-                n["z_gate"] = z
-                n["r_gate"] = r
-
-        # Post-integration updates
-        self.update_magnetic_field(dt)
-        self.compute_pressure(c_press)
-        self.jeans_collapse_and_accrete(dt, c_press, damping)
-        
-        total_flux = sum(abs(e["flux"]) for e in self.edges)
-        active_count = sum(1 for n in self.nodes if n["rho"] > 0.1)
-        return {"totalFlux": total_flux, "activeCount": active_count}
+        return self.run_rk4_steps(1, dt, c_press, damping)
 
     def step(self, dt: float, c_press: float, damping: float) -> dict:
         if self.integration_mode == "rk4":
@@ -740,35 +1435,57 @@ class SOLPhysics:
         self.compute_pressure(c_press)
 
         # Compute gates if GRMN is enabled
-        z_gates = [1.0] * len(self.nodes)
-        r_gates = [1.0] * len(self.nodes)
+        nodes = self.nodes
+        n_nodes = len(nodes)
+        default_gate = self._DEFAULT_GATE_10
+        z_gates = [default_gate] * n_nodes
+        r_gates = [default_gate] * n_nodes
+        _exp = math.exp
         if self.gated_recurrent_cfg and self.gated_recurrent_cfg.get("enabled"):
             cfg = self.gated_recurrent_cfg
-            for idx, n in enumerate(self.nodes):
-                w_z = n.get("W_z", cfg.get("W_z", 0.0))
-                u_z = n.get("U_z", cfg.get("U_z", 0.0))
-                b_z = n.get("b_z", cfg.get("b_z", 10.0))
-                w_r = n.get("W_r", cfg.get("W_r", 0.0))
-                u_r = n.get("U_r", cfg.get("U_r", 0.0))
-                b_r = n.get("b_r", cfg.get("b_r", 10.0))
-                
-                z = 1.0 / (1.0 + math.exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
-                r = 1.0 / (1.0 + math.exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
+            def_wz = cfg.get("W_z", 0.0)
+            def_uz = cfg.get("U_z", 0.0)
+            def_bz = cfg.get("b_z", 10.0)
+            def_wr = cfg.get("W_r", 0.0)
+            def_ur = cfg.get("U_r", 0.0)
+            def_br = cfg.get("b_r", 10.0)
+            for idx, n in enumerate(nodes):
+                w_z = n.get("W_z", def_wz)
+                u_z = n.get("U_z", def_uz)
+                b_z = n.get("b_z", def_bz)
+                w_r = n.get("W_r", def_wr)
+                u_r = n.get("U_r", def_ur)
+                b_r = n.get("b_r", def_br)
+
+                z = 1.0 / (1.0 + _exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
+                r = 1.0 / (1.0 + _exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
                 z_gates[idx] = z
                 r_gates[idx] = r
                 n["z_gate"] = z
                 n["r_gate"] = r
         else:
-            for idx, n in enumerate(self.nodes):
-                w_z = n.get("W_z", 0.0)
-                u_z = n.get("U_z", 0.0)
-                b_z = n.get("b_z", 10.0)
-                w_r = n.get("W_r", 0.0)
-                u_r = n.get("U_r", 0.0)
-                b_r = n.get("b_r", 10.0)
-                
-                z = 1.0 / (1.0 + math.exp(-_clamp(w_z * n["rho"] + u_z * n["psi"] + b_z + n.get("z_bias", 0.0), -20.0, 20.0)))
-                r = 1.0 / (1.0 + math.exp(-_clamp(w_r * n["rho"] + u_r * n["psi"] + b_r + n.get("r_bias", 0.0), -20.0, 20.0)))
+            for idx, n in enumerate(nodes):
+                rho = n["rho"]
+                psi = n["psi"]
+                finite_rp = (0.0 * rho == 0.0) and (0.0 * psi == 0.0)
+                zb = n.get("z_bias", 0.0)
+                if finite_rp and zb == 0.0 and "W_z" not in n and "U_z" not in n and "b_z" not in n:
+                    z = default_gate
+                else:
+                    w_z = n.get("W_z", 0.0)
+                    u_z = n.get("U_z", 0.0)
+                    b_z = n.get("b_z", 10.0)
+                    z = 1.0 / (1.0 + _exp(-_clamp(w_z * rho + u_z * psi + b_z + zb, -20.0, 20.0)))
+
+                rb = n.get("r_bias", 0.0)
+                if finite_rp and rb == 0.0 and "W_r" not in n and "U_r" not in n and "b_r" not in n:
+                    r = default_gate
+                else:
+                    w_r = n.get("W_r", 0.0)
+                    u_r = n.get("U_r", 0.0)
+                    b_r = n.get("b_r", 10.0)
+                    r = 1.0 / (1.0 + _exp(-_clamp(w_r * rho + u_r * psi + b_r + rb, -20.0, 20.0)))
+
                 z_gates[idx] = z
                 r_gates[idx] = r
                 n["z_gate"] = z
@@ -776,7 +1493,10 @@ class SOLPhysics:
 
         # --- C. PHASE-GATED FLUX TRANSPORT ---
         total_flux = 0.0
-        d_rho = [0.0] * len(self.nodes)
+        d_rho = [0.0] * n_nodes
+        surf_tension = self.phase_cfg["surfaceTension"]
+        deep_visc = self.phase_cfg["deepViscosity"]
+        bat_cfg = self.battery_cfg
 
         for e in self.edges:
             ia = e["from_idx"]
@@ -784,8 +1504,8 @@ class SOLPhysics:
             if ia is None or ib is None:
                 continue
 
-            src = self.nodes[ia]
-            dst = self.nodes[ib]
+            src = nodes[ia]
+            dst = nodes[ib]
 
             src_group = src.get("group", "bridge")
             dst_group = dst.get("group", "bridge")
@@ -812,12 +1532,12 @@ class SOLPhysics:
 
             tension = 1.0
             if src_group == "tech" or dst_group == "tech":
-                tension = self.phase_cfg["surfaceTension"]
+                tension = surf_tension
             if src_group == "spirit" or dst_group == "spirit":
-                tension = self.phase_cfg["deepViscosity"]
+                tension = deep_visc
 
             diode_gain = 1.0
-            if self.battery_cfg and (src.get("isBattery") or dst.get("isBattery")) and not e.get("background"):
+            if bat_cfg and (src.get("isBattery") or dst.get("isBattery")) and not e.get("background"):
                 b_node = src if src.get("isBattery") else dst
                 b_s = b_node.get("b_state", 1)
                 if b_s not in (1, -1):
@@ -825,9 +1545,9 @@ class SOLPhysics:
                 batt_is_src = src.get("isBattery")
                 outflow = (delta_p > 0) if batt_is_src else (delta_p < 0)
                 if b_s == 1:
-                    diode_gain = self.battery_cfg["diodeResonanceOut"] if outflow else self.battery_cfg["diodeResonanceIn"]
+                    diode_gain = bat_cfg["diodeResonanceOut"] if outflow else bat_cfg["diodeResonanceIn"]
                 else:
-                    diode_gain = self.battery_cfg["diodeDampingOut"] if outflow else self.battery_cfg["diodeDampingIn"]
+                    diode_gain = bat_cfg["diodeDampingOut"] if outflow else bat_cfg["diodeDampingIn"]
 
             target_flux = (e["conductance"] * tension * diode_gain) * delta_p
             e["flux"] = e["flux"] * (1 - dt) + target_flux * dt
@@ -840,13 +1560,13 @@ class SOLPhysics:
                 d_rho[ib] += flow_amt
 
         # Apply mass changes
-        for idx, n in enumerate(self.nodes):
+        for idx, n in enumerate(nodes):
             n["rho"] += z_gates[idx] * d_rho[idx]
             star_factor = 1.0
             if n.get("isStellar") and self.jeans_cfg:
                 star_factor = self.jeans_cfg.get("starDampingFactor", 0.18)
             decay_coeff = damping * dt * 0.1 * star_factor * z_gates[idx]
-            n["rho"] *= (1.0 - decay_coeff)
+            n["rho"] *= 1.0 - decay_coeff
             if n["rho"] < 0:
                 n["rho"] = 0.0
 
@@ -855,7 +1575,7 @@ class SOLPhysics:
         self.compute_pressure(c_press)
         self.jeans_collapse_and_accrete(dt, c_press, damping)
 
-        active_count = sum(1 for n in self.nodes if n["rho"] > 0.1)
+        active_count = sum(1 for n in nodes if n["rho"] > 0.1)
         return {"totalFlux": total_flux, "activeCount": active_count}
 
     # ---- Injection ----
@@ -891,9 +1611,7 @@ class SOLPhysics:
                 other = self.node_by_id.get(other_id)
                 if not other or not other.get("isConstellation"):
                     continue
-                if not best:
-                    best = other
-                elif other.get("semanticMass", 1) > best.get("semanticMass", 1):
+                if not best or other.get("semanticMass", 1) > best.get("semanticMass", 1):
                     best = other
             if best:
                 target = best
@@ -925,7 +1643,6 @@ def apply_cap_law(physics: SOLPhysics, cap_law: dict, dt_override: float | None 
     clamp_max = cap_law.get("clampMax", 5000)
     dt0 = cap_law.get("dt0", 0.12)
     gamma = cap_law.get("kDtGamma", 0.0)
-    lam = cap_law.get("lambda", 0.0)
     dt = dt_override if (dt_override is not None and dt_override > 0) else dt0
     include_bg = bool(cap_law.get("includeBackgroundEdges"))
 
@@ -940,7 +1657,6 @@ def apply_cap_law(physics: SOLPhysics, cap_law: dict, dt_override: float | None 
         if b in deg_by_id:
             deg_by_id[b] += 1
 
-    proxy_mode = str(cap_law.get("proxy", "degree")).lower()
     law_family = str(cap_law.get("lawFamily", "power")).lower()
 
     def proxy_val(node):
@@ -1040,8 +1756,7 @@ def compute_metrics(physics: SOLPhysics) -> dict:
     for e in edges:
         a = abs(e["flux"])
         total_flux += a
-        if a > max_flux_abs:
-            max_flux_abs = a
+        max_flux_abs = max(max_flux_abs, a)
 
     active_count = sum(1 for n in nodes if n["rho"] > 0.1)
 
@@ -1114,10 +1829,8 @@ def restore_state(physics: SOLPhysics, snap: dict, cap_law: dict | None = None):
         if i < len(snap["edgeFlux"]):
             e["flux"] = snap["edgeFlux"][i]
     if cap_law and cap_law.get("enabled"):
-        try:
+        with contextlib.suppress(Exception):
             apply_cap_law(physics, cap_law)
-        except Exception:
-            pass
 
 
 # ---- Edge Computation --------------------------------------------------
@@ -1135,7 +1848,10 @@ def compute_all_edges(raw_nodes: list[dict], raw_edges: list[dict],
         return [{**e, "w0": edge_w0(e), "background": False} for e in raw_edges]
 
     strong = [{**e, "w0": edge_w0(e), "background": False} for e in raw_edges]
-    edge_key = lambda a, b: f"{min(a,b)}-{max(a,b)}"
+
+    def edge_key(a, b) -> str:
+        return f"{min(a, b)}-{max(a, b)}"
+
     existing = {edge_key(e["from"], e["to"]) for e in strong}
     ids = [n["id"] for n in raw_nodes]
     background = []
@@ -1226,18 +1942,18 @@ class SOLEngine:
 
     @classmethod
     def from_default_graph(cls, *, dt=0.12, c_press=0.1, damping=0.2,
-                           cap_law=None, rng_seed=42, graph_path=None) -> "SOLEngine":
+                           cap_law=None, rng_seed=42, graph_path=None) -> SOLEngine:
         path = Path(graph_path) if graph_path else DEFAULT_GRAPH_PATH
         with open(path, "r") as f:
             data = json.load(f)
-        physics, cap_info = create_engine(
+        physics, _ = create_engine(
             data["rawNodes"], data["rawEdges"],
             cap_law=cap_law, rng_seed=rng_seed,
         )
         return cls(physics, dt=dt, c_press=c_press, damping=damping, cap_law=cap_law)
 
     @classmethod
-    def from_graph(cls, raw_nodes, raw_edges, **kwargs) -> "SOLEngine":
+    def from_graph(cls, raw_nodes, raw_edges, **kwargs) -> SOLEngine:
         physics, _ = create_engine(raw_nodes, raw_edges,
                                    cap_law=kwargs.get("cap_law"),
                                    rng_seed=kwargs.get("rng_seed", 42))
@@ -1266,20 +1982,18 @@ class SOLEngine:
                 damping if damping is not None else self.damping,
             )
             self._step_count += 1
-            
+
             # Compute current metrics
             metrics = self.compute_metrics()
-            
+
             # Record metrics
-            try:
+            with contextlib.suppress(Exception):
                 entropy_gauge, flux_counter, mass_gauge, active_count_gauge = _get_metrics()
                 entropy_gauge.set(metrics.get("entropy", 0.0))
                 flux_counter.add(result.get("totalFlux", 0.0))
                 mass_gauge.set(metrics.get("mass", 0.0))
                 active_count_gauge.set(result.get("activeCount", 0))
-            except Exception:
-                pass
-            
+
             # Set span attributes
             span.set_attribute("sol.step_count", self._step_count)
             span.set_attribute("sol.t", self.t)
@@ -1287,9 +2001,9 @@ class SOLEngine:
             span.set_attribute("sol.metrics.total_flux", result.get("totalFlux", 0.0))
             span.set_attribute("sol.metrics.mass", metrics.get("mass", 0.0))
             span.set_attribute("sol.metrics.active_count", result.get("activeCount", 0))
-            
+
             # Serialise and append compact graph state snapshot for the live visualizer
-            try:
+            with contextlib.suppress(Exception):
                 node_states = self.get_node_states()
                 edge_states = [
                     {"from": e["from"], "to": e["to"], "flux": e.get("flux", 0.0), "conductance": e.get("conductance", 1.0)}
@@ -1297,10 +2011,55 @@ class SOLEngine:
                 ]
                 span.set_attribute("sol.graph.nodes", json.dumps(node_states))
                 span.set_attribute("sol.graph.edges", json.dumps(edge_states))
-            except Exception:
-                pass
-            
+
             return result
+
+    def run_steps(
+        self,
+        steps: int,
+        *,
+        dt=None,
+        c_press=None,
+        damping=None,
+        pre_step_node: dict | None = None,
+        pre_step_rho: float = 500.0,
+        pre_step_psi: float = 0.0,
+    ) -> dict:
+        """Execute ``steps`` consecutive simulation steps, returning the final step metrics."""
+        if steps <= 0:
+            return {
+                "totalFlux": 0.0,
+                "activeCount": sum(1 for n in self.physics.nodes if n["rho"] > 0.1),
+            }
+        dt_val = dt or self.dt
+        c_press_val = c_press if c_press is not None else self.c_press
+        damping_val = damping if damping is not None else self.damping
+        import telemetry
+
+        if (
+            getattr(self, "backend", "dict") != "vectorized"
+            and not telemetry._TELEMETRY_ENABLED
+            and self.physics.integration_mode == "rk4"
+        ):
+            result = self.physics.run_rk4_steps(
+                steps,
+                dt_val,
+                c_press_val,
+                damping_val,
+                pre_step_node=pre_step_node,
+                pre_step_rho=pre_step_rho,
+                pre_step_psi=pre_step_psi,
+            )
+            self._step_count += steps
+            return result
+
+        last_res = {"totalFlux": 0.0, "activeCount": 0}
+        for _ in range(steps):
+            if pre_step_node is not None:
+                pre_step_node["rho"] = pre_step_rho
+                pre_step_node["psi"] = pre_step_psi
+            last_res = self.step(dt_val, c_press_val, damping_val)
+        return last_res
 
     def run(self, steps: int, *, dt=None, c_press=None, damping=None) -> list[dict]:
         """Run multiple steps, return list of per-step results."""
