@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-11-02T04:13:13.073512+00:00",
-  "records": 1877,
-  "runs": 457,
+  "generated_at": "2026-11-02T06:26:57.259232+00:00",
+  "records": 1878,
+  "runs": 458,
   "experiments": {
     "cortex": {
-      "runs": 108,
-      "generations": 108,
-      "accepted_generations": 74,
-      "acceptance_rate": 0.6851851851851852,
+      "runs": 109,
+      "generations": 109,
+      "accepted_generations": 75,
+      "acceptance_rate": 0.6880733944954128,
       "top_runs_by_anchor": [
         {
           "experiment": "cortex",
@@ -192,9 +192,9 @@
           "best_full_delta": 1.0
         },
         "unpromoted": {
-          "generations": 36,
-          "runs": 36,
-          "accepted_generations": 36,
+          "generations": 37,
+          "runs": 37,
+          "accepted_generations": 37,
           "acceptance_rate": 1.0,
           "best_anchor_delta": 1.0,
           "best_full_delta": 5.0
@@ -746,8 +746,8 @@
   },
   "knowledge_domains": {
     "sol_manifold": {
-      "records": 1576,
-      "accepted_generations": 429,
+      "records": 1577,
+      "accepted_generations": 430,
       "experiments": [
         "cortex",
         "dream",
@@ -804,15 +804,15 @@
       ]
     },
     "injection:grail": {
-      "records": 107,
-      "accepted_generations": 74,
+      "records": 108,
+      "accepted_generations": 75,
       "experiments": [
         "cortex"
       ]
     },
     "damping": {
-      "records": 93,
-      "accepted_generations": 66,
+      "records": 94,
+      "accepted_generations": 67,
       "experiments": [
         "cortex"
       ]
@@ -29870,8 +29870,8 @@
       ]
     },
     "threshold_transition": {
-      "records": 75,
-      "accepted_generations": 54,
+      "records": 76,
+      "accepted_generations": 55,
       "experiments": [
         "cortex"
       ]
@@ -29884,8 +29884,8 @@
       ]
     },
     "stable_replay": {
-      "records": 70,
-      "accepted_generations": 70,
+      "records": 71,
+      "accepted_generations": 71,
       "experiments": [
         "cortex"
       ]
@@ -29970,8 +29970,8 @@
       ]
     },
     "mechanistic_gap": {
-      "records": 73,
-      "accepted_generations": 58,
+      "records": 74,
+      "accepted_generations": 59,
       "experiments": [
         "cortex"
       ]
