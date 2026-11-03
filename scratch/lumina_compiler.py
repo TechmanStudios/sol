@@ -332,7 +332,10 @@ class LuminaASTVisitor(ast.NodeVisitor):
             port_name = node.attr
             comp_inst = getattr(self.agent, comp_alias, None)
             if _is_component_instance(comp_inst):
-                return comp_inst.inputs.get(port_name) or comp_inst.outputs.get(port_name) or f"{comp_alias}_{port_name}"
+                resolved = comp_inst.inputs.get(port_name) or comp_inst.outputs.get(port_name) or f"{comp_alias}_{port_name}"
+                if resolved not in self.agent.inputs and resolved not in self.agent.outputs:
+                    self.component_scope_basins.setdefault(resolved, f"Basin_{resolved}")
+                return resolved
         if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name) and node.value.id == "self":
             return node.attr
         elif isinstance(node, ast.Name):
@@ -351,6 +354,8 @@ class LuminaASTVisitor(ast.NodeVisitor):
             comp_inst = getattr(self.agent, comp_alias, None)
             if _is_component_instance(comp_inst):
                 var_name = comp_inst.outputs.get(port_name) or comp_inst.inputs.get(port_name) or f"{comp_alias}_{port_name}"
+                if var_name not in self.agent.inputs and var_name not in self.agent.outputs:
+                    self.component_scope_basins.setdefault(var_name, f"Basin_{var_name}")
                 if dest_var:
                     self.statements.append(("COND_ASSIGN", dest_var, var_name, var_name, var_name))
                 return var_name
@@ -482,7 +487,17 @@ class LuminaASTVisitor(ast.NodeVisitor):
             elif isinstance(call.func, ast.Attribute) and isinstance(call.func.value, ast.Name) and call.func.value.id == "self":
                 method_name = call.func.attr
                 if method_name in ("nudge", "settle", "assert_mass"):
-                    args = [self._resolve_constant(arg) for arg in call.args]
+                    if method_name == "settle":
+                        step_node = call.args[0] if call.args else next(kw.value for kw in call.keywords if kw.arg in ("steps", "n"))
+                        args = [self._resolve_constant(step_node)]
+                    else:
+                        target_node = call.args[0] if call.args else next(
+                            kw.value for kw in call.keywords if kw.arg in ("basin", "reg", "target")
+                        )
+                        val_node = call.args[1] if len(call.args) > 1 else next(
+                            kw.value for kw in call.keywords if kw.arg in ("amount", "min_mass", "value")
+                        )
+                        args = [self._resolve_helper_target(target_node), self._resolve_constant(val_node)]
                     self.statements.append((method_name.upper(), *args))
                     return
                 if hasattr(self.agent, method_name):
@@ -491,6 +506,18 @@ class LuminaASTVisitor(ast.NodeVisitor):
                         self._inline_component(comp_inst, instance_alias=method_name)
                         return
         self.generic_visit(node)
+
+    def _resolve_helper_target(self, node: ast.AST) -> str:
+        if isinstance(node, (ast.Attribute, ast.Name)):
+            raw = self._resolve_target(node)
+        else:
+            raw = str(self._resolve_constant(node))
+        mapped = (
+            self.agent.inputs.get(raw)
+            or self.agent.outputs.get(raw)
+            or self.component_scope_basins.get(raw)
+        )
+        return str(mapped) if mapped else raw
 
     def _inline_component(self, comp_inst: ComponentInstance, instance_alias: str | None = None):
         import textwrap
@@ -617,6 +644,19 @@ class StaticMassSentinel:
         reg_basins: dict[str, set[str]] = {"A": set(), "B": set(), "C": set(), "D": set()}
         basin_masses: dict[str, float] = {}
         active_basins: set[str] = set()
+        basin_lineage: dict[str, set[str]] = {}
+        scratch_origin_lineage: dict[str, set[str]] = {}
+        carrier_nudge_credit: float = 0.0
+
+        declared_user_basins = sorted(
+            {
+                str(ins.args[1])
+                for ins in instructions
+                if ins.op.upper() in ("LOAD", "STORE")
+                and len(ins.args) >= 2
+                and not str(ins.args[1]).startswith("Basin_Scratch_")
+            }
+        )
 
         label_to_idx: dict[str, int] = {}
         for idx, inst in enumerate(instructions):
@@ -642,8 +682,8 @@ class StaticMassSentinel:
                 reg = str(args[0])
                 basin = str(args[1])
                 active_registers[reg] = True
-                reg_basins[reg] = {basin}
-                basin_masses.setdefault(basin, 15.0)
+                reg_basins[reg] = {basin} | set(basin_lineage.get(basin, ()))
+                basin_masses.setdefault(basin, 15.0 + carrier_nudge_credit)
                 active_basins.add(basin)
                 registers[reg] = basin_masses[basin]
             elif op == "LOAD_INDIRECT":
@@ -652,27 +692,31 @@ class StaticMassSentinel:
                 pseudo_basin = f"Basin_{prefix}*"
                 active_registers[reg] = True
                 reg_basins[reg] = {pseudo_basin}
-                basin_masses.setdefault(pseudo_basin, 15.0)
+                basin_masses.setdefault(pseudo_basin, 15.0 + carrier_nudge_credit)
                 active_basins.add(pseudo_basin)
                 registers[reg] = basin_masses[pseudo_basin]
             elif op == "STORE":
                 reg = str(args[0])
                 basin = str(args[1])
+                if basin.startswith("Basin_Scratch_") and basin not in scratch_origin_lineage:
+                    scratch_origin_lineage[basin] = {b for b in reg_basins[reg] if b != basin}
+                basin_lineage.setdefault(basin, set()).update(reg_basins[reg])
                 reg_basins[reg].add(basin)
                 if active_registers[reg]:
                     basin_masses[basin] = registers[reg]
                 else:
-                    basin_masses.setdefault(basin, 15.0)
+                    basin_masses.setdefault(basin, 15.0 + carrier_nudge_credit)
                 active_basins.add(basin)
             elif op == "STORE_INDIRECT":
                 reg = str(args[0])
                 prefix = str(args[1])
                 pseudo_basin = f"Basin_{prefix}*"
+                basin_lineage.setdefault(pseudo_basin, set()).update(reg_basins[reg])
                 reg_basins[reg].add(pseudo_basin)
                 if active_registers[reg]:
                     basin_masses[pseudo_basin] = registers[reg]
                 else:
-                    basin_masses.setdefault(pseudo_basin, 15.0)
+                    basin_masses.setdefault(pseudo_basin, 15.0 + carrier_nudge_credit)
                 active_basins.add(pseudo_basin)
             elif op == "CLEAR":
                 reg = str(args[0])
@@ -706,16 +750,32 @@ class StaticMassSentinel:
             elif op == "NUDGE":
                 target = str(args[0])
                 amount = float(args[1])
-                for reg in ("A", "B", "C", "D"):
-                    if target in cls._EXACT_REG_ALIASES[reg] or target in reg_basins[reg]:
-                        registers[reg] += amount
-                if target not in cls._ALL_REG_ALIASES:
-                    basin_masses[target] = basin_masses.get(target, 15.0) + amount
-                    active_basins.add(target)
-                    # Also match wildcard array prefix if target is Basin_X0 vs Basin_X*
+                if target in ("ALL", "*", "Basin_ALL"):
+                    carrier_nudge_credit += amount
+                    for reg in ("A", "B", "C", "D"):
+                        if active_registers[reg]:
+                            registers[reg] += amount
                     for b_key in list(basin_masses.keys()):
-                        if b_key.endswith("*") and target.startswith(b_key[:-1]):
-                            basin_masses[b_key] += amount
+                        basin_masses[b_key] += amount
+                else:
+                    for reg in ("A", "B", "C", "D"):
+                        if target in cls._EXACT_REG_ALIASES[reg] or target in reg_basins[reg]:
+                            registers[reg] += amount
+                    if target not in cls._ALL_REG_ALIASES:
+                        basin_masses[target] = basin_masses.get(target, 15.0 + carrier_nudge_credit) + amount
+                        active_basins.add(target)
+                        for b_key in list(basin_masses.keys()):
+                            if b_key == target:
+                                continue
+                            if (
+                                (b_key.endswith("*") and target.startswith(b_key[:-1]))
+                                or target in basin_lineage.get(b_key, ())
+                                or (
+                                    target.startswith("Basin_Scratch_")
+                                    and b_key in scratch_origin_lineage.get(target, ())
+                                )
+                            ):
+                                basin_masses[b_key] += amount
             elif op == "SETTLE":
                 steps = int(args[0])
                 drain = damping * steps
@@ -724,23 +784,61 @@ class StaticMassSentinel:
                         registers[reg] = max(0.0, registers[reg] - drain)
                 for b_name in active_basins:
                     basin_masses[b_name] = max(0.0, basin_masses[b_name] - drain)
+            elif op == "ASSERT_MASS":
+                target = str(args[0])
+                min_mass = float(args[1])
+                matched_reg = False
+                for reg in ("A", "B", "C", "D"):
+                    if target in cls._EXACT_REG_ALIASES[reg]:
+                        matched_reg = True
+                        if registers[reg] < min_mass:
+                            raise StaticVerificationError(
+                                f"Static verification failure: instruction '{inst.op} {', '.join(map(str, inst.args))}' at index {pc} "
+                                f"violates Register {reg} mass assertion ({registers[reg]:.2f} < {min_mass:.2f})."
+                            )
+                if not matched_reg and target not in cls._ALL_REG_ALIASES:
+                    cur_mass = basin_masses.get(target, 15.0 + carrier_nudge_credit)
+                    if cur_mass < min_mass:
+                        raise StaticVerificationError(
+                            f"Static verification failure: instruction '{inst.op} {', '.join(map(str, inst.args))}' at index {pc} "
+                            f"violates Basin {target} mass assertion ({cur_mass:.2f} < {min_mass:.2f})."
+                        )
 
             # Verify active registers and active basins mass floor (>= 14.0)
-            for reg in ("A", "B", "C", "D"):
-                if active_registers[reg] and registers[reg] < 14.0:
-                    raise StaticVerificationError(
-                        f"Static verification failure: instruction '{inst.op} {', '.join(map(str, inst.args))}' at index {pc} "
-                        f"drains Register {reg} mass to {registers[reg]:.2f} (< 14.0)."
-                    )
-            for b_name in sorted(active_basins):
-                if basin_masses[b_name] < 14.0:
-                    raise StaticVerificationError(
-                        f"Static verification failure: instruction '{inst.op} {', '.join(map(str, inst.args))}' at index {pc} "
-                        f"drains Basin {b_name} mass across CFG execution/loop back-edge to {basin_masses[b_name]:.2f} (< 14.0)."
-                    )
+            def _check_active_registers(_pc: int = pc, _inst: Any = inst) -> None:
+                for reg in ("A", "B", "C", "D"):
+                    if active_registers[reg] and registers[reg] < 14.0:
+                        raise StaticVerificationError(
+                            f"Static verification failure: instruction '{_inst.op} {', '.join(map(str, _inst.args))}' at index {_pc} "
+                            f"drains Register {reg} mass to {registers[reg]:.2f} (< 14.0)."
+                        )
+
+            def _check_active_basins(_pc: int = pc, _inst: Any = inst) -> None:
+                for b_name in sorted(active_basins):
+                    if basin_masses[b_name] < 14.0:
+                        depleted = [f"{b}={basin_masses[b]:.2f}" for b in sorted(active_basins) if basin_masses[b] < 14.0]
+                        loop_hint = (
+                            f" [active_loop_basins={', '.join(declared_user_basins)}; "
+                            f"depleted={', '.join(depleted)}; place self.nudge(<basin>, >=15.0) BEFORE self.settle "
+                            f"or bound self.settle(steps <= 20) with pre-settle nudges]"
+                            if declared_user_basins
+                            else ""
+                        )
+                        raise StaticVerificationError(
+                            f"Static verification failure: instruction '{_inst.op} {', '.join(map(str, _inst.args))}' at index {_pc} "
+                            f"drains Basin {b_name} mass across CFG execution/loop back-edge to {basin_masses[b_name]:.2f} (< 14.0)."
+                            f"{loop_hint}"
+                        )
+
+            if label_to_idx:
+                _check_active_basins()
+                _check_active_registers()
+            else:
+                _check_active_registers()
+                _check_active_basins()
 
             # Follow CFG loop back-edges and detect strictly negative net cycle mass gain (unbounded slow drain)
-            if op in ("JUMP", "JUMP_IF_ACTIVE"):
+            if op in ("JUMP", "JUMP_IF_ACTIVE", "JUMP_IF_COLLAPSED"):
                 target_label = str(args[0]) if op == "JUMP" else str(args[1])
                 if target_label in label_to_idx:
                     target_idx = label_to_idx[target_label]
@@ -749,6 +847,14 @@ class StaticMassSentinel:
                         count = backedge_counts.get(edge_key, 0)
                         if count >= 1 and edge_key in backedge_snapshots:
                             prev_active_regs, prev_regs, prev_active_basins, prev_basins = backedge_snapshots[edge_key]
+                            for b_name in sorted(active_basins & prev_active_basins):
+                                delta_b = basin_masses[b_name] - prev_basins[b_name]
+                                if delta_b < -1e-9:
+                                    raise StaticVerificationError(
+                                        f"Static verification failure: loop back-edge at index {pc} -> {target_idx} "
+                                        f"has negative net cycle mass gain ({delta_b:.4f}/iter) on Basin {b_name} "
+                                        f"(current {basin_masses[b_name]:.2f}, inevitably drains < 14.0)."
+                                    )
                             for reg in ("A", "B", "C", "D"):
                                 if active_registers[reg] and prev_active_regs.get(reg, False):
                                     delta_r = registers[reg] - prev_regs[reg]
@@ -758,14 +864,6 @@ class StaticMassSentinel:
                                             f"has negative net cycle mass gain ({delta_r:.4f}/iter) on active Register {reg} "
                                             f"(current {registers[reg]:.2f}, inevitably drains < 14.0)."
                                         )
-                            for b_name in sorted(active_basins & prev_active_basins):
-                                delta_b = basin_masses[b_name] - prev_basins[b_name]
-                                if delta_b < -1e-9:
-                                    raise StaticVerificationError(
-                                        f"Static verification failure: loop back-edge at index {pc} -> {target_idx} "
-                                        f"has negative net cycle mass gain ({delta_b:.4f}/iter) on Basin {b_name} "
-                                        f"(current {basin_masses[b_name]:.2f}, inevitably drains < 14.0)."
-                                    )
                         backedge_snapshots[edge_key] = (
                             dict(active_registers),
                             dict(registers),

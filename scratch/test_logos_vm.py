@@ -9,9 +9,8 @@ Verifies the execution of conditional control flow branching (LogosVM)
 on the stateful register ALU.
 """
 
-import sys
-import os
 import json
+import sys
 from pathlib import Path
 
 # Add project root and scratch paths
@@ -20,9 +19,14 @@ sys.path.insert(0, str(sol_root))
 sys.path.insert(0, str(sol_root / "scratch"))
 
 from hybrid_subsystem_framework import (
-    UniversalManifold, SemanticManifold, ProcessingManifold,
-    ManifoldGroup, Instruction, MicroInstructionSequencer
+    Instruction,
+    ManifoldGroup,
+    MicroInstructionSequencer,
+    ProcessingManifold,
+    SemanticManifold,
+    UniversalManifold,
 )
+
 
 class LogosVM:
     """
@@ -76,7 +80,7 @@ class LogosVM:
             if "b_charge" in reg_state["bat"]:
                 bat["b_charge"] = reg_state["bat"]["b_charge"]
 
-    def run(self, program: list[Instruction]) -> list[dict]:
+    def run(self, program: list[Instruction], max_loop_iterations: int = 8) -> list[dict]:
         # Pre-pass: Resolve labels
         labels = {}
         resolved_prog = []
@@ -91,6 +95,7 @@ class LogosVM:
         self.pc = 0
         self.stack = []
         self.sequencer.history = []
+        backedge_counts: dict[tuple[int, int], int] = {}
         
         while self.pc < len(resolved_prog):
             inst = resolved_prog[self.pc]
@@ -99,19 +104,45 @@ class LogosVM:
             # Check for Level 6 jump/procedural instructions
             if op == "JUMP":
                 label = inst.args[0]
-                self.pc = labels[label]
+                target_pc = labels[label]
+                if target_pc <= self.pc:
+                    edge_key = (self.pc, target_pc)
+                    cnt = backedge_counts.get(edge_key, 0) + 1
+                    if cnt >= max_loop_iterations:
+                        self.pc += 1
+                        continue
+                    backedge_counts[edge_key] = cnt
+                self.pc = target_pc
                 continue
             elif op == "JUMP_IF_ACTIVE":
                 reg, label = inst.args[0], inst.args[1]
-                bat_state = self.sequencer.group.get_node(f"S_R{reg}_B")["b_state"]
-                if bat_state == 1:
-                    self.pc = labels[label]
+                bat_node = self.sequencer.group.get_node(f"S_R{reg}_B")
+                is_active = (float(bat_node["psi"]) >= 0.0) if self.sequencer.pure_wave else (bat_node["b_state"] == 1)
+                if is_active:
+                    target_pc = labels[label]
+                    if target_pc <= self.pc:
+                        edge_key = (self.pc, target_pc)
+                        cnt = backedge_counts.get(edge_key, 0) + 1
+                        if cnt >= max_loop_iterations:
+                            self.pc += 1
+                            continue
+                        backedge_counts[edge_key] = cnt
+                    self.pc = target_pc
                     continue
             elif op == "JUMP_IF_COLLAPSED":
                 reg, label = inst.args[0], inst.args[1]
-                bat_state = self.sequencer.group.get_node(f"S_R{reg}_B")["b_state"]
-                if bat_state == -1:
-                    self.pc = labels[label]
+                bat_node = self.sequencer.group.get_node(f"S_R{reg}_B")
+                is_collapsed = (float(bat_node["psi"]) < 0.0) if self.sequencer.pure_wave else (bat_node["b_state"] == -1)
+                if is_collapsed:
+                    target_pc = labels[label]
+                    if target_pc <= self.pc:
+                        edge_key = (self.pc, target_pc)
+                        cnt = backedge_counts.get(edge_key, 0) + 1
+                        if cnt >= max_loop_iterations:
+                            self.pc += 1
+                            continue
+                        backedge_counts[edge_key] = cnt
+                    self.pc = target_pc
                     continue
             elif op == "CALL":
                 label = inst.args[0]

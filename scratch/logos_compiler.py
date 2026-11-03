@@ -58,11 +58,17 @@ class LogosCompiler:
         self.allocated_scratch_basins: dict[str, str] = {}
         self._reserved_basin_names: set[str] = set()
         self._compile_count: int = 0
-        # Live out sets for each statement index
+        # Variables modified since their last load or spill store
+        self.dirty_vars: set[str] = set()
+        self._pending_store_reg_alias: tuple[str, str] | None = None
+        # Live in/out sets for each statement index
+        self.live_in = []
         self.live_out = []
 
     def _needs_spill_store(self, var: str) -> bool:
-        """Returns False if var currently holds an unmodified read-only input already present in its input basin."""
+        """Returns False if var is clean in its current backing basin or holds an unmodified read-only input."""
+        if var not in self.dirty_vars and bool(self.var_sources.get(var)):
+            return False
         return not (
             var in self.read_only_input_vars
             and var not in self.allocated_scratch_basins
@@ -205,6 +211,7 @@ class LogosCompiler:
                     live_in[idx] = new_live_in
                     changed = True
                     
+        self.live_in = live_in
         self.live_out = live_out
 
     def _is_live(self, var: str, current_idx: int) -> bool:
@@ -227,6 +234,16 @@ class LogosCompiler:
                     return reg
         return None
 
+    def _used_before_block_end(self, var: str, start_idx: int, statements: list) -> bool:
+        """Returns True if var is read by a statement after start_idx before the next LABEL or unconditional JUMP."""
+        for k in range(start_idx + 1, len(statements)):
+            op_k = statements[k][0]
+            if op_k in ("LABEL", "JUMP", "RETURN", "RET"):
+                return False
+            if k < len(self.stmt_inputs) and var in self.stmt_inputs[k]:
+                return True
+        return False
+
     def _evacuate_live_reg(
         self,
         reg: str,
@@ -237,9 +254,25 @@ class LogosCompiler:
         pure_wave: bool,
         exclude_reg: str | None = None,
         allowed_free_regs: tuple[str, ...] | None = None,
+        used_in_current_stmt: bool = False,
     ) -> None:
         other_reg = next((r for r, v in self.register_map.items() if r != reg and v == val), None)
         if other_reg is not None:
+            self.register_map[reg] = None
+            return
+
+        if (
+            pure_wave
+            and not used_in_current_stmt
+            and not self._used_before_block_end(val, idx, statements)
+            and (
+                val in self.var_destinations or val in self.allocated_scratch_basins or not self._needs_spill_store(val)
+            )
+        ):
+            if self._needs_spill_store(val):
+                spill_basin = self._get_or_alloc_spill_basin(val)
+                program.append(Instruction("STORE", [reg, spill_basin]))
+                self.dirty_vars.discard(val)
             self.register_map[reg] = None
             return
 
@@ -266,6 +299,7 @@ class LogosCompiler:
             if self._needs_spill_store(val):
                 spill_basin = self._get_or_alloc_spill_basin(val)
                 program.append(Instruction("STORE", [reg, spill_basin]))
+                self.dirty_vars.discard(val)
             self.register_map[reg] = None
 
     def _allocate_to_register(
@@ -293,6 +327,7 @@ class LogosCompiler:
                 program,
                 pure_wave,
                 exclude_reg=current_reg,
+                used_in_current_stmt=(idx < len(self.stmt_inputs) and val_in_target in self.stmt_inputs[idx]),
             )
 
         # Now target_reg is free. Prepare it and load or copy var into it.
@@ -317,21 +352,31 @@ class LogosCompiler:
         program: list,
         pure_wave: bool = False,
         use_live_out_only: bool = False,
+        emit_clears: bool = True,
     ):
         """Spills all currently mapped live variables to their memory basins and clears the register map."""
+        spilled_vars: set[str] = set()
         for reg in ['A', 'B', 'C', 'D']:
             var = self.register_map[reg]
             if var is not None:
                 is_live_here = (var in self.live_out[idx]) if use_live_out_only else self._is_live(var, idx)
-                if is_live_here and self._needs_spill_store(var):
+                if is_live_here and var not in spilled_vars and self._needs_spill_store(var):
                     spill_basin = self._get_or_alloc_spill_basin(var)
                     program.append(Instruction("STORE", [reg, spill_basin]))
-                self._clear_reg(reg, program)
+                    self.dirty_vars.discard(var)
+                    spilled_vars.add(var)
+                if emit_clears:
+                    self._clear_reg(reg, program)
+                else:
+                    self.register_map[reg] = None
             elif not pure_wave and reg in self.physically_dirty:
-                self._clear_reg(reg, program)
+                if emit_clears:
+                    self._clear_reg(reg, program)
 
     def _set_register_var(self, dest_reg: str, dest_var: str, is_def: bool = False):
         """Maps dest_var to dest_reg, detaching read-only input basins when dest_var is redefined."""
+        if is_def:
+            self.dirty_vars.add(dest_var)
         if (
             is_def
             and dest_var in self.read_only_input_vars
@@ -363,6 +408,8 @@ class LogosCompiler:
 
         self.register_map = {'A': None, 'B': None, 'C': None, 'D': None}
         self.physically_dirty = set()
+        self.dirty_vars = set()
+        self._pending_store_reg_alias = None
         self.input_basins_by_var = inputs.copy()
         self.read_only_input_vars = set(inputs.keys()) - set(outputs.keys())
         self.var_sources = inputs.copy()
@@ -412,15 +459,66 @@ class LogosCompiler:
 
         program = []
 
+        # Pre-copy read-only input variables that are mutated inside loops into dedicated scratch basins
+        # so backward jumps read the updated loop state without overwriting insulated input basins.
+        label_positions: dict[str, int] = {}
+        has_backedge = False
+        redefined_vars: set[str] = set()
+        for s_idx, st in enumerate(statements):
+            s_op = st[0]
+            if s_op == "LABEL" and len(st) > 1:
+                label_positions[str(st[1])] = s_idx
+            elif s_op == "JUMP" and len(st) > 1 and str(st[1]) in label_positions or s_op in ("JUMP_IF_ACTIVE", "JUMP_IF_COLLAPSED") and len(st) > 2 and str(st[2]) in label_positions:
+                has_backedge = True
+            elif s_op in ("OP", "COND_ASSIGN", "LOAD_INDIRECT", "CLEAR_VAR") and len(st) > 1:
+                redefined_vars.add(str(st[1]))
+
+        loop_shadow_basin_map: dict[str, str] = {}
+        if has_backedge:
+            for ro_var in sorted(self.read_only_input_vars):
+                if ro_var in redefined_vars and ro_var in self.input_basins_by_var:
+                    orig_in_basin = self.input_basins_by_var[ro_var]
+                    self.var_sources.pop(ro_var, None)
+                    scratch_b = self._get_or_alloc_spill_basin(ro_var)
+                    loop_shadow_basin_map[ro_var] = scratch_b
+                    loop_shadow_basin_map[orig_in_basin] = scratch_b
+                    if not self.live_in or ro_var in self.live_in[0]:
+                        self._prepare_reg_for_write('A', program, pure_wave)
+                        program.append(Instruction("LOAD", ['A', orig_in_basin]))
+                        program.append(Instruction("STORE", ['A', scratch_b]))
+                        self._clear_reg('A', program)
+
+        _reg_and_wildcard_targets = {
+            "A", "B", "C", "D", "ALL", "*", "Basin_ALL",
+            "RA", "RB", "RC", "RD", "S_RA", "S_RB", "S_RC", "S_RD",
+            "S_RA_B", "S_RB_B", "S_RC_B", "S_RD_B",
+            "Register_A", "Register_B", "Register_C", "Register_D",
+        }
+
+        def _resolve_analog_target(raw_target: str) -> str:
+            if has_backedge and raw_target in loop_shadow_basin_map:
+                return loop_shadow_basin_map[raw_target]
+            if raw_target not in _reg_and_wildcard_targets and not raw_target.startswith("Basin_"):
+                resolved = (
+                    self.allocated_scratch_basins.get(raw_target)
+                    or self.var_destinations.get(raw_target)
+                    or self.var_sources.get(raw_target)
+                )
+                if resolved:
+                    return resolved
+            return raw_target
+
         for idx, stmt in enumerate(statements):
             op_type = stmt[0]
 
             if op_type == "NUDGE":
-                program.append(Instruction("NUDGE", [stmt[1], stmt[2]]))
+                nudge_target = _resolve_analog_target(str(stmt[1]))
+                program.append(Instruction("NUDGE", [nudge_target, stmt[2]]))
             elif op_type == "SETTLE":
                 program.append(Instruction("SETTLE", [stmt[1]]))
             elif op_type == "ASSERT_MASS":
-                program.append(Instruction("ASSERT_MASS", [stmt[1], stmt[2]]))
+                assert_target = _resolve_analog_target(str(stmt[1]))
+                program.append(Instruction("ASSERT_MASS", [assert_target, stmt[2]]))
             elif op_type == "OP":
                 dest_var, op_name, src1, src2 = stmt[1], stmt[2], stmt[3], stmt[4]
                 is_unary_not = op_name in ("NOT", "NOT_WAVE")
@@ -454,44 +552,64 @@ class LogosCompiler:
                         if self.register_map['A'] != saved_a:
                             self._allocate_to_register(src1, 'A', idx, statements, program, pure_wave=pure_wave)
 
-                # 3. Find a destination register for the output (C or D preferred, but dynamic if busy)
-                dest_reg = 'C' if op_name not in ("AND", "AND_MS", "AND_WAVE") else 'D'
-                if self.register_map[dest_reg] and self._is_live(self.register_map[dest_reg], idx):
-                    dying_vars = set()
-                    if src1 and not self._is_live(src1, idx):
-                        dying_vars.add(src1)
-                    if src2 and not self._is_live(src2, idx):
-                        dying_vars.add(src2)
+                # 3. Find a destination register for the output (C or D preferred, or A/B for in-place/aligned pure-wave loop ops)
+                next_op_stmt = statements[idx + 1] if (idx + 1 < len(statements)) else None
+                if pure_wave and has_backedge and dest_var == src1:
+                    dest_reg = 'A'
+                elif (
+                    pure_wave
+                    and has_backedge
+                    and not is_unary_not
+                    and next_op_stmt is not None
+                    and next_op_stmt[0] == "OP"
+                    and next_op_stmt[4] == dest_var
+                    and dest_var not in self.live_out[idx + 1]
+                    and not self._used_before_block_end(src2, idx, statements)
+                    and not self._needs_spill_store(src2)
+                ):
+                    dest_reg = 'B'
+                else:
+                    dest_reg = 'C' if op_name not in ("AND", "AND_MS", "AND_WAVE") else 'D'
+                    if self.register_map[dest_reg] and self._is_live(self.register_map[dest_reg], idx):
+                        dying_vars = set()
+                        if src1 and not self._is_live(src1, idx):
+                            dying_vars.add(src1)
+                        if src2 and not self._is_live(src2, idx):
+                            dying_vars.add(src2)
 
-                    candidate_regs = ['C', 'D'] if dest_reg == 'C' else ['D', 'C']
+                        candidate_regs = ['C', 'D'] if dest_reg == 'C' else ['D', 'C']
 
-                    def get_reg_cost(
-                        r,
-                        _src1=src1,
-                        _src2=src2,
-                        _idx=idx,
-                        _dying_vars=dying_vars,
-                    ):
-                        v = self.register_map[r]
-                        if r == 'A' and v == _src1 and _src1 in self.live_out[_idx]:
-                            return 100
-                        if r == 'B' and v == _src2 and _src2 in self.live_out[_idx]:
-                            return 100
-                        if v is None:
-                            return 0
-                        if v in _dying_vars:
-                            return 1
-                        if not self._is_live(v, _idx):
-                            return 2
-                        if self.var_destinations.get(v) or self.var_sources.get(v):
-                            return 3
-                        return 4
+                        def get_reg_cost(
+                            r,
+                            _src1=src1,
+                            _src2=src2,
+                            _idx=idx,
+                            _dying_vars=dying_vars,
+                        ):
+                            v = self.register_map[r]
+                            if r == 'A' and v == _src1 and _src1 in self.live_out[_idx]:
+                                return 100
+                            if r == 'B' and v == _src2 and _src2 in self.live_out[_idx]:
+                                return 100
+                            if v is None:
+                                return 0
+                            if v in _dying_vars:
+                                return 1
+                            if not self._is_live(v, _idx):
+                                return 2
+                            if self.var_destinations.get(v) or self.var_sources.get(v):
+                                return 3
+                            return 4
 
-                    dest_reg = min(candidate_regs, key=get_reg_cost)
+                        dest_reg = min(candidate_regs, key=get_reg_cost)
 
                 # Check if dest_reg contains a live variable, evacuate if necessary
                 val_in_dest = self.register_map[dest_reg]
-                if val_in_dest and val_in_dest in self.live_out[idx]:
+                if (
+                    val_in_dest
+                    and val_in_dest != dest_var
+                    and val_in_dest in self.live_out[idx]
+                ):
                     self._evacuate_live_reg(
                         dest_reg,
                         val_in_dest,
@@ -503,7 +621,7 @@ class LogosCompiler:
                     )
 
                 # Emit CLEAR on destination register if it held a value or is physically dirty in legacy mode
-                if val_in_dest or (not pure_wave and dest_reg in self.physically_dirty):
+                if (val_in_dest and not (pure_wave and has_backedge)) or (not pure_wave and dest_reg in self.physically_dirty):
                     self._clear_reg(dest_reg, program)
 
                 # Emit the gate operation
@@ -516,7 +634,12 @@ class LogosCompiler:
 
             elif op_type == "STORE":
                 src_var, dest_basin = stmt[1], stmt[2]
-                reg_src = next((r for r, v in self.register_map.items() if v == src_var), None)
+                alias_pair = self._pending_store_reg_alias
+                self._pending_store_reg_alias = None
+                if alias_pair is not None and alias_pair[0] == src_var and self.register_map.get(alias_pair[1]) is not None:
+                    reg_src = alias_pair[1]
+                else:
+                    reg_src = next((r for r, v in self.register_map.items() if v == src_var), None)
                 if not reg_src:
                     basin = self.var_sources.get(src_var) or self.var_destinations.get(src_var)
                     if not basin:
@@ -540,6 +663,7 @@ class LogosCompiler:
                     self.register_map[reg_src] = src_var
 
                 program.append(Instruction("STORE", [reg_src, dest_basin]))
+                self.dirty_vars.discard(src_var)
                 if src_var not in self.read_only_input_vars:
                     self.var_sources.setdefault(src_var, dest_basin)
 
@@ -577,6 +701,7 @@ class LogosCompiler:
                     and source_basin == self.input_basins_by_var.get(dest_var)
                 )
                 self._set_register_var(dest_reg, dest_var, is_def=is_redef)
+                self.dirty_vars.discard(dest_var)
                 self.var_sources[dest_var] = source_basin
 
             elif op_type == "CALL_SUB":
@@ -591,12 +716,84 @@ class LogosCompiler:
             elif op_type == "COND_ASSIGN":
                 dest_var, cond_var, true_var, false_var = stmt[1], stmt[2], stmt[3], stmt[4]
 
+                if true_var == false_var:
+                    src_var = true_var
+                    reg_src = next((r for r, v in self.register_map.items() if v == src_var), None)
+                    if not reg_src:
+                        candidate_regs = ['C', 'D', 'A', 'B']
+
+                        def get_copy_src_cost(r, _idx=idx):
+                            v = self.register_map[r]
+                            if v is None:
+                                return 0
+                            if not self._is_live(v, _idx):
+                                return 1
+                            if self.var_destinations.get(v) or self.var_sources.get(v):
+                                return 2
+                            return 3
+
+                        target_src_reg = min(candidate_regs, key=get_copy_src_cost)
+                        reg_src = self._allocate_to_register(
+                            src_var, target_src_reg, idx, statements, program, pure_wave=pure_wave
+                        )
+
+                    if dest_var == src_var:
+                        continue
+
+                    next_stmt = statements[idx + 1] if (idx + 1 < len(statements)) else None
+                    if (
+                        next_stmt is not None
+                        and next_stmt[0] == "STORE"
+                        and next_stmt[1] == dest_var
+                        and dest_var not in self.live_out[idx + 1]
+                    ):
+                        if src_var in self.live_out[idx]:
+                            self._pending_store_reg_alias = (dest_var, reg_src)
+                        else:
+                            self._set_register_var(reg_src, dest_var, is_def=True)
+                        continue
+
+                    if src_var not in self.live_out[idx]:
+                        self._set_register_var(reg_src, dest_var, is_def=True)
+                        continue
+
+                    candidate_dest_regs = [r for r in ['C', 'D', 'A', 'B'] if r != reg_src]
+
+                    def get_copy_dest_cost(r, _idx=idx):
+                        v = self.register_map[r]
+                        if v is None:
+                            return 0
+                        if not self._is_live(v, _idx):
+                            return 1
+                        if self.var_destinations.get(v) or self.var_sources.get(v):
+                            return 2
+                        return 3
+
+                    dest_reg = min(candidate_dest_regs, key=get_copy_dest_cost)
+                    val_in_dest = self.register_map[dest_reg]
+                    if val_in_dest and val_in_dest in self.live_out[idx]:
+                        self._evacuate_live_reg(
+                            dest_reg,
+                            val_in_dest,
+                            idx,
+                            statements,
+                            program,
+                            pure_wave,
+                            exclude_reg=reg_src,
+                        )
+                    self._prepare_reg_for_write(dest_reg, program, pure_wave)
+                    program.append(Instruction("COPY", [reg_src, dest_reg]))
+                    self.physically_dirty.add(dest_reg)
+                    self._set_register_var(dest_reg, dest_var, is_def=True)
+                    continue
+
                 # Evacuate any unrelated live variable in D before we lock A, B, C
                 val_in_d = self.register_map['D']
                 if val_in_d and val_in_d not in (cond_var, true_var, false_var) and val_in_d in self.live_out[idx]:
                     if self._needs_spill_store(val_in_d):
                         spill_basin = self._get_or_alloc_spill_basin(val_in_d)
                         program.append(Instruction("STORE", ['D', spill_basin]))
+                        self.dirty_vars.discard(val_in_d)
                     self.register_map['D'] = None
 
                 # Allocate inputs to registers A, B, C respectively, handling repeated operand aliases cleanly
@@ -611,6 +808,7 @@ class LogosCompiler:
                     ):
                         spill_basin = self._get_or_alloc_spill_basin(val_in_b)
                         program.append(Instruction("STORE", ['B', spill_basin]))
+                        self.dirty_vars.discard(val_in_b)
                     self._prepare_reg_for_write('B', program, pure_wave)
                     program.append(Instruction("COPY", ['A', 'B']))
                     self.physically_dirty.add('B')
@@ -632,6 +830,7 @@ class LogosCompiler:
                     ):
                         spill_basin = self._get_or_alloc_spill_basin(val_in_c)
                         program.append(Instruction("STORE", ['C', spill_basin]))
+                        self.dirty_vars.discard(val_in_c)
                     self._prepare_reg_for_write('C', program, pure_wave)
                     program.append(Instruction("COPY", [src_alias_reg, 'C']))
                     self.physically_dirty.add('C')
@@ -650,6 +849,7 @@ class LogosCompiler:
                     if other_reg is None and self._needs_spill_store(val_in_dest):
                         spill_basin = self._get_or_alloc_spill_basin(val_in_dest)
                         program.append(Instruction("STORE", [dest_reg, spill_basin]))
+                        self.dirty_vars.discard(val_in_dest)
                     self.register_map[dest_reg] = None
 
                 self._prepare_reg_for_write(dest_reg, program, pure_wave)
@@ -754,14 +954,27 @@ class LogosCompiler:
                     self._clear_reg(reg_src, program)
 
             elif op_type == "LABEL":
-                self._spill_all_registers(idx, statements, program, pure_wave=pure_wave)
+                self._spill_all_registers(
+                    idx,
+                    statements,
+                    program,
+                    pure_wave=pure_wave,
+                    emit_clears=not (pure_wave and has_backedge),
+                )
                 label_name = stmt[1]
                 program.append(Instruction("LABEL", [label_name]))
                 if label_name in cond_jump_targets:
                     self.physically_dirty.update({'A', 'B', 'C', 'D'})
 
             elif op_type == "JUMP":
-                self._spill_all_registers(idx, statements, program, pure_wave=pure_wave, use_live_out_only=True)
+                self._spill_all_registers(
+                    idx,
+                    statements,
+                    program,
+                    pure_wave=pure_wave,
+                    use_live_out_only=True,
+                    emit_clears=not (pure_wave and has_backedge),
+                )
                 label_name = stmt[1]
                 program.append(Instruction("JUMP", [label_name]))
 
@@ -771,25 +984,39 @@ class LogosCompiler:
                 if not reg_cond:
                     reg_cond = self._allocate_to_register(cond_var, 'A', idx, statements, program, pure_wave=pure_wave)
 
+                fallthrough_live = self.live_in[idx + 1] if (idx + 1 < len(self.live_in)) else set()
+                spilled_vars: set[str] = set()
                 for reg in ['A', 'B', 'C', 'D']:
                     if reg != reg_cond:
                         var = self.register_map[reg]
                         if var is not None:
-                            if var in self.live_out[idx] and self._needs_spill_store(var):
+                            if var in self.live_out[idx] and var not in spilled_vars and self._needs_spill_store(var):
                                 spill_basin = self._get_or_alloc_spill_basin(var)
                                 program.append(Instruction("STORE", [reg, spill_basin]))
-                            self._clear_reg(reg, program)
+                                self.dirty_vars.discard(var)
+                                spilled_vars.add(var)
+                            if pure_wave and var in fallthrough_live:
+                                pass
+                            elif not (pure_wave and has_backedge):
+                                self._clear_reg(reg, program)
+                            else:
+                                self.register_map[reg] = None
                         elif not pure_wave and reg in self.physically_dirty:
                             self._clear_reg(reg, program)
 
                 # Spill reg_cond BEFORE JUMP_IF_ACTIVE so taken-branch targets read the live condition value
                 var = self.register_map[reg_cond]
-                if var is not None and var in self.live_out[idx] and self._needs_spill_store(var):
+                if var is not None and var in self.live_out[idx] and var not in spilled_vars and self._needs_spill_store(var):
                     spill_basin = self._get_or_alloc_spill_basin(var)
                     program.append(Instruction("STORE", [reg_cond, spill_basin]))
+                    self.dirty_vars.discard(var)
+                    spilled_vars.add(var)
 
                 program.append(Instruction("JUMP_IF_ACTIVE", [reg_cond, label_name]))
-                self._clear_reg(reg_cond, program)
+                if not (pure_wave and has_backedge):
+                    self._clear_reg(reg_cond, program)
+                else:
+                    self.register_map[reg_cond] = None
 
             elif op_type == "CLEAR_VAR":
                 var_name = stmt[1]

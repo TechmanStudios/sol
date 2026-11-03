@@ -133,7 +133,12 @@ def _discover_program_basins(
                 extra_names.append(b_name)
         elif op in ("NUDGE", "ASSERT_MASS") and len(inst.args) >= 1:
             b_name = str(inst.args[0])
-            if b_name.startswith("Basin_") and b_name not in known and b_name not in extra_names:
+            if (
+                b_name.startswith("Basin_")
+                and b_name != "Basin_ALL"
+                and b_name not in known
+                and b_name not in extra_names
+            ):
                 extra_names.append(b_name)
 
     for b_name in extra_names:
@@ -153,7 +158,14 @@ def _read_basin_state(record: dict, basin_name: str, basins_def: list[tuple[str,
     return int(record.get(state_key, 0))
 
 
-def build_custom_group(basins_def: list[tuple[str, int]], pure_wave: bool = False) -> ManifoldGroup:
+def build_custom_group(
+    basins_def: list[tuple[str, int]],
+    pure_wave: bool = False,
+    damping: float = 0.01,
+    *,
+    flip_threshold: float | None = None,
+    collapse_factor: float | None = None,
+) -> ManifoldGroup:
     nodes = []
     edges = []
     basins = []
@@ -167,7 +179,15 @@ def build_custom_group(basins_def: list[tuple[str, int]], pure_wave: bool = Fals
 
     semantic = SemanticManifold(nodes=nodes, edges=edges, basins=basins)
     processing = ProcessingManifold(pure_wave=pure_wave)
-    return ManifoldGroup(semantic, processing, c_press=1.0, damping=0.01, pure_wave=pure_wave)
+    return ManifoldGroup(
+        semantic,
+        processing,
+        c_press=1.0,
+        damping=damping,
+        pure_wave=pure_wave,
+        flip_threshold=flip_threshold,
+        collapse_factor=collapse_factor,
+    )
 
 
 def run_trial(
@@ -179,11 +199,20 @@ def run_trial(
     detect_sr_hazard: bool = False,
     wave_threshold_offset: float = 0.0,
     custom_task: Any = None,
+    damping: float = 0.01,
+    flip_threshold: float | None = None,
+    collapse_factor: float | None = None,
 ) -> tuple[list[dict], bool, str]:
     task = custom_task if custom_task is not None else TASKS[task_name]
     effective_pure_wave = bool(getattr(program, "pure_wave", False)) if pure_wave is None else bool(pure_wave)
     basins_def = _discover_program_basins(task["basins_def"], program)
-    group = build_custom_group(basins_def, pure_wave=effective_pure_wave)
+    group = build_custom_group(
+        basins_def,
+        pure_wave=effective_pure_wave,
+        damping=damping,
+        flip_threshold=flip_threshold,
+        collapse_factor=collapse_factor,
+    )
 
     # Prime all non-input / scratch / output basins to clean default state initially
     for b_name, _ in basins_def:
@@ -250,6 +279,7 @@ def run_trial(
                     return full_history, False, f"Mass preservation breach: active Register {reg} mass is {reg_mass:.2f} (< 14.0)"
 
         full_history[-1]["python_boolean_shortcuts_used"] = sequencer.python_boolean_shortcuts_used
+        full_history[-1]["pure_wave_quench_ops"] = sequencer.pure_wave_quench_ops
         full_history[-1]["wave_gate_telemetry"] = list(sequencer.wave_gate_telemetry)
         return full_history, True, "All sequential verification checks passed!"
 
@@ -266,6 +296,7 @@ def run_trial(
             return [], False, f"Sequencer VM execution error: {e}"
 
         history[-1]["python_boolean_shortcuts_used"] = sequencer.python_boolean_shortcuts_used
+        history[-1]["pure_wave_quench_ops"] = sequencer.pure_wave_quench_ops
         history[-1]["wave_gate_telemetry"] = list(sequencer.wave_gate_telemetry)
 
         if effective_pure_wave and sequencer.python_boolean_shortcuts_used != 0:

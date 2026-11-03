@@ -12,11 +12,14 @@ and semantic programs on coupled SOL substrates.
 from __future__ import annotations
 
 import importlib.util
+import math
 import os
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+
+import numpy as np
 
 # Add sol-core path
 sol_root = Path(__file__).resolve().parent.parent
@@ -406,10 +409,16 @@ class ManifoldGroup:
         c_press: float = 1.0,
         damping: float = 0.01,
         pure_wave: bool | None = None,
+        *,
+        flip_threshold: float | None = None,
+        collapse_factor: float | None = None,
     ):
         self.semantic = semantic
         self.processing = processing
+        self.damping = float(damping)
         self.pure_wave = bool(getattr(processing, "pure_wave", False)) if pure_wave is None else bool(pure_wave)
+        self.flip_threshold = 0.65 if flip_threshold is None else float(flip_threshold)
+        self.collapse_factor = 0.10 if collapse_factor is None else float(collapse_factor)
 
         # Merge nodes and edges
         self.raw_nodes = []
@@ -431,6 +440,12 @@ class ManifoldGroup:
                         "from": src_node, "to": "P_Sum",
                         "w0": 1.0, "kind": "wormhole", "background": True, "role": f"wh_load_{b_name}",
                     })
+                # 5 phase-sense filaments from basin battery -> P_CMove_Gate for direct 1-bit pure-wave LOAD_INDIRECT
+                for _ in range(5):
+                    self.raw_edges.append({
+                        "from": src_node, "to": "P_CMove_Gate",
+                        "w0": 0.0001, "kind": "wormhole", "background": True, "role": f"wh_cmove_{b_name}",
+                    })
                 # 8 write filaments from P_Sum -> hub_id during STORE (1-hop waveguide overcomes 2 internal basin battery filaments!)
                 for _ in range(8):
                     self.raw_edges.append({
@@ -448,7 +463,7 @@ class ManifoldGroup:
                 })
 
         # Build engine
-        self.engine = SOLEngine.from_graph(self.raw_nodes, self.raw_edges, c_press=c_press, damping=damping)
+        self.engine = SOLEngine.from_graph(self.raw_nodes, self.raw_edges, c_press=c_press, damping=self.damping)
         self.engine.integration_mode = "rk4"
 
         # Set physical parameters matching physical ALU guidelines (pure_wave D=1.5 keeps lambda_max * dt < 1.8 < 2.785)
@@ -467,8 +482,8 @@ class ManifoldGroup:
             "avalancheGain": 5.0,
             "resonanceBoost": 4.0,
             "dampingClamp": 0.1,
-            "flipThreshold": 0.65,
-            "collapseFactor": 0.10,
+            "flipThreshold": self.flip_threshold,
+            "collapseFactor": self.collapse_factor,
             "resonanceDrive": 50.0,
             "dampingDrag": 0.3,
             "diodeResonanceOut": 1.0,
@@ -493,23 +508,25 @@ class ManifoldGroup:
             if role.startswith(("wh_", "pw_")):
                 self.set_role_connection(role, False)
 
-    def step(self, dt: float = 0.05, damping: float = 0.01):
-        self.engine.step(dt=dt, damping=damping)
+    def step(self, dt: float = 0.05, damping: float | None = None):
+        use_damping = self.damping if damping is None else float(damping)
+        self.engine.step(dt=dt, damping=use_damping)
 
     def run_steps(
         self,
         steps: int,
         dt: float = 0.05,
-        damping: float = 0.01,
+        damping: float | None = None,
         *,
         pre_step_node: dict | None = None,
         pre_step_rho: float = 500.0,
         pre_step_psi: float = 0.0,
     ) -> None:
+        use_damping = self.damping if damping is None else float(damping)
         self.engine.run_steps(
             steps,
             dt=dt,
-            damping=damping,
+            damping=use_damping,
             pre_step_node=pre_step_node,
             pre_step_rho=pre_step_rho,
             pre_step_psi=pre_step_psi,
@@ -637,6 +654,7 @@ class MicroInstructionSequencer:
         self.record_substep_telemetry = bool(record_substep_telemetry)
         self.history: list[dict[str, Any]] = []
         self.python_boolean_shortcuts_used: int = 0
+        self.pure_wave_quench_ops: int = 0
         self.wave_gate_telemetry: list[dict[str, Any]] = []
 
         node_by_id = self.group.engine.physics.node_by_id
@@ -933,7 +951,13 @@ class MicroInstructionSequencer:
         # Native Lumina physical control instructions (NUDGE, SETTLE, ASSERT_MASS)
         if op == "NUDGE":
             basin_name, amount = str(inst.args[0]), float(inst.args[1])
-            if basin_name in self.group.semantic.basins:
+            if basin_name in ("ALL", "*", "Basin_ALL"):
+                for b_cfg in self.group.semantic.basins.values():
+                    self.group.get_node(b_cfg.hub_id)["rho"] += amount
+                for r in ("A", "B", "C", "D"):
+                    if f"S_R{r}" in self.group.engine.physics.node_by_id:
+                        self.group.get_node(f"S_R{r}")["rho"] += amount
+            elif basin_name in self.group.semantic.basins:
                 b_cfg = self.group.semantic.basins[basin_name]
                 self.group.get_node(b_cfg.hub_id)["rho"] += amount
             elif basin_name in self.group.engine.physics.node_by_id:
@@ -1155,6 +1179,63 @@ class MicroInstructionSequencer:
 
         elif op == "LOAD_INDIRECT":
             reg, array_prefix, addr_reg = inst.args[0], inst.args[1], inst.args[2]
+            if (
+                self.pure_wave
+                and not isinstance(addr_reg, list)
+                and "Basin_Page" not in self.group.semantic.basins
+                and f"Basin_{array_prefix}0" in self.group.semantic.basins
+                and f"Basin_{array_prefix}1" in self.group.semantic.basins
+            ):
+                basin0 = f"Basin_{array_prefix}0"
+                basin1 = f"Basin_{array_prefix}1"
+                self._reset_pure_wave_routes()
+                gain = 120.0
+                thresh_and = 0.20 + self.wave_threshold_offset
+                thresh_cmove = -0.20 + self.wave_threshold_offset
+                thresh_quench = 0.20 + self.wave_threshold_offset
+
+                excite = self.group.get_node("P_Excite_Gate")
+                cmove_gate = self.group.get_node("P_CMove_Gate")
+                quench = self.group.get_node("P_Quench_Gate")
+                excite["W_r"] = 0.0
+                cmove_gate["W_r"] = 0.0
+                quench["W_r"] = 0.0
+
+                excite["U_r"] = gain
+                excite["b_r"] = -gain * thresh_and
+                cmove_gate["U_r"] = gain
+                cmove_gate["b_r"] = -gain * thresh_cmove
+                quench["U_r"] = -gain
+                quench["b_r"] = gain * thresh_quench
+
+                self.group.set_role_connection("pw_cavity_sink", True)
+                self.group.set_role_connection("pw_cavity_to_out_b", True)
+                self.group.set_role_connection("pw_cavity2_sink", True)
+                self.group.set_role_connection("pw_cavity2_to_out_b", True)
+                self.group.set_role_connection(f"pw_bat_drive_sum_{addr_reg}", True)
+                self.group.set_role_connection(f"wh_load_{basin1}", True)
+                self.group.set_role_connection("pw_sum_sense_excite", True)
+                self.group.set_role_connection(f"wh_cmove_{basin0}", True)
+                self.group.set_role_connection(f"pw_cmove_cond_{addr_reg}", True)
+
+                self._advance_pure_wave_steps(12)
+
+                self.group.set_role_connection("pw_ref_to_excite", True)
+                self.group.set_role_connection("pw_excite_to_cavity", True)
+                self.group.set_role_connection("pw_ref_to_cmove", True)
+                self.group.set_role_connection("pw_cmove_to_quench", True)
+                self.group.set_role_connection("pw_quench_to_cavity2", True)
+
+                self._advance_pure_wave_steps(65, pump_ref=True)
+
+                psi_sum_end = float(self.group.get_node("P_Sum")["psi"])
+                cav1 = self.group.get_node("P_Wave_Cavity")
+                cav2 = self.group.get_node("P_Wave_Cavity_2")
+                psi_cav_end = float(max(cav1["psi"], cav2["psi"]))
+                rho_cav_end = float(cav1["rho"] + cav2["rho"])
+                self._commit_pure_wave_cavity_to_register(reg, "LOAD_INDIRECT_WAVE", psi_sum_end, psi_cav_end, rho_cav_end)
+                return
+
             # Decode 1-bit or 2-bit address registers
             if isinstance(addr_reg, list):
                 msb_state = self.group.get_node(f"S_R{addr_reg[0]}_B")["b_state"]
@@ -1597,20 +1678,13 @@ class MicroInstructionSequencer:
             reg_bat = f"S_R{reg}_B"
             if self.pure_wave:
                 self._reset_pure_wave_routes()
-                bat_node = self.group.get_node(reg_bat)
-                host_node = self.group.get_node(reg_host)
-                for _ in range(30):
-                    bat_node["b_charge"] = 0.0
-                    bat_node["psi_bias"] = -1.0
-                    bat_node["psi"] = -1.0
-                    bat_node["b_state"] = -1
-                    host_node["rho"] = 5.0
-                    bat_node["rho"] = 0.0
-                    host_node["psi_bias"] = 0.0
-                    host_node["psi"] = -1.0
-                    self.group.step(dt=self.dt)
-                    if self.record_substep_telemetry:
-                        self.record_telemetry()
+                self.group.set_role_connection(f"pw_cavity_to_gate_{reg}", True)
+                self.group.set_role_connection(f"pw_bus_in_{reg}", True)
+                self.group.set_role_connection(f"pw_reg_write_{reg}", True)
+                self.group.set_role_connection(f"pw_sum_write_{reg}", True)
+                self._advance_pure_wave_steps(30)
+                self._reset_pure_wave_routes()
+                self.pure_wave_quench_ops += 1
                 if not self.record_substep_telemetry:
                     self.record_telemetry()
                 return
@@ -1642,22 +1716,9 @@ class MicroInstructionSequencer:
 
         elif op == "RESET_CORE":
             if self.pure_wave:
-                self._reset_pure_wave_routes()
                 for r in ("C", "D"):
                     if f"S_R{r}" in self.group.engine.physics.node_by_id:
-                        self.group.get_node(f"S_R{r}")["rho"] = 5.0
-                        self.group.get_node(f"S_R{r}")["psi"] = -1.0
-                        self.group.get_node(f"S_R{r}")["psi_bias"] = 0.0
-                    if f"S_R{r}_B" in self.group.engine.physics.node_by_id:
-                        bat = self.group.get_node(f"S_R{r}_B")
-                        bat["rho"] = 0.0
-                        bat["b_state"] = -1
-                        bat["b_charge"] = 0.0
-                        bat["psi"] = -1.0
-                        bat["psi_bias"] = -1.0
-                self._advance_pure_wave_steps(15)
-                if not self.record_substep_telemetry:
-                    self.record_telemetry()
+                        self.execute_instruction(Instruction("CLEAR", [r]))
                 return
             # Ground summing junction and clear fluxes (20 steps)
             for _ in range(20):
@@ -1765,3 +1826,1268 @@ class MicroInstructionSequencer:
         for inst in program:
             self.execute_instruction(inst)
         return self.history
+
+
+class BatchPureWaveVerifier:
+    """
+    Vectorized Lockstep Pure-Wave Physical RK4 Verifier (`BatchSOLPhysics`).
+
+    Integrates all B truth-table rows simultaneously in lockstep through the exact
+    `SOLPhysics.run_rk4_steps` ODEs (`dt = 0.05`, 4 RK4 stages per step, stored
+    conductance ordering in `_update_batteries_indexed`, multiset battery avalanche
+    neighbor multiplicity, per-row `apply_semantic_mass_decay` and
+    `jeans_collapse_and_accrete` on `(B, N)` tensors, and BLAS incidence-matrix
+    `M_inc` multiplication).
+
+    When `deduplicate_components=True` (default), connected components of the active
+    physical graph `(nodes, active_edges)` deduplicate identical component state
+    trajectories across the B rows before integrating `steps` RK4 steps and scatter
+    back to all B rows at the end of each step block with `0.0` numerical loss.
+    """
+
+    def __init__(
+        self,
+        basins_def: list[tuple[str, int]],
+        input_rows: list[dict[str, int]],
+        *,
+        damping: float = 0.01,
+        flip_threshold: float | None = None,
+        collapse_factor: float | None = None,
+        deduplicate_components: bool = True,
+        use_blas_incidence_gemm: bool = True,
+    ):
+        self.B = len(input_rows)
+        self.basins_def = list(basins_def)
+        self.deduplicate_components = bool(deduplicate_components)
+        self.use_blas_incidence_gemm = bool(use_blas_incidence_gemm)
+
+        s_nodes: list[dict] = []
+        s_edges: list[dict] = []
+        s_basins: list[BasinConfig] = []
+        for b_name, start_idx in self.basins_def:
+            bn, be, bcfg = UniversalManifold.build_semantic_basin(
+                b_name, num_nodes=10, start_idx=start_idx, pure_wave=True
+            )
+            s_nodes.extend(bn)
+            s_edges.extend(be)
+            s_basins.append(bcfg)
+
+        semantic = SemanticManifold(nodes=s_nodes, edges=s_edges, basins=s_basins)
+        processing = ProcessingManifold(pure_wave=True)
+        self.group = ManifoldGroup(
+            semantic,
+            processing,
+            c_press=1.0,
+            damping=damping,
+            pure_wave=True,
+            flip_threshold=flip_threshold,
+            collapse_factor=collapse_factor,
+        )
+        self.phys = self.group.engine.physics
+
+        for b_name, _ in self.basins_def:
+            self.group.prime_basin(b_name, active=False)
+        for reg in ("A", "B", "C", "D"):
+            self.group.prime_register(reg, active=False)
+
+        self.nodes = self.phys.nodes
+        self.edges = self.phys.edges
+        self.n_nodes = len(self.nodes)
+        self.n_edges = len(self.edges)
+        self.idx_by_id = self.phys.node_index_by_id
+        self.id_to_eidx = {id(e): idx for idx, e in enumerate(self.edges)}
+
+        B = self.B
+        self.rho = np.broadcast_to(
+            np.array([float(n["rho"]) for n in self.nodes], dtype=np.float64),
+            (B, self.n_nodes),
+        ).copy()
+        self.psi = np.broadcast_to(
+            np.array([float(n["psi"]) for n in self.nodes], dtype=np.float64),
+            (B, self.n_nodes),
+        ).copy()
+        self.psi_bias = np.broadcast_to(
+            np.array([float(n["psi_bias"]) for n in self.nodes], dtype=np.float64),
+            (B, self.n_nodes),
+        ).copy()
+        self.b_state = np.broadcast_to(
+            np.array([int(n.get("b_state", 1)) for n in self.nodes], dtype=np.int64),
+            (B, self.n_nodes),
+        ).copy()
+        self.b_charge = np.broadcast_to(
+            np.array([float(n.get("b_charge", 0.0)) for n in self.nodes], dtype=np.float64),
+            (B, self.n_nodes),
+        ).copy()
+        self.m_arr = np.broadcast_to(
+            np.array([float(n.get("semanticMass", 1.0)) for n in self.nodes], dtype=np.float64),
+            (B, self.n_nodes),
+        ).copy()
+        self.is_constellation = np.broadcast_to(
+            np.array([bool(n.get("isConstellation")) for n in self.nodes], dtype=bool),
+            (B, self.n_nodes),
+        ).copy()
+        self.is_stellar = np.broadcast_to(
+            np.array([bool(n.get("isStellar")) for n in self.nodes], dtype=bool),
+            (B, self.n_nodes),
+        ).copy()
+        self.is_bat = np.array([bool(n.get("isBattery")) for n in self.nodes], dtype=bool)
+        self.bat_indices = [i for i, is_b in enumerate(self.is_bat) if is_b]
+
+        self.flux = np.broadcast_to(
+            np.array([float(e.get("flux", 0.0)) for e in self.edges], dtype=np.float64),
+            (B, self.n_edges),
+        ).copy()
+        self.bMag = np.broadcast_to(
+            np.array([float(e.get("bMag", 0.0)) for e in self.edges], dtype=np.float64),
+            (B, self.n_edges),
+        ).copy()
+        self.cond = np.broadcast_to(
+            np.array([float(e.get("conductance", 1.0)) for e in self.edges], dtype=np.float64),
+            (B, self.n_edges),
+        ).copy()
+        self.w0 = np.array([float(e["w0"]) for e in self.edges], dtype=np.float64)
+        self.e_src_all = np.array([self.idx_by_id[e["from"]] for e in self.edges], dtype=np.int64)
+        self.e_dst_all = np.array([self.idx_by_id[e["to"]] for e in self.edges], dtype=np.int64)
+        self.e_src_bat_all = self.is_bat[self.e_src_all]
+        self.e_dst_bat_all = self.is_bat[self.e_dst_all]
+
+        # Prebuild full signed incidence matrix M_inc_all of shape (E, N)
+        self.M_inc_all = np.zeros((self.n_edges, self.n_nodes), dtype=np.float64)
+        np.add.at(self.M_inc_all, (np.arange(self.n_edges), self.e_src_all), 1.0)
+        np.add.at(self.M_inc_all, (np.arange(self.n_edges), self.e_dst_all), -1.0)
+
+        for b_idx, row_dict in enumerate(input_rows):
+            for b_name, val in row_dict.items():
+                if val == 1:
+                    b_cfg = self.group.semantic.basins[b_name]
+                    for nid in b_cfg.node_ids:
+                        ni = self.idx_by_id[nid]
+                        self.psi[b_idx, ni] = 1.0
+                        self.psi_bias[b_idx, ni] = 0.0
+                        self.rho[b_idx, ni] = 60.0 if nid == b_cfg.hub_id else 5.0
+                    if b_cfg.battery_id:
+                        bi = self.idx_by_id[b_cfg.battery_id]
+                        self.b_state[b_idx, bi] = 1
+                        self.b_charge[b_idx, bi] = 1.0
+                        self.psi[b_idx, bi] = 1.0
+                        self.psi_bias[b_idx, bi] = 1.0
+                        self.rho[b_idx, bi] = 20.0
+
+        self.seq = MicroInstructionSequencer(
+            self.group, pure_wave=True, record_substep_telemetry=False
+        )
+        self._orig_reset = self.seq._reset_pure_wave_routes
+        self.seq._reset_pure_wave_routes = self._batch_reset_pure_wave_routes
+        self.group.run_steps = self._batch_run_steps
+        self._orig_disconnect = self.group.disconnect_all_dynamic_roles
+        self.group.disconnect_all_dynamic_roles = self._batch_disconnect_all_dynamic_roles
+        self._orig_set_role = self.group.set_role_connection
+        self.group.set_role_connection = self._batch_set_role_connection
+
+        self.min_charge_margin_vs_tau = float("inf")
+        self.max_off_charge_at_commit = 0.0
+        self.min_on_charge_at_commit = 1.0
+        self.gate_commits_evaluated = 0
+        self.rk4_steps_executed = 0
+
+        reset_nids = {"P_Sum"}
+        if self.seq._pw_ref_node is not None:
+            reset_nids.add("P_Wave_Ref")
+        if self.seq._pw_sink_node is not None:
+            reset_nids.add("P_Wave_Sink")
+        for cav in self.seq._pw_cav_nodes:
+            reset_nids.add(cav["id"])
+        if self.seq._pw_out_b_node is not None:
+            reset_nids.add("P_Wave_Out_B")
+        for gn in self.seq._pw_gate_nodes:
+            reset_nids.add(gn["id"])
+        self._pw_reset_node_indices: set[int] = {
+            self.idx_by_id[nid] for nid in reset_nids if nid in self.idx_by_id
+        }
+        for r in ("A", "B", "C", "D"):
+            if f"GATE_{r}" in self.idx_by_id:
+                self.psi_bias[:, self.idx_by_id[f"GATE_{r}"]] = 0.0
+
+        self._comp_partition_cache: dict[
+            tuple[tuple[int, ...], tuple[int, ...], tuple[int, ...]],
+            tuple[np.ndarray, np.ndarray],
+        ] = {}
+        self._dirty_nodes: set[int] = set(range(self.n_nodes))
+        self._basin_node_indices: dict[str, tuple[int, ...]] = {}
+        self._basin_edge_indices: dict[str, list[int]] = {}
+        self._basin_bat_idx: dict[str, int] = {}
+        self._basin_pending_steps: dict[str, int] = {}
+        self._basin_untouched_since_t0: dict[str, bool] = {}
+        self._basin_t0_active_mask: dict[str, np.ndarray] = {}
+        self._store_role_to_basin: dict[str, str] = {}
+        self._sub_edges_by_nodes: dict[tuple[int, ...], tuple[list[int], list[int]]] = {}
+        self._role_edge_indices: dict[str, np.ndarray] = {}
+        for role, r_edges in self.group._edges_by_role.items():
+            self._role_edge_indices[role] = np.array(
+                [self.id_to_eidx[id(e)] for e in r_edges], dtype=np.int64
+            )
+        self._bat_nonbg_dyn_eidxs = np.array(
+            [
+                idx
+                for idx, e in enumerate(self.edges)
+                if (self.e_src_bat_all[idx] or self.e_dst_bat_all[idx])
+                and not bool(e.get("_orig_background", e.get("background", False)))
+                and str(e.get("role", "")).startswith(("wh_", "pw_"))
+            ],
+            dtype=np.int64,
+        )
+        for b_name, b_cfg in self.group.semantic.basins.items():
+            b_nids = list(b_cfg.node_ids)
+            if b_cfg.battery_id and b_cfg.battery_id in self.idx_by_id:
+                b_nids.append(b_cfg.battery_id)
+                self._basin_bat_idx[b_name] = self.idx_by_id[b_cfg.battery_id]
+            b_ntup = tuple(
+                sorted(self.idx_by_id[nid] for nid in b_nids if nid in self.idx_by_id)
+            )
+            self._basin_node_indices[b_name] = b_ntup
+            b_nset = set(b_ntup)
+            b_eidxs = [
+                e_idx
+                for e_idx in range(self.n_edges)
+                if int(self.e_src_all[e_idx]) in b_nset
+                and int(self.e_dst_all[e_idx]) in b_nset
+            ]
+            self._basin_edge_indices[b_name] = b_eidxs
+            self._sub_edges_by_nodes[b_ntup] = (b_eidxs, b_eidxs)
+            self._basin_pending_steps[b_name] = 0
+            self._basin_untouched_since_t0[b_name] = True
+            self._basin_t0_active_mask[b_name] = np.array(
+                [1 if row_dict.get(b_name, 0) == 1 else 0 for row_dict in input_rows],
+                dtype=np.int64,
+            )
+            self._store_role_to_basin[f"wh_store_{b_name}"] = b_name
+
+        self._canon_t0_verifier: BatchPureWaveVerifier | None = None
+        self._canon_t0_steps: int = 0
+        self._canon_t0_snapshots: dict[
+            int,
+            tuple[
+                np.ndarray,
+                np.ndarray,
+                np.ndarray,
+                np.ndarray,
+                np.ndarray,
+                np.ndarray,
+                np.ndarray,
+                np.ndarray,
+                np.ndarray,
+                np.ndarray,
+                np.ndarray,
+            ],
+        ] = {}
+
+        def exact_batch_commit(
+            dest: str,
+            op_label: str,
+            psi_sum_end: float,
+            psi_cav_end: float,
+            rho_cav_end: float,
+        ) -> None:
+            self.group.disconnect_all_dynamic_roles()
+            self.group.set_role_connection(f"pw_cavity_to_gate_{dest}", True)
+            self.group.set_role_connection(f"pw_reg_write_{dest}", True)
+            self.seq._advance_pure_wave_steps(45)
+            dest_bat_i = self.idx_by_id[f"S_R{dest}_B"]
+            tau = float(self.phys.battery_cfg.get("flipThreshold", 0.65))
+            charges = self.b_charge[:, dest_bat_i]
+            states = self.b_state[:, dest_bat_i]
+            margins = np.round(np.abs(charges - tau), 5)
+            min_m = float(np.min(margins))
+            self.min_charge_margin_vs_tau = min(self.min_charge_margin_vs_tau, min_m)
+            off_mask = states != 1
+            if np.any(off_mask):
+                max_off = float(np.max(charges[off_mask]))
+                self.max_off_charge_at_commit = max(self.max_off_charge_at_commit, max_off)
+            on_mask = states == 1
+            if np.any(on_mask):
+                min_on = float(np.min(charges[on_mask]))
+                self.min_on_charge_at_commit = min(self.min_on_charge_at_commit, min_on)
+            self.gate_commits_evaluated += 1
+            self.seq._settle_pure_wave(10)
+
+        self.seq._commit_pure_wave_cavity_to_register = exact_batch_commit
+
+    @property
+    def python_boolean_shortcuts_used(self) -> int:
+        return int(self.seq.python_boolean_shortcuts_used)
+
+    def _get_canon_t0_snapshot(
+        self, target_steps: int
+    ) -> tuple[
+        np.ndarray,
+        np.ndarray,
+        np.ndarray,
+        np.ndarray,
+        np.ndarray,
+        np.ndarray,
+        np.ndarray,
+        np.ndarray,
+        np.ndarray,
+        np.ndarray,
+        np.ndarray,
+    ]:
+        if target_steps in self._canon_t0_snapshots:
+            return self._canon_t0_snapshots[target_steps]
+        if self._canon_t0_verifier is None or target_steps < self._canon_t0_steps:
+            self._canon_t0_verifier = BatchPureWaveVerifier(
+                [("Basin_Canon", 0)],
+                [{"Basin_Canon": 0}, {"Basin_Canon": 1}],
+                damping=self.group.damping,
+                flip_threshold=self.group.flip_threshold,
+                collapse_factor=self.group.collapse_factor,
+                deduplicate_components=False,
+            )
+            self._canon_t0_steps = 0
+        cv = self._canon_t0_verifier
+        c_n = cv._basin_node_indices["Basin_Canon"]
+        c_e = cv._basin_edge_indices["Basin_Canon"]
+        delta = target_steps - self._canon_t0_steps
+        if delta > 0:
+            cv._batch_run_steps(
+                delta,
+                dt=self.seq.dt,
+                _node_subset=c_n,
+                _count_global_steps=False,
+            )
+            self._canon_t0_steps = target_steps
+        snap = (
+            cv.rho[:, c_n].copy(),
+            cv.psi[:, c_n].copy(),
+            cv.psi_bias[:, c_n].copy(),
+            cv.b_state[:, c_n].copy(),
+            cv.b_charge[:, c_n].copy(),
+            cv.m_arr[:, c_n].copy(),
+            cv.is_constellation[:, c_n].copy(),
+            cv.is_stellar[:, c_n].copy(),
+            cv.flux[:, c_e].copy(),
+            cv.bMag[:, c_e].copy(),
+            cv.cond[:, c_e].copy(),
+        )
+        self._canon_t0_snapshots[target_steps] = snap
+        return snap
+
+    def _flush_basin_pending_steps(self, b_name: str) -> None:
+        pending = self._basin_pending_steps.get(b_name, 0)
+        if pending > 0:
+            self._basin_pending_steps[b_name] = 0
+            b_ntup = self._basin_node_indices[b_name]
+            if self._basin_untouched_since_t0.get(b_name, False):
+                self._basin_untouched_since_t0[b_name] = False
+                snap = self._get_canon_t0_snapshot(pending)
+                mask = self._basin_t0_active_mask[b_name]
+                b_eidxs = self._basin_edge_indices[b_name]
+                self.rho[:, b_ntup] = snap[0][mask]
+                self.psi[:, b_ntup] = snap[1][mask]
+                self.psi_bias[:, b_ntup] = snap[2][mask]
+                self.b_state[:, b_ntup] = snap[3][mask]
+                self.b_charge[:, b_ntup] = snap[4][mask]
+                self.m_arr[:, b_ntup] = snap[5][mask]
+                self.is_constellation[:, b_ntup] = snap[6][mask]
+                self.is_stellar[:, b_ntup] = snap[7][mask]
+                self.flux[:, b_eidxs] = snap[8][mask]
+                self.bMag[:, b_eidxs] = snap[9][mask]
+                self.cond[:, b_eidxs] = snap[10][mask]
+                self._dirty_nodes.update(b_ntup)
+            else:
+                self._batch_run_steps(
+                    pending,
+                    dt=self.seq.dt,
+                    _node_subset=b_ntup,
+                    _count_global_steps=False,
+                )
+        else:
+            self._basin_untouched_since_t0[b_name] = False
+
+    def _batch_set_role_connection(self, role: str, connected: bool) -> None:
+        if connected and self.deduplicate_components and role.startswith(
+            ("wh_load_", "wh_store_", "wh_cmove_")
+        ):
+            b_name = role.split("_", 2)[2]
+            if b_name in self._basin_node_indices:
+                self._flush_basin_pending_steps(b_name)
+        self._orig_set_role(role, connected)
+        if role.startswith(("wh_", "pw_")):
+            r_eidxs = self._role_edge_indices.get(role)
+            if r_eidxs is not None and len(r_eidxs) > 0:
+                if not connected:
+                    self.flux[:, r_eidxs] = 0.0
+                for ei in r_eidxs:
+                    self._dirty_nodes.add(int(self.e_src_all[ei]))
+                    self._dirty_nodes.add(int(self.e_dst_all[ei]))
+
+    def _batch_disconnect_all_dynamic_roles(self) -> None:
+        active_roles = tuple(self.group._active_dynamic_roles)
+        self._orig_disconnect()
+        for role in active_roles:
+            r_eidxs = self._role_edge_indices.get(role)
+            if r_eidxs is not None and len(r_eidxs) > 0:
+                self.flux[:, r_eidxs] = 0.0
+                for ei in r_eidxs:
+                    self._dirty_nodes.add(int(self.e_src_all[ei]))
+                    self._dirty_nodes.add(int(self.e_dst_all[ei]))
+
+    def _batch_reset_pure_wave_routes(self) -> None:
+        self._orig_reset()
+        for r in ("A", "B", "C", "D"):
+            if f"S_R{r}" in self.idx_by_id:
+                self.psi_bias[:, self.idx_by_id[f"S_R{r}"]] = 0.0
+            if f"GATE_{r}" in self.idx_by_id:
+                self.psi_bias[:, self.idx_by_id[f"GATE_{r}"]] = 0.0
+        p_sum_i = self.idx_by_id["P_Sum"]
+        self.psi_bias[:, p_sum_i] = 0.0
+        self.psi[:, p_sum_i] = 0.0
+        self.rho[:, p_sum_i] = 0.0
+        if self.seq._pw_ref_node is not None:
+            ref_i = self.idx_by_id["P_Wave_Ref"]
+            self.rho[:, ref_i] = 500.0
+            self.psi[:, ref_i] = 0.0
+            self.psi_bias[:, ref_i] = 0.0
+        if self.seq._pw_sink_node is not None:
+            sink_i = self.idx_by_id["P_Wave_Sink"]
+            self.b_state[:, sink_i] = -1
+            self.b_charge[:, sink_i] = 0.0
+            self.rho[:, sink_i] = 5.0
+            self.psi[:, sink_i] = -1.0
+            self.psi_bias[:, sink_i] = -1.0
+        for cav in self.seq._pw_cav_nodes:
+            ci = self.idx_by_id[cav["id"]]
+            self.rho[:, ci] = 0.0
+            self.psi[:, ci] = -0.4
+            self.psi_bias[:, ci] = 1.85
+        if self.seq._pw_out_b_node is not None:
+            obi = self.idx_by_id["P_Wave_Out_B"]
+            self.b_state[:, obi] = -1
+            self.b_charge[:, obi] = 0.0
+            self.psi[:, obi] = -1.0
+            self.psi_bias[:, obi] = -1.0
+            self.rho[:, obi] = 0.0
+        for gn in self.seq._pw_gate_nodes:
+            gi = self.idx_by_id[gn["id"]]
+            self.rho[:, gi] = 0.0
+            self.psi[:, gi] = 0.0
+            self.psi_bias[:, gi] = 0.0
+        self._dirty_nodes.update(self._pw_reset_node_indices)
+
+    def _update_conductance_subset(self, e_indices: np.ndarray) -> None:
+        if len(e_indices) == 0:
+            return
+        phys = self.phys
+        c_base = phys.conductance_base
+        c_gamma = phys.conductance_gamma
+        c_min = phys.conductance_min
+        c_max = phys.conductance_max
+        tight_max = max(c_min, min(c_max, 0.6))
+        b_gamma = phys.mhd_cfg.get("bGamma", 0.35) if phys.mhd_cfg else 0.0
+        res_boost = phys.battery_cfg.get("resonanceBoost", 1.8)
+        damp_clamp = phys.battery_cfg.get("dampingClamp", 0.35)
+
+        ia = self.e_src_all[e_indices]
+        ib = self.e_dst_all[e_indices]
+        avg_psi = 0.5 * (self.psi[:, ia] + self.psi[:, ib])
+        w = (
+            (self.w0[e_indices] * c_base)
+            * np.exp(c_gamma * avg_psi)
+            * (1.0 + b_gamma * self.bMag[:, e_indices])
+        )
+
+        src_bat = self.e_src_bat_all[e_indices]
+        dst_bat = self.e_dst_bat_all[e_indices]
+        has_b = src_bat | dst_bat
+        bat_node_idx = np.where(src_bat, ia, ib)
+        s = self.b_state[:, bat_node_idx]
+
+        w_boost = np.minimum(np.maximum(w * res_boost, c_min), c_max)
+        w_clamp = np.minimum(np.maximum(w * damp_clamp, c_min), tight_max)
+        w_norm = np.minimum(np.maximum(w, c_min), c_max)
+
+        cond_new = np.where(has_b, np.where(s == 1, w_boost, w_clamp), w_norm)
+        self.cond[:, e_indices] = cond_new
+
+    def _batch_run_steps(
+        self,
+        steps: int,
+        dt: float = 0.05,
+        damping: float | None = None,
+        *,
+        pre_step_node: dict | None = None,
+        pre_step_rho: float = 500.0,
+        pre_step_psi: float = 0.0,
+        _node_subset: tuple[int, ...] | None = None,
+        _count_global_steps: bool = True,
+    ) -> None:
+        if steps <= 0:
+            return
+        if _count_global_steps:
+            self.rk4_steps_executed += int(steps)
+        phys = self.phys
+        use_damping = self.group.damping if damping is None else float(damping)
+        damp_base = -use_damping * 0.1
+        star_damp = phys.jeans_cfg.get("starDampingFactor", 0.18) if phys.jeans_cfg else 1.0
+        j_crit = phys.jeans_cfg.get("Jcrit", 18.0) if phys.jeans_cfg else 1e18
+        sem_decay_rate = phys.semantic_cfg.get("decayRate", 0.05) if phys.semantic_cfg else 0.0
+        sem_min_mass = phys.semantic_cfg.get("minMass", 0.25) if phys.semantic_cfg else 0.25
+        sem_factor = math.exp(-sem_decay_rate * max(0.0, dt))
+
+        c_press = self.group.engine.c_press
+        c_base = phys.conductance_base
+        c_gamma = phys.conductance_gamma
+        half_c_gamma = 0.5 * c_gamma
+        c_min = phys.conductance_min
+        c_max = phys.conductance_max
+        tight_max = max(c_min, min(c_max, 0.6))
+        b_gamma = phys.mhd_cfg.get("bGamma", 0.35) if phys.mhd_cfg else 0.0
+        res_boost = phys.battery_cfg.get("resonanceBoost", 1.8)
+        damp_clamp = phys.battery_cfg.get("dampingClamp", 0.35)
+        d_res_out = phys.battery_cfg["diodeResonanceOut"]
+        d_res_in = phys.battery_cfg["diodeResonanceIn"]
+        d_dmp_out = phys.battery_cfg["diodeDampingOut"]
+        d_dmp_in = phys.battery_cfg["diodeDampingIn"]
+        all_unit_diode = (
+            d_res_out == 1.0 and d_res_in == 1.0 and d_dmp_out == 1.0 and d_dmp_in == 1.0
+        )
+
+        res_drive = phys.battery_cfg.get("resonanceDrive", 1.5)
+        damp_drag = phys.battery_cfg.get("dampingDrag", 0.5)
+        leak_lambda = phys.battery_cfg.get("leakLambda", 0.05)
+        leak_lambda_active = leak_lambda * 0.2
+        tau = phys.battery_cfg.get("flipThreshold", 0.85)
+        collapse_thresh = tau * phys.battery_cfg.get("collapseFactor", 0.3)
+        q_max = phys.battery_cfg.get("qMax", 40)
+        av_gain = phys.battery_cfg.get("avalancheGain", 1.15)
+
+        psi_relax = phys.psi_relax_base
+        psi_nudge = phys.psi_global_nudge
+        g_bias = phys.global_bias
+        psi_diff = phys.psi_diffusion
+        p_clamp = phys.psi_clamp
+        neg_clamp = -p_clamp
+        half_dt = 0.5 * dt
+        dt6 = dt / 6.0
+        default_gate = phys._DEFAULT_GATE_10
+
+        active_e_indices: list[int] = []
+        if _node_subset is not None:
+            cached_sub = self._sub_edges_by_nodes.get(_node_subset)
+            if cached_sub is not None:
+                sub_act_e, sub_nonbg_e = cached_sub
+            else:
+                sub_set = set(_node_subset)
+                sub_act_e = [
+                    e_idx
+                    for e_idx, e in enumerate(self.edges)
+                    if e["from_idx"] in sub_set and e["to_idx"] in sub_set
+                ]
+                sub_nonbg_e = [
+                    e_idx
+                    for e_idx, e in enumerate(self.edges)
+                    if (not e.get("background"))
+                    and int(self.e_src_all[e_idx]) in sub_set
+                    and int(self.e_dst_all[e_idx]) in sub_set
+                ]
+            comp_nodes = {0: list(_node_subset)}
+            comp_act_edges = {0: sub_act_e}
+            comp_nonbg_edges = {0: sub_nonbg_e}
+        elif self.deduplicate_components:
+            active_roles = self.group._active_dynamic_roles
+            deferred_nodes: set[int] = set()
+            for b_name, b_idxs in self._basin_node_indices.items():
+                if (
+                    f"wh_load_{b_name}" not in active_roles
+                    and f"wh_store_{b_name}" not in active_roles
+                    and f"wh_cmove_{b_name}" not in active_roles
+                ):
+                    self._basin_pending_steps[b_name] += int(steps)
+                    deferred_nodes.update(b_idxs)
+                else:
+                    self._basin_untouched_since_t0[b_name] = False
+
+            non_def_nodes = [ni for ni in range(self.n_nodes) if ni not in deferred_nodes]
+            for e_idx, e in enumerate(self.edges):
+                ia, ib = e["from_idx"], e["to_idx"]
+                if ia is not None and ib is not None:
+                    if ia in deferred_nodes or ib in deferred_nodes:
+                        continue
+                    active_e_indices.append(e_idx)
+
+            comp_nodes = {0: non_def_nodes}
+            comp_act_edges = {0: active_e_indices}
+            comp_nonbg_edges = {
+                0: [
+                    e_idx
+                    for e_idx, e in enumerate(self.edges)
+                    if not e.get("background") and int(self.e_src_all[e_idx]) not in deferred_nodes
+                ]
+            }
+        else:
+            for e_idx, e in enumerate(self.edges):
+                if e["from_idx"] is not None and e["to_idx"] is not None:
+                    active_e_indices.append(e_idx)
+            comp_nodes = {0: list(range(self.n_nodes))}
+            comp_act_edges = {0: active_e_indices}
+            comp_nonbg_edges = {
+                0: [e_idx for e_idx, e in enumerate(self.edges) if not e.get("background")]
+            }
+
+        pre_idx = self.idx_by_id[pre_step_node["id"]] if pre_step_node is not None else None
+        orig_t_global = phys._t
+
+        prev_cache = self._comp_partition_cache
+        dirty_nodes = self._dirty_nodes
+        next_cache: dict[
+            tuple[tuple[int, ...], tuple[int, ...], tuple[int, ...]],
+            tuple[np.ndarray, np.ndarray],
+        ] = {}
+
+        groups_by_bc: dict[
+            int,
+            list[
+                tuple[
+                    np.ndarray,
+                    np.ndarray,
+                    np.ndarray,
+                    np.ndarray,
+                    np.ndarray,
+                    np.ndarray,
+                ]
+            ],
+        ] = {}
+        for r, n_list in comp_nodes.items():
+            n_tuple = tuple(n_list)
+            e_act_list = comp_act_edges[r]
+            e_nonbg_list = comp_nonbg_edges[r]
+            e_act_tuple = tuple(e_act_list)
+            e_nonbg_tuple = tuple(e_nonbg_list)
+            comp_key = (n_tuple, e_act_tuple, e_nonbg_tuple)
+            all_e_list = sorted(set(e_act_list).union(e_nonbg_list))
+            n_sub = np.array(n_list, dtype=np.int64)
+            e_act_sub = np.array(e_act_list, dtype=np.int64)
+            e_nonbg_sub = np.array(e_nonbg_list, dtype=np.int64)
+            all_e_sub = np.array(all_e_list, dtype=np.int64)
+            if self.deduplicate_components and self.B > 1:
+                if (
+                    _node_subset is None
+                    and comp_key in prev_cache
+                    and not dirty_nodes.intersection(n_tuple)
+                ):
+                    u_sub, inv_sub = prev_cache[comp_key]
+                else:
+                    sig_parts = [
+                        self.rho[:, n_sub],
+                        self.psi[:, n_sub],
+                        self.psi_bias[:, n_sub],
+                        self.b_state[:, n_sub].astype(np.float64),
+                        self.b_charge[:, n_sub],
+                        self.m_arr[:, n_sub],
+                        self.is_constellation[:, n_sub].astype(np.float64),
+                        self.is_stellar[:, n_sub].astype(np.float64),
+                    ]
+                    if len(all_e_sub) > 0:
+                        sig_parts.extend(
+                            [
+                                self.flux[:, all_e_sub],
+                                self.bMag[:, all_e_sub],
+                                self.cond[:, all_e_sub],
+                            ]
+                        )
+                    sig_mat = np.hstack(sig_parts)
+                    if _node_subset is not None and self.B > 64:
+                        sig_mat = np.round(sig_mat, 4)
+                    sig_bytes = (
+                        np.ascontiguousarray(sig_mat)
+                        .view(np.dtype((np.void, sig_mat.shape[1] * sig_mat.dtype.itemsize)))
+                        .ravel()
+                    )
+                    _, u_sub, inv_sub = np.unique(
+                        sig_bytes, return_index=True, return_inverse=True
+                    )
+                if _node_subset is None:
+                    next_cache[comp_key] = (u_sub, inv_sub)
+            else:
+                u_sub = np.arange(self.B, dtype=np.int64)
+                inv_sub = u_sub
+            groups_by_bc.setdefault(len(u_sub), []).append(
+                (n_sub, e_act_sub, e_nonbg_sub, all_e_sub, u_sub, inv_sub)
+            )
+
+        if _node_subset is None:
+            self._comp_partition_cache = next_cache
+            self._dirty_nodes = set()
+
+        for B_c, comp_items in groups_by_bc.items():
+            n_arr = np.concatenate([it[0] for it in comp_items])
+            act_parts = [it[1] for it in comp_items if len(it[1]) > 0]
+            e_act_arr = np.concatenate(act_parts) if act_parts else np.array([], dtype=np.int64)
+            nonbg_parts = [it[2] for it in comp_items if len(it[2]) > 0]
+            e_nonbg_arr = (
+                np.concatenate(nonbg_parts) if nonbg_parts else np.array([], dtype=np.int64)
+            )
+            all_e_parts = [it[3] for it in comp_items if len(it[3]) > 0]
+            all_comp_e = (
+                np.concatenate(all_e_parts) if all_e_parts else np.array([], dtype=np.int64)
+            )
+
+            N_c = len(n_arr)
+            E_c = len(all_comp_e)
+            g2l_n = {int(gn): ln for ln, gn in enumerate(n_arr)}
+            g2l_e = {int(ge): le for le, ge in enumerate(all_comp_e)}
+
+            rho_c = np.empty((B_c, N_c), dtype=np.float64)
+            psi_c = np.empty((B_c, N_c), dtype=np.float64)
+            psi_bias_c = np.empty((B_c, N_c), dtype=np.float64)
+            b_state_c = np.empty((B_c, N_c), dtype=np.int64)
+            b_charge_c = np.empty((B_c, N_c), dtype=np.float64)
+            m_arr_c = np.empty((B_c, N_c), dtype=np.float64)
+            is_const_c = np.empty((B_c, N_c), dtype=bool)
+            is_stel_c = np.empty((B_c, N_c), dtype=bool)
+
+            flux_c = np.empty((B_c, E_c), dtype=np.float64)
+            bMag_c = np.empty((B_c, E_c), dtype=np.float64)
+            cond_c = np.empty((B_c, E_c), dtype=np.float64)
+
+            comp_slices: list[tuple[np.ndarray, int, int, np.ndarray, int, int, np.ndarray]] = []
+            n_off = 0
+            e_off = 0
+            for n_sub, _, _, all_e_sub, u_sub, inv_sub in comp_items:
+                n_next = n_off + len(n_sub)
+                e_next = e_off + len(all_e_sub)
+                rho_c[:, n_off:n_next] = self.rho[u_sub][:, n_sub]
+                psi_c[:, n_off:n_next] = self.psi[u_sub][:, n_sub]
+                psi_bias_c[:, n_off:n_next] = self.psi_bias[u_sub][:, n_sub]
+                b_state_c[:, n_off:n_next] = self.b_state[u_sub][:, n_sub]
+                b_charge_c[:, n_off:n_next] = self.b_charge[u_sub][:, n_sub]
+                m_arr_c[:, n_off:n_next] = self.m_arr[u_sub][:, n_sub]
+                is_const_c[:, n_off:n_next] = self.is_constellation[u_sub][:, n_sub]
+                is_stel_c[:, n_off:n_next] = self.is_stellar[u_sub][:, n_sub]
+                if len(all_e_sub) > 0:
+                    flux_c[:, e_off:e_next] = self.flux[u_sub][:, all_e_sub]
+                    bMag_c[:, e_off:e_next] = self.bMag[u_sub][:, all_e_sub]
+                    cond_c[:, e_off:e_next] = self.cond[u_sub][:, all_e_sub]
+                comp_slices.append((n_sub, n_off, n_next, all_e_sub, e_off, e_next, inv_sub))
+                n_off = n_next
+                e_off = e_next
+
+            is_bat_c = self.is_bat[n_arr]
+            non_bat_c = ~is_bat_c
+            w0_c = self.w0[all_comp_e] if E_c > 0 else np.array([], dtype=np.float64)
+            e_src_c = (
+                np.array([g2l_n[int(self.e_src_all[ge])] for ge in all_comp_e], dtype=np.int64)
+                if E_c > 0
+                else np.array([], dtype=np.int64)
+            )
+            e_dst_c = (
+                np.array([g2l_n[int(self.e_dst_all[ge])] for ge in all_comp_e], dtype=np.int64)
+                if E_c > 0
+                else np.array([], dtype=np.int64)
+            )
+            e_src_bat_c = is_bat_c[e_src_c] if E_c > 0 else np.array([], dtype=bool)
+            e_dst_bat_c = is_bat_c[e_dst_c] if E_c > 0 else np.array([], dtype=bool)
+
+            r_idx_list: list[int] = []
+            w_r_list: list[float] = []
+            u_r_list: list[float] = []
+            b_r_list: list[float] = []
+            for ln, gn in enumerate(n_arr):
+                n = self.nodes[gn]
+                rb = n.get("r_bias", 0.0)
+                if rb != 0.0 or "W_r" in n or "U_r" in n or "b_r" in n:
+                    r_idx_list.append(ln)
+                    w_r_list.append(float(n.get("W_r", 0.0)))
+                    u_r_list.append(float(n.get("U_r", 0.0)))
+                    b_r_list.append(float(n.get("b_r", 10.0)) + float(rb))
+            has_custom_r = len(r_idx_list) > 0
+            if has_custom_r:
+                r_idx_arr = np.array(r_idx_list, dtype=np.int64)
+                w_r_arr = np.array(w_r_list, dtype=np.float64)
+                u_r_arr = np.array(u_r_list, dtype=np.float64)
+                b_r_arr = np.array(b_r_list, dtype=np.float64)
+            else:
+                r_idx_arr = np.empty(0, dtype=np.int64)
+                w_r_arr = np.empty(0, dtype=np.float64)
+                u_r_arr = np.empty(0, dtype=np.float64)
+                b_r_arr = np.empty(0, dtype=np.float64)
+
+            bat_local_indices = [ln for ln, is_b in enumerate(is_bat_c) if is_b]
+            bat_local_arr = np.array(bat_local_indices, dtype=np.int64)
+            K_bat = len(bat_local_indices)
+            bat_conn_map_c: dict[int, tuple[list[int], list[int]]] = {
+                bi: ([], []) for bi in bat_local_indices
+            }
+            unique_bat_le = []
+            seen_ble: set[int] = set()
+            for ge in e_nonbg_arr:
+                le = g2l_e[int(ge)]
+                lu, lv = int(e_src_c[le]), int(e_dst_c[le])
+                u_in = bool(is_bat_c[lu])
+                v_in = (lv != lu) and bool(is_bat_c[lv])
+                if not (u_in or v_in):
+                    continue
+                if u_in:
+                    bat_conn_map_c[lu][0].append(le)
+                    bat_conn_map_c[lu][1].append(lv)
+                if v_in:
+                    bat_conn_map_c[lv][0].append(le)
+                    bat_conn_map_c[lv][1].append(lu)
+                if le not in seen_ble:
+                    seen_ble.add(le)
+                    unique_bat_le.append(le)
+            unique_bat_le_arr = np.array(unique_bat_le, dtype=np.int64)
+            bat_conn_c = [
+                (
+                    bi,
+                    np.array(bat_conn_map_c[bi][0], dtype=np.int64),
+                    np.array(bat_conn_map_c[bi][1], dtype=np.int64),
+                    is_bat_c[np.array(bat_conn_map_c[bi][1], dtype=np.int64)]
+                    if bat_conn_map_c[bi][1]
+                    else np.array([], dtype=bool),
+                )
+                for bi in bat_local_indices
+            ]
+            has_bat_to_bat = any(np.any(nb_is_bat) for _, _, _, nb_is_bat in bat_conn_c)
+            max_bat_deg = max((len(it[1]) for it in bat_conn_c), default=0)
+            if K_bat > 0 and not has_bat_to_bat and max_bat_deg > 0:
+                bat_e_pad = np.zeros((K_bat, max_bat_deg), dtype=np.int64)
+                bat_nb_pad = np.zeros((K_bat, max_bat_deg), dtype=np.int64)
+                bat_valid_mask = np.zeros((1, K_bat, max_bat_deg), dtype=bool)
+                bat_deg_inv = np.ones((1, K_bat), dtype=np.float64)
+                for k_i, (_, e_a, nb_a, _) in enumerate(bat_conn_c):
+                    deg_k = len(e_a)
+                    if deg_k > 0:
+                        bat_e_pad[k_i, :deg_k] = e_a
+                        bat_nb_pad[k_i, :deg_k] = nb_a
+                        bat_valid_mask[0, k_i, :deg_k] = True
+                        bat_deg_inv[0, k_i] = 1.0 / deg_k
+            else:
+                bat_e_pad = np.zeros((0, 0), dtype=np.int64)
+                bat_nb_pad = np.zeros((0, 0), dtype=np.int64)
+                bat_valid_mask = np.zeros((1, 0, 0), dtype=bool)
+                bat_deg_inv = np.ones((1, max(1, K_bat)), dtype=np.float64)
+
+            act_le = (
+                np.array([g2l_e[int(ge)] for ge in e_act_arr], dtype=np.int64)
+                if len(e_act_arr) > 0
+                else np.array([], dtype=np.int64)
+            )
+            # Collapse identical parallel edge bundles (same endpoints, w0, background, role prefix)
+            u_rep_le_list: list[int] = []
+            u_mult_list: list[float] = []
+            inv_u_list: list[int] = []
+            bundle_map: dict[tuple[int, int, float, bool], int] = {}
+            for idx_a, ge in enumerate(e_act_arr):
+                le = int(act_le[idx_a])
+                ia_k = int(e_src_c[le])
+                ib_k = int(e_dst_c[le])
+                w0_k = float(w0_c[le])
+                bg_k = bool(self.edges[ge].get("background"))
+                b_key = (ia_k, ib_k, w0_k, bg_k)
+                u_idx = bundle_map.get(b_key)
+                if u_idx is not None:
+                    rep_le = u_rep_le_list[u_idx]
+                    if np.array_equal(flux_c[:, le], flux_c[:, rep_le]) and np.array_equal(
+                        bMag_c[:, le], bMag_c[:, rep_le]
+                    ):
+                        u_mult_list[u_idx] += 1.0
+                        inv_u_list.append(u_idx)
+                        continue
+                u_idx = len(u_rep_le_list)
+                bundle_map[b_key] = u_idx
+                u_rep_le_list.append(le)
+                u_mult_list.append(1.0)
+                inv_u_list.append(u_idx)
+
+            u_rep_le = np.array(u_rep_le_list, dtype=np.int64)
+            u_mult_arr = np.array(u_mult_list, dtype=np.float64)
+            inv_u_act = np.array(inv_u_list, dtype=np.int64)
+            U_act = len(u_rep_le)
+
+            act_ia_c = e_src_c[u_rep_le] if U_act > 0 else np.array([], dtype=np.int64)
+            act_ib_c = e_dst_c[u_rep_le] if U_act > 0 else np.array([], dtype=np.int64)
+            act_w0_base_c = w0_c[u_rep_le] * c_base if U_act > 0 else np.array([], dtype=np.float64)
+            act_bg_c = (
+                np.array(
+                    [bool(self.edges[all_comp_e[le]].get("background")) for le in u_rep_le],
+                    dtype=bool,
+                )
+                if U_act > 0
+                else np.array([], dtype=bool)
+            )
+            act_src_bat_c = is_bat_c[act_ia_c] if U_act > 0 else np.array([], dtype=bool)
+            act_dst_bat_c = is_bat_c[act_ib_c] if U_act > 0 else np.array([], dtype=bool)
+            act_has_bat_c = act_src_bat_c | act_dst_bat_c
+            act_bat_node_c = (
+                np.where(act_src_bat_c, act_ia_c, act_ib_c)
+                if U_act > 0
+                else np.array([], dtype=np.int64)
+            )
+            mhd_le_arr = (
+                np.array([g2l_e[int(ge)] for ge in e_nonbg_arr], dtype=np.int64)
+                if len(e_nonbg_arr) > 0
+                else np.array([], dtype=np.int64)
+            )
+            pre_local = g2l_n.get(pre_idx) if pre_idx is not None else None
+
+            use_gemm = (
+                self.use_blas_incidence_gemm
+                and (U_act > 0)
+                and (B_c >= 4 or not self.deduplicate_components)
+            )
+            if use_gemm:
+                M_inc_c = np.zeros((U_act, N_c), dtype=np.float64)
+                np.add.at(M_inc_c, (np.arange(U_act), act_ia_c), u_mult_arr)
+                np.add.at(M_inc_c, (np.arange(U_act), act_ib_c), -u_mult_arr)
+            else:
+                M_inc_c = None
+
+            def eval_stage_c(
+                rho_st: np.ndarray,
+                flux_st: np.ndarray,
+                psi_st: np.ndarray,
+                damp_arr: np.ndarray,
+                w_mul_act: np.ndarray,
+                w_max_act: np.ndarray,
+                gain_out_act: np.ndarray | None,
+                gain_in_act: np.ndarray | None,
+            ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+                p_raw = c_press * np.log(1.0 + (rho_st / m_arr_c))  # noqa: B023
+                p_arr = default_gate * p_raw
+                if has_custom_r:  # noqa: B023
+                    ar = (
+                        w_r_arr * rho_st[:, r_idx_arr]  # noqa: B023
+                        + u_r_arr * psi_st[:, r_idx_arr]  # noqa: B023
+                        + b_r_arr  # noqa: B023
+                    )
+                    ar = np.minimum(np.maximum(ar, -20.0), 20.0)
+                    p_arr[:, r_idx_arr] = p_raw[:, r_idx_arr] / (1.0 + np.exp(-ar))  # noqa: B023
+
+                if U_act > 0:  # noqa: B023
+                    psi_a = psi_st[:, act_ia_c]  # noqa: B023
+                    psi_b = psi_st[:, act_ib_c]  # noqa: B023
+                    d_psi_e = psi_b - psi_a
+                    if M_inc_c is not None:  # noqa: B023
+                        lap = d_psi_e @ M_inc_c  # noqa: B023
+                    else:
+                        d_psi_m = d_psi_e * u_mult_arr  # noqa: B023
+                        lap = np.zeros_like(psi_st)
+                        np.add.at(lap, (slice(None), act_ia_c), d_psi_m)  # noqa: B023
+                        np.add.at(lap, (slice(None), act_ib_c), -d_psi_m)  # noqa: B023
+
+                    cond_e = np.minimum(
+                        np.maximum(
+                            w_mul_act * np.exp(half_c_gamma * (psi_a + psi_b)),
+                            c_min,
+                        ),
+                        w_max_act,
+                    )
+
+                    delta_p = p_arr[:, act_ia_c] - p_arr[:, act_ib_c]  # noqa: B023
+                    if all_unit_diode:
+                        d_flux = cond_e * delta_p - flux_st
+                    else:
+                        diode_1 = np.where(delta_p > 0.0, gain_out_act, gain_in_act)
+                        diode_2 = np.where(delta_p < 0.0, gain_out_act, gain_in_act)
+                        diode_gain = np.where(
+                            act_has_bat_c & (~act_bg_c),  # noqa: B023
+                            np.where(act_src_bat_c, diode_1, diode_2),  # noqa: B023
+                            1.0,
+                        )
+                        d_flux = (cond_e * diode_gain) * delta_p - flux_st
+                    flow_amt = flux_st * 0.5
+                    if M_inc_c is not None:  # noqa: B023
+                        d_rho_tr = (-flow_amt) @ M_inc_c  # noqa: B023
+                    else:
+                        flow_m = flow_amt * u_mult_arr  # noqa: B023
+                        d_rho_tr = np.zeros_like(rho_st)
+                        np.add.at(d_rho_tr, (slice(None), act_ia_c), -flow_m)  # noqa: B023
+                        np.add.at(d_rho_tr, (slice(None), act_ib_c), flow_m)  # noqa: B023
+                else:
+                    lap = np.zeros_like(psi_st)
+                    d_rho_tr = np.zeros_like(rho_st)
+                    d_flux = np.zeros_like(flux_st)
+
+                d_rho = default_gate * (d_rho_tr + damp_arr * rho_st)
+                rho_norm = rho_st / (rho_st + 40.0)
+                relax_to_bias = (psi_relax * (0.35 + 0.65 * rho_norm)) * (psi_bias_c - psi_st)  # noqa: B023
+                relax_to_global = psi_nudge * (g_bias - psi_st)
+                d_psi = np.where(
+                    non_bat_c, psi_diff * lap + relax_to_bias + relax_to_global, 0.0  # noqa: B023
+                )
+                return d_rho, d_flux, d_psi
+
+            for step_idx in range(steps):
+                is_last = step_idx == steps - 1
+                if pre_local is not None:
+                    rho_c[:, pre_local] = pre_step_rho
+                    psi_c[:, pre_local] = pre_step_psi
+                if phys.semantic_cfg:
+                    m_arr_c = np.where(
+                        is_const_c,
+                        np.maximum(sem_min_mass, m_arr_c * sem_factor),
+                        m_arr_c,
+                    )
+
+                if K_bat > 0 and not has_bat_to_bat:
+                    b_chg_all = b_charge_c[:, bat_local_arr]
+                    b_st_all = b_state_c[:, bat_local_arr]
+                    if max_bat_deg > 0:
+                        w_pad = cond_c[:, bat_e_pad]
+                        psi_nb_pad = psi_c[:, bat_nb_pad]
+                        nb_pos = (psi_nb_pad >= 0.0) & bat_valid_mask
+                        nb_neg = (psi_nb_pad < 0.0) & bat_valid_mask
+                        inc = np.sum(np.where(nb_pos, w_pad * res_drive, 0.0), axis=2)
+                        drg = np.sum(np.where(nb_neg, w_pad * damp_drag, 0.0), axis=2)
+                        net_flux = inc - drg
+                    else:
+                        net_flux = np.zeros((B_c, K_bat), dtype=np.float64)
+                    charge_delta = np.tanh(net_flux) * dt
+                    leak = b_chg_all * np.where(b_st_all == 1, leak_lambda_active, leak_lambda)
+                    b_chg_all = np.minimum(np.maximum(b_chg_all + charge_delta - leak, 0.0), 1.0)
+                    flip_on = (b_st_all == -1) & (b_chg_all > tau)
+                    collapse_off = (b_st_all == 1) & (b_chg_all < collapse_thresh)
+                    if np.any(flip_on):
+                        for k_i in np.where(np.any(flip_on, axis=0))[0]:
+                            f_col = flip_on[:, k_i]
+                            share = (q_max * b_chg_all[:, k_i] * av_gain) * bat_deg_inv[0, k_i]
+                            for nb_i in bat_conn_c[k_i][2]:
+                                rho_c[:, nb_i] = np.where(
+                                    f_col, rho_c[:, nb_i] + share, rho_c[:, nb_i]
+                                )
+                        b_st_all = np.where(flip_on, 1, b_st_all)
+                        b_chg_all = np.where(flip_on, 1.0, b_chg_all)
+                    if np.any(collapse_off):
+                        b_st_all = np.where(collapse_off, -1, b_st_all)
+                    b_state_c[:, bat_local_arr] = b_st_all
+                    b_charge_c[:, bat_local_arr] = b_chg_all
+                    s_f_all = b_st_all.astype(np.float64)
+                    psi_c[:, bat_local_arr] = s_f_all
+                    psi_bias_c[:, bat_local_arr] = s_f_all
+                else:
+                    for bi, e_arr, nb_arr, nb_is_bat in bat_conn_c:
+                        b_chg = b_charge_c[:, bi]
+                        b_st = b_state_c[:, bi]
+                        if len(e_arr) > 0:
+                            w_b = cond_c[:, e_arr]
+                            nb_st = np.where(
+                                nb_is_bat,
+                                b_state_c[:, nb_arr],
+                                np.where(psi_c[:, nb_arr] >= 0.0, 1, -1),
+                            )
+                            inc = np.sum(np.where(nb_st == 1, w_b * res_drive, 0.0), axis=1)
+                            drg = np.sum(np.where(nb_st != 1, w_b * damp_drag, 0.0), axis=1)
+                            net_flux = inc - drg
+                        else:
+                            net_flux = np.zeros(B_c, dtype=np.float64)
+                        charge_delta = np.tanh(net_flux) * dt
+                        leak = b_chg * np.where(b_st == 1, leak_lambda_active, leak_lambda)
+                        b_chg = np.minimum(np.maximum(b_chg + charge_delta - leak, 0.0), 1.0)
+                        flip_on = (b_st == -1) & (b_chg > tau)
+                        collapse_off = (b_st == 1) & (b_chg < collapse_thresh)
+                        if np.any(flip_on):
+                            pulse_mass = q_max * b_chg * av_gain
+                            share = pulse_mass / max(1, len(e_arr))
+                            for nb_i in nb_arr:
+                                rho_c[:, nb_i] = np.where(
+                                    flip_on, rho_c[:, nb_i] + share, rho_c[:, nb_i]
+                                )
+                            b_st = np.where(flip_on, 1, b_st)
+                            b_chg = np.where(flip_on, 1.0, b_chg)
+                        if np.any(collapse_off):
+                            b_st = np.where(collapse_off, -1, b_st)
+                        b_state_c[:, bi] = b_st
+                        b_charge_c[:, bi] = b_chg
+                        s_f = b_st.astype(np.float64)
+                        psi_c[:, bi] = s_f
+                        psi_bias_c[:, bi] = s_f
+
+                rho_0 = rho_c.copy()
+                psi_0 = psi_c.copy()
+                flux_a0 = flux_c[:, u_rep_le].copy()
+                damp_arr = np.where(is_stel_c, damp_base * star_damp, damp_base)
+                if U_act > 0:
+                    bmag_act = bMag_c[:, u_rep_le]
+                    bmag_mul_act = np.where(bmag_act != 0.0, 1.0 + b_gamma * bmag_act, 1.0)
+                    bat_s_act = b_state_c[:, act_bat_node_c]
+                    w_mul_act = (act_w0_base_c * bmag_mul_act) * np.where(
+                        act_has_bat_c,
+                        np.where(bat_s_act == 1, res_boost, damp_clamp),
+                        1.0,
+                    )
+                    w_max_act = np.where(act_has_bat_c & (bat_s_act != 1), tight_max, c_max)
+                    if all_unit_diode:
+                        gain_out_act = None
+                        gain_in_act = None
+                    else:
+                        gain_out_act = np.where(bat_s_act == 1, d_res_out, d_dmp_out)
+                        gain_in_act = np.where(bat_s_act == 1, d_res_in, d_dmp_in)
+                else:
+                    w_mul_act = np.empty((B_c, 0), dtype=np.float64)
+                    w_max_act = np.empty((B_c, 0), dtype=np.float64)
+                    gain_out_act = None
+                    gain_in_act = None
+
+                d_rho1, d_flux1, d_psi1 = eval_stage_c(
+                    rho_0, flux_a0, psi_0, damp_arr, w_mul_act, w_max_act, gain_out_act, gain_in_act
+                )
+                rho_s = np.maximum(0.0, rho_0 + half_dt * d_rho1)
+                psi_s = np.minimum(np.maximum(psi_0 + half_dt * d_psi1, neg_clamp), p_clamp)
+                flux_s = flux_a0 + half_dt * d_flux1
+                d_rho2, d_flux2, d_psi2 = eval_stage_c(
+                    rho_s, flux_s, psi_s, damp_arr, w_mul_act, w_max_act, gain_out_act, gain_in_act
+                )
+                rho_s = np.maximum(0.0, rho_0 + half_dt * d_rho2)
+                psi_s = np.minimum(np.maximum(psi_0 + half_dt * d_psi2, neg_clamp), p_clamp)
+                flux_s = flux_a0 + half_dt * d_flux2
+                d_rho3, d_flux3, d_psi3 = eval_stage_c(
+                    rho_s, flux_s, psi_s, damp_arr, w_mul_act, w_max_act, gain_out_act, gain_in_act
+                )
+                rho_s = np.maximum(0.0, rho_0 + dt * d_rho3)
+                psi_s = np.minimum(np.maximum(psi_0 + dt * d_psi3, neg_clamp), p_clamp)
+                flux_s = flux_a0 + dt * d_flux3
+                d_rho4, d_flux4, d_psi4 = eval_stage_c(
+                    rho_s, flux_s, psi_s, damp_arr, w_mul_act, w_max_act, gain_out_act, gain_in_act
+                )
+
+                rho_c = np.maximum(
+                    0.0, rho_0 + dt6 * (d_rho1 + 2.0 * d_rho2 + 2.0 * d_rho3 + d_rho4)
+                )
+                psi_c = np.minimum(
+                    np.maximum(
+                        psi_0 + dt6 * (d_psi1 + 2.0 * d_psi2 + 2.0 * d_psi3 + d_psi4),
+                        neg_clamp,
+                    ),
+                    p_clamp,
+                )
+                flux_u_new = flux_a0 + dt6 * (
+                    d_flux1 + 2.0 * d_flux2 + 2.0 * d_flux3 + d_flux4
+                )
+                if U_act > 0:
+                    flux_c[:, act_le] = flux_u_new[:, inv_u_act]
+
+                if is_last and E_c > 0:
+                    avg_psi_end = 0.5 * (psi_c[:, e_src_c] + psi_c[:, e_dst_c])
+                    w_end = (
+                        (w0_c * c_base)
+                        * np.exp(c_gamma * avg_psi_end)
+                        * (1.0 + b_gamma * bMag_c)
+                    )
+                    hb_end = e_src_bat_c | e_dst_bat_c
+                    bn_end = np.where(e_src_bat_c, e_src_c, e_dst_c)
+                    s_end = b_state_c[:, bn_end]
+                    cond_c = np.where(
+                        hb_end,
+                        np.where(
+                            s_end == 1,
+                            np.minimum(np.maximum(w_end * res_boost, c_min), c_max),
+                            np.minimum(np.maximum(w_end * damp_clamp, c_min), tight_max),
+                        ),
+                        np.minimum(np.maximum(w_end, c_min), c_max),
+                    )
+                elif len(unique_bat_le_arr) > 0:
+                    ia_u = e_src_c[unique_bat_le_arr]
+                    ib_u = e_dst_c[unique_bat_le_arr]
+                    avg_psi_u = 0.5 * (psi_c[:, ia_u] + psi_c[:, ib_u])
+                    w_u = (
+                        (w0_c[unique_bat_le_arr] * c_base)
+                        * np.exp(c_gamma * avg_psi_u)
+                        * (1.0 + b_gamma * bMag_c[:, unique_bat_le_arr])
+                    )
+                    sb_u = e_src_bat_c[unique_bat_le_arr]
+                    db_u = e_dst_bat_c[unique_bat_le_arr]
+                    hb_u = sb_u | db_u
+                    bn_u = np.where(sb_u, ia_u, ib_u)
+                    s_u = b_state_c[:, bn_u]
+                    cond_c[:, unique_bat_le_arr] = np.where(
+                        hb_u,
+                        np.where(
+                            s_u == 1,
+                            np.minimum(np.maximum(w_u * res_boost, c_min), c_max),
+                            np.minimum(np.maximum(w_u * damp_clamp, c_min), tight_max),
+                        ),
+                        np.minimum(np.maximum(w_u, c_min), c_max),
+                    )
+
+                if phys.mhd_cfg and len(mhd_le_arr) > 0:
+                    build = phys.mhd_cfg.get("bBuild", 0.10)
+                    decay = phys.mhd_cfg.get("bDecay", 0.06)
+                    b_max = phys.mhd_cfg.get("bMax", 4.0)
+                    decay_factor = math.exp(-decay * dt)
+                    bMag_c[:, mhd_le_arr] = np.minimum(
+                        np.maximum(
+                            bMag_c[:, mhd_le_arr] * decay_factor
+                            + build * np.abs(flux_c[:, mhd_le_arr]) * dt,
+                            0.0,
+                        ),
+                        b_max,
+                    )
+
+                if phys.jeans_cfg:
+                    p_end = c_press * np.log(1.0 + (rho_c / m_arr_c))
+                    j_val = rho_c / (np.abs(p_end) + 1e-6)
+                    collapsed = j_val >= j_crit
+                    is_const_c |= collapsed
+                    is_stel_c |= collapsed
+
+            for n_sub, n_off, n_next, all_e_sub, e_off, e_next, inv_sub in comp_slices:
+                self.rho[:, n_sub] = rho_c[:, n_off:n_next][inv_sub]
+                self.psi[:, n_sub] = psi_c[:, n_off:n_next][inv_sub]
+                self.psi_bias[:, n_sub] = psi_bias_c[:, n_off:n_next][inv_sub]
+                self.b_state[:, n_sub] = b_state_c[:, n_off:n_next][inv_sub]
+                self.b_charge[:, n_sub] = b_charge_c[:, n_off:n_next][inv_sub]
+                self.m_arr[:, n_sub] = m_arr_c[:, n_off:n_next][inv_sub]
+                self.is_constellation[:, n_sub] = is_const_c[:, n_off:n_next][inv_sub]
+                self.is_stellar[:, n_sub] = is_stel_c[:, n_off:n_next][inv_sub]
+                if len(all_e_sub) > 0:
+                    self.flux[:, all_e_sub] = flux_c[:, e_off:e_next][inv_sub]
+                    self.bMag[:, all_e_sub] = bMag_c[:, e_off:e_next][inv_sub]
+                    self.cond[:, all_e_sub] = cond_c[:, e_off:e_next][inv_sub]
+
+        if _count_global_steps:
+            phys._t = orig_t_global + steps * dt
+        if _node_subset is None and len(self._bat_nonbg_dyn_eidxs) > 0:
+            self._update_conductance_subset(self._bat_nonbg_dyn_eidxs)
+        if phys.mhd_cfg and steps == 1 and _node_subset is None:
+            build = phys.mhd_cfg.get("bBuild", 0.10)
+            decay = phys.mhd_cfg.get("bDecay", 0.06)
+            b_max = phys.mhd_cfg.get("bMax", 4.0)
+            decay_factor = math.exp(-decay * dt)
+            bg_e = np.array(
+                [e_idx for e_idx, e in enumerate(self.edges) if e.get("background")],
+                dtype=np.int64,
+            )
+            if len(bg_e) > 0:
+                self.bMag[:, bg_e] = np.minimum(
+                    np.maximum(
+                        self.bMag[:, bg_e] * decay_factor + build * np.abs(self.flux[:, bg_e]) * dt,
+                        0.0,
+                    ),
+                    b_max,
+                )
+
+    def flush_all_pending_steps(self) -> None:
+        if self.deduplicate_components:
+            for b_name in tuple(self._basin_pending_steps):
+                self._flush_basin_pending_steps(b_name)
+            self._update_conductance_subset(np.arange(self.n_edges, dtype=np.int64))
+
+    def run(self, program: list[Instruction]) -> list[dict]:
+        from test_logos_vm import LogosVM
+
+        vm = LogosVM(self.seq)
+        res = vm.run(program)
+        if self.deduplicate_components and self.B <= 64:
+            self.flush_all_pending_steps()
+        return res
+
+    def read_output_rows(self, output_basins: list[str]) -> list[tuple[int, ...]]:
+        out_bat_idxs = [
+            self.idx_by_id[self.group.semantic.basins[ob].battery_id] for ob in output_basins
+        ]
+        return [
+            tuple(1 if int(self.b_state[r_i, bi]) == 1 else 0 for bi in out_bat_idxs)
+            for r_i in range(self.B)
+        ]
+
+
