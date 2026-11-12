@@ -1,12 +1,13 @@
 # Dream Ledger
 
-Generated: 2026-11-11T04:12:54.181342+00:00
-Nights analyzed: 341 | Cross-night findings: 4411
+Generated: 2026-11-12T04:12:10.037442+00:00
+Nights analyzed: 342 | Cross-night findings: 4425
 
 ## Latest nights
 
 | Night | Sources | Replays | New | Reinf | Decay | Unique basins | Stable | Score (mean / max) |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
+| DS-20261112-041058 | 5 | 15 | 6 | 0 | 32 | 13 | 13 | 0.262 / 0.675 |
 | DS-20261111-041121 | 5 | 15 | 9 | 0 | 32 | 13 | 13 | 0.289 / 0.745 |
 | DS-20261110-041105 | 5 | 15 | 9 | 0 | 31 | 13 | 13 | 0.319 / 0.823 |
 | DS-20261109-062836 | 3 | 9 | 4 | 1 | 30 | 13 | 13 | 0.525 / 0.900 |
@@ -16,7 +17,6 @@ Nights analyzed: 341 | Cross-night findings: 4411
 | DS-20261106-041124 | 5 | 15 | 2 | 1 | 30 | 13 | 13 | 0.237 / 0.611 |
 | DS-20261105-041101 | 5 | 15 | 3 | 0 | 31 | 13 | 13 | 0.262 / 0.675 |
 | DS-20261104-041046 | 5 | 15 | 2 | 1 | 30 | 13 | 13 | 0.289 / 0.745 |
-| DS-20261103-041057 | 5 | 15 | 4 | 0 | 31 | 13 | 13 | 0.319 / 0.823 |
 
 ## New / recurring stable basins
 
@@ -47,7 +47,7 @@ Nights analyzed: 341 | Cross-night findings: 4411
 
 | Finding | Class | Stable | Promote | Nights | Sources | Description |
 |---|---|:-:|:-:|---:|---:|---|
-| `dominant_basin_turnover` | basin_turnover | ✓ | · | 337 | 0 | Dominant basin shifted on 337/341 nights. |
+| `dominant_basin_turnover` | basin_turnover | ✓ | · | 338 | 0 | Dominant basin shifted on 338/342 nights. |
 
 ## Possible information-transfer mechanisms
 
