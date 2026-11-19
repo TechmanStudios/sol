@@ -1,6 +1,6 @@
 # Dream Findings — Candidates
 
-Generated: 2026-11-18T04:12:33.817508+00:00
+Generated: 2026-11-19T04:12:33.174972+00:00
 
 Single-night anomalies and findings not yet stable across multiple nights or source sessions. These are follow-up candidates, not canonical claims.
 
@@ -470,6 +470,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:1327bc9e` | recurring_basin | 1 | 5 | Basin mass_hash=1327bc9e observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:1335b3c9` | recurring_basin | 1 | 3 | Basin mass_hash=1335b3c9 observed on 1 night(s) across 3 source cortex session(s); stable on 1 night(s). |
 | `basin:133e3cd5` | recurring_basin | 1 | 5 | Basin mass_hash=133e3cd5 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:135b630e` | recurring_basin | 1 | 5 | Basin mass_hash=135b630e observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:136fee63` | recurring_basin | 1 | 5 | Basin mass_hash=136fee63 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:1370aad7` | recurring_basin | 1 | 5 | Basin mass_hash=1370aad7 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:137b0b2a` | recurring_basin | 1 | 5 | Basin mass_hash=137b0b2a observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
@@ -716,6 +717,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:23423ec7` | recurring_basin | 1 | 5 | Basin mass_hash=23423ec7 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:2343d58e` | recurring_basin | 1 | 5 | Basin mass_hash=2343d58e observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:2361d575` | recurring_basin | 1 | 5 | Basin mass_hash=2361d575 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:2367842e` | recurring_basin | 1 | 5 | Basin mass_hash=2367842e observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:2370fa11` | recurring_basin | 1 | 5 | Basin mass_hash=2370fa11 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:23c44356` | recurring_basin | 1 | 5 | Basin mass_hash=23c44356 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:23c5b7af` | recurring_basin | 1 | 5 | Basin mass_hash=23c5b7af observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
@@ -1038,6 +1040,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:37eb8963` | recurring_basin | 1 | 5 | Basin mass_hash=37eb8963 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:37f245f1` | recurring_basin | 1 | 5 | Basin mass_hash=37f245f1 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:38169e81` | recurring_basin | 1 | 5 | Basin mass_hash=38169e81 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:38184ad9` | recurring_basin | 1 | 5 | Basin mass_hash=38184ad9 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:381c71c2` | recurring_basin | 1 | 5 | Basin mass_hash=381c71c2 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:381eb1c4` | recurring_basin | 1 | 5 | Basin mass_hash=381eb1c4 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:382241bf` | recurring_basin | 1 | 5 | Basin mass_hash=382241bf observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
@@ -1120,6 +1123,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:3cb7e5b4` | recurring_basin | 1 | 5 | Basin mass_hash=3cb7e5b4 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:3cc72f05` | recurring_basin | 1 | 5 | Basin mass_hash=3cc72f05 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:3cc888e7` | recurring_basin | 1 | 5 | Basin mass_hash=3cc888e7 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:3cca1a5c` | recurring_basin | 1 | 5 | Basin mass_hash=3cca1a5c observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:3cdede71` | recurring_basin | 1 | 5 | Basin mass_hash=3cdede71 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:3ce8780f` | recurring_basin | 1 | 5 | Basin mass_hash=3ce8780f observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:3d19c4d2` | recurring_basin | 1 | 5 | Basin mass_hash=3d19c4d2 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
@@ -1236,6 +1240,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:4383419c` | recurring_basin | 1 | 5 | Basin mass_hash=4383419c observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:438c7fbf` | recurring_basin | 1 | 5 | Basin mass_hash=438c7fbf observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:43975585` | recurring_basin | 1 | 5 | Basin mass_hash=43975585 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:43ad0eb6` | recurring_basin | 1 | 5 | Basin mass_hash=43ad0eb6 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:43b3d443` | recurring_basin | 1 | 5 | Basin mass_hash=43b3d443 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:43d9edde` | recurring_basin | 1 | 5 | Basin mass_hash=43d9edde observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:43dfc4d7` | recurring_basin | 1 | 5 | Basin mass_hash=43dfc4d7 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
@@ -2074,6 +2079,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:794d34e1` | recurring_basin | 1 | 5 | Basin mass_hash=794d34e1 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:79ac3675` | recurring_basin | 1 | 5 | Basin mass_hash=79ac3675 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:79c23e98` | recurring_basin | 1 | 5 | Basin mass_hash=79c23e98 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:79d5e7f6` | recurring_basin | 1 | 5 | Basin mass_hash=79d5e7f6 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:79dff61a` | recurring_basin | 1 | 5 | Basin mass_hash=79dff61a observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:7a076edc` | recurring_basin | 1 | 5 | Basin mass_hash=7a076edc observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:7a1d688f` | recurring_basin | 1 | 5 | Basin mass_hash=7a1d688f observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
@@ -2107,6 +2113,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:7bd84800` | recurring_basin | 1 | 3 | Basin mass_hash=7bd84800 observed on 1 night(s) across 3 source cortex session(s); stable on 1 night(s). |
 | `basin:7bffeb60` | recurring_basin | 1 | 5 | Basin mass_hash=7bffeb60 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:7c065a90` | recurring_basin | 1 | 5 | Basin mass_hash=7c065a90 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:7c25e212` | recurring_basin | 1 | 5 | Basin mass_hash=7c25e212 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:7c2683fe` | recurring_basin | 1 | 5 | Basin mass_hash=7c2683fe observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:7c2d2345` | recurring_basin | 1 | 5 | Basin mass_hash=7c2d2345 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:7c39ef71` | recurring_basin | 1 | 5 | Basin mass_hash=7c39ef71 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
@@ -2188,6 +2195,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:805ec299` | recurring_basin | 1 | 5 | Basin mass_hash=805ec299 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:808bd458` | recurring_basin | 1 | 5 | Basin mass_hash=808bd458 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:80c51a28` | recurring_basin | 1 | 5 | Basin mass_hash=80c51a28 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:80e65d4f` | recurring_basin | 1 | 5 | Basin mass_hash=80e65d4f observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:80e6d02c` | recurring_basin | 1 | 5 | Basin mass_hash=80e6d02c observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:80f10314` | recurring_basin | 1 | 5 | Basin mass_hash=80f10314 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:8109e358` | recurring_basin | 1 | 5 | Basin mass_hash=8109e358 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
@@ -2687,6 +2695,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:a3bb646c` | recurring_basin | 1 | 5 | Basin mass_hash=a3bb646c observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:a3c05dc8` | recurring_basin | 1 | 5 | Basin mass_hash=a3c05dc8 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:a3c39b0e` | recurring_basin | 1 | 5 | Basin mass_hash=a3c39b0e observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:a3e1200d` | recurring_basin | 1 | 5 | Basin mass_hash=a3e1200d observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:a3f81f53` | recurring_basin | 1 | 5 | Basin mass_hash=a3f81f53 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:a3fc0212` | recurring_basin | 1 | 5 | Basin mass_hash=a3fc0212 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:a40b3eab` | recurring_basin | 1 | 5 | Basin mass_hash=a40b3eab observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
@@ -2818,6 +2827,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:ab7e2bc2` | recurring_basin | 1 | 5 | Basin mass_hash=ab7e2bc2 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:ab85b400` | recurring_basin | 1 | 5 | Basin mass_hash=ab85b400 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:ab877d0e` | recurring_basin | 1 | 5 | Basin mass_hash=ab877d0e observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:ab95993c` | recurring_basin | 1 | 5 | Basin mass_hash=ab95993c observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:abad2052` | recurring_basin | 1 | 3 | Basin mass_hash=abad2052 observed on 1 night(s) across 3 source cortex session(s); stable on 1 night(s). |
 | `basin:abdc6148` | recurring_basin | 1 | 3 | Basin mass_hash=abdc6148 observed on 1 night(s) across 3 source cortex session(s); stable on 1 night(s). |
 | `basin:abf4f18b` | recurring_basin | 1 | 5 | Basin mass_hash=abf4f18b observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
@@ -3261,6 +3271,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:c6a4dce9` | recurring_basin | 1 | 5 | Basin mass_hash=c6a4dce9 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:c6a715cd` | recurring_basin | 1 | 5 | Basin mass_hash=c6a715cd observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:c6c0e514` | recurring_basin | 1 | 5 | Basin mass_hash=c6c0e514 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:c6d6026b` | recurring_basin | 1 | 5 | Basin mass_hash=c6d6026b observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:c6dc6779` | recurring_basin | 1 | 3 | Basin mass_hash=c6dc6779 observed on 1 night(s) across 3 source cortex session(s); stable on 1 night(s). |
 | `basin:c6f75161` | recurring_basin | 1 | 5 | Basin mass_hash=c6f75161 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:c6f79f64` | recurring_basin | 1 | 5 | Basin mass_hash=c6f79f64 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
@@ -3354,6 +3365,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:cbf47bc2` | recurring_basin | 1 | 5 | Basin mass_hash=cbf47bc2 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:cc115612` | recurring_basin | 1 | 5 | Basin mass_hash=cc115612 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:cc232354` | recurring_basin | 1 | 5 | Basin mass_hash=cc232354 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:cc3170a4` | recurring_basin | 1 | 5 | Basin mass_hash=cc3170a4 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:cc3770cf` | recurring_basin | 1 | 5 | Basin mass_hash=cc3770cf observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:cc47f2cd` | recurring_basin | 1 | 5 | Basin mass_hash=cc47f2cd observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:cc5e992c` | recurring_basin | 1 | 3 | Basin mass_hash=cc5e992c observed on 1 night(s) across 3 source cortex session(s); stable on 1 night(s). |
@@ -4146,6 +4158,7 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `basin:fcffc920` | recurring_basin | 1 | 3 | Basin mass_hash=fcffc920 observed on 1 night(s) across 3 source cortex session(s); stable on 1 night(s). |
 | `basin:fd1cbab2` | recurring_basin | 1 | 5 | Basin mass_hash=fd1cbab2 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:fd21bc64` | recurring_basin | 1 | 5 | Basin mass_hash=fd21bc64 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
+| `basin:fd2836fa` | recurring_basin | 1 | 5 | Basin mass_hash=fd2836fa observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:fd4e8dd8` | recurring_basin | 1 | 5 | Basin mass_hash=fd4e8dd8 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:fd505993` | recurring_basin | 1 | 5 | Basin mass_hash=fd505993 observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
 | `basin:fd7bcafd` | recurring_basin | 1 | 5 | Basin mass_hash=fd7bcafd observed on 1 night(s) across 5 source cortex session(s); stable on 1 night(s). |
@@ -4197,8 +4210,8 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `source:CX-20260213-210052` | recurring_source | 1 | 1 | Source cortex session CX-20260213-210052 replayed on 1 night(s) with mean replay score 0.997. |
 | `source:CX-20260213-222458` | recurring_source | 1 | 1 | Source cortex session CX-20260213-222458 replayed on 1 night(s) with mean replay score 0.990. |
 | `source:CX-20260213-231014` | recurring_source | 1 | 1 | Source cortex session CX-20260213-231014 replayed on 1 night(s) with mean replay score 0.993. |
-| `replay_score_vs_stable_share` | replay_yield_correlation | 349 | 0 | Across 349 night(s), Pearson(replay_score_mean, stable_basin_share)=0.000. |
-| `reinforcement_vs_decay` | reinforcement_decay_balance | 349 | 0 | Across 349 night(s): discovered=1972, reinforced=150, decayed=9765; reinforcement≥decay on 6/349 nights. |
+| `replay_score_vs_stable_share` | replay_yield_correlation | 350 | 0 | Across 350 night(s), Pearson(replay_score_mean, stable_basin_share)=0.000. |
+| `reinforcement_vs_decay` | reinforcement_decay_balance | 350 | 0 | Across 350 night(s): discovered=1980, reinforced=150, decayed=9797; reinforcement≥decay on 6/350 nights. |
 | `top_nodes:1_118_126_132_1000` | top_node_set_persistence | 2 | 0 | Top-node set [1, 118, 126, 132, 1000] recurred on 2 night(s). |
 | `top_nodes:1_118_132_1000_1002` | top_node_set_persistence | 2 | 0 | Top-node set [1, 118, 132, 1000, 1002] recurred on 2 night(s). |
 | `top_nodes:1_132_1000_1001_1002` | top_node_set_persistence | 2 | 0 | Top-node set [1, 132, 1000, 1001, 1002] recurred on 2 night(s). |
@@ -4303,4 +4316,4 @@ Single-night anomalies and findings not yet stable across multiple nights or sou
 | `top_nodes:1309_1310_1328_1329_1330` | top_node_set_persistence | 2 | 0 | Top-node set [1309, 1310, 1328, 1329, 1330] recurred on 2 night(s). |
 | `top_nodes:1309_1329_1330_1332_1333` | top_node_set_persistence | 2 | 0 | Top-node set [1309, 1329, 1330, 1332, 1333] recurred on 2 night(s). |
 | `top_nodes:1311_1312_1316_1317_1319` | top_node_set_persistence | 2 | 0 | Top-node set [1311, 1312, 1316, 1317, 1319] recurred on 2 night(s). |
-| `dominant_basin_turnover` | basin_turnover | 345 | 0 | Dominant basin shifted on 345/349 nights. |
+| `dominant_basin_turnover` | basin_turnover | 346 | 0 | Dominant basin shifted on 346/350 nights. |
