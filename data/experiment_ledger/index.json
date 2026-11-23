@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-11-23T04:13:39.902932+00:00",
-  "records": 1904,
-  "runs": 484,
+  "generated_at": "2026-11-23T06:27:59.054303+00:00",
+  "records": 1905,
+  "runs": 485,
   "experiments": {
     "cortex": {
-      "runs": 111,
-      "generations": 111,
-      "accepted_generations": 77,
-      "acceptance_rate": 0.6936936936936937,
+      "runs": 112,
+      "generations": 112,
+      "accepted_generations": 78,
+      "acceptance_rate": 0.6964285714285714,
       "top_runs_by_anchor": [
         {
           "experiment": "cortex",
@@ -192,9 +192,9 @@
           "best_full_delta": 1.0
         },
         "unpromoted": {
-          "generations": 39,
-          "runs": 39,
-          "accepted_generations": 39,
+          "generations": 40,
+          "runs": 40,
+          "accepted_generations": 40,
           "acceptance_rate": 1.0,
           "best_anchor_delta": 1.0,
           "best_full_delta": 5.0
@@ -746,8 +746,8 @@
   },
   "knowledge_domains": {
     "sol_manifold": {
-      "records": 1603,
-      "accepted_generations": 456,
+      "records": 1604,
+      "accepted_generations": 457,
       "experiments": [
         "cortex",
         "dream",
@@ -804,15 +804,15 @@
       ]
     },
     "injection:grail": {
-      "records": 110,
-      "accepted_generations": 77,
+      "records": 111,
+      "accepted_generations": 78,
       "experiments": [
         "cortex"
       ]
     },
     "damping": {
-      "records": 96,
-      "accepted_generations": 69,
+      "records": 97,
+      "accepted_generations": 70,
       "experiments": [
         "cortex"
       ]
@@ -32067,6 +32067,13 @@
         "dream"
       ]
     },
+    "threshold_transition": {
+      "records": 78,
+      "accepted_generations": 57,
+      "experiments": [
+        "cortex"
+      ]
+    },
     "high_replay_yield": {
       "records": 77,
       "accepted_generations": 77,
@@ -32074,16 +32081,9 @@
         "dream"
       ]
     },
-    "threshold_transition": {
-      "records": 77,
-      "accepted_generations": 56,
-      "experiments": [
-        "cortex"
-      ]
-    },
     "stable_replay": {
-      "records": 73,
-      "accepted_generations": 73,
+      "records": 74,
+      "accepted_generations": 74,
       "experiments": [
         "cortex"
       ]

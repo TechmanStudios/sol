@@ -1,11 +1,11 @@
 # Experiment Ledger
 
-Generated: 2026-11-23T04:13:39.902932+00:00
-Records: 1904 | Runs: 484
+Generated: 2026-11-23T06:27:59.054303+00:00
+Records: 1905 | Runs: 485
 
 ## cortex
 
-- Runs: 111 | Generations: 111 | Accepted: 77 | Acceptance: 69.37%
+- Runs: 112 | Generations: 112 | Accepted: 78 | Acceptance: 69.64%
 
 ### Modes
 
@@ -16,7 +16,7 @@ Records: 1904 | Runs: 484
 | open_question | 33 | 33 | 33 | 100.00% | 1.0000 | 8.0000 |
 | unexplored_param | 2 | 2 | 2 | 100.00% | 1.0000 | 4.0000 |
 | unfalsified | 1 | 1 | 1 | 100.00% | 1.0000 | 1.0000 |
-| unpromoted | 39 | 39 | 39 | 100.00% | 1.0000 | 5.0000 |
+| unpromoted | 40 | 40 | 40 | 100.00% | 1.0000 | 5.0000 |
 | weak_evidence | 1 | 1 | 1 | 100.00% | 1.0000 | 10.0000 |
 
 ### Top Runs
@@ -134,7 +134,7 @@ Records: 1904 | Runs: 484
 
 | Signal | Records | Accepted | Experiments |
 |---|---:|---:|---|
-| sol_manifold | 1603 | 456 | cortex, dream, self_train |
+| sol_manifold | 1604 | 457 | cortex, dream, self_train |
 | policy_adaptation | 1138 | 25 | self_train |
 | dream_replay | 354 | 354 | dream |
 | entropy_band:0p90 | 347 | 347 | dream |
@@ -142,8 +142,8 @@ Records: 1904 | Runs: 484
 | entropy_band:0p70 | 234 | 234 | dream |
 | entropy_band:0p80 | 178 | 178 | dream |
 | open_questions | 133 | 8 | rsi |
-| injection:grail | 110 | 77 | cortex |
-| damping | 96 | 69 | cortex |
+| injection:grail | 111 | 78 | cortex |
+| damping | 97 | 70 | cortex |
 | rho:1 | 86 | 86 | dream |
 | entropy_band:0p60 | 42 | 42 | dream |
 | source:cx_20260316_064244 | 38 | 38 | dream |
@@ -4613,9 +4613,9 @@ Records: 1904 | Runs: 484
 | new_basin_discovered | 353 | 353 | dream |
 | dominant_rho_persistent | 148 | 148 | dream |
 | basin_reinforced | 105 | 105 | dream |
+| threshold_transition | 78 | 57 | cortex |
 | high_replay_yield | 77 | 77 | dream |
-| threshold_transition | 77 | 56 | cortex |
-| stable_replay | 73 | 73 | cortex |
+| stable_replay | 74 | 74 | cortex |
 | basin_migration | 30 | 30 | cortex |
 | topological_reorganization | 30 | 30 | cortex |
 | accepted_candidate | 25 | 25 | self_train |
